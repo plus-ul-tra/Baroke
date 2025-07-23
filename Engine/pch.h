@@ -23,6 +23,7 @@
 #include <algorithm>
 #include <functional>
 #include <sstream>
+#include <array>
 
 #include <stdexcept>
 #include <DirectXMath.h>

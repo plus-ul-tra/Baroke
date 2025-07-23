@@ -85,6 +85,9 @@
     <ClCompile Include="GeoRender.cpp">
       <Filter>Components</Filter>
     </ClCompile>
+    <ClCompile Include="InputManager.cpp">
+      <Filter>Managers</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Engine.h" />
@@ -136,6 +139,9 @@
     </ClInclude>
     <ClInclude Include="GeoRender.h">
       <Filter>Components</Filter>
+    </ClInclude>
+    <ClInclude Include="InputManager.h">
+      <Filter>Managers</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

@@ -35,3 +35,8 @@ void GameScene::LateUpdate(double deltaTime)
 	}*/
 }
 
+void GameScene::OnCommand(std::string& cmd)
+{
+
+}
+

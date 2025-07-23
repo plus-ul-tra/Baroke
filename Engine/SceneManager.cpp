@@ -7,7 +7,7 @@ SceneManager::SceneManager()
 	std::cout << "SceneManager success"<<std::endl;
 }
 
-void SceneManager::Init(HWND hwnd)
+void SceneManager::Initialize(HWND hwnd)
 {
 	
 	m_renderer = make_unique<Renderer>();
@@ -78,4 +78,9 @@ void SceneManager::ShowDebugInfo()
 
 }
 
+void SceneManager::OnCommand(std::string& cmd)
+{
+	m_sceneList[m_currentSceneIndex]->OnCommand(cmd);
+
+}
 

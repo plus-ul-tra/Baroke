@@ -32,7 +32,7 @@ private:
 	// Scene으로 부터 그려야할 obejct를 받을 컨테이너 및 가져올 함수 필요.
 
 public:
-	void Init(HWND hwnd);
+	void Initialize(HWND hwnd);
 
 	void FixedUpdate(double fixedDeltaTime);
 	void Update(double deltaTime);
@@ -50,6 +50,8 @@ public:
 	void LoadScene(const T& index);
 
 	void ShowDebugInfo();
+
+	void OnCommand(std::string& cmd);			// 입력처리
 
 };
 

@@ -17,5 +17,7 @@ public:
 	void Update(double deltaTime) override;
 	//void FixedUpdate(double fixedDeltaTime) override;
 	void Render(Renderer& renderer) override;
+	void OnCommand(std::string& cmd) override;
 
+	//void KeyCommadMapping()
 };

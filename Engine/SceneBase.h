@@ -33,4 +33,6 @@ public:
 	virtual void LateUpdate(double deltaTime);
 	// Scene 역할에 따라서 안쓸 수도 있음 
 	int GetObjectCount() { return m_objectList.size(); }
+
+	virtual void OnCommand(std::string& cmd) = 0; // 입력처리
 };
