@@ -9,7 +9,7 @@
 #include "Renderer.h"
 //#include "Core.h"
 
-// ±¸Ã¼È­´Â Client¿¡¼­
+// êµ¬ì²´í™”ëŠ” Clientì—ì„œ
 class SceneBase {
 
 private:
@@ -17,7 +17,7 @@ private:
 	
 protected:
 	std::vector<std::unique_ptr<Object>> m_objectList;
-	//render ¿¡ ´ëÇØ¼­ µû·Î °ü¸® »ı°¢
+	//render ì— ëŒ€í•´ì„œ ë”°ë¡œ ê´€ë¦¬ ìƒê°
 	
 public:
 	SceneBase() = default;
@@ -28,11 +28,13 @@ public:
 	virtual void Update(double deltaTime) = 0;
 	virtual void Render(Renderer& renderer);
 
-	// Scene¿¡ µû¶ó¼­ ±¸Çö ÇÊ¼ö´Â ¾Æ´Ô
+	// Sceneì— ë”°ë¼ì„œ êµ¬í˜„ í•„ìˆ˜ëŠ” ì•„ë‹˜
 	virtual void FixedUpdate(double fixedDeltaTime);
 	virtual void LateUpdate(double deltaTime);
-	// Scene ¿ªÇÒ¿¡ µû¶ó¼­ ¾È¾µ ¼öµµ ÀÖÀ½ 
+	// Scene ì—­í• ì— ë”°ë¼ì„œ ì•ˆì“¸ ìˆ˜ë„ ìˆìŒ 
 	int GetObjectCount() { return m_objectList.size(); }
 
-	virtual void OnCommand(std::string& cmd) = 0; // ÀÔ·ÂÃ³¸®
+
+	virtual void OnCommand(std::string& cmd) = 0; // ì…ë ¥ì²˜ë¦¬
+
 };

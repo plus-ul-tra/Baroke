@@ -145,7 +145,9 @@
     <ClCompile Include="Core.cpp" />
     <ClCompile Include="GameTimer.cpp" />
     <ClCompile Include="GeoRender.cpp" />
+
     <ClCompile Include="InputManager.cpp" />
+
     <ClCompile Include="Object.cpp" />
     <ClCompile Include="pch.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Create</PrecompiledHeader>
@@ -165,7 +167,9 @@
     <ClInclude Include="Engine.h" />
     <ClInclude Include="GameTimer.h" />
     <ClInclude Include="GeoRender.h" />
+
     <ClInclude Include="InputManager.h" />
+
     <ClInclude Include="Object.h" />
     <ClInclude Include="pch.h" />
     <ClInclude Include="Renderer.h" />

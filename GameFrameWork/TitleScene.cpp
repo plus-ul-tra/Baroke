@@ -2,17 +2,20 @@
 #include "TitleScene.h"
 
 
-// init ÀÌ³ª asset ·Îµå´Â Scene °øÅëÀÌ¹Ç·Î base·Î »¬¼öµµ ÀÖÀ½
+// init ì´ë‚˜ asset ë¡œë“œëŠ” Scene ê³µí†µì´ë¯€ë¡œ baseë¡œ ëº„ìˆ˜ë„ ìˆìŒ
 void TitleScene::Initialize()
 {
-	std::cout << "titleScene ÃÊ±âÈ­ ¿Ï·á" <<std::endl;
+
+	std::cout << "titleScene ì´ˆê¸°í™” ì™„ë£Œ" <<std::endl;
 }
 
 void TitleScene::Update(double deltaTime)
 {
 
+
 	m_elsapsedTime += deltaTime;
 	if (m_elsapsedTime > 100.0) {
+
 
 		SceneManager::GetInstance().LoadScene(std::string("Game1"));
 		SceneManager::GetInstance().ChangeScene(std::string("Game1"));
@@ -28,6 +31,7 @@ void TitleScene::Render(Renderer& renderer)
 
 	renderer.RenderEnd();
 }
+
 
 void TitleScene::OnCommand(std::string& cmd)
 {
@@ -83,3 +87,4 @@ void TitleScene::OnCommand(std::string& cmd)
 		std::cout << "Unknown Command: " << cmd << std::endl;
 	}
 }
+

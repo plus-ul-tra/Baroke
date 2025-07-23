@@ -6,7 +6,7 @@
 //GameManager -> SceneManager -> Sences -> Objects XX
 // Core -> SceneManager( Scene1, Scene2, Scene3, ) 
 //      -> GameManager (                         )
-//scene manager¿¡¼­ ¹«¾ùÀ» °ü¸®ÇÒ °ÍÀÎ°¡
+//scene managerì—ì„œ ë¬´ì—‡ì„ ê´€ë¦¬í•  ê²ƒì¸ê°€
 
 using namespace std;
 
@@ -26,24 +26,26 @@ private:
 
 	std::unique_ptr<Renderer> m_renderer;
 	
-	std::vector<std::unique_ptr<SceneBase>> m_sceneList;  // °´Ã¼ ÄÁÅ×ÀÌ³Ê
-	map<string, int> m_sceneNameMap;					  // just name-index ¸ÊÇÎ, ÀÌ°Ç ´Ü¼ø ÆíÀÇ¸¦ À§ÇÑ °Í
+	std::vector<std::unique_ptr<SceneBase>> m_sceneList;  // ê°ì²´ ì»¨í…Œì´ë„ˆ
+	map<string, int> m_sceneNameMap;					  // just name-index ë§µí•‘, ì´ê±´ ë‹¨ìˆœ í¸ì˜ë¥¼ ìœ„í•œ ê²ƒ
 
-	// SceneÀ¸·Î ºÎÅÍ ±×·Á¾ßÇÒ obejct¸¦ ¹ŞÀ» ÄÁÅ×ÀÌ³Ê ¹× °¡Á®¿Ã ÇÔ¼ö ÇÊ¿ä.
+	// Sceneìœ¼ë¡œ ë¶€í„° ê·¸ë ¤ì•¼í•  obejctë¥¼ ë°›ì„ ì»¨í…Œì´ë„ˆ ë° ê°€ì ¸ì˜¬ í•¨ìˆ˜ í•„ìš”.
 
 public:
+
 	void Initialize(HWND hwnd);
+
 
 	void FixedUpdate(double fixedDeltaTime);
 	void Update(double deltaTime);
 	void LateUpdate(double deltaTime);
-	//Scene Manager¿¡¼­ renderer °®±â
+	//Scene Managerì—ì„œ renderer ê°–ê¸°
 	void Render();
 	
 	int GetCurrentScene() const { return m_currentSceneIndex; }
 	void AddScene(const string& sceneName, std::unique_ptr<SceneBase> scene);
 	
-	// string, int ´ëÀÀ
+	// string, int ëŒ€ì‘
 	template<typename T>
 	void ChangeScene(const T& index);
 	template<typename T>
@@ -51,7 +53,9 @@ public:
 
 	void ShowDebugInfo();
 
-	void OnCommand(std::string& cmd);			// ÀÔ·ÂÃ³¸®
+
+	void OnCommand(std::string& cmd);			// ì…ë ¥ì²˜ë¦¬
+
 
 };
 
@@ -59,7 +63,7 @@ public:
 template<typename T>
 void SceneManager::ChangeScene(const T& index) {
 
-	//template type¿¡ µû¶ó¼­ ºĞ±â
+	//template typeì— ë”°ë¼ì„œ ë¶„ê¸°
 	if constexpr (std::is_same_v<T, string>) {
 		//m_currentSceneIndex = m_sceneNameMap[index]
 
@@ -78,7 +82,7 @@ void SceneManager::ChangeScene(const T& index) {
 			return;
 		}
 	}
-	else { std::cout << "Error: Áö¿øÇÏÁö ¾Ê´Â ½Äº°ÀÚ string or index" << std::endl; return; }
+	else { std::cout << "Error: ì§€ì›í•˜ì§€ ì•ŠëŠ” ì‹ë³„ì string or index" << std::endl; return; }
 }
 
 template<typename T>
@@ -89,5 +93,5 @@ void SceneManager::LoadScene(const T& index) {
 	else if constexpr (std::is_same_v<T, int>) {
 		m_sceneList[index]->Initialize();
 	}
-	else { std::cout << "Error: Áö¿øÇÏÁö ¾Ê´Â ½Äº°ÀÚ string or index." << std::endl; return; }
+	else { std::cout << "Error: ì§€ì›í•˜ì§€ ì•ŠëŠ” ì‹ë³„ì string or index." << std::endl; return; }
 }

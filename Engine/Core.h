@@ -7,6 +7,7 @@
 #include"InputManager.h"
 
 
+
 namespace MIYABI {
 
 	class Core : public Singleton<Core>{
@@ -16,11 +17,13 @@ namespace MIYABI {
 	private:
 		//HWND hwnd;
 		bool m_debugMode = true;
+
 		bool m_isPause = false;
+
 		
-		//Time °ü·Ã
-		Timer m_engineTimer; // Á¶ÀÛX
-		GameTimer m_gameTimer; // Á¶ÀÛ interface 
+		//Time Â°Ã¼Â·Ãƒ
+		Timer m_engineTimer; // ÃÂ¶Ã€Ã›X
+		GameTimer m_gameTimer; // ÃÂ¶Ã€Ã› interface 
 		
 		const double m_fixedDeltaTime = 0.02; // 50Fps
 		double m_fixedUpdateAccumulator;
@@ -41,9 +44,9 @@ namespace MIYABI {
 
 
 		//------------------------------------ InputManager Start
-		bool KeyCommandMapping();	// Å°¿Í Ä¿¸Çµå ¸ÅÇÎ
+		bool KeyCommandMapping();	// Ã…Â°Â¿Ã Ã„Â¿Â¸Ã‡ÂµÃ¥ Â¸Ã…Ã‡Ã
 
-		void ProcessInput();		// ÀÔ·Â Ã³¸®
+		void ProcessInput();		// Ã€Ã”Â·Ã‚ ÃƒÂ³Â¸Â®
 		void ProcessKeyInput(InputManager& input);
 		void ProcessMouseInput(InputManager& input);
 		void ProcessMouseWheel(InputManager& input);
@@ -59,6 +62,7 @@ namespace MIYABI {
 		//------------------------------------ InputManager End
 
 
+
 	public:
 		void Initialize();
 		void StartGameLoop();
@@ -66,9 +70,11 @@ namespace MIYABI {
 
 		void SetbugMode() { m_debugMode = true; }
 		bool IsDebugMode()const { return m_debugMode; }
-		//loop Á¶ÀÛ
+		//loop ÃÂ¶Ã€Ã›
+
 		void Pause() { m_isPause = true; }
 		void Resume() { m_isPause = false; }
+
 		
 		double GetFps() { return m_engineTimer.GetFPS(); }
 	};

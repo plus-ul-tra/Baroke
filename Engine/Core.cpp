@@ -22,12 +22,15 @@ bool MIYABI::Core::_CreateWindow()
 
 void MIYABI::Core::BootManagers()
 {
+
 	SceneManager::GetInstance().Initialize(static_cast<HWND>(GetWindowHandle()));
 	InputManager::GetInstance().Initialize(static_cast<HWND>(GetWindowHandle()));
+
 
 	// AudioManager::GetInstance().Init();
 	
 }
+
 
 // https://learn.microsoft.com/ko-kr/windows/win32/inputdev/virtual-key-codes
 bool MIYABI::Core::KeyCommandMapping()
@@ -38,7 +41,7 @@ bool MIYABI::Core::KeyCommandMapping()
 	m_keyCommandMap[VK_F4] = "F4";
 	m_keyCommandMap[VK_F9] = "DebugMode";
 	m_keyCommandMap[VK_F10] = "Skip";
-	m_keyCommandMap[VK_ESCAPE] = "Escape"; // °ÔÀÓ ÀÏ½Ã Á¤Áö/Àç°³
+	m_keyCommandMap[VK_ESCAPE] = "Escape"; // ê²Œì„ ì¼ì‹œ ì •ì§€/ì¬ê°œ
 
 	return true;
 }
@@ -86,7 +89,7 @@ void MIYABI::Core::ProcessMouseInput(InputManager& input)
 	static MouseState prevMouseStatus = InputManager::GetInstance().GetMouseState();
 
 	MouseState curMouseStatus = InputManager::GetInstance().GetMouseState();
-	// ¸¶¿ì½º ÁÂÅ¬¸¯
+	// ë§ˆìš°ìŠ¤ ì¢Œí´ë¦­
 	if (prevMouseStatus.leftPressed && !curMouseStatus.leftPressed)
 	{
 		m_dragEnd = { curMouseStatus.pos.x, curMouseStatus.pos.y };
@@ -102,7 +105,7 @@ void MIYABI::Core::ProcessMouseInput(InputManager& input)
 
 
 
-	// ¸¶¿ì½º ¿ìÅ¬¸¯
+	// ë§ˆìš°ìŠ¤ ìš°í´ë¦­
 	if (prevMouseStatus.rightPressed && !curMouseStatus.rightPressed)		// OnRButtonUp
 	{
 
@@ -114,7 +117,7 @@ void MIYABI::Core::ProcessMouseInput(InputManager& input)
 		std::cout << "Right Mouse Button Pressed!" << std::endl;
 	}
 
-	// ¸¶¿ì½º ÀÌµ¿ °¨Áö
+	// ë§ˆìš°ìŠ¤ ì´ë™ ê°ì§€
 	if (IsMouseMove(prevMouseStatus, curMouseStatus))
 	{
 		//if (!curMouseStatus.leftPressed) return;
@@ -136,13 +139,13 @@ void MIYABI::Core::ProcessMouseWheel(InputManager& input)
 
 	int wheel = InputManager::GetInstance().GetWheelDelta();
 
-	if (wheel > 0) // ÃßÈÄ ÁÜÀÎ ÁÜ¾Æ¿ô ±â´É 
+	if (wheel > 0) // ì¶”í›„ ì¤Œì¸ ì¤Œì•„ì›ƒ ê¸°ëŠ¥ 
 	{
 		std::cout << wheel;
 	}
 	else if (wheel < 0)
 	{
-		// ÈÙ ¾Æ·¡·Î µ¹¸²
+		// íœ  ì•„ë˜ë¡œ ëŒë¦¼
 		std::cout << wheel;
 	}
 }
@@ -151,6 +154,7 @@ void MIYABI::Core::SendMessage(std::string& _stirng)
 {
 	SceneManager::GetInstance().OnCommand(_stirng);
 }
+
 
 void MIYABI::Core::Initialize()
 {
@@ -164,7 +168,9 @@ void MIYABI::Core::Initialize()
 	BootManagers();
 	m_engineTimer.Initialize();
 	m_gameTimer.Initialize();
+
 	KeyCommandMapping();
+
 	
 }
 
@@ -176,6 +182,7 @@ void MIYABI::Core::StartGameLoop()
 	while (msg.message != WM_QUIT) {
 
 		if (PeekMessage(&msg, NULL, 0, 0, PM_REMOVE)) {
+
 			if (false == InputManager::GetInstance().OnHandleMessage(msg))
 			{
 				TranslateMessage(&msg);
@@ -192,6 +199,7 @@ void MIYABI::Core::StartGameLoop()
 			InputManager::GetInstance().FrameEnd();
 		}
 	} 
+
 }
 
 
@@ -203,7 +211,9 @@ void MIYABI::Core::MainGame()
 	//std::cout << "Current realDeltaTime: " << realDeltaTime << std::endl;
 	
 
+
 	if (m_isPause ||m_gameTimer.IsPaused()) {
+
 
 	}
 	else {
@@ -226,7 +236,7 @@ void MIYABI::Core::MainGame()
 
 	SceneManager::GetInstance().Render();
 
-	//Scene ÀüÈ¯ ·ÎÁ÷Àº ¸ğµç ¾÷µ¥ÀÌÆ® ¹× ±×¸®±â ¸¶¹«¸® ÈÄ¿¡
+	//Scene ì „í™˜ ë¡œì§ì€ ëª¨ë“  ì—…ë°ì´íŠ¸ ë° ê·¸ë¦¬ê¸° ë§ˆë¬´ë¦¬ í›„ì—
 	//SceneManager::GetInstance().
 
 	

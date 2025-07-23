@@ -2,12 +2,12 @@
 
 #include <Windows.h>
 
-//Render °ü·Ã
+//Render Â°Ã¼Â·Ãƒ
 #include <d3d11.h>                 // Direct3D 11
 #include <dxgi1_6.h>                 // DXGI 1.6
 #include <d2d1_3.h>                  // Direct2D 1.3
 #include <d2d1_3helper.h>           
-#include <dwrite_3.h>                // ÅØ½ºÆ® ¿£Áø
+#include <dwrite_3.h>                // Ã…Ã˜Â½ÂºÃ†Â® Â¿Â£ÃÃ¸
 #include <wincodec.h>                // WIC
 #include <d2d1helper.h>
 #include <wrl/client.h>
@@ -23,7 +23,9 @@
 #include <algorithm>
 #include <functional>
 #include <sstream>
+
 #include <array>
+
 
 #include <stdexcept>
 #include <DirectXMath.h>
