@@ -3,14 +3,14 @@
 
 void GameScene::Initialize()
 {
-	//std::cout << "Game Scene ÃÊ±âÈ­ ¿Ï·á" << std::endl;
-	// ÃÊ±âÈ­¸¦ ¸Å¹ø ÀÌ·¸°Ô ÇÒ ¼ø ¾ø±äÇØ
+	//std::cout << "Game Scene ì´ˆê¸°í™” ì™„ë£Œ" << std::endl;
+	// ì´ˆê¸°í™”ë¥¼ ë§¤ë²ˆ ì´ë ‡ê²Œ í•  ìˆœ ì—†ê¸´í•´
 	auto playerObject = std::make_unique<Player>(
-		600.0f, 300.0f, 50.0f, 50.0f, DirectX::XMFLOAT4(1.0f, 0.0f, 0.0f, 1.0f) // ³ì»ö
+		600.0f, 300.0f, 50.0f, 50.0f, DirectX::XMFLOAT4(1.0f, 0.0f, 0.0f, 1.0f) // ë…¹ìƒ‰
 	);
 	m_objectList.push_back(std::move(playerObject));
 
-	//½ÇÇà Áß µ¿Àû »ý¼º/»èÁ¦´Â ¾î¶»°Ô?
+	//ì‹¤í–‰ ì¤‘ ë™ì  ìƒì„±/ì‚­ì œëŠ” ì–´ë–»ê²Œ?
 }
 
 void GameScene::FixedUpdate(double fixedDeltaTime)
@@ -34,4 +34,10 @@ void GameScene::LateUpdate(double deltaTime)
 		a->LateUpdate(deltaTime);
 	}*/
 }
+
+void GameScene::OnCommand(std::string& cmd)
+{
+
+}
+
 

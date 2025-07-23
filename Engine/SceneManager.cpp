@@ -7,7 +7,9 @@ SceneManager::SceneManager()
 	std::cout << "SceneManager success"<<std::endl;
 }
 
-void SceneManager::Init(HWND hwnd)
+
+void SceneManager::Initialize(HWND hwnd)
+
 {
 	
 	m_renderer = make_unique<Renderer>();
@@ -39,7 +41,7 @@ void SceneManager::Render()
 	m_renderer->RenderBegin();
 	m_sceneList[m_currentSceneIndex]->Render(*m_renderer);
 
-	//ÃÖÁ¾À¸·Î µğ¹ö±× ¸ğµå Á¤º¸Ãâ·Â
+	//ìµœì¢…ìœ¼ë¡œ ë””ë²„ê·¸ ëª¨ë“œ ì •ë³´ì¶œë ¥
 	if (MIYABI::Core::GetInstance().IsDebugMode()) {
 		ShowDebugInfo();
 	}
@@ -51,10 +53,10 @@ void SceneManager::AddScene(const std::string& sceneName, std::unique_ptr<SceneB
 {
 	std::cout << sceneName << " added" << std::endl;
 	if (m_sceneNameMap.count(sceneName) > 0) {
-		//Áßº¹ Ã¼Å©
+		//ì¤‘ë³µ ì²´í¬
 		return;
 	}
-	//¸ÊÇÎ
+	//ë§µí•‘
 	// 0 start
 	m_sceneList.emplace_back(std::move(scene));                     
 	m_sceneNameMap[sceneName] = m_sceneList.size() - 1;
@@ -63,18 +65,25 @@ void SceneManager::AddScene(const std::string& sceneName, std::unique_ptr<SceneB
 
 void SceneManager::ShowDebugInfo()
 {
-	float yOffset = 10.0f; // ½ÃÀÛ y À§Ä¡
+	float yOffset = 10.0f; // ì‹œì‘ y ìœ„ì¹˜
 	float lineHeight = 25.0f; 
 	
 
-	// FPS Ç¥½Ã
+	// FPS í‘œì‹œ
 	std::wstringstream ss;
 	ss << std::fixed ;
 	ss.str(L"");
 	ss << L"FPS: " << MIYABI::Core::GetInstance().GetFps();
 	std::wstring fps_str = ss.str();
-	//m_renderer->DrawMessage(fps_str.c_str(), 10.0f, yOffset, 200.0f, lineHeight, D2D1::ColorF::Red); ÇöÀç ¿À·ù¹ß»ı
+	//m_renderer->DrawMessage(fps_str.c_str(), 10.0f, yOffset, 200.0f, lineHeight, D2D1::ColorF::Red); í˜„ì¬ ì˜¤ë¥˜ë°œìƒ
 	yOffset += lineHeight;
+
+}
+
+
+void SceneManager::OnCommand(std::string& cmd)
+{
+	m_sceneList[m_currentSceneIndex]->OnCommand(cmd);
 
 }
 

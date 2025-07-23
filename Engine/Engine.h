@@ -1,6 +1,6 @@
 #pragma once
 
-// clinet ³ëÃâ½ÃÅ³ °Í¸¸
+// clinet Â³Ã«ÃƒÃ¢Â½ÃƒÃ…Â³ Â°ÃÂ¸Â¸
 #include "Singleton.h"
 #include "Core.h"
 #include "Window.h"
@@ -13,8 +13,10 @@
 
 
 #include "Object.h"
-//ÄÄÆ÷³ÍÆ®
+//Ã„Ã„Ã†Ã·Â³ÃÃ†Â®
 #include "Component.h"
 #include "Transform.h"
 #include "BaseRender.h"
+
 #include "GeoRender.h"
+
