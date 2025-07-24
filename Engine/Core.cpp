@@ -27,19 +27,25 @@ void MIYABI::Core::BootManagers()
 	InputManager::GetInstance().Initialize(static_cast<HWND>(GetWindowHandle()));
 
 	SoundManager::GetInstance().Initialize(); // 사운드 매니저 초기화
-	SoundManager::GetInstance().PlaySoundOnce("TestSound.ogg");
+	SoundManager::GetInstance().PlaySoundOnce("TestSound.ogg"); 
+
 }
 
 
 // https://learn.microsoft.com/ko-kr/windows/win32/inputdev/virtual-key-codes
+// F10이 안먹는데 확인좀 - 준혁
 bool MIYABI::Core::KeyCommandMapping()
 {
 	m_keyCommandMap[VK_F1] = "F1";
 	m_keyCommandMap[VK_F2] = "F2";
 	m_keyCommandMap[VK_F3] = "F3";
 	m_keyCommandMap[VK_F4] = "F4";
-	m_keyCommandMap[VK_F9] = "DebugMode";
-	m_keyCommandMap[VK_F10] = "Skip";
+	m_keyCommandMap[VK_F8] = "DebugMode";
+	m_keyCommandMap[VK_F12] = "Skip";
+	m_keyCommandMap['W'] = "Go";
+	m_keyCommandMap['S'] = "Back";
+	m_keyCommandMap['A'] = "Left";
+	m_keyCommandMap['D'] = "Right";
 	m_keyCommandMap[VK_ESCAPE] = "Escape"; // 게임 일시 정지/재개
 
 	return true;
@@ -72,6 +78,38 @@ void MIYABI::Core::ProcessKeyInput(InputManager& input)
 			}
 		}
 		else if (vk == VK_F2 && input.GetKeyDown(vk))
+		{
+			auto it = m_keyCommandMap.find(vk);
+			if (it != m_keyCommandMap.end())
+			{
+				SendMessage(it->second);
+			}
+		}
+		else if (vk == 'W' && input.GetKeyDown(vk))
+		{
+			auto it = m_keyCommandMap.find(vk);
+			if (it != m_keyCommandMap.end())
+			{
+				SendMessage(it->second);
+			}
+		}
+		else if (vk == 'A' && input.GetKeyDown(vk))
+		{
+			auto it = m_keyCommandMap.find(vk);
+			if (it != m_keyCommandMap.end())
+			{
+				SendMessage(it->second);
+			}
+		}
+		else if (vk == 'S' && input.GetKeyDown(vk))
+		{
+			auto it = m_keyCommandMap.find(vk);
+			if (it != m_keyCommandMap.end())
+			{
+				SendMessage(it->second);
+			}
+		}
+		else if (vk == 'D' && input.GetKeyDown(vk))
 		{
 			auto it = m_keyCommandMap.find(vk);
 			if (it != m_keyCommandMap.end())

@@ -88,3 +88,13 @@ void SceneManager::OnCommand(std::string& cmd)
 }
 
 
+void SceneManager::InitializeAllScenes()
+{
+	std::cout << "casd";
+	for (auto& scene : m_sceneList)
+	{
+		if (scene)
+			scene->Initialize();
+	}
+}
+

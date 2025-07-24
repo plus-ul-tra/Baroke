@@ -9,6 +9,8 @@ private:
 	BitmapRender* m_bitmapRender = nullptr;
 	Collider2D* m_Collider = nullptr;
 
+	float m_speed = 5.f;
+
 public:
 	Player(float posX, float posY, float width, float height, DirectX::XMFLOAT4 color);
 	virtual ~Player() = default;
@@ -16,6 +18,13 @@ public:
 	void FixedUpdate(double deltaTime) override;
 	void Update(double deltaTime) override;
 	void LateUpdate(double deltaTime) override;
+
+	void Move(float dx, float dy);
+	void MoveUp();
+	void MoveLeft();
+	void MoveDown();
+	void MoveRight();
+
 
 	Transform* GetTransform() { return m_transform; }
 	Collider2D* GetCollider() { return m_Collider; }

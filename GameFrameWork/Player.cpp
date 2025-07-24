@@ -48,6 +48,16 @@ void Player::LateUpdate(double deltaTime)
 	Object::LateUpdate(deltaTime);
 }
 
+void Player::MoveUp() { Move(0.0f, -1.0f); }
+void Player::MoveDown() { Move(0.0f, 1.0f); }
+void Player::MoveLeft() { Move(-1.0f, 0.0f); }
+void Player::MoveRight() { Move(1.0f, 0.0f); }
 
 
-
+void Player::Move(float dx, float dy)
+{
+	float distance = m_speed;
+	auto pos = m_transform->GetPosition();
+	pos = XMVectorAdd(pos, XMVectorSet(dx * distance, dy * distance, 0, 0));
+	m_transform->SetPosition(pos);
+}

@@ -1,5 +1,6 @@
 #pragma once
 #include "Engine.h"
+#include "Player.h"
 
 class TitleScene : public SceneBase {
 
@@ -18,8 +19,14 @@ public:
 	//void FixedUpdate(double fixedDeltaTime) override;
 	void Render(Renderer& renderer) override;
 
+	void OnEnter() override;
+
+	void OnLeave() override;
+
 	void OnCommand(std::string& cmd) override;
 
-	//void KeyCommadMapping() ??
+
+	void KeyCommandMapping() override;
+
 
 };

@@ -57,6 +57,7 @@ public:
 
 	void OnCommand(std::string& cmd);			// 입력처리
 
+	void InitializeAllScenes();
 
 };
 
@@ -69,11 +70,14 @@ void SceneManager::ChangeScene(const T& index) {
 		//m_currentSceneIndex = m_sceneNameMap[index]
 
 		if (auto it = m_sceneNameMap.find(index); it != m_sceneNameMap.end()) {
+			m_sceneList[m_currentSceneIndex]->OnLeave();
 			m_currentSceneIndex = it->second;
+			m_sceneList[m_currentSceneIndex]->OnEnter();
 		}
 		else { std::cout << "Error: invalid Scene Id" << std::endl; return; }
 
 	}
+
 	else if constexpr (std::is_same_v<T, int>) {
 		if (index >= 0 && index < static_cast<int>(m_sceneList.size())) {
 			m_currentSceneIndex = index;
