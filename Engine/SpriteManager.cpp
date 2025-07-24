@@ -61,3 +61,20 @@ const AnimationClips& SpriteManager::GetAnimationClips(const string& key) const
 
 	return it->second;
 }
+
+void SpriteManager::Release()
+{
+	for (auto& texture : m_textures)
+	{
+		if (texture.second)
+		{
+			texture.second.Reset();
+		}
+	}
+	m_textures.clear();
+	for (auto& clips : m_animationClips)
+	{
+		clips.second.clear();
+	}
+	m_animationClips.clear();
+}

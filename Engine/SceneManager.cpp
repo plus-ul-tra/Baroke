@@ -18,6 +18,12 @@ void SceneManager::Initialize(HWND hwnd)
 
 	SpriteManager::GetInstance().SetRenderer(m_renderer.get()); // SpriteManager에 렌더러 설정
 	SpriteManager::GetInstance().LoadAll(); // 리소스 로드
+
+	SoundManager::GetInstance().Create(); // 사운드 매니저 초기화
+	SoundManager::GetInstance().LoadAll(); // 사운드 리소스 로드
+	FMOD::System* system = SoundManager::GetInstance().GetSystem();
+	FMOD::Sound* testSound = SoundManager::GetInstance().GetSound("TestSound.ogg");
+	system->playSound(testSound, nullptr, false, nullptr); // 테스트 사운드 재생
 }
 
 

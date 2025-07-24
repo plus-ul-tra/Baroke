@@ -1,8 +1,8 @@
 #pragma once
-#include <fmod.hpp>
 #include <filesystem>
-#include <unordered_map>
 #include "Singleton.h"
+
+using namespace std;
 
 class SoundManager : public Singleton<SoundManager>
 {
@@ -10,9 +10,17 @@ class SoundManager : public Singleton<SoundManager>
 	SoundManager() = default;
 	~SoundManager() = default;
 
-	std::unordered_map<std::wstring, FMOD::Sound*> m_sounds;
+	std::unordered_map<string, FMOD::Sound*> m_sounds;
 	FMOD::System* m_system = nullptr;
 
 public:
+	void Create();
 
+	void LoadAll();
+	void LoadSound(const filesystem::path& filePath);
+
+	FMOD::System* GetSystem() const { return m_system; }
+	FMOD::Sound* GetSound(const string& key) const;
+
+	void Release();
 };

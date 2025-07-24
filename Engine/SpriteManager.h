@@ -28,6 +28,5 @@ public:
 	const ID2D1Bitmap1* GetTexture(const string& key) const;
 	const AnimationClips& GetAnimationClips(const string& key) const;
 
-	void Clear() { m_textures.clear(); m_animationClips.clear(); }
-
+	void Release();
 };
