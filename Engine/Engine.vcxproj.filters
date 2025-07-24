@@ -44,6 +44,9 @@
     <Filter Include="Renderer">
       <UniqueIdentifier>{c59b61d1-32b3-4f74-9191-6f158db14baf}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Sprite">
+      <UniqueIdentifier>{a32c55bf-50b8-435e-8dc3-895bd79842dd}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Window.cpp">
@@ -85,11 +88,9 @@
     <ClCompile Include="GeoRender.cpp">
       <Filter>Components</Filter>
     </ClCompile>
-
     <ClCompile Include="InputManager.cpp">
       <Filter>Managers</Filter>
     </ClCompile>
-
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Engine.h" />
@@ -142,10 +143,8 @@
     <ClInclude Include="GeoRender.h">
       <Filter>Components</Filter>
     </ClInclude>
-
     <ClInclude Include="InputManager.h">
       <Filter>Managers</Filter>
     </ClInclude>
-
   </ItemGroup>
 </Project>
