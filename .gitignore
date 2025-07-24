@@ -1,2 +1,6 @@
 **/x64/
 .vs/
+FMOD/lib/arm64
+FMOD/lib/x86
+
+!FMOD/lib/x64/
