@@ -40,6 +40,13 @@ FMOD::Sound* SoundManager::GetSound(const string& key) const
 	return it->second;
 }
 
+void SoundManager::PlaySoundOnce(const string& key)
+{
+	FMOD::Sound* sound = GetSound(key);
+	if (sound) m_system->playSound(sound, nullptr, false, nullptr);
+	else throw runtime_error("해당 사운드를 찾을 수 없음");
+}
+
 void SoundManager::Release()
 {
 	for (auto& sound : m_sounds)

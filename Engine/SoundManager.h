@@ -21,6 +21,7 @@ public:
 
 	FMOD::System* GetSystem() const { return m_system; }
 	FMOD::Sound* GetSound(const string& key) const;
+	void PlaySoundOnce(const string& key);
 
 	void Release();
 };
