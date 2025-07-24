@@ -14,8 +14,8 @@ class SpriteManager : public Singleton<SpriteManager>
 	SpriteManager() = default;
 	~SpriteManager() = default;
 
-	unordered_map<wstring, ComPtr<ID2D1Bitmap1>> m_textures;
-	unordered_map<wstring, AnimationClips> m_animationClips;
+	unordered_map<string, ComPtr<ID2D1Bitmap1>> m_textures;
+	unordered_map<string, AnimationClips> m_animationClips;
 	Renderer* m_renderer = nullptr;
 
 public:
@@ -25,8 +25,8 @@ public:
 	ID2D1Bitmap1* LoadTexture(const filesystem::path& filePath);
 	void LoadAnimationClips(const filesystem::path& filePath);
 
-	const ID2D1Bitmap1* GetTexture(const wstring& key) const;
-	const AnimationClips& GetAnimationClips(const wstring& key) const;
+	const ID2D1Bitmap1* GetTexture(const string& key) const;
+	const AnimationClips& GetAnimationClips(const string& key) const;
 
 	void Clear() { m_textures.clear(); m_animationClips.clear(); }
 

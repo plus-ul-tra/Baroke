@@ -9,12 +9,12 @@ class BitmapRender : public BaseRender
 	SpriteAnimator m_animator;
 
 public:
-	BitmapRender(const std::wstring& animationKey, float width, float height) : m_width(width), m_height(height)
+	BitmapRender(const string& animationKey, float width, float height) : m_width(width), m_height(height)
 	{ m_animator.SetClips(&SpriteManager::GetInstance().GetAnimationClips(animationKey)); }
 
 	void Render(Renderer& renderer) override;
 
-	void SetAnimator(const std::wstring& animationKey) { m_animator.SetClips(&SpriteManager::GetInstance().GetAnimationClips(animationKey)); }
+	void SetAnimator(const string& animationKey) { m_animator.SetClips(&SpriteManager::GetInstance().GetAnimationClips(animationKey)); }
 	SpriteAnimator& GetAnimator() { return m_animator; }
 
 	void SetWidth(float width) { m_width = width; }

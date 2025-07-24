@@ -10,7 +10,7 @@ Player::Player(float x, float y, float width, float height, XMFLOAT4 color)
 	m_geoRender = AddComponent<GeoRender>(
 		width, height, color, ShapeType::Rectangle
 	);
-    m_bitmapRender = AddComponent<BitmapRender>(L"PandaSpriteSheet", width, height);
+    m_bitmapRender = AddComponent<BitmapRender>("PandaSpriteSheet", width, height);
 
 
     m_transform->SetPosition(XMVectorSet(x, y, 0.0f, 1.0f));

@@ -4,7 +4,7 @@
 
 void SpriteManager::LoadAll()
 {
-	for (const auto& entry : filesystem::directory_iterator(L"C:\\Users\\User\\Desktop\\MIYABI-Engine\\Resource"))
+	for (const auto& entry : filesystem::directory_iterator(L"C:\\Users\\User\\Desktop\\MIYABI-Engine\\Resource\\Sprits"))
 	{
 		if (entry.is_regular_file())
 		{
@@ -22,7 +22,7 @@ void SpriteManager::LoadAll()
 
 ID2D1Bitmap1* SpriteManager::LoadTexture(const filesystem::path& filePath)
 {
-	filesystem::path key = filePath.stem().wstring();
+	string key = filePath.stem().string();
 	if (m_textures.find(key) == m_textures.end());
 	{
 		ComPtr<ID2D1Bitmap1> bitmap;
@@ -43,10 +43,10 @@ void SpriteManager::LoadAnimationClips(const filesystem::path& filePath)
 
 	for (auto& clip : clips) clip.second.SetBitmap(bitmap);
 
-	m_animationClips.emplace(filePath.stem().wstring(), move(clips));
+	m_animationClips.emplace(filePath.stem().string(), move(clips));
 }
 
-const ID2D1Bitmap1* SpriteManager::GetTexture(const wstring& key) const
+const ID2D1Bitmap1* SpriteManager::GetTexture(const string& key) const
 {
 	auto it = m_textures.find(key);
 	if (it == m_textures.end()) throw runtime_error("해당 이미지를 찾을 수 없음");
@@ -54,7 +54,7 @@ const ID2D1Bitmap1* SpriteManager::GetTexture(const wstring& key) const
 	return it->second.Get();
 }
 
-const AnimationClips& SpriteManager::GetAnimationClips(const wstring& key) const
+const AnimationClips& SpriteManager::GetAnimationClips(const string& key) const
 {
 	auto it = m_animationClips.find(key);
 	if (it == m_animationClips.end()) throw runtime_error("해당 애니메이션 클립을 찾을 수 없음");

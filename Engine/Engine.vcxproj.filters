@@ -103,6 +103,9 @@
     <ClCompile Include="BitmapRender.cpp">
       <Filter>Components</Filter>
     </ClCompile>
+    <ClCompile Include="SoundManager.cpp">
+      <Filter>Managers</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Engine.h" />
@@ -172,6 +175,9 @@
     </ClInclude>
     <ClInclude Include="BitmapRender.h">
       <Filter>Components</Filter>
+    </ClInclude>
+    <ClInclude Include="SoundManager.h">
+      <Filter>Managers</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>
