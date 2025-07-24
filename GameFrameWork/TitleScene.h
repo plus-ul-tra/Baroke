@@ -20,6 +20,6 @@ public:
 
 	void OnCommand(std::string& cmd) override;
 
-	//void KeyCommadMapping()
+	//void KeyCommadMapping() ??
 
 };

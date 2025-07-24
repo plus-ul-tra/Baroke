@@ -7,7 +7,7 @@ class GameManager : public Singleton<GameManager> {
 	friend class Singleton<GameManager>;
 
 private:
-	GameManager() { std::cout << "GameManager success" << std::endl; }
+	GameManager() { std::cout << "GameManager »ý¼º" << std::endl; }
 	~GameManager() = default;
 	
 	bool m_isGameOver = FALSE;
