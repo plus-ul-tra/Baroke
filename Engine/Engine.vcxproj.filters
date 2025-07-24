@@ -91,6 +91,7 @@
     <ClCompile Include="InputManager.cpp">
       <Filter>Managers</Filter>
     </ClCompile>
+
     <ClCompile Include="SpriteParser.cpp">
       <Filter>Sprite</Filter>
     </ClCompile>
@@ -106,6 +107,11 @@
     <ClCompile Include="SoundManager.cpp">
       <Filter>Managers</Filter>
     </ClCompile>
+
+    <ClCompile Include="Collider2D.cpp">
+      <Filter>Components</Filter>
+    </ClCompile>
+
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Engine.h" />
@@ -161,6 +167,7 @@
     <ClInclude Include="InputManager.h">
       <Filter>Managers</Filter>
     </ClInclude>
+
     <ClInclude Include="SpriteParser.h">
       <Filter>Sprite</Filter>
     </ClInclude>
@@ -179,5 +186,10 @@
     <ClInclude Include="SoundManager.h">
       <Filter>Managers</Filter>
     </ClInclude>
+
+    <ClInclude Include="Collider2D.h">
+      <Filter>Components</Filter>
+    </ClInclude>
+
   </ItemGroup>
 </Project>

@@ -17,7 +17,7 @@ public:
 
 		auto comp = std::make_unique<T>(std::forward<Args>(args)...);
 
-		comp->SetOwner(this);
+		comp->SetOwner(this); // SetOwner »£√‚
 
 		T* ptr = comp.get();
 

@@ -14,6 +14,8 @@ void TitleScene::Update(double deltaTime)
 
 
 	m_elsapsedTime += deltaTime;
+	//test용 씬전환
+
 	if (m_elsapsedTime > 3.0) {
 
 
@@ -51,11 +53,7 @@ void TitleScene::OnCommand(std::string& cmd)
 	}
 	else if (cmd == "F1")
 	{
-
 		std::cout << "F1 Command Received" << std::endl;
-
-
-
 	}
 	else if (cmd == "F2")
 	{

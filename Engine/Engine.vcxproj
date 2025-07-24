@@ -144,7 +144,11 @@
   <ItemGroup>
     <ClCompile Include="AnimationClip.cpp" />
     <ClCompile Include="BaseRender.cpp" />
+
     <ClCompile Include="BitmapRender.cpp" />
+
+    <ClCompile Include="Collider2D.cpp" />
+
     <ClCompile Include="Component.h" />
     <ClCompile Include="Core.cpp" />
     <ClCompile Include="GameTimer.cpp" />
@@ -168,14 +172,20 @@
     <ClInclude Include="Actor.h" />
     <ClInclude Include="AnimationClip.h" />
     <ClInclude Include="BaseRender.h" />
+
     <ClInclude Include="BitmapRender.h" />
+
+    <ClInclude Include="Collider2D.h" />
+
     <ClInclude Include="Core.h" />
     <ClInclude Include="CoreTypes.h" />
     <ClInclude Include="Engine.h" />
     <ClInclude Include="GameTimer.h" />
     <ClInclude Include="GeoRender.h" />
     <ClInclude Include="InputManager.h" />
+
     <ClInclude Include="json.hpp" />
+
     <ClInclude Include="Object.h" />
     <ClInclude Include="pch.h" />
     <ClInclude Include="Renderer.h" />

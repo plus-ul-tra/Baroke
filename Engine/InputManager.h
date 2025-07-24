@@ -1,5 +1,5 @@
 #pragma once
-
+#include "Singleton.h"
 //#define _VERBOSE_MOUSE
 //#define _VERBOSE_KEYBOARD
 
@@ -32,15 +32,16 @@ struct InputContext
 	int wheelDelta = 0;
 };
 
-class InputManager
+class InputManager :public Singleton<InputManager>
 {
+	friend class Singleton<InputManager>;
 public:
-	static InputManager& GetInstance() // 객체 가져오기 InputManater::GetInstance().~~로 함수 사용가능
-	{
-		static InputManager instance;
+	//static InputManager& GetInstance() // 객체 가져오기 InputManater::GetInstance().~~로 함수 사용가능
+	//{
+	//	static InputManager instance;
 
-		return instance;
-	}
+	//	return instance;
+	//}
 
 	bool Initialize(HWND hwnd);				//추후 RawInputDevice 사용시 필요
 
