@@ -19,8 +19,6 @@ void SceneManager::Initialize(HWND hwnd)
 	SpriteManager::GetInstance().SetRenderer(m_renderer.get()); // SpriteManager에 렌더러 설정
 	SpriteManager::GetInstance().LoadAll(); // 리소스 로드
 
-	SoundManager::GetInstance().Create(); // 사운드 매니저 초기화
-	SoundManager::GetInstance().LoadAll(); // 사운드 리소스 로드
 	SoundManager::GetInstance().PlaySoundOnce("TestSound.ogg");
 }
 
