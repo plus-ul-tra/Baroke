@@ -5,6 +5,7 @@ class GameScene : public SceneBase {
 	
 private:
 	Player* m_player = nullptr;
+	DirectX::XMVECTOR m_moveDir = DirectX::XMVectorZero();
 
 public:
 	//GameScene() = default;
