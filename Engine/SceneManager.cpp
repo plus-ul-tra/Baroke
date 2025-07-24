@@ -18,8 +18,6 @@ void SceneManager::Initialize(HWND hwnd)
 
 	SpriteManager::GetInstance().SetRenderer(m_renderer.get()); // SpriteManager에 렌더러 설정
 	SpriteManager::GetInstance().LoadAll(); // 리소스 로드
-
-	SoundManager::GetInstance().PlaySoundOnce("TestSound.ogg");
 }
 
 
