@@ -28,7 +28,6 @@ public :
 	void Update(double deltaTime)override {}
 	void OnEvent(const std::string& ev) override {}
 
-	// transform 컴포넌트에서 정보 캐싱
 	void SetOwner(Object* owner) override;
 
 	void SetActive(bool isActive) { m_isActive = isActive; }

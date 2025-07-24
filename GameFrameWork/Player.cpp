@@ -4,19 +4,24 @@
 using namespace DirectX;
 using namespace std;
 
-Player::Player(float x, float y, float width, float height, XMFLOAT4 color)
+Player::Player(float posX, float posY, float width, float height, XMFLOAT4 color) //
 {
+    // 깔끔하게 보기위해 AddComponent 에서 생성자파라미터 X
+    // Set 함수 각자 만들어서 초기화 (Transform, Collider 참고)
     m_transform = AddComponent<Transform>();
-	m_geoRender = AddComponent<GeoRender>(
-		width, height, color, ShapeType::Rectangle
-	);
-
-
-    m_transform->SetPosition(XMVectorSet(x, y, 0.0f, 1.0f));
+    m_Collider  = AddComponent<Collider2D>();
+    //GeoRender는 collider2D 있는 경우만 사용
+    m_geoRender = AddComponent<GeoRender>();
+    
+    m_transform->SetPosition(XMVectorSet(posX, posY, 0.0f, 1.0f));
     m_transform->SetScale(XMVectorSet(1.0f, 1.0f, 1.0f, 1.0f));
     m_transform->SetRotation(0.0f);
 
-    m_geoRender->SetActive(true); // 렌더링 활성화
+    m_Collider->SetColliderType(ColliderType::Circle);
+    m_Collider->SetSize(100.0f, 100.0f); //collider 크기는 별도 지정
+    m_Collider->SetColor(color); //컬러는 사실 GeoRender에서 결정해도됨
+
+    m_geoRender->SetActive(true); //렌더링 활성화, 나중에 일괄로 바꿀 것
     m_geoRender->SetOrder(50);
 
 }

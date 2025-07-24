@@ -85,11 +85,12 @@
     <ClCompile Include="GeoRender.cpp">
       <Filter>Components</Filter>
     </ClCompile>
-
     <ClCompile Include="InputManager.cpp">
       <Filter>Managers</Filter>
     </ClCompile>
-
+    <ClCompile Include="Collider2D.cpp">
+      <Filter>Components</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Engine.h" />
@@ -142,10 +143,11 @@
     <ClInclude Include="GeoRender.h">
       <Filter>Components</Filter>
     </ClInclude>
-
     <ClInclude Include="InputManager.h">
       <Filter>Managers</Filter>
     </ClInclude>
-
+    <ClInclude Include="Collider2D.h">
+      <Filter>Components</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>

@@ -14,7 +14,8 @@ void TitleScene::Update(double deltaTime)
 
 
 	m_elsapsedTime += deltaTime;
-	if (m_elsapsedTime > 100.0) {
+	//test용 씬전환
+	if (m_elsapsedTime > 3.0) {
 
 
 		SceneManager::GetInstance().LoadScene(std::string("Game1"));
@@ -51,11 +52,7 @@ void TitleScene::OnCommand(std::string& cmd)
 	}
 	else if (cmd == "F1")
 	{
-
 		std::cout << "F1 Command Received" << std::endl;
-
-
-
 	}
 	else if (cmd == "F2")
 	{
