@@ -9,7 +9,7 @@ void SoundManager::Initialize()
 }
 
 void SoundManager::LoadAll()
-{
+{																//
 	for (const auto& entry : filesystem::directory_iterator(L"C:\\Users\\User\\Desktop\\MiyabiEngine\\Resource\\Sounds"))
 	{
 		if (entry.is_regular_file())

@@ -19,7 +19,6 @@ bool MIYABI::Core::_CreateWindow()
 
 }
 
-
 void MIYABI::Core::BootManagers()
 {
 
