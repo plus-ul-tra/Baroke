@@ -19,4 +19,5 @@
 #include "BaseRender.h"
 
 #include "GeoRender.h"
+#include "BitmapRender.h"
 

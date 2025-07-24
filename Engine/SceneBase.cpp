@@ -1,6 +1,7 @@
 #include "pch.h"
 #include "SceneBase.h"
 #include "GeoRender.h"
+#include "BitmapRender.h"
 #include "Core.h"
 //using namespace MIYABI;
 //class Core;
@@ -27,6 +28,13 @@ void SceneBase::Render(Renderer& renderer) {
 
 		}
 		//일반 그리기
+		if (auto bitmapRenderComp = obj->GetComponent<BitmapRender>())
+		{
+			if (bitmapRenderComp->IsActive())
+			{
+				bitmapRenderComp->Render(renderer);
+			}
+		}
 	}
 
 

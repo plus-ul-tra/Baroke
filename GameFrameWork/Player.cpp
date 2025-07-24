@@ -10,6 +10,7 @@ Player::Player(float x, float y, float width, float height, XMFLOAT4 color)
 	m_geoRender = AddComponent<GeoRender>(
 		width, height, color, ShapeType::Rectangle
 	);
+    m_bitmapRender = AddComponent<BitmapRender>(L"PandaSpriteSheet", width, height);
 
 
     m_transform->SetPosition(XMVectorSet(x, y, 0.0f, 1.0f));
@@ -18,6 +19,7 @@ Player::Player(float x, float y, float width, float height, XMFLOAT4 color)
 
     m_geoRender->SetActive(true); // 렌더링 활성화
     m_geoRender->SetOrder(50);
+	m_bitmapRender->SetActive(true); // 렌더링 활성화
 
 }
 

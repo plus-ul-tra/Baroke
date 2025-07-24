@@ -14,7 +14,7 @@ void TitleScene::Update(double deltaTime)
 
 
 	m_elsapsedTime += deltaTime;
-	if (m_elsapsedTime > 100.0) {
+	if (m_elsapsedTime > 3.0) {
 
 
 		SceneManager::GetInstance().LoadScene(std::string("Game1"));

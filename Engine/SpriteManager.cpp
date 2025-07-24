@@ -22,12 +22,12 @@ void SpriteManager::LoadAll()
 
 ID2D1Bitmap1* SpriteManager::LoadTexture(const filesystem::path& filePath)
 {
-	auto key = filePath.stem().wstring();
+	filesystem::path key = filePath.stem().wstring();
 	if (m_textures.find(key) == m_textures.end());
 	{
 		ComPtr<ID2D1Bitmap1> bitmap;
 		m_renderer->CreateBitmapFromFile(filePath.c_str(), *m_textures[key].GetAddressOf());
-		m_textures[key] = move(bitmap);
+		m_textures.emplace(key, bitmap);
 	}
 
 	return m_textures[key].Get();
@@ -43,7 +43,7 @@ void SpriteManager::LoadAnimationClips(const filesystem::path& filePath)
 
 	for (auto& clip : clips) clip.second.SetBitmap(bitmap);
 
-	m_animationClips[filePath.stem().wstring()] = move(clips);
+	m_animationClips.emplace(filePath.stem().wstring(), move(clips));
 }
 
 const ID2D1Bitmap1* SpriteManager::GetTexture(const wstring& key) const

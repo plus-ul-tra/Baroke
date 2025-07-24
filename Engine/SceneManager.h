@@ -26,7 +26,6 @@ private:
 	//renderer
 
 	std::unique_ptr<Renderer> m_renderer;
-	std::unique_ptr<SpriteManager> m_spriteManager; // 스프라이트 매니저
 	
 	std::vector<std::unique_ptr<SceneBase>> m_sceneList;  // 객체 컨테이너
 	map<string, int> m_sceneNameMap;					  // just name-index 맵핑, 이건 단순 편의를 위한 것
