@@ -64,26 +64,15 @@ void MIYABI::Core::ProcessInput()
 void MIYABI::Core::ProcessKeyInput(InputManager& input)
 {
 
+	static const std::unordered_set<int> holdKeys = { 'W', 'A', 'S', 'D', VK_F2 };
+
 	for (int vk = 0; vk < 256; ++vk)
 	{
-		if (input.GetKeyPressed(vk))
-		{
-
-
-			auto it = m_keyCommandMap.find(vk);
-			if (it != m_keyCommandMap.end())
-			{
-				SendMessage(it->second);
-
-			}
-		}
-		else if (vk == VK_F2 && input.GetKeyDown(vk))
+		if (input.GetKeyPressed(vk) || (holdKeys.count(vk) && input.GetKeyDown(vk)))
 		{
 			auto it = m_keyCommandMap.find(vk);
 			if (it != m_keyCommandMap.end())
-			{
 				SendMessage(it->second);
-			}
 		}
 		else if (vk == 'W' && input.GetKeyDown(vk))
 		{

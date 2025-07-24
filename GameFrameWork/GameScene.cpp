@@ -26,7 +26,6 @@ void GameScene::Update(double deltaTime)
 	for (auto& a : m_objectList) {
 		a->Update(deltaTime);
 	}
-
 }
 
 void GameScene::LateUpdate(double deltaTime)
@@ -34,6 +33,13 @@ void GameScene::LateUpdate(double deltaTime)
 	/*for (auto& a : m_objectList) {
 		a->LateUpdate(deltaTime);
 	}*/
+	if (!DirectX::XMVector3Equal(m_moveDir, DirectX::XMVectorZero()) && m_player)
+	{
+		DirectX::XMVECTOR dir = DirectX::XMVector3Normalize(m_moveDir);
+		m_player->Move(dir, deltaTime);
+	}
+
+	m_moveDir = DirectX::XMVectorZero();
 }
 
 void GameScene::OnEnter()
@@ -50,6 +56,7 @@ void GameScene::OnEnter()
 }
 
 void GameScene::OnLeave()
+
 {
 	std::cout << "Game1 Scene Left" << std::endl;
 	Reset();
@@ -99,22 +106,34 @@ void GameScene::KeyCommandMapping()
 
 	m_commandMap["Go"] = [this]()
 		{
-			if (m_player) m_player->MoveUp();
+
+			//if (m_player) m_player->MoveUp();
+			m_moveDir = DirectX::XMVectorAdd(m_moveDir, DirectX::XMVectorSet(0, -1, 0, 0));
+
 		};
 
 	m_commandMap["Back"] = [this]()
 		{
-			if (m_player) m_player->MoveDown();
+
+			//if (m_player) m_player->MoveDown();
+			m_moveDir = DirectX::XMVectorAdd(m_moveDir, DirectX::XMVectorSet(0, 1, 0, 0));
+
 		};
 
 	m_commandMap["Left"] = [this]()
 		{
-			if (m_player) m_player->MoveLeft();
+
+			//if (m_player) m_player->MoveLeft();
+			m_moveDir = DirectX::XMVectorAdd(m_moveDir, DirectX::XMVectorSet(-1, 0, 0, 0));
+
 		};
 
 	m_commandMap["Right"] = [this]()
 		{
-			if (m_player) m_player->MoveRight();
+
+			//if (m_player) m_player->MoveRight();
+			m_moveDir = DirectX::XMVectorAdd(m_moveDir, DirectX::XMVectorSet(1, 0, 0, 0));
+
 		};
 }
 

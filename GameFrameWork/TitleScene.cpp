@@ -17,13 +17,15 @@ void TitleScene::Update(double deltaTime)
 	m_elsapsedTime += deltaTime;
 	//test용 씬전환
 
-	if (m_elsapsedTime > 3.0) {
 
+// 	if (m_elsapsedTime > 3.0) {
+// 
+// 
+// 		//SceneManager::GetInstance().LoadScene(std::string("Game1"));
+// 		SceneManager::GetInstance().ChangeScene(std::string("Game1"));
+// 
+// 	}
 
-		//SceneManager::GetInstance().LoadScene(std::string("Game1"));
-		SceneManager::GetInstance().ChangeScene(std::string("Game1"));
-
-	}
 
 }
 
@@ -72,7 +74,8 @@ void TitleScene::KeyCommandMapping()
 
 	m_commandMap["F1"] = [this]()
 		{
-			std::cout << "F1 Command Received: Changing to Game1 Scene" << std::endl;
+
+
 			SceneManager::GetInstance().ChangeScene(std::string("Game1"));
 		};
 
