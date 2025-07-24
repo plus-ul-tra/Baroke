@@ -40,7 +40,7 @@ public:
 	~AnimationClip() = default;
 };
 
-using AnimationClips = vector<pair<wstring, AnimationClip>>;
+using AnimationClips = vector<pair<string, AnimationClip>>;
 class SpriteAnimator
 {
 	const AnimationClips* m_clips = nullptr; // 애니메이션 클립 벡터
@@ -59,7 +59,7 @@ public:
 	const AnimationClips* GetClips() const { return m_clips; } // 현재 애니메이션 클립 벡터를 반환
 
 	void SetCurrentClip(unsigned int index = 0); // 인덱스로 현재 애니메이션 클립 벡터에서 애니메이션 클립을 설정
-	void SetCurrentClip(const wstring& name); // 이름으로 현재 애니메이션 클립 벡터에서 애니메이션 클립을 설정
+	void SetCurrentClip(const string& name); // 이름으로 현재 애니메이션 클립 벡터에서 애니메이션 클립을 설정
 	const AnimationClip* GetCurrentClip() const; // 현재 애니메이션 클립을 반환
 
 	void SetLoop(bool loop) { m_isLoop = loop; }

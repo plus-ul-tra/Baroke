@@ -91,6 +91,15 @@
     <ClCompile Include="InputManager.cpp">
       <Filter>Managers</Filter>
     </ClCompile>
+    <ClCompile Include="SpriteParser.cpp">
+      <Filter>Sprite</Filter>
+    </ClCompile>
+    <ClCompile Include="AnimationClip.cpp">
+      <Filter>Sprite</Filter>
+    </ClCompile>
+    <ClCompile Include="SpriteManager.cpp">
+      <Filter>Managers</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Engine.h" />
@@ -144,6 +153,18 @@
       <Filter>Components</Filter>
     </ClInclude>
     <ClInclude Include="InputManager.h">
+      <Filter>Managers</Filter>
+    </ClInclude>
+    <ClInclude Include="SpriteParser.h">
+      <Filter>Sprite</Filter>
+    </ClInclude>
+    <ClInclude Include="AnimationClip.h">
+      <Filter>Sprite</Filter>
+    </ClInclude>
+    <ClInclude Include="json.hpp">
+      <Filter>Sprite</Filter>
+    </ClInclude>
+    <ClInclude Include="SpriteManager.h">
       <Filter>Managers</Filter>
     </ClInclude>
   </ItemGroup>

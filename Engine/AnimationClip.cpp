@@ -11,11 +11,11 @@ void SpriteAnimator::SetCurrentClip(unsigned int index)
 	else throw std::runtime_error("해당 인댁스의의 애니메이션 클립을 찾을 수 없음.");
 }
 
-void SpriteAnimator::SetCurrentClip(const wstring& name)
+void SpriteAnimator::SetCurrentClip(const string& name)
 {
 	if (!m_clips || m_clips->empty()) throw std::runtime_error("애니메이션 클립이 비어있음.");
 
-	auto it = find_if(m_clips->begin(), m_clips->end(), [&name](const pair<wstring, AnimationClip>& clip) { return clip.first == name; });
+	auto it = find_if(m_clips->begin(), m_clips->end(), [&name](const pair<string, AnimationClip>& clip) { return clip.first == name; });
 	if (it != m_clips->end())
 	{
 		m_clip = it->second;

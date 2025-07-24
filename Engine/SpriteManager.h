@@ -5,7 +5,7 @@
 
 using namespace std;
 using namespace Microsoft::WRL;
-using AnimationClips = vector<pair<wstring, AnimationClip>>;
+using AnimationClips = vector<pair<string, AnimationClip>>;
 
 class SpriteManager
 {

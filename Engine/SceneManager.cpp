@@ -15,6 +15,9 @@ void SceneManager::Initialize(HWND hwnd)
 	m_renderer = make_unique<Renderer>();
 	m_renderer->Initialize(hwnd);
 	m_currentSceneIndex = 0;
+
+	m_spriteManager = make_unique<SpriteManager>(m_renderer.get());
+	m_spriteManager->LoadAll(); // 모든 png, json 파일을 로드
 }
 
 

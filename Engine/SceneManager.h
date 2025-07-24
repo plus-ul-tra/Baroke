@@ -2,6 +2,7 @@
 #include "Singleton.h"
 #include "SceneBase.h"
 #include "Renderer.h" 
+#include "SpriteManager.h" // 일단 씬매니저에 넣어서 Resource폴더에서 전부 로드하게
 
 //GameManager -> SceneManager -> Sences -> Objects XX
 // Core -> SceneManager( Scene1, Scene2, Scene3, ) 
@@ -25,6 +26,7 @@ private:
 	//renderer
 
 	std::unique_ptr<Renderer> m_renderer;
+	std::unique_ptr<SpriteManager> m_spriteManager; // 스프라이트 매니저
 	
 	std::vector<std::unique_ptr<SceneBase>> m_sceneList;  // 객체 컨테이너
 	map<string, int> m_sceneNameMap;					  // just name-index 맵핑, 이건 단순 편의를 위한 것

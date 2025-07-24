@@ -1,8 +1,9 @@
 #pragma once
 #include "AnimationClip.h"
+#include <filesystem>
 
 using namespace std;
-using AnimationClips = vector<pair<wstring, AnimationClip>>;
+using AnimationClips = vector<pair<string, AnimationClip>>;
 
 class SpriteParser
 {
