@@ -9,7 +9,9 @@ private:
 	BitmapRender* m_bitmapRender = nullptr;
 	Collider2D* m_Collider = nullptr;
 
+
 	float m_speedPerSec = 500.f;
+
 
 public:
 	Player(float posX, float posY, float width, float height, DirectX::XMFLOAT4 color);
@@ -25,6 +27,7 @@ public:
 // 	void MoveLeft();
 // 	void MoveDown();
 // 	void MoveRight();
+
 
 
 	Transform* GetTransform() { return m_transform; }

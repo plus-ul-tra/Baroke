@@ -56,6 +56,7 @@ void GameScene::OnEnter()
 }
 
 void GameScene::OnLeave()
+
 {
 	std::cout << "Game1 Scene Left" << std::endl;
 	Reset();
@@ -105,26 +106,34 @@ void GameScene::KeyCommandMapping()
 
 	m_commandMap["Go"] = [this]()
 		{
+
 			//if (m_player) m_player->MoveUp();
 			m_moveDir = DirectX::XMVectorAdd(m_moveDir, DirectX::XMVectorSet(0, -1, 0, 0));
+
 		};
 
 	m_commandMap["Back"] = [this]()
 		{
+
 			//if (m_player) m_player->MoveDown();
 			m_moveDir = DirectX::XMVectorAdd(m_moveDir, DirectX::XMVectorSet(0, 1, 0, 0));
+
 		};
 
 	m_commandMap["Left"] = [this]()
 		{
+
 			//if (m_player) m_player->MoveLeft();
 			m_moveDir = DirectX::XMVectorAdd(m_moveDir, DirectX::XMVectorSet(-1, 0, 0, 0));
+
 		};
 
 	m_commandMap["Right"] = [this]()
 		{
+
 			//if (m_player) m_player->MoveRight();
 			m_moveDir = DirectX::XMVectorAdd(m_moveDir, DirectX::XMVectorSet(1, 0, 0, 0));
+
 		};
 }
 

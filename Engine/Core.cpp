@@ -74,6 +74,38 @@ void MIYABI::Core::ProcessKeyInput(InputManager& input)
 			if (it != m_keyCommandMap.end())
 				SendMessage(it->second);
 		}
+		else if (vk == 'W' && input.GetKeyDown(vk))
+		{
+			auto it = m_keyCommandMap.find(vk);
+			if (it != m_keyCommandMap.end())
+			{
+				SendMessage(it->second);
+			}
+		}
+		else if (vk == 'A' && input.GetKeyDown(vk))
+		{
+			auto it = m_keyCommandMap.find(vk);
+			if (it != m_keyCommandMap.end())
+			{
+				SendMessage(it->second);
+			}
+		}
+		else if (vk == 'S' && input.GetKeyDown(vk))
+		{
+			auto it = m_keyCommandMap.find(vk);
+			if (it != m_keyCommandMap.end())
+			{
+				SendMessage(it->second);
+			}
+		}
+		else if (vk == 'D' && input.GetKeyDown(vk))
+		{
+			auto it = m_keyCommandMap.find(vk);
+			if (it != m_keyCommandMap.end())
+			{
+				SendMessage(it->second);
+			}
+		}
 	}
 }
 
