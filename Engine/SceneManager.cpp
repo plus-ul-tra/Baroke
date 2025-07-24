@@ -9,9 +9,7 @@ SceneManager::SceneManager()
 
 
 void SceneManager::Initialize(HWND hwnd)
-
 {
-	
 	m_renderer = make_unique<Renderer>();
 	m_renderer->Initialize(hwnd);
 	m_currentSceneIndex = 0;
