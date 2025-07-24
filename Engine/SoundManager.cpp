@@ -1,10 +1,11 @@
 #include "pch.h"
 #include "SoundManager.h"
 
-void SoundManager::Create()
+void SoundManager::Initialize()
 {
 	FMOD::System_Create(&m_system);
 	m_system->init(512, FMOD_INIT_NORMAL, nullptr);
+	LoadAll();
 }
 
 void SoundManager::LoadAll()

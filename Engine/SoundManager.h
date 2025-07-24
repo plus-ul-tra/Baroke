@@ -14,7 +14,7 @@ class SoundManager : public Singleton<SoundManager>
 	FMOD::System* m_system = nullptr;
 
 public:
-	void Create();
+	void Initialize();
 
 	void LoadAll();
 	void LoadSound(const filesystem::path& filePath);

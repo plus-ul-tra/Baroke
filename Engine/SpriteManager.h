@@ -19,7 +19,7 @@ class SpriteManager : public Singleton<SpriteManager>
 	Renderer* m_renderer = nullptr;
 
 public:
-	void SetRenderer(Renderer* renderer) { m_renderer = renderer; }
+	void Initialize(Renderer* renderer) { m_renderer = renderer; LoadAll(); }
 
 	void LoadAll();
 	ID2D1Bitmap1* LoadTexture(const filesystem::path& filePath);
