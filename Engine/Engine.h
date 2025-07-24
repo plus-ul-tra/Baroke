@@ -19,4 +19,6 @@
 #include "BaseRender.h"
 
 #include "GeoRender.h"
+#include "BitmapRender.h"
 #include "Collider2D.h"
+

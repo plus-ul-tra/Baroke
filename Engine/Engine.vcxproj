@@ -113,6 +113,7 @@
       <PrecompiledHeader>Use</PrecompiledHeader>
       <PrecompiledHeaderFile>pch.h</PrecompiledHeaderFile>
       <LanguageStandard>stdcpp17</LanguageStandard>
+      <AdditionalIncludeDirectories>$(SolutionDir)FMOD\inc</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
@@ -130,6 +131,7 @@
       <ConformanceMode>true</ConformanceMode>
       <PrecompiledHeader>Use</PrecompiledHeader>
       <PrecompiledHeaderFile>pch.h</PrecompiledHeaderFile>
+      <AdditionalIncludeDirectories>$(SolutionDir)FMOD\inc</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
@@ -140,8 +142,13 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="AnimationClip.cpp" />
     <ClCompile Include="BaseRender.cpp" />
+
+    <ClCompile Include="BitmapRender.cpp" />
+
     <ClCompile Include="Collider2D.cpp" />
+
     <ClCompile Include="Component.h" />
     <ClCompile Include="Core.cpp" />
     <ClCompile Include="GameTimer.cpp" />
@@ -154,26 +161,40 @@
     <ClCompile Include="Renderer.cpp" />
     <ClCompile Include="SceneBase.cpp" />
     <ClCompile Include="SceneManager.cpp" />
+    <ClCompile Include="SoundManager.cpp" />
+    <ClCompile Include="SpriteManager.cpp" />
+    <ClCompile Include="SpriteParser.cpp" />
     <ClCompile Include="Timer.cpp" />
     <ClCompile Include="Transform.cpp" />
     <ClCompile Include="Window.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Actor.h" />
+    <ClInclude Include="AnimationClip.h" />
     <ClInclude Include="BaseRender.h" />
+
+    <ClInclude Include="BitmapRender.h" />
+
     <ClInclude Include="Collider2D.h" />
+
     <ClInclude Include="Core.h" />
     <ClInclude Include="CoreTypes.h" />
     <ClInclude Include="Engine.h" />
     <ClInclude Include="GameTimer.h" />
     <ClInclude Include="GeoRender.h" />
     <ClInclude Include="InputManager.h" />
+
+    <ClInclude Include="json.hpp" />
+
     <ClInclude Include="Object.h" />
     <ClInclude Include="pch.h" />
     <ClInclude Include="Renderer.h" />
     <ClInclude Include="SceneBase.h" />
     <ClInclude Include="SceneManager.h" />
     <ClInclude Include="Singleton.h" />
+    <ClInclude Include="SoundManager.h" />
+    <ClInclude Include="SpriteManager.h" />
+    <ClInclude Include="SpriteParser.h" />
     <ClInclude Include="StaticObject.h" />
     <ClInclude Include="Timer.h" />
     <ClInclude Include="Transform.h" />

@@ -30,6 +30,9 @@
 #include <stdexcept>
 #include <DirectXMath.h>
 
+// FMOD
+#include <fmod.hpp>
+
 namespace DX
 {
     // Helper class for COM exceptions
