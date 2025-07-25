@@ -10,7 +10,8 @@
 #include <wrl/client.h>
 
 using namespace Microsoft::WRL;
-//UI, object
+// UI, object
+// D3D11 메인 렌더 + Direct2D 오버레이
 class Renderer {
 
 private:
@@ -35,11 +36,18 @@ private:
 	ComPtr<ID2D1SolidColorBrush>    m_ptextBrush;
 	ComPtr<IDWriteTextFormat>       m_ptextFormat;
 
+	ComPtr<ID3D11VertexShader>      m_VertexShader;
+	ComPtr<ID3D11PixelShader>       m_PixelShader;
+	ComPtr<ID3D11InputLayout>       m_InputLayout;
+
+
 	void CreateDeviceAndSwapChain(HWND hwnd);
 
 	void CreateRenderTargets();
 
 	void CreateWriteResource();
+	// 교체
+	/*void CreateShaders();*/
 
 	void ReleaseRenderTargets();
 
@@ -77,8 +85,8 @@ public:
 
 	//Render Routine
 	void RenderBegin();
-	void RenderBeginTest();
 	void RenderEnd(bool bpresent);
 	void RenderEnd();
+
 	void Present();
 };

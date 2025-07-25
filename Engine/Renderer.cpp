@@ -1,158 +1,10 @@
 #include "pch.h"
 #include "Renderer.h"
 
-void Renderer::Initialize(HWND hwnd)
-{
-	
-	m_hwnd = hwnd;
-
-	CreateDeviceAndSwapChain(hwnd);
-	CreateRenderTargets();
-	CreateWriteResource();
-
-	//Window Imaging Component factory 생성
-	
-	ComPtr<IWICImagingFactory> wicFactory;
-	HRESULT hr = CoCreateInstance(CLSID_WICImagingFactory,
-		nullptr,
-		CLSCTX_INPROC_SERVER,
-		IID_PPV_ARGS(&wicFactory));
-	
-	//예외처리 생략
-	m_pwicFactory = wicFactory;
-}
-
-void Renderer::Uninitialize()
-{
-	ReleaseRenderTargets();
-
-	m_pwicFactory = nullptr;
-
-	m_ptargetBitmap = nullptr;
-	m_pbrush = nullptr;
-
-	m_pd2dContext = nullptr;
-	m_pd2dDevice = nullptr;
-
-	m_pswapChain = nullptr;
-	m_pd3dDevice = nullptr;
-}
-
-void Renderer::ReleaseRenderTargets()
-{
-	if (m_pd2dContext)
-	{
-		m_pd2dContext->SetTarget(nullptr);
-	}
-
-	m_pd3dRenderTV.Reset();
-
-	m_ptargetBitmap.Reset();
-	m_pbrush.Reset();
-	m_ptextBrush.Reset();
-}
-
-void Renderer::Resize(UINT width, UINT height)
-{
-	if (nullptr == m_pswapChain) return;
-	ReleaseRenderTargets();
-	CreateRenderTargets();
-
-}
-
-void Renderer::DrawCircle(float x, float y, float radius, const D2D1::ColorF& color)
-{
-	m_pbrush->SetColor(color);
-	m_pd2dContext->DrawEllipse(D2D1::Ellipse(D2D1::Point2F(x, y), radius, radius), m_pbrush.Get());
-}
-
-void Renderer::DrawRect(float left, float top, float right, float bottom, const D2D1::ColorF& color)
-{
-	m_pbrush->SetColor(color);
-	m_pd2dContext->DrawRectangle(D2D1::Rect(left, top, right, bottom), m_pbrush.Get());
-}
-
-void Renderer::DrawBitmap(ID2D1Bitmap1* bitmap, D2D1_RECT_F dest)
-{
-	m_pd2dContext->DrawBitmap(bitmap, dest);
-}
-void Renderer::DrawBitmap(ID2D1Bitmap1* bitmap, D2D1_RECT_F destRect, D2D1_RECT_F srcRect, float opacity)
-{
-	m_pd2dContext->DrawBitmap(
-		bitmap,
-		destRect,
-		opacity,
-		D2D1_BITMAP_INTERPOLATION_MODE_LINEAR,
-		srcRect
-	);
-}
-
-void Renderer::DrawMessage(const wchar_t* text, float left, float top, float width, float height, const D2D1::ColorF& color)
-{
-	if (nullptr == m_ptextBrush)
-	{
-		HRESULT hr = m_pd2dContext->CreateSolidColorBrush(D2D1::ColorF(color), &m_ptextBrush);
-	}
-	m_ptextBrush->SetColor(color);
-	D2D1_RECT_F layoutRect = D2D1::RectF(left, top, left + width, top + height);
-	m_pd2dContext->DrawTextW(
-		text,
-		static_cast<UINT32>(wcslen(text)),
-		m_ptextFormat.Get(),
-		layoutRect,
-		m_ptextBrush.Get(),
-		D2D1_DRAW_TEXT_OPTIONS_NONE,
-		DWRITE_MEASURING_MODE_NATURAL);
-
-}
-
 //void Renderer::SetTransform(const D2D1_MATRIX_3X2_F tm)
 //{
 //	if (m_pd2dContext) m_pd2dContext->SetTransform(tm);
 //}
-
-void Renderer::RenderBegin()
-{
-	m_pd2dContext->BeginDraw();
-	m_pd2dContext->Clear(D2D1::ColorF(D2D1::ColorF::SkyBlue)); // 배경을 흰색으로 초기화
-}
-//void Renderer::RenderBeginTest()
-//{
-//	m_pd2dContext->BeginDraw();
-//	m_pd2dContext->Clear(D2D1::ColorF(D2D1::ColorF::SkyBlue)); 
-//}
-
-
-void Renderer::RenderEnd() {
-	m_pd2dContext->EndDraw();
-	Present();
-}
-
-void Renderer::RenderEnd(bool bpresent)
-{
-	m_pd2dContext->EndDraw();
-
-	if (bpresent)
-	{
-		Present();
-	}
-}
-
-void Renderer::Present()
-{
-	// 렌더링 작업이 끝나면 스왑체인에 프레임을 표시
-	HRESULT hr = m_pswapChain->Present(1, 0);
-
-	if (hr == DXGI_ERROR_DEVICE_REMOVED || hr == DXGI_ERROR_DEVICE_RESET)
-	{
-		Uninitialize();     // 디바이스가 제거되거나 리셋된 경우, 재초기화 필요
-		Initialize(m_hwnd);
-	}
-	else
-	{
-		//DX::ThrowIfFailed(hr);
-	}
-}
 
 void Renderer::CreateDeviceAndSwapChain(HWND hwnd)
 {
@@ -360,6 +212,111 @@ void Renderer::CreateWriteResource()
 	m_ptextFormat->SetWordWrapping(DWRITE_WORD_WRAPPING_WRAP); // 줄바꿈
 }
 
+void Renderer::ReleaseRenderTargets()
+{
+	if (m_pd2dContext)
+	{
+		m_pd2dContext->SetTarget(nullptr);
+	}
+
+	m_pd3dRenderTV.Reset();
+
+	m_ptargetBitmap.Reset();
+	m_pbrush.Reset();
+	m_ptextBrush.Reset();
+}
+
+void Renderer::Initialize(HWND hwnd)
+{
+	
+	m_hwnd = hwnd;
+
+	CreateDeviceAndSwapChain(hwnd);
+	CreateRenderTargets();
+	CreateWriteResource();
+
+	//Window Imaging Component factory 생성
+	
+	ComPtr<IWICImagingFactory> wicFactory;
+	HRESULT hr = CoCreateInstance(CLSID_WICImagingFactory,
+		nullptr,
+		CLSCTX_INPROC_SERVER,
+		IID_PPV_ARGS(&wicFactory));
+	
+	//예외처리 생략
+	m_pwicFactory = wicFactory;
+}
+
+void Renderer::Uninitialize()
+{
+	ReleaseRenderTargets();
+
+	m_pwicFactory = nullptr;
+
+	m_ptargetBitmap = nullptr;
+	m_pbrush = nullptr;
+
+	m_pd2dContext = nullptr;
+	m_pd2dDevice = nullptr;
+
+	m_pswapChain = nullptr;
+	m_pd3dDevice = nullptr;
+}
+
+void Renderer::Resize(UINT width, UINT height)
+{
+	if (nullptr == m_pswapChain) return;
+	ReleaseRenderTargets();
+	CreateRenderTargets();
+
+}
+
+void Renderer::DrawCircle(float x, float y, float radius, const D2D1::ColorF& color)
+{
+	m_pbrush->SetColor(color);
+	m_pd2dContext->DrawEllipse(D2D1::Ellipse(D2D1::Point2F(x, y), radius, radius), m_pbrush.Get());
+}
+
+void Renderer::DrawRect(float left, float top, float right, float bottom, const D2D1::ColorF& color)
+{
+	m_pbrush->SetColor(color);
+	m_pd2dContext->DrawRectangle(D2D1::Rect(left, top, right, bottom), m_pbrush.Get());
+}
+
+void Renderer::DrawBitmap(ID2D1Bitmap1* bitmap, D2D1_RECT_F dest)
+{
+	m_pd2dContext->DrawBitmap(bitmap, dest);
+}
+void Renderer::DrawBitmap(ID2D1Bitmap1* bitmap, D2D1_RECT_F destRect, D2D1_RECT_F srcRect, float opacity)
+{
+	m_pd2dContext->DrawBitmap(
+		bitmap,
+		destRect,
+		opacity,
+		D2D1_BITMAP_INTERPOLATION_MODE_LINEAR,
+		srcRect
+	);
+}
+
+void Renderer::DrawMessage(const wchar_t* text, float left, float top, float width, float height, const D2D1::ColorF& color)
+{
+	if (nullptr == m_ptextBrush)
+	{
+		HRESULT hr = m_pd2dContext->CreateSolidColorBrush(D2D1::ColorF(color), &m_ptextBrush);
+	}
+	m_ptextBrush->SetColor(color);
+	D2D1_RECT_F layoutRect = D2D1::RectF(left, top, left + width, top + height);
+	m_pd2dContext->DrawTextW(
+		text,
+		static_cast<UINT32>(wcslen(text)),
+		m_ptextFormat.Get(),
+		layoutRect,
+		m_ptextBrush.Get(),
+		D2D1_DRAW_TEXT_OPTIONS_NONE,
+		DWRITE_MEASURING_MODE_NATURAL);
+
+}
+
 void Renderer::CreateBitmapFromFile(const wchar_t* path, ID2D1Bitmap1*& outBitmap)
 {
 	ComPtr<IWICBitmapDecoder>     decoder;
@@ -401,4 +358,48 @@ void Renderer::CreateBitmapFromFile(const wchar_t* path, ID2D1Bitmap1*& outBitma
 
 	// ⑥ DeviceContext에서 WIC 비트맵으로부터 D2D1Bitmap1 생성
 	hr = m_pd2dContext->CreateBitmapFromWicBitmap(converter.Get(), &bmpProps, &outBitmap);
+}void Renderer::RenderBegin()
+{
+	m_pd2dContext->BeginDraw();
+	m_pd2dContext->Clear(D2D1::ColorF(D2D1::ColorF::SkyBlue)); // 배경을 흰색으로 초기화
 }
+
+
+void Renderer::RenderEnd(bool bpresent)
+{
+	m_pd2dContext->EndDraw();
+
+	if (bpresent)
+	{
+		Present();
+	}
+}
+
+//void Renderer::RenderBeginTest()
+//{
+//	m_pd2dContext->BeginDraw();
+//	m_pd2dContext->Clear(D2D1::ColorF(D2D1::ColorF::SkyBlue)); 
+//}
+
+
+void Renderer::RenderEnd() {
+	m_pd2dContext->EndDraw();
+	Present();
+}
+
+void Renderer::Present()
+{
+	// 렌더링 작업이 끝나면 스왑체인에 프레임을 표시
+	HRESULT hr = m_pswapChain->Present(1, 0);
+
+	if (hr == DXGI_ERROR_DEVICE_REMOVED || hr == DXGI_ERROR_DEVICE_RESET)
+	{
+		Uninitialize();     // 디바이스가 제거되거나 리셋된 경우, 재초기화 필요
+		Initialize(m_hwnd);
+	}
+	else
+	{
+		//DX::ThrowIfFailed(hr);
+	}
+}
+
