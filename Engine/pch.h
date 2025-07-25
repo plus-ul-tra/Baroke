@@ -20,6 +20,7 @@
 #include <memory>
 #include <map>
 #include <unordered_map>
+#include <unordered_set>
 #include <algorithm>
 #include <functional>
 #include <sstream>
@@ -29,6 +30,9 @@
 
 #include <stdexcept>
 #include <DirectXMath.h>
+
+// FMOD
+#include <fmod.hpp>
 
 namespace DX
 {

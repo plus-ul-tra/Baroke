@@ -4,43 +4,73 @@
 using namespace DirectX;
 using namespace std;
 
-Player::Player(float x, float y, float width, float height, XMFLOAT4 color)
+Player::Player(float posX, float posY, float width, float height, XMFLOAT4 color) //
 {
+    // ê¹”ë”í•˜ê²Œ ë³´ê¸°ìœ„í•´ AddComponent ì—ì„œ ìƒì„±ìíŒŒë¼ë¯¸í„° X
+    // Set í•¨ìˆ˜ ê°ì ë§Œë“¤ì–´ì„œ ì´ˆê¸°í™” (Transform, Collider ì°¸ê³ )
     m_transform = AddComponent<Transform>();
-	m_geoRender = AddComponent<GeoRender>(
-		width, height, color, ShapeType::Rectangle
-	);
-
-
-    m_transform->SetPosition(XMVectorSet(x, y, 0.0f, 1.0f));
+    m_bitmapRender = AddComponent<BitmapRender>("PandaSpriteSheet", width, height);
+    m_Collider  = AddComponent<Collider2D>();
+    //GeoRenderëŠ” collider2D ìˆëŠ” ê²½ìš°ë§Œ ì‚¬ìš©
+    m_geoRender = AddComponent<GeoRender>();
+  
+    m_transform->SetPosition(XMVectorSet(posX, posY, 0.0f, 1.0f));
     m_transform->SetScale(XMVectorSet(1.0f, 1.0f, 1.0f, 1.0f));
     m_transform->SetRotation(0.0f);
 
-    m_geoRender->SetActive(true); // ·»´õ¸µ È°¼ºÈ­
+    m_Collider->SetColliderType(ColliderType::Circle);
+    m_Collider->SetSize(100.0f, 100.0f); //collider í¬ê¸°ëŠ” ë³„ë„ ì§€ì •
+    m_Collider->SetColor(color); //ì»¬ëŸ¬ëŠ” ì‚¬ì‹¤ GeoRenderì—ì„œ ê²°ì •í•´ë„ë¨
+
+    m_geoRender->SetActive(true); //ë Œë”ë§ í™œì„±í™”, ë‚˜ì¤‘ì— ì¼ê´„ë¡œ ë°”ê¿€ ê²ƒ
     m_geoRender->SetOrder(50);
+	m_bitmapRender->SetActive(true); // ë Œë”ë§ í™œì„±í™”
 
 }
 
 void Player::FixedUpdate(double deltaTime)
 {
-	//Components µéÀÇ ¾÷µ¥ÀÌÆ®ÀÓ
+	//Components ë“¤ì˜ ì—…ë°ì´íŠ¸ì„
 	Object::FixedUpdate(deltaTime);
 }
 
 void Player::Update(double deltaTime)
 {
-    //Components µéÀÇ ¾÷µ¥ÀÌÆ®ÀÓ
-    Object::Update(deltaTime); //ÀÌ°Ç ¾Æ´Ò ¼öµµ ÀÖÀ½
-    //À§Ä¡ »óÅÂ µî ¸ğµç component¿¡ ´ëÇÑ º¯È­(update) ´Â ¿©±â¼­
-    // Á¶ÀÛ µÇ¾î¾ß ÇÒ °Í °°À½.
+    //Components ë“¤ì˜ ì—…ë°ì´íŠ¸ì„
+    Object::Update(deltaTime); //ì´ê±´ ì•„ë‹ ìˆ˜ë„ ìˆìŒ
+    //ìœ„ì¹˜ ìƒíƒœ ë“± ëª¨ë“  componentì— ëŒ€í•œ ë³€í™”(update) ëŠ” ì—¬ê¸°ì„œ
+    // ì¡°ì‘ ë˜ì–´ì•¼ í•  ê²ƒ ê°™ìŒ.
 }
 
 void Player::LateUpdate(double deltaTime)
 {
-	//Components µéÀÇ ¾÷µ¥ÀÌÆ®ÀÓ
+	//Components ë“¤ì˜ ì—…ë°ì´íŠ¸ì„
 	Object::LateUpdate(deltaTime);
 }
 
 
+// void Player::MoveUp() { Move(0.0f, -1.0f); }
+// void Player::MoveDown() { Move(0.0f, 1.0f); }
+// void Player::MoveLeft() { Move(-1.0f, 0.0f); }
+// void Player::MoveRight() { Move(1.0f, 0.0f); }
 
 
+// ë²„ë‹ˆí•© ë°œìƒ ìˆ˜ì •í•´ì•¼ë¨! - ì¤€í˜
+// ìˆ˜ì •ì™„ë£Œ ( MoveUp, Down, Left, Right ì‚¬ìš© >> ë²¡í„° ì‚¬ìš© )
+void Player::Move(float dx, float dy)
+{
+	float distance = m_speedPerSec;
+	auto pos = m_transform->GetPosition();
+	pos = XMVectorAdd(pos, XMVectorSet(dx * distance, dy * distance, 0, 0));
+	m_transform->SetPosition(pos);
+}
+
+
+void Player::Move(DirectX::XMVECTOR direction, double deltaTime)
+{
+	float distance = static_cast<float>(m_speedPerSec * deltaTime);
+	auto pos = m_transform->GetPosition();
+	pos = XMVectorAdd(pos, XMVectorScale(direction, distance));
+
+	m_transform->SetPosition(pos);
+}

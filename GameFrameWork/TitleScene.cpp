@@ -6,7 +6,8 @@
 void TitleScene::Initialize()
 {
 
-	std::cout << "titleScene 초기화 완료" <<std::endl;
+	std::cout << "titleScene Init" <<std::endl;
+	KeyCommandMapping();
 }
 
 void TitleScene::Update(double deltaTime)
@@ -14,13 +15,17 @@ void TitleScene::Update(double deltaTime)
 
 
 	m_elsapsedTime += deltaTime;
-	if (m_elsapsedTime > 100.0) {
+	//test용 씬전환
 
 
-		SceneManager::GetInstance().LoadScene(std::string("Game1"));
-		SceneManager::GetInstance().ChangeScene(std::string("Game1"));
+// 	if (m_elsapsedTime > 3.0) {
+// 
+// 
+// 		//SceneManager::GetInstance().LoadScene(std::string("Game1"));
+// 		SceneManager::GetInstance().ChangeScene(std::string("Game1"));
+// 
+// 	}
 
-	}
 
 }
 
@@ -33,58 +38,60 @@ void TitleScene::Render(Renderer& renderer)
 }
 
 
+void TitleScene::OnEnter()
+{
+
+	std::cout << "Title Scene OnEnter" << std::endl;
+	
+}
+
+void TitleScene::OnLeave()
+{
+	std::cout << "Title Scene Left" << std::endl;
+	Reset();
+}
+
 void TitleScene::OnCommand(std::string& cmd)
 {
-	if (cmd == "Escape")
+	auto it = m_commandMap.find(cmd);
+	if (it != m_commandMap.end())
 	{
-		std::cout << "Escape Command Received: Pausing Game" << std::endl;
-// 		if (m_isPaused)
-// 		{
-// 			Resume();
-// 			std::cout << "Game Resumed" << std::endl;
-// 		}
-// 		else
-// 		{
-// 			Pasued();
-// 			std::cout << "Game Paused" << std::endl;
-// 		}
-	}
-	else if (cmd == "F1")
-	{
-
-		std::cout << "F1 Command Received" << std::endl;
-
-
-
-	}
-	else if (cmd == "F2")
-	{
-		std::cout << "F2 Command Received" << std::endl;
-	}
-	else if (cmd == "F3")
-	{
-		std::cout << "F3 Command Received" << std::endl;
-// 		if (auto obj = FindObject("Player"))
-// 		{
-// 			if (auto fsm = obj->GetComponent<FSMComponent>())
-// 			{
-// 				fsm->Trigger("RunStop");
-// 			}
-// 			if (auto tf = obj->GetComponent<TransformComponent>())
-// 			{
-// 				tf->SetPosition(200.f, 300.f);
-// 				auto pos = tf->GetPosition();
-// 				std::cout << "Player Pos: " << pos.x << ", " << pos.y << "\n";
-// 			}
-// 		}
-	}
-	else if (cmd == "F4")
-	{
-		std::cout << "F4 Command Received" << std::endl;
+		it->second(); // 함수 실행
 	}
 	else
 	{
 		std::cout << "Unknown Command: " << cmd << std::endl;
 	}
+}
+
+void TitleScene::KeyCommandMapping()
+{
+	m_commandMap["Escape"] = [this]()
+		{
+			std::cout << "Escape Command Received: Pausing Game" << std::endl;
+			// 추후 일시정지/재개 로직 여기에
+		};
+
+	m_commandMap["F1"] = [this]()
+		{
+
+
+			SceneManager::GetInstance().ChangeScene(std::string("Game1"));
+		};
+
+	m_commandMap["F2"] = []()
+		{
+			std::cout << "F2 Command Received" << std::endl;
+		};
+
+	m_commandMap["F3"] = []()
+		{
+			std::cout << "F3 Command Received" << std::endl;
+		};
+
+	m_commandMap["F4"] = []()
+		{
+			std::cout << "F4 Command Received" << std::endl;
+		};
 }
 

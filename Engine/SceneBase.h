@@ -18,6 +18,7 @@ private:
 protected:
 	std::vector<std::unique_ptr<Object>> m_objectList;
 	//render 에 대해서 따로 관리 생각
+	std::unordered_map<std::string, std::function<void()>> m_commandMap;
 	
 public:
 	SceneBase() = default;
@@ -35,6 +36,27 @@ public:
 	int GetObjectCount() { return m_objectList.size(); }
 
 
-	virtual void OnCommand(std::string& cmd) = 0; // 입력처리
+	virtual void OnEnter() = 0;
 
+	virtual void OnLeave() = 0;
+
+	virtual void KeyCommandMapping() = 0;
+
+	virtual void Reset()
+	{
+		m_objectList.clear(); 
+	}
+
+	virtual void OnCommand(std::string& cmd)  // 입력처리
+	{
+		auto it = m_commandMap.find(cmd);
+		if (it != m_commandMap.end())
+		{
+			it->second(); // 함수 실행
+		}
+		else
+		{
+			std::cout << "Unknown Command: " << cmd << std::endl;
+		}
+	}
 };

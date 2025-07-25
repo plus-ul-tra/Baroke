@@ -5,6 +5,7 @@
 #include "GameTimer.h"
 #include "SceneManager.h"
 #include"InputManager.h"
+#include "SoundManager.h"
 
 
 

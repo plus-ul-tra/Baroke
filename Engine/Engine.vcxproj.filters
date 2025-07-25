@@ -44,6 +44,9 @@
     <Filter Include="Renderer">
       <UniqueIdentifier>{c59b61d1-32b3-4f74-9191-6f158db14baf}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Sprite">
+      <UniqueIdentifier>{a32c55bf-50b8-435e-8dc3-895bd79842dd}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Window.cpp">
@@ -85,9 +88,28 @@
     <ClCompile Include="GeoRender.cpp">
       <Filter>Components</Filter>
     </ClCompile>
-
     <ClCompile Include="InputManager.cpp">
       <Filter>Managers</Filter>
+    </ClCompile>
+
+    <ClCompile Include="SpriteParser.cpp">
+      <Filter>Sprite</Filter>
+    </ClCompile>
+    <ClCompile Include="AnimationClip.cpp">
+      <Filter>Sprite</Filter>
+    </ClCompile>
+    <ClCompile Include="SpriteManager.cpp">
+      <Filter>Managers</Filter>
+    </ClCompile>
+    <ClCompile Include="BitmapRender.cpp">
+      <Filter>Components</Filter>
+    </ClCompile>
+    <ClCompile Include="SoundManager.cpp">
+      <Filter>Managers</Filter>
+    </ClCompile>
+
+    <ClCompile Include="Collider2D.cpp">
+      <Filter>Components</Filter>
     </ClCompile>
 
   </ItemGroup>
@@ -142,9 +164,31 @@
     <ClInclude Include="GeoRender.h">
       <Filter>Components</Filter>
     </ClInclude>
-
     <ClInclude Include="InputManager.h">
       <Filter>Managers</Filter>
+    </ClInclude>
+
+    <ClInclude Include="SpriteParser.h">
+      <Filter>Sprite</Filter>
+    </ClInclude>
+    <ClInclude Include="AnimationClip.h">
+      <Filter>Sprite</Filter>
+    </ClInclude>
+    <ClInclude Include="json.hpp">
+      <Filter>Sprite</Filter>
+    </ClInclude>
+    <ClInclude Include="SpriteManager.h">
+      <Filter>Managers</Filter>
+    </ClInclude>
+    <ClInclude Include="BitmapRender.h">
+      <Filter>Components</Filter>
+    </ClInclude>
+    <ClInclude Include="SoundManager.h">
+      <Filter>Managers</Filter>
+    </ClInclude>
+
+    <ClInclude Include="Collider2D.h">
+      <Filter>Components</Filter>
     </ClInclude>
 
   </ItemGroup>

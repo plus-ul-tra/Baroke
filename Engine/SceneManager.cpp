@@ -9,12 +9,12 @@ SceneManager::SceneManager()
 
 
 void SceneManager::Initialize(HWND hwnd)
-
 {
-	
 	m_renderer = make_unique<Renderer>();
 	m_renderer->Initialize(hwnd);
 	m_currentSceneIndex = 0;
+
+	SpriteManager::GetInstance().Initialize(m_renderer.get()); // SpriteManager에 렌더러 설정
 }
 
 
@@ -87,4 +87,14 @@ void SceneManager::OnCommand(std::string& cmd)
 
 }
 
+
+void SceneManager::InitializeAllScenes()
+{
+	std::cout << "casd";
+	for (auto& scene : m_sceneList)
+	{
+		if (scene)
+			scene->Initialize();
+	}
+}
 
