@@ -17,17 +17,17 @@ class Renderer {
 private:
 	HWND m_hwnd = NULL;
 
-	//factory 8->7, device, Context 7->6 ·Î
+	//factory 8->7, device,Context 7->6 ·Î
 	
 	ComPtr<ID2D1Factory>			m_pd2dFactory;
 	ComPtr<IWICImagingFactory>		m_pwicFactory;
 
 	ComPtr<ID3D11Device>			m_pd3dDevice;
-	ComPtr<ID2D1Device7>			m_pd2dDevice;
+	ComPtr<ID2D1Device6>			m_pd2dDevice;
 	ComPtr<ID3D11RenderTargetView>  m_pd3dRenderTV;
 
 	ComPtr<IDXGISwapChain1>         m_pswapChain;
-	ComPtr<ID2D1DeviceContext7>     m_pd2dContext;
+	ComPtr<ID2D1DeviceContext6>     m_pd2dContext;
 	ComPtr<ID3D11DeviceContext>     m_pd3dContext;
 
 	ComPtr<ID2D1Bitmap1>            m_ptargetBitmap;
@@ -35,6 +35,13 @@ private:
 	ComPtr<ID2D1SolidColorBrush>    m_pbrush;
 	ComPtr<ID2D1SolidColorBrush>    m_ptextBrush;
 	ComPtr<IDWriteTextFormat>       m_ptextFormat;
+
+	// new
+	ComPtr<ID3D11Texture2D>			   m_renderTargetTex;
+	ComPtr<ID3D11RenderTargetView>     m_renderTargetView;
+	ComPtr<ID3D11ShaderResourceView>   m_renderTargetSRV;
+
+	ComPtr<ID3D11SamplerState>         m_samplerState;
 
 	ComPtr<ID3D11VertexShader>      m_VertexShader;
 	ComPtr<ID3D11PixelShader>       m_PixelShader;
@@ -85,8 +92,12 @@ public:
 
 	//Render Routine
 	void RenderBegin();
+	
 	void RenderEnd(bool bpresent);
 	void RenderEnd();
+
+	void ShaderRenderBegin();
+	void ShaderRenderEnd();
 
 	void Present();
 };

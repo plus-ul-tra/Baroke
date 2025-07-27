@@ -11,6 +11,7 @@ Player::Player(float posX, float posY, float width, float height, XMFLOAT4 color
     m_transform = AddComponent<Transform>();
     m_bitmapRender = AddComponent<BitmapRender>("PandaSpriteSheet", width, height);
     m_Collider  = AddComponent<Collider2D>();
+
     //GeoRender는 collider2D 있는 경우만 사용
     m_geoRender = AddComponent<GeoRender>();
   

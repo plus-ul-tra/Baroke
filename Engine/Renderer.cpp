@@ -86,7 +86,7 @@ void Renderer::CreateDeviceAndSwapChain(HWND hwnd)
 
 	// 3. ID2D1Factory4 생성
 	D2D1_FACTORY_OPTIONS opts = {};
-	ComPtr<ID2D1Factory8> d2dFactory;
+	ComPtr<ID2D1Factory7> d2dFactory;
 
 #if defined(_DEBUG)
 	opts.debugLevel = D2D1_DEBUG_LEVEL_INFORMATION;
@@ -94,7 +94,7 @@ void Renderer::CreateDeviceAndSwapChain(HWND hwnd)
 
 	hr = D2D1CreateFactory(
 		D2D1_FACTORY_TYPE_SINGLE_THREADED,
-		__uuidof(ID2D1Factory8),
+		__uuidof(ID2D1Factory7),
 		&opts,
 		reinterpret_cast<void**>(d2dFactory.GetAddressOf()));
 	if (FAILED(hr)) {
@@ -112,7 +112,7 @@ void Renderer::CreateDeviceAndSwapChain(HWND hwnd)
 	}
 	//DX::ThrowIfFailed(hr);
 
-	ComPtr<ID2D1Device7> d2dDevice;
+	ComPtr<ID2D1Device6> d2dDevice;
 	hr = baseDevice.As(&d2dDevice);
 	if (FAILED(hr)) {
 		std::cerr << "HRESULT7 = 0x" << std::hex << hr << std::endl;
@@ -121,7 +121,7 @@ void Renderer::CreateDeviceAndSwapChain(HWND hwnd)
 	//DX::ThrowIfFailed(hr);
 
 	// 5. ID2D1DeviceContext7 생성
-	ComPtr<ID2D1DeviceContext7> d2dContext;//
+	ComPtr<ID2D1DeviceContext6> d2dContext;//
 	hr = d2dDevice->CreateDeviceContext(D2D1_DEVICE_CONTEXT_OPTIONS_NONE, &d2dContext);
 	if (FAILED(hr)) {
 		std::cerr << "HRESULT8 = 0x" << std::hex << hr << std::endl;
@@ -384,6 +384,31 @@ void Renderer::RenderEnd(bool bpresent)
 
 void Renderer::RenderEnd() {
 	m_pd2dContext->EndDraw();
+	Present();
+}
+
+void Renderer::ShaderRenderBegin()
+{
+	// 아직 설정안했음
+	m_pd3dContext->OMSetRenderTargets(1, m_renderTargetView.GetAddressOf(), nullptr);
+
+	float clearColor[4] = { 0.0f, 0.0f, 0.0f, 1.0f }; // 검은색으로 초기화
+	m_pd3dContext->ClearRenderTargetView(m_renderTargetView.Get(), clearColor);
+}
+
+void Renderer::ShaderRenderEnd()
+{
+	m_pd3dContext->OMSetRenderTargets(1, m_pd3dRenderTV.GetAddressOf(), nullptr);
+
+	// 셰이더와 입력 레이아웃 설정
+	m_pd3dContext->IASetInputLayout(m_InputLayout.Get());
+	m_pd3dContext->VSSetShader(m_VertexShader.Get(), nullptr, 0);
+	m_pd3dContext->PSSetShader(m_PixelShader.Get(), nullptr, 0);
+	m_pd3dContext->PSSetShaderResources(0, 1, m_renderTargetSRV.GetAddressOf());
+	m_pd3dContext->PSSetSamplers(0, 1, m_samplerState.GetAddressOf());
+
+	//m_pd3dContext->Draw(6, 0);
+
 	Present();
 }
 

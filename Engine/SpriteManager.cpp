@@ -4,7 +4,7 @@
 
 void SpriteManager::LoadAll()
 {
-	for (const auto& entry : filesystem::directory_iterator(L"C:\\Users\\User\\Desktop\\MiyabiEngine\\Resource\\Sprits"))
+	for (const auto& entry : filesystem::directory_iterator(L"..//Resource//Sprits"))
 	{
 		if (entry.is_regular_file())
 		{
