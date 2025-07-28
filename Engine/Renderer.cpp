@@ -114,7 +114,7 @@ void Renderer::DrawMessage(const wchar_t* text, float left, float top, float wid
 void Renderer::RenderBegin()
 {
 	m_pd2dContext->BeginDraw();
-	m_pd2dContext->Clear(D2D1::ColorF(D2D1::ColorF::SkyBlue)); // 배경을 흰색으로 초기화
+	m_pd2dContext->Clear(D2D1::ColorF(D2D1::ColorF::BurlyWood)); // 배경을 초기화
 }
 //void Renderer::RenderBeginTest()
 //{

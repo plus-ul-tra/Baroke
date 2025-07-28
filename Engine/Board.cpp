@@ -1,4 +1,4 @@
-#include "cpch.h"
+#include "pch.h"
 
 #include "Board.h"
  
@@ -21,7 +21,7 @@ bool Board::PlaceStone(int r, int c, StoneInfo info)
 	int DR[4] = { -1, 1, 0, 0 };
 	int DC[4] = { 0, 0,-1, 1 };
 
-	for (int k = 0; k < 4; ++k)													// 상 하 좌 우 체크
+	for (int k = 0; k < 4; ++k)											// 상 하 좌 우 체크
 	{
 		int nr = r + DR[k];
 		int nc = c + DC[k];

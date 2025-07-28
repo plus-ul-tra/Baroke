@@ -14,7 +14,7 @@ BoardObject::BoardObject(Board* board, float offX, float offY, float drawW, floa
 {
 
 	m_transform = AddComponent<Transform>();
-	m_bitmapRender = AddComponent<BitmapRender>("original_test.png", drawW, drawH);
+	m_bitmapRender = AddComponent<BitmapRender>("Original.png", drawW, drawH);
 
 	int cell = static_cast<int>((drawW - 2 * padding) / board->Size());
 	m_layout = AddComponent<BoardLayoutComponent>(

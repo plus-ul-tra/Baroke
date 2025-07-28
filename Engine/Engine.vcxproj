@@ -145,6 +145,7 @@
     <ClCompile Include="AnimationClip.cpp" />
     <ClCompile Include="BaseRender.cpp" />
     <ClCompile Include="BitmapRender.cpp" />
+    <ClCompile Include="Board.cpp" />
     <ClCompile Include="Collider2D.cpp" />
     <ClCompile Include="Component.h" />
     <ClCompile Include="Core.cpp" />
@@ -171,6 +172,7 @@
     <ClInclude Include="AnimationClip.h" />
     <ClInclude Include="BaseRender.h" />
     <ClInclude Include="BitmapRender.h" />
+    <ClInclude Include="Board.h" />
     <ClInclude Include="BoardLayoutComponent.h" />
     <ClInclude Include="Collider2D.h" />
     <ClInclude Include="Core.h" />
@@ -179,6 +181,7 @@
     <ClInclude Include="FileDirectory.h" />
     <ClInclude Include="GameTimer.h" />
     <ClInclude Include="GeoRender.h" />
+    <ClInclude Include="InputEvents.h" />
     <ClInclude Include="InputManager.h" />
     <ClInclude Include="json.hpp" />
     <ClInclude Include="Object.h" />

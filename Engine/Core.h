@@ -6,7 +6,7 @@
 #include "SceneManager.h"
 #include"InputManager.h"
 #include "SoundManager.h"
-
+#include "InputEvents.h"
 
 
 namespace MIYABI {

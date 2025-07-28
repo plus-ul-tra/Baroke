@@ -47,6 +47,12 @@
     <Filter Include="Sprite">
       <UniqueIdentifier>{a32c55bf-50b8-435e-8dc3-895bd79842dd}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Board">
+      <UniqueIdentifier>{629727ec-ebcb-42c1-8f72-e5374784ca67}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ETC">
+      <UniqueIdentifier>{49f6db92-6a87-4ca4-b5ad-cc5403adda2f}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Window.cpp">
@@ -111,6 +117,9 @@
     </ClCompile>
     <ClCompile Include="FileDirectory.cpp">
       <Filter>Utility</Filter>
+    </ClCompile>
+    <ClCompile Include="Board.cpp">
+      <Filter>Board</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -193,6 +202,12 @@
     </ClInclude>
     <ClInclude Include="BoardLayoutComponent.h">
       <Filter>Components</Filter>
+    </ClInclude>
+    <ClInclude Include="Board.h">
+      <Filter>Board</Filter>
+    </ClInclude>
+    <ClInclude Include="InputEvents.h">
+      <Filter>ETC</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>
