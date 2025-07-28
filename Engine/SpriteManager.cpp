@@ -5,6 +5,7 @@
 
 void SpriteManager::LoadAll()
 {
+
 	filesystem::path solutionRoot;
 	try
 	{
@@ -61,7 +62,7 @@ void SpriteManager::LoadAnimationClips(const filesystem::path& filePath)
 const ComPtr<ID2D1Bitmap1> SpriteManager::GetTexture(const string& key) const
 {
 	auto it = m_textures.find(key);
-	if (it == m_textures.end()) throw runtime_error("ÇØ´ç ÀÌ¹ÌÁö¸¦ Ã£À» ¼ö ¾øÀ½");
+	if (it == m_textures.end()) throw runtime_error("í•´ë‹¹ ì´ë¯¸ì§€ë¥¼ ì°¾ì„ ìˆ˜ ì—†ìŒ");
 
 	return it->second.Get();
 }
@@ -69,7 +70,7 @@ const ComPtr<ID2D1Bitmap1> SpriteManager::GetTexture(const string& key) const
 const AnimationClips& SpriteManager::GetAnimationClips(const string& key) const
 {
 	auto it = m_animationClips.find(key);
-	if (it == m_animationClips.end()) throw runtime_error("ÇØ´ç ¾Ö´Ï¸ÞÀÌ¼Ç Å¬¸³À» Ã£À» ¼ö ¾øÀ½");
+	if (it == m_animationClips.end()) throw runtime_error("í•´ë‹¹ ì• ë‹ˆë©”ì´ì…˜ í´ë¦½ì„ ì°¾ì„ ìˆ˜ ì—†ìŒ");
 
 	return it->second;
 }

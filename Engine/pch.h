@@ -11,7 +11,7 @@
 #include <wincodec.h>                // WIC
 #include <d2d1helper.h>
 #include <wrl/client.h>
-
+#include <d3dcompiler.h> 
 
 //STL
 #include <iostream>

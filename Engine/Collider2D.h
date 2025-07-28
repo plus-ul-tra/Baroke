@@ -18,6 +18,7 @@ enum class ColliderType
 
 class Collider2D : public Component
 {
+	// 랜더링 관련
 private:
 	// Transform 정보 필요
 	Transform* m_transform = nullptr;
@@ -39,10 +40,6 @@ public:
 	Collider2D();
 	~Collider2D() = default;
 
-	void FixedUpdate(double deltaTime) override;
-	void Update(double deltaTime) override {};
-	void OnEvent(const std::string& ev) override {};
-
 	void SetColliderType(ColliderType type) { m_type = type; }
 	void SetColor(XMFLOAT4 color) { m_color = color; }
 	void SetSize(float width, float height);
@@ -55,8 +52,18 @@ public:
 	ColliderType GetColliderType() const { return m_type;   }
 
 	D2D1::ColorF GetColor() const {
-		return D2D1::ColorF(m_color.x, m_color.y, m_color.z, m_color.w);
+		return {m_color.x, m_color.y, m_color.z, m_color.w};
 	}
 	
+private:
+	//collider On/Off 용
+	bool m_isActive = true;
+public:
+	void FixedUpdate(double deltaTime) override; //<- 구현 필수
+	void Update(double deltaTime) override {};
+	void OnEvent(const std::string& ev) override {};
+
+	bool IsActive() const { return m_isActive; }
+	bool ColliderEnter();
 	
 };
