@@ -53,6 +53,9 @@
     <Filter Include="ETC">
       <UniqueIdentifier>{49f6db92-6a87-4ca4-b5ad-cc5403adda2f}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Managers\Parser">
+      <UniqueIdentifier>{fb6842f1-60c6-4a29-8224-feea525b1f83}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Window.cpp">
@@ -97,9 +100,6 @@
     <ClCompile Include="InputManager.cpp">
       <Filter>Managers</Filter>
     </ClCompile>
-    <ClCompile Include="SpriteParser.cpp">
-      <Filter>Sprite</Filter>
-    </ClCompile>
     <ClCompile Include="AnimationClip.cpp">
       <Filter>Sprite</Filter>
     </ClCompile>
@@ -120,6 +120,12 @@
     </ClCompile>
     <ClCompile Include="Board.cpp">
       <Filter>Board</Filter>
+    </ClCompile>
+    <ClCompile Include="StoneParser.cpp">
+      <Filter>Managers\Parser</Filter>
+    </ClCompile>
+    <ClCompile Include="SpriteParser.cpp">
+      <Filter>Managers\Parser</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -176,13 +182,7 @@
     <ClInclude Include="InputManager.h">
       <Filter>Managers</Filter>
     </ClInclude>
-    <ClInclude Include="SpriteParser.h">
-      <Filter>Sprite</Filter>
-    </ClInclude>
     <ClInclude Include="AnimationClip.h">
-      <Filter>Sprite</Filter>
-    </ClInclude>
-    <ClInclude Include="json.hpp">
       <Filter>Sprite</Filter>
     </ClInclude>
     <ClInclude Include="SpriteManager.h">
@@ -208,6 +208,15 @@
     </ClInclude>
     <ClInclude Include="InputEvents.h">
       <Filter>ETC</Filter>
+    </ClInclude>
+    <ClInclude Include="StoneParser.h">
+      <Filter>Managers\Parser</Filter>
+    </ClInclude>
+    <ClInclude Include="json.hpp">
+      <Filter>Managers\Parser</Filter>
+    </ClInclude>
+    <ClInclude Include="SpriteParser.h">
+      <Filter>Managers\Parser</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

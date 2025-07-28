@@ -1,0 +1,25 @@
+{ "stones": [
+  {
+    "stonename": "JokerStone1",
+    "description": "Description of JokerStone1",
+    "filename": "JokerStone1.png",
+    "function": "JokerStone1Function",
+    "type": 0,
+    "price": 15,
+    "activationCost": 2,
+    "returnValue": 5,
+    "duration": 3
+  },
+  {
+    "stonename": "JokerStone2",
+    "description": "Description of JokerStone2",
+    "filename": "JokerStone2.png",
+    "function": "JokerStone2Function",
+    "type": 1,
+    "price": 25,
+    "activationCost": 3,
+    "returnValue": 5,
+    "duration": 3
+  }
+ ]
+}

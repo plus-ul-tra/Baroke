@@ -163,6 +163,7 @@
     <ClCompile Include="SoundManager.cpp" />
     <ClCompile Include="SpriteManager.cpp" />
     <ClCompile Include="SpriteParser.cpp" />
+    <ClCompile Include="StoneParser.cpp" />
     <ClCompile Include="Timer.cpp" />
     <ClCompile Include="Transform.cpp" />
     <ClCompile Include="Window.cpp" />
@@ -194,6 +195,7 @@
     <ClInclude Include="SpriteManager.h" />
     <ClInclude Include="SpriteParser.h" />
     <ClInclude Include="StaticObject.h" />
+    <ClInclude Include="StoneParser.h" />
     <ClInclude Include="Timer.h" />
     <ClInclude Include="Transform.h" />
     <ClInclude Include="UI.h" />
