@@ -7,6 +7,7 @@
 #include "UI.h"
 #include "StaticObject.h"
 #include "Renderer.h"
+#include "InputEvents.h"
 //#include "Core.h"
 
 // 구체화는 Client에서
@@ -59,4 +60,7 @@ public:
 			std::cout << "Unknown Command: " << cmd << std::endl;
 		}
 	}
+
+	virtual void OnInput(const MouseEvent& ev) = 0;
+
 };

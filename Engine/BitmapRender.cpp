@@ -37,7 +37,7 @@ void BitmapRender::Render(Renderer& renderer)
 		objWorldY + (m_height * XMVectorGetY(worldScale) /*/ 2.0f*/)
 	);
 
-	if (m_isAnimated || !m_animator.IsValid())
+	if (m_isAnimated && m_animator.IsValid())
 	{
 		const Frame& frame = m_animator.GetCurrentFrame();
 		renderer.DrawBitmap

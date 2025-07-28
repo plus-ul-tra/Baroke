@@ -29,4 +29,5 @@ public:
 
 	void KeyCommandMapping() override;
 
+	void OnInput(const MouseEvent& ev) override;
 };

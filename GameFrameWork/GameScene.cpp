@@ -7,8 +7,8 @@ void GameScene::Initialize()
 	std::cout << "Game Scene Init" << std::endl;
 	KeyCommandMapping();
 	m_board = CreateBoard(15);
-	auto boardObj = std::make_unique<BoardObject>(
-		m_board.get(), 0, 0, 720, 720, 10);
+	auto boardObj = std::make_unique<BoardObject>( 
+		m_board.get(), 510, 90, 900, 900, 10);
 	m_objectList.emplace_back(std::move(boardObj));
 }
 
@@ -135,3 +135,10 @@ void GameScene::KeyCommandMapping()
 		};
 }
 
+void GameScene::OnInput(const MouseEvent& ev) // mouseInput
+{
+	if (ev.type == MouseType::LUp)
+	{
+		std::cout << ev.pos.x << " " << ev.pos.y << std::endl;
+	}
+}
