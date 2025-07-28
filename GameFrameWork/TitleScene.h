@@ -17,7 +17,7 @@ public:
 	void Initialize() override;
 	void Update(double deltaTime) override;
 	//void FixedUpdate(double fixedDeltaTime) override;
-	void Render(Renderer& renderer) override;
+	//void Render(Renderer& renderer) override;
 
 	void OnEnter() override;
 

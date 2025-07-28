@@ -8,6 +8,20 @@
 #include <wincodec.h>                // WIC
 #include <d2d1helper.h>
 #include <wrl/client.h>
+#include <d3dcompiler.h>     //ReadFileToBlob 사용
+#include <DirectXMath.h>
+
+struct Vertex
+{
+	DirectX::XMFLOAT3 position;
+	DirectX::XMFLOAT2 texcoord;
+};
+
+struct TimeShaderConstants
+{
+	float Time;
+	float Padding[3]; // float 3개 = 12바이트. float(4) + Padding(12) = 16바이트
+};
 
 using namespace Microsoft::WRL;
 // UI, object
@@ -23,11 +37,11 @@ private:
 	ComPtr<IWICImagingFactory>		m_pwicFactory;
 
 	ComPtr<ID3D11Device>			m_pd3dDevice;
-	ComPtr<ID2D1Device6>			m_pd2dDevice;
+	ComPtr<ID2D1Device7>			m_pd2dDevice;
 	ComPtr<ID3D11RenderTargetView>  m_pd3dRenderTV;
 
 	ComPtr<IDXGISwapChain1>         m_pswapChain;
-	ComPtr<ID2D1DeviceContext6>     m_pd2dContext;
+	ComPtr<ID2D1DeviceContext7>     m_pd2dContext;
 	ComPtr<ID3D11DeviceContext>     m_pd3dContext;
 
 	ComPtr<ID2D1Bitmap1>            m_ptargetBitmap;
@@ -37,22 +51,26 @@ private:
 	ComPtr<IDWriteTextFormat>       m_ptextFormat;
 
 	// new
+	ComPtr<ID3D11Buffer>			   m_fullScreenVB;
 	ComPtr<ID3D11Texture2D>			   m_renderTargetTex;
-	ComPtr<ID3D11RenderTargetView>     m_renderTargetView;
+	ComPtr<ID3D11RenderTargetView>     m_offScreenTargetView; //off screen
 	ComPtr<ID3D11ShaderResourceView>   m_renderTargetSRV;
-
-	ComPtr<ID3D11SamplerState>         m_samplerState;
 
 	ComPtr<ID3D11VertexShader>      m_VertexShader;
 	ComPtr<ID3D11PixelShader>       m_PixelShader;
 	ComPtr<ID3D11InputLayout>       m_InputLayout;
+	ComPtr<ID3D11SamplerState>      m_samplerState;
+	//ComPtr<ID3D11Buffer>			m_timeShaderBuffer;
 
+	UINT m_screenWidth;
+	UINT m_screenHeight;
 
 	void CreateDeviceAndSwapChain(HWND hwnd);
 
-	void CreateRenderTargets();
-
+	void CreateShaderRenderTargets();
 	void CreateWriteResource();
+	void CreateFullScrennQuad();
+	//void CreateTimeShaderBuffer();
 	// 교체
 	/*void CreateShaders();*/
 
@@ -63,6 +81,7 @@ public:
 	~Renderer() { Uninitialize(); }
 
 	void Initialize(HWND hwnd);
+	void InitializeShader(HWND hwnd);
 	void Uninitialize();
 	void Resize(UINT width, UINT height);
 
@@ -89,15 +108,8 @@ public:
 	ID3D11DeviceContext* GetD3DContext() const { return m_pd3dContext.Get(); }
 	ID3D11RenderTargetView* GetD3DRenderTargetView() const { return m_pd3dRenderTV.Get(); }
 
-
-	//Render Routine
 	void RenderBegin();
-	
-	void RenderEnd(bool bpresent);
 	void RenderEnd();
-
-	void ShaderRenderBegin();
-	void ShaderRenderEnd();
 
 	void Present();
 };

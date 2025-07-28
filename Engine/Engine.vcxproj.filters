@@ -47,6 +47,9 @@
     <Filter Include="Sprite">
       <UniqueIdentifier>{a32c55bf-50b8-435e-8dc3-895bd79842dd}</UniqueIdentifier>
     </Filter>
+    <Filter Include="HLSL">
+      <UniqueIdentifier>{d2e263db-a5e4-49a8-9da0-201410461953}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Window.cpp">
@@ -91,7 +94,6 @@
     <ClCompile Include="InputManager.cpp">
       <Filter>Managers</Filter>
     </ClCompile>
-
     <ClCompile Include="SpriteParser.cpp">
       <Filter>Sprite</Filter>
     </ClCompile>
@@ -107,11 +109,9 @@
     <ClCompile Include="SoundManager.cpp">
       <Filter>Managers</Filter>
     </ClCompile>
-
     <ClCompile Include="Collider2D.cpp">
       <Filter>Components</Filter>
     </ClCompile>
-
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Engine.h" />
@@ -167,7 +167,6 @@
     <ClInclude Include="InputManager.h">
       <Filter>Managers</Filter>
     </ClInclude>
-
     <ClInclude Include="SpriteParser.h">
       <Filter>Sprite</Filter>
     </ClInclude>
@@ -186,10 +185,19 @@
     <ClInclude Include="SoundManager.h">
       <Filter>Managers</Filter>
     </ClInclude>
-
     <ClInclude Include="Collider2D.h">
       <Filter>Components</Filter>
     </ClInclude>
-
+  </ItemGroup>
+  <ItemGroup>
+    <FxCompile Include="PassThrough_PS.hlsl">
+      <Filter>HLSL</Filter>
+    </FxCompile>
+    <FxCompile Include="PassThrough_VS.hlsl">
+      <Filter>HLSL</Filter>
+    </FxCompile>
+    <FxCompile Include="CRTFilter_PS.hlsl">
+      <Filter>HLSL</Filter>
+    </FxCompile>
   </ItemGroup>
 </Project>

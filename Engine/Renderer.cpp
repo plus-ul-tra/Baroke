@@ -94,7 +94,7 @@ void Renderer::CreateDeviceAndSwapChain(HWND hwnd)
 
 	hr = D2D1CreateFactory(
 		D2D1_FACTORY_TYPE_SINGLE_THREADED,
-		__uuidof(ID2D1Factory7),
+		__uuidof(ID2D1Factory8),
 		&opts,
 		reinterpret_cast<void**>(d2dFactory.GetAddressOf()));
 	if (FAILED(hr)) {
@@ -112,7 +112,7 @@ void Renderer::CreateDeviceAndSwapChain(HWND hwnd)
 	}
 	//DX::ThrowIfFailed(hr);
 
-	ComPtr<ID2D1Device6> d2dDevice;
+	ComPtr<ID2D1Device7> d2dDevice;
 	hr = baseDevice.As(&d2dDevice);
 	if (FAILED(hr)) {
 		std::cerr << "HRESULT7 = 0x" << std::hex << hr << std::endl;
@@ -121,7 +121,7 @@ void Renderer::CreateDeviceAndSwapChain(HWND hwnd)
 	//DX::ThrowIfFailed(hr);
 
 	// 5. ID2D1DeviceContext7 생성
-	ComPtr<ID2D1DeviceContext6> d2dContext;//
+	ComPtr<ID2D1DeviceContext7> d2dContext;//
 	hr = d2dDevice->CreateDeviceContext(D2D1_DEVICE_CONTEXT_OPTIONS_NONE, &d2dContext);
 	if (FAILED(hr)) {
 		std::cerr << "HRESULT8 = 0x" << std::hex << hr << std::endl;
@@ -135,54 +135,6 @@ void Renderer::CreateDeviceAndSwapChain(HWND hwnd)
 
 	m_pd2dDevice = d2dDevice;
 	m_pd2dContext = d2dContext;
-}
-
-void Renderer::CreateRenderTargets()
-{
-	// 6. SwapChain 백버퍼 -> D2D Bitmap1 을 생성하여 렌더 타겟으로 설정
-
-	ComPtr<IDXGISurface> dxgiSurface;
-	HRESULT hr = m_pswapChain->GetBuffer(0, IID_PPV_ARGS(&dxgiSurface));
-
-	//DX::ThrowIfFailed(hr);
-
-	D2D1_BITMAP_PROPERTIES1 bitmapProps = {};
-	bitmapProps.bitmapOptions = D2D1_BITMAP_OPTIONS_TARGET | D2D1_BITMAP_OPTIONS_CANNOT_DRAW;
-	bitmapProps.pixelFormat.format = DXGI_FORMAT_B8G8R8A8_UNORM;
-	bitmapProps.pixelFormat.alphaMode = D2D1_ALPHA_MODE_PREMULTIPLIED;
-	bitmapProps.dpiX = bitmapProps.dpiY = 96.0f;
-
-	ComPtr<ID2D1Bitmap1> targetBitmap;
-	hr = m_pd2dContext->CreateBitmapFromDxgiSurface(dxgiSurface.Get(), &bitmapProps, targetBitmap.GetAddressOf());
-
-	//DX::ThrowIfFailed(hr);
-
-	// 렌더 타겟 설정
-	m_pd2dContext->SetTarget(targetBitmap.Get());
-
-	m_ptargetBitmap = targetBitmap;
-
-	hr = m_pd2dContext->CreateSolidColorBrush(
-		D2D1::ColorF(D2D1::ColorF::Blue),
-		&m_pbrush);
-
-	//DX::ThrowIfFailed(hr);
-
-	// ImGUI 은 D3D11 렌더 타겟 뷰가 필요!!! 
-	ComPtr<ID3D11Texture2D> backBuffer;
-	hr = m_pswapChain->GetBuffer(0, IID_PPV_ARGS(&backBuffer));
-
-	// RenderTargetView 생성
-	ComPtr<ID3D11RenderTargetView> mainRTV;
-	hr = m_pd3dDevice->CreateRenderTargetView(
-		backBuffer.Get(),      // 텍스처
-		nullptr,               // 기본 뷰 설명
-		&mainRTV               // 출력 RTV 포인터
-	);
-
-	//DX::ThrowIfFailed(hr);
-
-	m_pd3dRenderTV = mainRTV;
 }
 
 void Renderer::CreateWriteResource()
@@ -212,18 +164,100 @@ void Renderer::CreateWriteResource()
 	m_ptextFormat->SetWordWrapping(DWRITE_WORD_WRAPPING_WRAP); // 줄바꿈
 }
 
+
+void Renderer::CreateFullScrennQuad()
+{
+	Vertex quadVertices[] =
+	{
+		{ {-1.0f,  1.0f, 0.0f}, {0.0f, 0.0f} },
+		{ { 1.0f,  1.0f, 0.0f}, {1.0f, 0.0f} },
+		{ {-1.0f, -1.0f, 0.0f}, {0.0f, 1.0f} },
+		{ { 1.0f,  1.0f, 0.0f}, {1.0f, 0.0f} },
+		{ { 1.0f, -1.0f, 0.0f}, {1.0f, 1.0f} },
+		{ {-1.0f, -1.0f, 0.0f}, {0.0f, 1.0f} }
+	};
+
+	D3D11_BUFFER_DESC vbDesc = {};
+	vbDesc.Usage = D3D11_USAGE_DEFAULT;
+	vbDesc.ByteWidth = sizeof(quadVertices);
+	vbDesc.BindFlags = D3D11_BIND_VERTEX_BUFFER;
+
+	D3D11_SUBRESOURCE_DATA initData = {};
+	initData.pSysMem = quadVertices;
+
+	HRESULT hr = m_pd3dDevice->CreateBuffer(&vbDesc, &initData, &m_fullScreenVB);
+	if (FAILED(hr))
+	{
+		std::cerr << "Failed to create fullscreen quad vertex buffer. HRESULT: " << std::hex << hr << std::endl;
+	}
+}
+
+void Renderer::CreateShaderRenderTargets() {
+	
+
+	ComPtr<ID3D11Texture2D> backBuffer;
+	HRESULT hr = m_pswapChain->GetBuffer(0, IID_PPV_ARGS(&backBuffer));
+
+	D3D11_TEXTURE2D_DESC backBufferDesc;
+	backBuffer->GetDesc(&backBufferDesc);
+
+	// 1. Direct3D 백버퍼용 RenderTargetView 생성 (최종 Present 전 D3D가 렌더링하는 대상)
+	hr = m_pd3dDevice->CreateRenderTargetView(backBuffer.Get(), nullptr, &m_pd3dRenderTV);
+
+	m_screenWidth = backBufferDesc.Width;
+	m_screenHeight = backBufferDesc.Height;
+	// 2. Direct2D가 그릴 Off-screen 텍스처 (Shader Resource로 사용될 텍스처) 생성
+	D3D11_TEXTURE2D_DESC texDesc = {};
+	texDesc.Width = m_screenWidth;
+	texDesc.Height = m_screenHeight;
+	texDesc.MipLevels = 1;
+	texDesc.ArraySize = 1;
+	texDesc.Format = DXGI_FORMAT_B8G8R8A8_UNORM; // D2D와 동일한 포맷
+	texDesc.SampleDesc.Count = 1;
+	texDesc.Usage = D3D11_USAGE_DEFAULT;
+	texDesc.BindFlags = D3D11_BIND_RENDER_TARGET | D3D11_BIND_SHADER_RESOURCE; // D2D가 그리고 셰이더가 읽음
+
+	hr = m_pd3dDevice->CreateTexture2D(&texDesc, nullptr, &m_renderTargetTex);
+	// 3. Off-screen 텍스처에 대한 RenderTargetView (Direct2D가 이 텍스처에 그림)
+	hr = m_pd3dDevice->CreateRenderTargetView(m_renderTargetTex.Get(), nullptr, &m_offScreenTargetView);
+	// 4. Off-screen 텍스처에 대한 ShaderResourceView (Direct3D 셰이더가 이 텍스처를 읽음)
+	hr = m_pd3dDevice->CreateShaderResourceView(m_renderTargetTex.Get(), nullptr, &m_renderTargetSRV);
+	// 5. Off-screen 텍스처를 Direct2D Bitmap으로 래핑 (Direct2D의 렌더링 대상)
+	
+	// this
+	ComPtr<IDXGISurface> dxgiOffscreenSurface;
+	hr = m_renderTargetTex.As(&dxgiOffscreenSurface); // m_pOffscreenRenderTargetTexture 사용
+	
+	
+
+	D2D1_BITMAP_PROPERTIES1 bitmapProps = {};
+	bitmapProps.pixelFormat.format = DXGI_FORMAT_B8G8R8A8_UNORM;
+	bitmapProps.pixelFormat.alphaMode = D2D1_ALPHA_MODE_PREMULTIPLIED;
+	bitmapProps.bitmapOptions = D2D1_BITMAP_OPTIONS_TARGET; // CANNOT_DRAW 제거
+
+	hr = m_pd2dContext->CreateBitmapFromDxgiSurface(dxgiOffscreenSurface.Get(), &bitmapProps, &m_ptargetBitmap);
+
+	// 6. Direct2D 컨텍스트의 렌더 타겟을 이 off-screen 비트맵으로 설정 (렌더링 시작 전에 다시 설정할 수도 있음)
+	m_pd2dContext->SetTarget(m_ptargetBitmap.Get());
+
+	// 7. 기본 D2D 브러시 생성
+	hr = m_pd2dContext->CreateSolidColorBrush(D2D1::ColorF(D2D1::ColorF::White), &m_pbrush);
+
+}
+
 void Renderer::ReleaseRenderTargets()
 {
+	m_offScreenTargetView.Reset();
+	m_renderTargetTex.Reset();
+	m_renderTargetSRV.Reset();
+	m_pd3dRenderTV.Reset();
+	m_ptargetBitmap.Reset();
+	m_pbrush.Reset();
+	m_ptextBrush.Reset();
 	if (m_pd2dContext)
 	{
 		m_pd2dContext->SetTarget(nullptr);
 	}
-
-	m_pd3dRenderTV.Reset();
-
-	m_ptargetBitmap.Reset();
-	m_pbrush.Reset();
-	m_ptextBrush.Reset();
 }
 
 void Renderer::Initialize(HWND hwnd)
@@ -232,11 +266,14 @@ void Renderer::Initialize(HWND hwnd)
 	m_hwnd = hwnd;
 
 	CreateDeviceAndSwapChain(hwnd);
-	CreateRenderTargets();
+
+	InitializeShader(hwnd);
+	CreateShaderRenderTargets();
+	CreateFullScrennQuad();
+	//CreateTimeShaderBuffer();
 	CreateWriteResource();
 
 	//Window Imaging Component factory 생성
-	
 	ComPtr<IWICImagingFactory> wicFactory;
 	HRESULT hr = CoCreateInstance(CLSID_WICImagingFactory,
 		nullptr,
@@ -245,6 +282,83 @@ void Renderer::Initialize(HWND hwnd)
 	
 	//예외처리 생략
 	m_pwicFactory = wicFactory;
+}
+
+void Renderer::InitializeShader(HWND hwnd)
+{
+	// D3D 디바이스가 유효한지 확인
+	if (!m_pd3dDevice) {
+		std::cerr << "ERROR: D3D Device not created. Cannot initialize shaders." << std::endl;
+		return;
+	}
+
+	// 셰이더 로드 및 생성 
+	ComPtr<ID3DBlob> vsBlob = nullptr; // 정점 셰이더 바이트
+	ComPtr<ID3DBlob> psBlob = nullptr; // 픽셀 셰이더 바이트
+	HRESULT hr;
+
+	hr = D3DReadFileToBlob(L"..\\Shader\\PassThrough_VS.cso", &vsBlob);
+	if (FAILED(hr)) {
+		std::cerr << "ERROR: Failed to read Vertex Shader CSO! HRESULT: 0x" << std::hex << hr << std::endl;
+		return;
+	}
+
+	// 픽셀 셰이더도 동일한 파일에서 로드합니다.
+	hr = D3DReadFileToBlob(L"..\\Shader\\PassThrough_PS.cso", &psBlob);
+	if (FAILED(hr)) {
+		std::cerr << "ERROR: Failed to read Pixel Shader CSO! HRESULT: 0x" << std::hex << hr << std::endl;
+		return;
+	}
+
+	// 2. 셰이더 객체 생성
+	hr = m_pd3dDevice->CreateVertexShader(vsBlob->GetBufferPointer(), vsBlob->GetBufferSize(), nullptr, &m_VertexShader);
+	if (FAILED(hr)) {
+		std::cerr << "ERROR: Failed to create Vertex Shader! HRESULT: 0x" << std::hex << hr << std::endl;
+		return;
+	}
+
+	hr = m_pd3dDevice->CreatePixelShader(psBlob->GetBufferPointer(), psBlob->GetBufferSize(), nullptr, &m_PixelShader);
+	if (FAILED(hr)) {
+		std::cerr << "ERROR: Failed to create Pixel Shader! HRESULT: 0x" << std::hex << hr << std::endl;
+		return;
+	}
+
+	// 3. 입력 레이아웃 생성
+	// HLSL 셰이더의 VS_INPUT 구조체와 일치
+	// 풀스크린 쿼드용 정점 데이터는 보통 {위치, 텍스처 좌표}로 구성
+
+	D3D11_INPUT_ELEMENT_DESC layout[] =
+	{
+		{ "POSITION", 0, DXGI_FORMAT_R32G32B32_FLOAT, 0, 0, D3D11_INPUT_PER_VERTEX_DATA, 0 },
+		{ "TEXCOORD", 0, DXGI_FORMAT_R32G32_FLOAT, 0, D3D11_APPEND_ALIGNED_ELEMENT, D3D11_INPUT_PER_VERTEX_DATA, 0 },
+	};
+
+
+	UINT numElements = ARRAYSIZE(layout);
+
+	// 입력 레이아웃은 정점 셰이더의 바이트 코드를 기반으로 생성
+	hr = m_pd3dDevice->CreateInputLayout(layout, numElements, vsBlob->GetBufferPointer(), vsBlob->GetBufferSize(), &m_InputLayout);
+	if (FAILED(hr)) {
+		std::cerr << "ERROR: Failed to create Input Layout! HRESULT: 0x" << std::hex << hr << std::endl;
+		return;
+	}
+
+	// 4. 샘플러 상태 생성
+	D3D11_SAMPLER_DESC sampDesc = {};
+	sampDesc.Filter = D3D11_FILTER_MIN_MAG_MIP_LINEAR; // 부드러운 필터링
+	sampDesc.AddressU = D3D11_TEXTURE_ADDRESS_CLAMP;   // 텍스처 좌표가 범위를 벗어날 때 클램프
+	sampDesc.AddressV = D3D11_TEXTURE_ADDRESS_CLAMP;
+	sampDesc.AddressW = D3D11_TEXTURE_ADDRESS_CLAMP;
+	sampDesc.ComparisonFunc = D3D11_COMPARISON_NEVER;
+	sampDesc.MinLOD = 0;
+	sampDesc.MaxLOD = D3D11_FLOAT32_MAX; // 모든 밉맵 레벨 사용
+
+	hr = m_pd3dDevice->CreateSamplerState(&sampDesc, &m_samplerState);
+	if (FAILED(hr)) {
+		std::cerr << "ERROR: Failed to create Sampler State! HRESULT: 0x" << std::hex << hr << std::endl;
+		return;
+	}
+
 }
 
 void Renderer::Uninitialize()
@@ -261,31 +375,36 @@ void Renderer::Uninitialize()
 
 	m_pswapChain = nullptr;
 	m_pd3dDevice = nullptr;
+
+	//초기화 추가해야함
 }
 
 void Renderer::Resize(UINT width, UINT height)
 {
 	if (nullptr == m_pswapChain) return;
 	ReleaseRenderTargets();
-	CreateRenderTargets();
-
+	//CreateRenderTargets();
+	CreateShaderRenderTargets();
 }
 
 void Renderer::DrawCircle(float x, float y, float radius, const D2D1::ColorF& color)
 {
 	m_pbrush->SetColor(color);
 	m_pd2dContext->DrawEllipse(D2D1::Ellipse(D2D1::Point2F(x, y), radius, radius), m_pbrush.Get());
+
 }
 
 void Renderer::DrawRect(float left, float top, float right, float bottom, const D2D1::ColorF& color)
 {
 	m_pbrush->SetColor(color);
 	m_pd2dContext->DrawRectangle(D2D1::Rect(left, top, right, bottom), m_pbrush.Get());
+
 }
 
 void Renderer::DrawBitmap(ID2D1Bitmap1* bitmap, D2D1_RECT_F dest)
 {
 	m_pd2dContext->DrawBitmap(bitmap, dest);
+	
 }
 void Renderer::DrawBitmap(ID2D1Bitmap1* bitmap, D2D1_RECT_F destRect, D2D1_RECT_F srcRect, float opacity)
 {
@@ -295,7 +414,7 @@ void Renderer::DrawBitmap(ID2D1Bitmap1* bitmap, D2D1_RECT_F destRect, D2D1_RECT_
 		opacity,
 		D2D1_BITMAP_INTERPOLATION_MODE_LINEAR,
 		srcRect
-	);
+	); 
 }
 
 void Renderer::DrawMessage(const wchar_t* text, float left, float top, float width, float height, const D2D1::ColorF& color)
@@ -358,58 +477,115 @@ void Renderer::CreateBitmapFromFile(const wchar_t* path, ID2D1Bitmap1*& outBitma
 
 	// ⑥ DeviceContext에서 WIC 비트맵으로부터 D2D1Bitmap1 생성
 	hr = m_pd2dContext->CreateBitmapFromWicBitmap(converter.Get(), &bmpProps, &outBitmap);
-}void Renderer::RenderBegin()
-{
-	m_pd2dContext->BeginDraw();
-	m_pd2dContext->Clear(D2D1::ColorF(D2D1::ColorF::SkyBlue)); // 배경을 흰색으로 초기화
+
+
 }
 
-
-void Renderer::RenderEnd(bool bpresent)
+void Renderer::RenderBegin()
 {
-	m_pd2dContext->EndDraw();
-
-	if (bpresent)
-	{
-		Present();
+	if (!m_pd2dContext || !m_offScreenTargetView) {
+		std::cerr << "ERROR: D2D context or shader render target view not initialized for ShaderRenderBegin." << std::endl;
+		return;
 	}
+
+	// 1. Direct3D 렌더 타겟을 off-screen 텍스처로 설정 (D2D가 그릴 대상)
+	ID3D11RenderTargetView* rtv = m_offScreenTargetView.Get();
+	m_pd3dContext->OMSetRenderTargets(1, &rtv, nullptr); 
+
+	// 2. Direct3D off-screen 텍스처를 클리어 (필요하다면)
+	float clearColor[4] = { 0.0f, 1.0f, 1.0f, 1.0f }; 
+	m_pd3dContext->ClearRenderTargetView(m_offScreenTargetView.Get(), clearColor);
+
+	m_pd2dContext->SetTarget(m_ptargetBitmap.Get());
+
+	m_pd2dContext->BeginDraw();
+
+	// D2D 드로잉 시작 전 D2D 렌더 타겟도 클리어
+	m_pd2dContext->Clear(D2D1::ColorF(D2D1::ColorF::DarkGray)); // D2D로 그릴 영역을 클리어
+	
 }
 
-//void Renderer::RenderBeginTest()
-//{
-//	m_pd2dContext->BeginDraw();
-//	m_pd2dContext->Clear(D2D1::ColorF(D2D1::ColorF::SkyBlue)); 
-//}
-
-
-void Renderer::RenderEnd() {
-	m_pd2dContext->EndDraw();
-	Present();
-}
-
-void Renderer::ShaderRenderBegin()
+void Renderer::RenderEnd()
 {
-	// 아직 설정안했음
-	m_pd3dContext->OMSetRenderTargets(1, m_renderTargetView.GetAddressOf(), nullptr);
+	if (!m_pd2dContext) {
+		std::cerr << "ERROR: D2D context not initialized for ShaderRenderEnd." << std::endl;
+		return;
+	}
 
-	float clearColor[4] = { 0.0f, 0.0f, 0.0f, 1.0f }; // 검은색으로 초기화
-	m_pd3dContext->ClearRenderTargetView(m_renderTargetView.Get(), clearColor);
-}
+	// 1. Direct2D 드로잉 종료
+	HRESULT hr = m_pd2dContext->EndDraw();
+	if (FAILED(hr) && hr != D2DERR_RECREATE_TARGET)
+	{
+		std::cerr << "D2D EndDraw failed: HRESULT: 0x" << std::hex << hr << std::endl;
+		return;
+	}
+	//m_pd3dContext->Flush();
+	// 
+	// 2. 백버퍼 RTV로 타겟 복구
+	ID3D11RenderTargetView* backBufferRTV = m_pd3dRenderTV.Get();
+	m_pd3dContext->OMSetRenderTargets(1, &backBufferRTV, nullptr);
 
-void Renderer::ShaderRenderEnd()
-{
-	m_pd3dContext->OMSetRenderTargets(1, m_pd3dRenderTV.GetAddressOf(), nullptr);
+	// 3. 백버퍼 클리어
+	float backBufferClearColor[4] = { 0.0f, 0.0f, 0.0f, 1.0f }; //black;
+	m_pd3dContext->ClearRenderTargetView(backBufferRTV, backBufferClearColor);
 
-	// 셰이더와 입력 레이아웃 설정
+	// 4. 셰이더 리소스 체크
+	if (!m_InputLayout || !m_VertexShader || !m_PixelShader || !m_samplerState || !m_fullScreenVB)
+	{
+		std::cerr << "ERROR: Shader pipeline resources not initialized." << std::endl;
+		return;
+	}
+
+	// 5. IA 단계 설정
+	UINT stride = sizeof(Vertex);
+	UINT offset = 0;
 	m_pd3dContext->IASetInputLayout(m_InputLayout.Get());
+	m_pd3dContext->IASetVertexBuffers(0, 1, m_fullScreenVB.GetAddressOf(), &stride, &offset);
+	m_pd3dContext->IASetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
+
+	// 6. 셰이더 설정
 	m_pd3dContext->VSSetShader(m_VertexShader.Get(), nullptr, 0);
 	m_pd3dContext->PSSetShader(m_PixelShader.Get(), nullptr, 0);
-	m_pd3dContext->PSSetShaderResources(0, 1, m_renderTargetSRV.GetAddressOf());
+
+	// 7. D2D가 그린 텍스처 바인딩
+	ID3D11ShaderResourceView* srvs[] = { m_renderTargetSRV.Get() };
+	m_pd3dContext->PSSetShaderResources(0, 1, srvs);
 	m_pd3dContext->PSSetSamplers(0, 1, m_samplerState.GetAddressOf());
 
-	//m_pd3dContext->Draw(6, 0);
+	D3D11_VIEWPORT viewport = {};
+	viewport.TopLeftX = 0.0f;
+	viewport.TopLeftY = 0.0f;
 
+	viewport.Width = static_cast<float>(m_screenWidth);
+	viewport.Height = static_cast<float>(m_screenHeight);
+
+	viewport.MinDepth = 0.0f; 
+	viewport.MaxDepth = 1.0f;
+
+	m_pd3dContext->RSSetViewports(1, &viewport);
+	m_pd3dContext->RSSetState(nullptr);
+
+	// 기본 깊이/스텐실 스테이트 (깊이 테스트 비활성화)
+	m_pd3dContext->OMSetDepthStencilState(nullptr, 0);
+
+	// 기본 블렌드 스테이트 (알파 블렌딩 비활성화, 불투명 렌더링)
+	m_pd3dContext->OMSetBlendState(nullptr, nullptr, 0xFFFFFFFF);
+
+	// 8. 풀스크린 Quad 드로우
+	m_pd3dContext->Draw(6, 0);
+	//m_pd3dContext->Flush();
+
+	// 9. SRV 해제
+	ID3D11ShaderResourceView* nullSRV[] = { nullptr };
+	m_pd3dContext->PSSetShaderResources(0, 1, nullSRV);
+
+	//ID3D11Buffer* nullBuffers[] = { nullptr };
+	//m_pd3dContext->PSSetConstantBuffers(0, 1, nullBuffers);
+	
+	// 10. 화면에 표시
 	Present();
+
+	
 }
 
 void Renderer::Present()
