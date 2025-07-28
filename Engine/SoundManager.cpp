@@ -20,7 +20,7 @@ void SoundManager::LoadAll()
 	{
 		solutionRoot = GetExecutableDir();
 	}
-	filesystem::path resourcePath = solutionRoot / L"Resource" / L"Sounds";
+	filesystem::path resourcePath = solutionRoot/L"Resource"/L"Sounds";
 
 	for (const auto& entry : std::filesystem::directory_iterator(resourcePath))
 	{

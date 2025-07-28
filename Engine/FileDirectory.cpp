@@ -9,14 +9,14 @@ filesystem::path GetExecutableDir()
 	return exePath.parent_path();
 }
 
-filesystem::path FindSolutionRoot(const std::wstring& marker)
+filesystem::path FindSolutionRoot()
 {
 	auto dir = GetExecutableDir();
 	while (dir.has_parent_path())
 	{
 		for (const auto& entry : std::filesystem::directory_iterator(dir))
 		{
-			if (entry.path().extension() == marker)
+			if (entry.path().extension() == L".sln")
 				return dir;
 		}
 		dir = dir.parent_path();
