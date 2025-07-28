@@ -25,7 +25,7 @@ public :
 
 	virtual void Render(Renderer& renderer) = 0;
 
-	void Update(double deltaTime)override {}
+	void Update(double deltaTime) override {}
 	void OnEvent(const std::string& ev) override {}
 
 	void SetOwner(Object* owner) override;
