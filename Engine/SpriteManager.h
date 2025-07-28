@@ -22,10 +22,10 @@ public:
 	void Initialize(Renderer* renderer) { m_renderer = renderer; LoadAll(); }
 
 	void LoadAll();
-	ID2D1Bitmap1* LoadTexture(const filesystem::path& filePath);
+	ComPtr<ID2D1Bitmap1> LoadTexture(const filesystem::path& filePath);
 	void LoadAnimationClips(const filesystem::path& filePath);
 
-	const ID2D1Bitmap1* GetTexture(const string& key) const;
+	const ComPtr<ID2D1Bitmap1> GetTexture(const string& key) const;
 	const AnimationClips& GetAnimationClips(const string& key) const;
 
 	void Release();

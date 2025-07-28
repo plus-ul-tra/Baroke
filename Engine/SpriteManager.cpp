@@ -1,10 +1,22 @@
 #include "pch.h"
 #include "SpriteManager.h"
 #include "SpriteParser.h"
+#include "FileDirectory.h"
 
 void SpriteManager::LoadAll()
 {
-	for (const auto& entry : filesystem::directory_iterator(L"C:\\Users\\User\\Desktop\\MiyabiEngine\\Resource\\Sprits"))
+	filesystem::path solutionRoot;
+	try
+	{
+		solutionRoot = FindSolutionRoot();
+	}
+	catch (...)
+	{
+		solutionRoot = GetExecutableDir();
+	}
+	filesystem::path resourcePath = solutionRoot/L"Resource"/L"Sprits";
+
+	for (const auto& entry : std::filesystem::directory_iterator(resourcePath))
 	{
 		if (entry.is_regular_file())
 		{
@@ -20,9 +32,9 @@ void SpriteManager::LoadAll()
 	}
 }
 
-ID2D1Bitmap1* SpriteManager::LoadTexture(const filesystem::path& filePath)
+ComPtr<ID2D1Bitmap1> SpriteManager::LoadTexture(const filesystem::path& filePath)
 {
-	string key = filePath.stem().string();
+	string key = filePath.filename().string();
 	if (m_textures.find(key) == m_textures.end());
 	{
 		ComPtr<ID2D1Bitmap1> bitmap;
@@ -43,10 +55,10 @@ void SpriteManager::LoadAnimationClips(const filesystem::path& filePath)
 
 	for (auto& clip : clips) clip.second.SetBitmap(bitmap);
 
-	m_animationClips.emplace(filePath.stem().string(), move(clips));
+	m_animationClips.emplace(filePath.filename().string(), move(clips));
 }
 
-const ID2D1Bitmap1* SpriteManager::GetTexture(const string& key) const
+const ComPtr<ID2D1Bitmap1> SpriteManager::GetTexture(const string& key) const
 {
 	auto it = m_textures.find(key);
 	if (it == m_textures.end()) throw runtime_error("해당 이미지를 찾을 수 없음");
