@@ -171,6 +171,7 @@
     <ClInclude Include="AnimationClip.h" />
     <ClInclude Include="BaseRender.h" />
     <ClInclude Include="BitmapRender.h" />
+    <ClInclude Include="BoardLayoutComponent.h" />
     <ClInclude Include="Collider2D.h" />
     <ClInclude Include="Core.h" />
     <ClInclude Include="CoreTypes.h" />

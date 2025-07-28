@@ -191,5 +191,8 @@
     <ClInclude Include="FileDirectory.h">
       <Filter>Utility</Filter>
     </ClInclude>
+    <ClInclude Include="BoardLayoutComponent.h">
+      <Filter>Components</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>
