@@ -57,10 +57,10 @@ void BitmapRender::RenderBitmap(Renderer& renderer)
 
 	D2D1_RECT_F destRect = D2D1::RectF
 	(
-		objWorldX - (m_width * XMVectorGetX(worldScale) / 2.0f),
-		objWorldY - (m_height * XMVectorGetY(worldScale) / 2.0f),
-		objWorldX + (m_width * XMVectorGetX(worldScale) / 2.0f),
-		objWorldY + (m_height * XMVectorGetY(worldScale) / 2.0f)
+		objWorldX /*- (m_width * XMVectorGetX(worldScale) / 2.0f)*/,
+		objWorldY /*- (m_height * XMVectorGetY(worldScale) / 2.0f)*/,
+		objWorldX + (m_width * XMVectorGetX(worldScale) /*/ 2.0f*/),
+		objWorldY + (m_height * XMVectorGetY(worldScale) /*/ 2.0f*/)
 	);
 
 	renderer.DrawBitmap

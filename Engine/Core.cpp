@@ -11,7 +11,7 @@ bool MIYABI::Core::_CreateWindow()
 	const wchar_t* className = L"Test Game";
 	const wchar_t* WindowName = L"Test Game";
 
-	if (FALSE == m_window.Create(className, WindowName, 1600, 800)) {
+	if (FALSE == m_window.Create(className, WindowName, 1280, 720)) {
 		return false;
 	}
 
