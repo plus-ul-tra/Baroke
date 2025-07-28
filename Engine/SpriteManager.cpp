@@ -32,7 +32,7 @@ void SpriteManager::LoadAll()
 	}
 }
 
-ID2D1Bitmap1* SpriteManager::LoadTexture(const filesystem::path& filePath)
+ComPtr<ID2D1Bitmap1> SpriteManager::LoadTexture(const filesystem::path& filePath)
 {
 	string key = filePath.filename().string();
 	if (m_textures.find(key) == m_textures.end());
