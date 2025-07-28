@@ -2,6 +2,15 @@
 #include "BitmapRender.h"
 #include "Transform.h"
 
+bool BitmapRender::Extension(const string& bitmapKey, const string& ext) const
+{
+	if (bitmapKey.length() >= ext.length())
+	{
+		return (bitmapKey.compare(bitmapKey.length() - ext.length(), ext.length(), ext) == 0);
+	}
+	else return false;
+}
+
 void BitmapRender::Render(Renderer& renderer)
 {
 	if (!m_isActive || !m_transform) { std::cout << "그릴 준비안됨" << std::endl; return; }
