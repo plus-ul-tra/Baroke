@@ -1,10 +1,22 @@
 #include "pch.h"
 #include "SpriteManager.h"
 #include "SpriteParser.h"
+#include "FileDirectory.h"
 
 void SpriteManager::LoadAll()
 {
-	for (const auto& entry : filesystem::directory_iterator(L"C:\\Users\\User\\Desktop\\MiyabiEngine\\Resource\\Sprits"))
+	filesystem::path solutionRoot;
+	try
+	{
+		solutionRoot = FindSolutionRoot();
+	}
+	catch (...)
+	{
+		solutionRoot = GetExecutableDir();
+	}
+	filesystem::path resourcePath = solutionRoot/L"Resource"/L"Sprits";
+
+	for (const auto& entry : std::filesystem::directory_iterator(resourcePath))
 	{
 		if (entry.is_regular_file())
 		{

@@ -1,5 +1,6 @@
 #include "pch.h"
 #include "SoundManager.h"
+#include "FileDirectory.h"
 
 void SoundManager::Initialize()
 {
@@ -10,7 +11,18 @@ void SoundManager::Initialize()
 
 void SoundManager::LoadAll()
 {
-	for (const auto& entry : filesystem::directory_iterator(L"C:\\Users\\User\\Desktop\\MiyabiEngine\\Resource\\Sounds"))
+	filesystem::path solutionRoot;
+	try
+	{
+		solutionRoot = FindSolutionRoot();
+	}
+	catch (...)
+	{
+		solutionRoot = GetExecutableDir();
+	}
+	filesystem::path resourcePath = solutionRoot / L"Resource" / L"Sounds";
+
+	for (const auto& entry : std::filesystem::directory_iterator(resourcePath))
 	{
 		if (entry.is_regular_file())
 		{

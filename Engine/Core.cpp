@@ -22,7 +22,6 @@ bool MIYABI::Core::_CreateWindow()
 
 void MIYABI::Core::BootManagers()
 {
-
 	SceneManager::GetInstance().Initialize(static_cast<HWND>(GetWindowHandle()));
 	InputManager::GetInstance().Initialize(static_cast<HWND>(GetWindowHandle()));
 
