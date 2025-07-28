@@ -19,6 +19,7 @@ public:
 		if (Extension(bitmapKey, ".json"))
 		{
 			m_animator.SetClips(&SpriteManager::GetInstance().GetAnimationClips(bitmapKey));
+			m_animator.SetCurrentClip(0);
 			m_isAnimated = true;
 		}
 		else if (Extension(bitmapKey, ".png"))
@@ -28,9 +29,8 @@ public:
 		}
 	}
 
+	void Update(double deltaTime) override;
 	void Render(Renderer& renderer) override;
-	void RenderAnimation(Renderer& renderer);
-	void RenderBitmap(Renderer& renderer);
 
 	void SetAnimator(const string& animationKey) { m_animator.SetClips(&SpriteManager::GetInstance().GetAnimationClips(animationKey)); }
 	SpriteAnimator& GetAnimator() { return m_animator; }

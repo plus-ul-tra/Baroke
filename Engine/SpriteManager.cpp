@@ -16,7 +16,7 @@ void SpriteManager::LoadAll()
 	}
 	filesystem::path resourcePath = solutionRoot/L"Resource"/L"Sprits";
 
-	for (const auto& entry : std::filesystem::directory_iterator(resourcePath))
+	for (const auto& entry : std::filesystem::recursive_directory_iterator(resourcePath))
 	{
 		if (entry.is_regular_file())
 		{
