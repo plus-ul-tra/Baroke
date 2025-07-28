@@ -1,10 +1,23 @@
 #include "pch.h"
 #include "SpriteManager.h"
 #include "SpriteParser.h"
+#include "FileDirectory.h"
 
 void SpriteManager::LoadAll()
 {
-	for (const auto& entry : filesystem::directory_iterator(L"..//Resource//Sprits"))
+
+	filesystem::path solutionRoot;
+	try
+	{
+		solutionRoot = FindSolutionRoot();
+	}
+	catch (...)
+	{
+		solutionRoot = GetExecutableDir();
+	}
+	filesystem::path resourcePath = solutionRoot/L"Resource"/L"Sprits";
+
+	for (const auto& entry : std::filesystem::recursive_directory_iterator(resourcePath))
 	{
 		if (entry.is_regular_file())
 		{
@@ -20,9 +33,9 @@ void SpriteManager::LoadAll()
 	}
 }
 
-ID2D1Bitmap1* SpriteManager::LoadTexture(const filesystem::path& filePath)
+ComPtr<ID2D1Bitmap1> SpriteManager::LoadTexture(const filesystem::path& filePath)
 {
-	string key = filePath.stem().string();
+	string key = filePath.filename().string();
 	if (m_textures.find(key) == m_textures.end());
 	{
 		ComPtr<ID2D1Bitmap1> bitmap;
@@ -43,13 +56,13 @@ void SpriteManager::LoadAnimationClips(const filesystem::path& filePath)
 
 	for (auto& clip : clips) clip.second.SetBitmap(bitmap);
 
-	m_animationClips.emplace(filePath.stem().string(), move(clips));
+	m_animationClips.emplace(filePath.filename().string(), move(clips));
 }
 
-const ID2D1Bitmap1* SpriteManager::GetTexture(const string& key) const
+const ComPtr<ID2D1Bitmap1> SpriteManager::GetTexture(const string& key) const
 {
 	auto it = m_textures.find(key);
-	if (it == m_textures.end()) throw runtime_error("ÇØ´ç ÀÌ¹ÌÁö¸¦ Ã£À» ¼ö ¾øÀ½");
+	if (it == m_textures.end()) throw runtime_error("í•´ë‹¹ ì´ë¯¸ì§€ë¥¼ ì°¾ì„ ìˆ˜ ì—†ìŒ");
 
 	return it->second.Get();
 }
@@ -57,7 +70,7 @@ const ID2D1Bitmap1* SpriteManager::GetTexture(const string& key) const
 const AnimationClips& SpriteManager::GetAnimationClips(const string& key) const
 {
 	auto it = m_animationClips.find(key);
-	if (it == m_animationClips.end()) throw runtime_error("ÇØ´ç ¾Ö´Ï¸ÞÀÌ¼Ç Å¬¸³À» Ã£À» ¼ö ¾øÀ½");
+	if (it == m_animationClips.end()) throw runtime_error("í•´ë‹¹ ì• ë‹ˆë©”ì´ì…˜ í´ë¦½ì„ ì°¾ì„ ìˆ˜ ì—†ìŒ");
 
 	return it->second;
 }

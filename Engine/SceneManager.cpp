@@ -23,6 +23,7 @@ void SceneManager::Initialize(HWND hwnd)
 void SceneManager::Update(double deltaTime)
 {
 	//only currentScene
+	DispatchInput();
 	m_sceneList[m_currentSceneIndex]->Update(deltaTime);
 }
 
@@ -82,7 +83,7 @@ void SceneManager::ShowDebugInfo()
 
 void SceneManager::OnCommand(std::string& cmd)
 {
-	m_sceneList[m_currentSceneIndex]->OnCommand(cmd);
+	m_sceneList[m_currentSceneIndex]->OnCommand(cmd);	
 
 }
 
@@ -97,3 +98,12 @@ void SceneManager::InitializeAllScenes()
 	}
 }
 
+void SceneManager::DispatchInput()
+{
+	while (!m_inputQueue.empty())
+	{
+		const auto& ev = m_inputQueue.front();
+		m_sceneList[m_currentSceneIndex]->OnInput(ev);
+		m_inputQueue.pop();
+	}
+}

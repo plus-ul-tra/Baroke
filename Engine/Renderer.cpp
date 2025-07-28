@@ -8,7 +8,7 @@
 
 void Renderer::CreateDeviceAndSwapChain(HWND hwnd)
 {
-	//1. D3D11 µğ¹ÙÀÌ½º »ı¼º
+	//1. D3D11 ë””ë°”ì´ìŠ¤ ìƒì„±
 	D3D_FEATURE_LEVEL featureLevels[] = { D3D_FEATURE_LEVEL_11_0 };
 
 	ComPtr<ID3D11Device> d3dDevice;
@@ -36,7 +36,7 @@ void Renderer::CreateDeviceAndSwapChain(HWND hwnd)
 
 	//DX::ThrowIfFailed(hr);
 
-	// 2. DXGI ½º¿ÒÃ¼ÀÎ »ı¼º
+	// 2. DXGI ìŠ¤ì™‘ì²´ì¸ ìƒì„±
 	ComPtr<IDXGIDevice> dxgiDevice;
 	hr = d3dDevice.As(&dxgiDevice);
 
@@ -84,7 +84,7 @@ void Renderer::CreateDeviceAndSwapChain(HWND hwnd)
 	}
 	//DX::ThrowIfFailed(hr);
 
-	// 3. ID2D1Factory4 »ı¼º
+	// 3. ID2D1Factory4 ìƒì„±
 	D2D1_FACTORY_OPTIONS opts = {};
 	ComPtr<ID2D1Factory7> d2dFactory;
 
@@ -103,7 +103,7 @@ void Renderer::CreateDeviceAndSwapChain(HWND hwnd)
 	}
 	//DX::ThrowIfFailed(hr);
 
-	// 4. ID2D1Device4 »ı¼º
+	// 4. ID2D1Device4 ìƒì„±
 	ComPtr<ID2D1Device> baseDevice;
 	hr = d2dFactory->CreateDevice(dxgiDevice.Get(), &baseDevice);
 	if (FAILED(hr)) {
@@ -120,7 +120,7 @@ void Renderer::CreateDeviceAndSwapChain(HWND hwnd)
 	}
 	//DX::ThrowIfFailed(hr);
 
-	// 5. ID2D1DeviceContext7 »ı¼º
+	// 5. ID2D1DeviceContext7 ìƒì„±
 	ComPtr<ID2D1DeviceContext7> d2dContext;//
 	hr = d2dDevice->CreateDeviceContext(D2D1_DEVICE_CONTEXT_OPTIONS_NONE, &d2dContext);
 	if (FAILED(hr)) {
@@ -159,9 +159,9 @@ void Renderer::CreateWriteResource()
 
 	//DX::ThrowIfFailed(hr);
 
-	m_ptextFormat->SetTextAlignment(DWRITE_TEXT_ALIGNMENT_LEADING); // ¿ŞÂÊ Á¤·Ä
-	m_ptextFormat->SetParagraphAlignment(DWRITE_PARAGRAPH_ALIGNMENT_NEAR); // À§ÂÊ Á¤·Ä
-	m_ptextFormat->SetWordWrapping(DWRITE_WORD_WRAPPING_WRAP); // ÁÙ¹Ù²Ş
+	m_ptextFormat->SetTextAlignment(DWRITE_TEXT_ALIGNMENT_LEADING); // ì™¼ìª½ ì •ë ¬
+	m_ptextFormat->SetParagraphAlignment(DWRITE_PARAGRAPH_ALIGNMENT_NEAR); // ìœ„ìª½ ì •ë ¬
+	m_ptextFormat->SetWordWrapping(DWRITE_WORD_WRAPPING_WRAP); // ì¤„ë°”ê¿ˆ
 }
 
 
@@ -201,46 +201,46 @@ void Renderer::CreateShaderRenderTargets() {
 	D3D11_TEXTURE2D_DESC backBufferDesc;
 	backBuffer->GetDesc(&backBufferDesc);
 
-	// 1. Direct3D ¹é¹öÆÛ¿ë RenderTargetView »ı¼º (ÃÖÁ¾ Present Àü D3D°¡ ·»´õ¸µÇÏ´Â ´ë»ó)
+	// 1. Direct3D ë°±ë²„í¼ìš© RenderTargetView ìƒì„± (ìµœì¢… Present ì „ D3Dê°€ ë Œë”ë§í•˜ëŠ” ëŒ€ìƒ)
 	hr = m_pd3dDevice->CreateRenderTargetView(backBuffer.Get(), nullptr, &m_pd3dRenderTV);
 
 	m_screenWidth = backBufferDesc.Width;
 	m_screenHeight = backBufferDesc.Height;
-	// 2. Direct2D°¡ ±×¸± Off-screen ÅØ½ºÃ³ (Shader Resource·Î »ç¿ëµÉ ÅØ½ºÃ³) »ı¼º
+	// 2. Direct2Dê°€ ê·¸ë¦´ Off-screen í…ìŠ¤ì²˜ (Shader Resourceë¡œ ì‚¬ìš©ë  í…ìŠ¤ì²˜) ìƒì„±
 	D3D11_TEXTURE2D_DESC texDesc = {};
 	texDesc.Width = m_screenWidth;
 	texDesc.Height = m_screenHeight;
 	texDesc.MipLevels = 1;
 	texDesc.ArraySize = 1;
-	texDesc.Format = DXGI_FORMAT_B8G8R8A8_UNORM; // D2D¿Í µ¿ÀÏÇÑ Æ÷¸Ë
+	texDesc.Format = DXGI_FORMAT_B8G8R8A8_UNORM; // D2Dì™€ ë™ì¼í•œ í¬ë§·
 	texDesc.SampleDesc.Count = 1;
 	texDesc.Usage = D3D11_USAGE_DEFAULT;
-	texDesc.BindFlags = D3D11_BIND_RENDER_TARGET | D3D11_BIND_SHADER_RESOURCE; // D2D°¡ ±×¸®°í ¼ÎÀÌ´õ°¡ ÀĞÀ½
+	texDesc.BindFlags = D3D11_BIND_RENDER_TARGET | D3D11_BIND_SHADER_RESOURCE; // D2Dê°€ ê·¸ë¦¬ê³  ì…°ì´ë”ê°€ ì½ìŒ
 
 	hr = m_pd3dDevice->CreateTexture2D(&texDesc, nullptr, &m_renderTargetTex);
-	// 3. Off-screen ÅØ½ºÃ³¿¡ ´ëÇÑ RenderTargetView (Direct2D°¡ ÀÌ ÅØ½ºÃ³¿¡ ±×¸²)
+	// 3. Off-screen í…ìŠ¤ì²˜ì— ëŒ€í•œ RenderTargetView (Direct2Dê°€ ì´ í…ìŠ¤ì²˜ì— ê·¸ë¦¼)
 	hr = m_pd3dDevice->CreateRenderTargetView(m_renderTargetTex.Get(), nullptr, &m_offScreenTargetView);
-	// 4. Off-screen ÅØ½ºÃ³¿¡ ´ëÇÑ ShaderResourceView (Direct3D ¼ÎÀÌ´õ°¡ ÀÌ ÅØ½ºÃ³¸¦ ÀĞÀ½)
+	// 4. Off-screen í…ìŠ¤ì²˜ì— ëŒ€í•œ ShaderResourceView (Direct3D ì…°ì´ë”ê°€ ì´ í…ìŠ¤ì²˜ë¥¼ ì½ìŒ)
 	hr = m_pd3dDevice->CreateShaderResourceView(m_renderTargetTex.Get(), nullptr, &m_renderTargetSRV);
-	// 5. Off-screen ÅØ½ºÃ³¸¦ Direct2D BitmapÀ¸·Î ·¡ÇÎ (Direct2DÀÇ ·»´õ¸µ ´ë»ó)
+	// 5. Off-screen í…ìŠ¤ì²˜ë¥¼ Direct2D Bitmapìœ¼ë¡œ ë˜í•‘ (Direct2Dì˜ ë Œë”ë§ ëŒ€ìƒ)
 	
 	// this
 	ComPtr<IDXGISurface> dxgiOffscreenSurface;
-	hr = m_renderTargetTex.As(&dxgiOffscreenSurface); // m_pOffscreenRenderTargetTexture »ç¿ë
+	hr = m_renderTargetTex.As(&dxgiOffscreenSurface); // m_pOffscreenRenderTargetTexture ì‚¬ìš©
 	
 	
 
 	D2D1_BITMAP_PROPERTIES1 bitmapProps = {};
 	bitmapProps.pixelFormat.format = DXGI_FORMAT_B8G8R8A8_UNORM;
 	bitmapProps.pixelFormat.alphaMode = D2D1_ALPHA_MODE_PREMULTIPLIED;
-	bitmapProps.bitmapOptions = D2D1_BITMAP_OPTIONS_TARGET; // CANNOT_DRAW Á¦°Å
+	bitmapProps.bitmapOptions = D2D1_BITMAP_OPTIONS_TARGET; // CANNOT_DRAW ì œê±°
 
 	hr = m_pd2dContext->CreateBitmapFromDxgiSurface(dxgiOffscreenSurface.Get(), &bitmapProps, &m_ptargetBitmap);
 
-	// 6. Direct2D ÄÁÅØ½ºÆ®ÀÇ ·»´õ Å¸°ÙÀ» ÀÌ off-screen ºñÆ®¸ÊÀ¸·Î ¼³Á¤ (·»´õ¸µ ½ÃÀÛ Àü¿¡ ´Ù½Ã ¼³Á¤ÇÒ ¼öµµ ÀÖÀ½)
+	// 6. Direct2D ì»¨í…ìŠ¤íŠ¸ì˜ ë Œë” íƒ€ê²Ÿì„ ì´ off-screen ë¹„íŠ¸ë§µìœ¼ë¡œ ì„¤ì • (ë Œë”ë§ ì‹œì‘ ì „ì— ë‹¤ì‹œ ì„¤ì •í•  ìˆ˜ë„ ìˆìŒ)
 	m_pd2dContext->SetTarget(m_ptargetBitmap.Get());
 
-	// 7. ±âº» D2D ºê·¯½Ã »ı¼º
+	// 7. ê¸°ë³¸ D2D ë¸ŒëŸ¬ì‹œ ìƒì„±
 	hr = m_pd2dContext->CreateSolidColorBrush(D2D1::ColorF(D2D1::ColorF::White), &m_pbrush);
 
 }
@@ -273,28 +273,28 @@ void Renderer::Initialize(HWND hwnd)
 	//CreateTimeShaderBuffer();
 	CreateWriteResource();
 
-	//Window Imaging Component factory »ı¼º
+	//Window Imaging Component factory ìƒì„±
 	ComPtr<IWICImagingFactory> wicFactory;
 	HRESULT hr = CoCreateInstance(CLSID_WICImagingFactory,
 		nullptr,
 		CLSCTX_INPROC_SERVER,
 		IID_PPV_ARGS(&wicFactory));
 	
-	//¿¹¿ÜÃ³¸® »ı·«
+	//ì˜ˆì™¸ì²˜ë¦¬ ìƒëµ
 	m_pwicFactory = wicFactory;
 }
 
 void Renderer::InitializeShader(HWND hwnd)
 {
-	// D3D µğ¹ÙÀÌ½º°¡ À¯È¿ÇÑÁö È®ÀÎ
+	// D3D ë””ë°”ì´ìŠ¤ê°€ ìœ íš¨í•œì§€ í™•ì¸
 	if (!m_pd3dDevice) {
 		std::cerr << "ERROR: D3D Device not created. Cannot initialize shaders." << std::endl;
 		return;
 	}
 
-	// ¼ÎÀÌ´õ ·Îµå ¹× »ı¼º 
-	ComPtr<ID3DBlob> vsBlob = nullptr; // Á¤Á¡ ¼ÎÀÌ´õ ¹ÙÀÌÆ®
-	ComPtr<ID3DBlob> psBlob = nullptr; // ÇÈ¼¿ ¼ÎÀÌ´õ ¹ÙÀÌÆ®
+	// ì…°ì´ë” ë¡œë“œ ë° ìƒì„± 
+	ComPtr<ID3DBlob> vsBlob = nullptr; // ì •ì  ì…°ì´ë” ë°”ì´íŠ¸
+	ComPtr<ID3DBlob> psBlob = nullptr; // í”½ì…€ ì…°ì´ë” ë°”ì´íŠ¸
 	HRESULT hr;
 
 	hr = D3DReadFileToBlob(L"..\\Shader\\PassThrough_VS.cso", &vsBlob);
@@ -303,14 +303,14 @@ void Renderer::InitializeShader(HWND hwnd)
 		return;
 	}
 
-	// ÇÈ¼¿ ¼ÎÀÌ´õµµ µ¿ÀÏÇÑ ÆÄÀÏ¿¡¼­ ·ÎµåÇÕ´Ï´Ù.
+	// í”½ì…€ ì…°ì´ë”ë„ ë™ì¼í•œ íŒŒì¼ì—ì„œ ë¡œë“œí•©ë‹ˆë‹¤.
 	hr = D3DReadFileToBlob(L"..\\Shader\\PassThrough_PS.cso", &psBlob);
 	if (FAILED(hr)) {
 		std::cerr << "ERROR: Failed to read Pixel Shader CSO! HRESULT: 0x" << std::hex << hr << std::endl;
 		return;
 	}
 
-	// 2. ¼ÎÀÌ´õ °´Ã¼ »ı¼º
+	// 2. ì…°ì´ë” ê°ì²´ ìƒì„±
 	hr = m_pd3dDevice->CreateVertexShader(vsBlob->GetBufferPointer(), vsBlob->GetBufferSize(), nullptr, &m_VertexShader);
 	if (FAILED(hr)) {
 		std::cerr << "ERROR: Failed to create Vertex Shader! HRESULT: 0x" << std::hex << hr << std::endl;
@@ -323,9 +323,9 @@ void Renderer::InitializeShader(HWND hwnd)
 		return;
 	}
 
-	// 3. ÀÔ·Â ·¹ÀÌ¾Æ¿ô »ı¼º
-	// HLSL ¼ÎÀÌ´õÀÇ VS_INPUT ±¸Á¶Ã¼¿Í ÀÏÄ¡
-	// Ç®½ºÅ©¸° Äõµå¿ë Á¤Á¡ µ¥ÀÌÅÍ´Â º¸Åë {À§Ä¡, ÅØ½ºÃ³ ÁÂÇ¥}·Î ±¸¼º
+	// 3. ì…ë ¥ ë ˆì´ì•„ì›ƒ ìƒì„±
+	// HLSL ì…°ì´ë”ì˜ VS_INPUT êµ¬ì¡°ì²´ì™€ ì¼ì¹˜
+	// í’€ìŠ¤í¬ë¦° ì¿¼ë“œìš© ì •ì  ë°ì´í„°ëŠ” ë³´í†µ {ìœ„ì¹˜, í…ìŠ¤ì²˜ ì¢Œí‘œ}ë¡œ êµ¬ì„±
 
 	D3D11_INPUT_ELEMENT_DESC layout[] =
 	{
@@ -336,22 +336,22 @@ void Renderer::InitializeShader(HWND hwnd)
 
 	UINT numElements = ARRAYSIZE(layout);
 
-	// ÀÔ·Â ·¹ÀÌ¾Æ¿ôÀº Á¤Á¡ ¼ÎÀÌ´õÀÇ ¹ÙÀÌÆ® ÄÚµå¸¦ ±â¹İÀ¸·Î »ı¼º
+	// ì…ë ¥ ë ˆì´ì•„ì›ƒì€ ì •ì  ì…°ì´ë”ì˜ ë°”ì´íŠ¸ ì½”ë“œë¥¼ ê¸°ë°˜ìœ¼ë¡œ ìƒì„±
 	hr = m_pd3dDevice->CreateInputLayout(layout, numElements, vsBlob->GetBufferPointer(), vsBlob->GetBufferSize(), &m_InputLayout);
 	if (FAILED(hr)) {
 		std::cerr << "ERROR: Failed to create Input Layout! HRESULT: 0x" << std::hex << hr << std::endl;
 		return;
 	}
 
-	// 4. »ùÇÃ·¯ »óÅÂ »ı¼º
+	// 4. ìƒ˜í”ŒëŸ¬ ìƒíƒœ ìƒì„±
 	D3D11_SAMPLER_DESC sampDesc = {};
-	sampDesc.Filter = D3D11_FILTER_MIN_MAG_MIP_LINEAR; // ºÎµå·¯¿î ÇÊÅÍ¸µ
-	sampDesc.AddressU = D3D11_TEXTURE_ADDRESS_CLAMP;   // ÅØ½ºÃ³ ÁÂÇ¥°¡ ¹üÀ§¸¦ ¹ş¾î³¯ ¶§ Å¬·¥ÇÁ
+	sampDesc.Filter = D3D11_FILTER_MIN_MAG_MIP_LINEAR; // ë¶€ë“œëŸ¬ìš´ í•„í„°ë§
+	sampDesc.AddressU = D3D11_TEXTURE_ADDRESS_CLAMP;   // í…ìŠ¤ì²˜ ì¢Œí‘œê°€ ë²”ìœ„ë¥¼ ë²—ì–´ë‚  ë•Œ í´ë¨í”„
 	sampDesc.AddressV = D3D11_TEXTURE_ADDRESS_CLAMP;
 	sampDesc.AddressW = D3D11_TEXTURE_ADDRESS_CLAMP;
 	sampDesc.ComparisonFunc = D3D11_COMPARISON_NEVER;
 	sampDesc.MinLOD = 0;
-	sampDesc.MaxLOD = D3D11_FLOAT32_MAX; // ¸ğµç ¹Ó¸Ê ·¹º§ »ç¿ë
+	sampDesc.MaxLOD = D3D11_FLOAT32_MAX; // ëª¨ë“  ë°‰ë§µ ë ˆë²¨ ì‚¬ìš©
 
 	hr = m_pd3dDevice->CreateSamplerState(&sampDesc, &m_samplerState);
 	if (FAILED(hr)) {
@@ -376,7 +376,7 @@ void Renderer::Uninitialize()
 	m_pswapChain = nullptr;
 	m_pd3dDevice = nullptr;
 
-	//ÃÊ±âÈ­ Ãß°¡ÇØ¾ßÇÔ
+	//ì´ˆê¸°í™” ì¶”ê°€í•´ì•¼í•¨
 }
 
 void Renderer::Resize(UINT width, UINT height)
@@ -469,13 +469,13 @@ void Renderer::CreateBitmapFromFile(const wchar_t* path, ID2D1Bitmap1*& outBitma
 
 	//DX::ThrowIfFailed(hr);
 
-	// Direct2D ºñÆ®¸Ê ¼Ó¼º (premultiplied alpha, B8G8R8A8_UNORM)
+	// Direct2D ë¹„íŠ¸ë§µ ì†ì„± (premultiplied alpha, B8G8R8A8_UNORM)
 	D2D1_BITMAP_PROPERTIES1 bmpProps = D2D1::BitmapProperties1(
 		D2D1_BITMAP_OPTIONS_NONE,
 		D2D1::PixelFormat(DXGI_FORMAT_B8G8R8A8_UNORM, D2D1_ALPHA_MODE_PREMULTIPLIED)
 	);
 
-	// ¨ì DeviceContext¿¡¼­ WIC ºñÆ®¸ÊÀ¸·ÎºÎÅÍ D2D1Bitmap1 »ı¼º
+	// â‘¥ DeviceContextì—ì„œ WIC ë¹„íŠ¸ë§µìœ¼ë¡œë¶€í„° D2D1Bitmap1 ìƒì„±
 	hr = m_pd2dContext->CreateBitmapFromWicBitmap(converter.Get(), &bmpProps, &outBitmap);
 
 
@@ -488,11 +488,11 @@ void Renderer::RenderBegin()
 		return;
 	}
 
-	// 1. Direct3D ·»´õ Å¸°ÙÀ» off-screen ÅØ½ºÃ³·Î ¼³Á¤ (D2D°¡ ±×¸± ´ë»ó)
+	// 1. Direct3D ë Œë” íƒ€ê²Ÿì„ off-screen í…ìŠ¤ì²˜ë¡œ ì„¤ì • (D2Dê°€ ê·¸ë¦´ ëŒ€ìƒ)
 	ID3D11RenderTargetView* rtv = m_offScreenTargetView.Get();
 	m_pd3dContext->OMSetRenderTargets(1, &rtv, nullptr); 
 
-	// 2. Direct3D off-screen ÅØ½ºÃ³¸¦ Å¬¸®¾î (ÇÊ¿äÇÏ´Ù¸é)
+	// 2. Direct3D off-screen í…ìŠ¤ì²˜ë¥¼ í´ë¦¬ì–´ (í•„ìš”í•˜ë‹¤ë©´)
 	float clearColor[4] = { 0.0f, 1.0f, 1.0f, 1.0f }; 
 	m_pd3dContext->ClearRenderTargetView(m_offScreenTargetView.Get(), clearColor);
 
@@ -500,8 +500,8 @@ void Renderer::RenderBegin()
 
 	m_pd2dContext->BeginDraw();
 
-	// D2D µå·ÎÀ× ½ÃÀÛ Àü D2D ·»´õ Å¸°Ùµµ Å¬¸®¾î
-	m_pd2dContext->Clear(D2D1::ColorF(D2D1::ColorF::DarkGray)); // D2D·Î ±×¸± ¿µ¿ªÀ» Å¬¸®¾î
+	// D2D ë“œë¡œì‰ ì‹œì‘ ì „ D2D ë Œë” íƒ€ê²Ÿë„ í´ë¦¬ì–´
+	m_pd2dContext->Clear(D2D1::ColorF(D2D1::ColorF::DarkGray)); // D2Dë¡œ ê·¸ë¦´ ì˜ì—­ì„ í´ë¦¬ì–´
 	
 }
 
@@ -512,7 +512,7 @@ void Renderer::RenderEnd()
 		return;
 	}
 
-	// 1. Direct2D µå·ÎÀ× Á¾·á
+	// 1. Direct2D ë“œë¡œì‰ ì¢…ë£Œ
 	HRESULT hr = m_pd2dContext->EndDraw();
 	if (FAILED(hr) && hr != D2DERR_RECREATE_TARGET)
 	{
@@ -521,33 +521,33 @@ void Renderer::RenderEnd()
 	}
 	//m_pd3dContext->Flush();
 	// 
-	// 2. ¹é¹öÆÛ RTV·Î Å¸°Ù º¹±¸
+	// 2. ë°±ë²„í¼ RTVë¡œ íƒ€ê²Ÿ ë³µêµ¬
 	ID3D11RenderTargetView* backBufferRTV = m_pd3dRenderTV.Get();
 	m_pd3dContext->OMSetRenderTargets(1, &backBufferRTV, nullptr);
 
-	// 3. ¹é¹öÆÛ Å¬¸®¾î
+	// 3. ë°±ë²„í¼ í´ë¦¬ì–´
 	float backBufferClearColor[4] = { 0.0f, 0.0f, 0.0f, 1.0f }; //black;
 	m_pd3dContext->ClearRenderTargetView(backBufferRTV, backBufferClearColor);
 
-	// 4. ¼ÎÀÌ´õ ¸®¼Ò½º Ã¼Å©
+	// 4. ì…°ì´ë” ë¦¬ì†ŒìŠ¤ ì²´í¬
 	if (!m_InputLayout || !m_VertexShader || !m_PixelShader || !m_samplerState || !m_fullScreenVB)
 	{
 		std::cerr << "ERROR: Shader pipeline resources not initialized." << std::endl;
 		return;
 	}
 
-	// 5. IA ´Ü°è ¼³Á¤
+	// 5. IA ë‹¨ê³„ ì„¤ì •
 	UINT stride = sizeof(Vertex);
 	UINT offset = 0;
 	m_pd3dContext->IASetInputLayout(m_InputLayout.Get());
 	m_pd3dContext->IASetVertexBuffers(0, 1, m_fullScreenVB.GetAddressOf(), &stride, &offset);
 	m_pd3dContext->IASetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
 
-	// 6. ¼ÎÀÌ´õ ¼³Á¤
+	// 6. ì…°ì´ë” ì„¤ì •
 	m_pd3dContext->VSSetShader(m_VertexShader.Get(), nullptr, 0);
 	m_pd3dContext->PSSetShader(m_PixelShader.Get(), nullptr, 0);
 
-	// 7. D2D°¡ ±×¸° ÅØ½ºÃ³ ¹ÙÀÎµù
+	// 7. D2Dê°€ ê·¸ë¦° í…ìŠ¤ì²˜ ë°”ì¸ë”©
 	ID3D11ShaderResourceView* srvs[] = { m_renderTargetSRV.Get() };
 	m_pd3dContext->PSSetShaderResources(0, 1, srvs);
 	m_pd3dContext->PSSetSamplers(0, 1, m_samplerState.GetAddressOf());
@@ -565,24 +565,24 @@ void Renderer::RenderEnd()
 	m_pd3dContext->RSSetViewports(1, &viewport);
 	m_pd3dContext->RSSetState(nullptr);
 
-	// ±âº» ±íÀÌ/½ºÅÙ½Ç ½ºÅ×ÀÌÆ® (±íÀÌ Å×½ºÆ® ºñÈ°¼ºÈ­)
+	// ê¸°ë³¸ ê¹Šì´/ìŠ¤í…ì‹¤ ìŠ¤í…Œì´íŠ¸ (ê¹Šì´ í…ŒìŠ¤íŠ¸ ë¹„í™œì„±í™”)
 	m_pd3dContext->OMSetDepthStencilState(nullptr, 0);
 
-	// ±âº» ºí·»µå ½ºÅ×ÀÌÆ® (¾ËÆÄ ºí·»µù ºñÈ°¼ºÈ­, ºÒÅõ¸í ·»´õ¸µ)
+	// ê¸°ë³¸ ë¸”ë Œë“œ ìŠ¤í…Œì´íŠ¸ (ì•ŒíŒŒ ë¸”ë Œë”© ë¹„í™œì„±í™”, ë¶ˆíˆ¬ëª… ë Œë”ë§)
 	m_pd3dContext->OMSetBlendState(nullptr, nullptr, 0xFFFFFFFF);
 
-	// 8. Ç®½ºÅ©¸° Quad µå·Î¿ì
+	// 8. í’€ìŠ¤í¬ë¦° Quad ë“œë¡œìš°
 	m_pd3dContext->Draw(6, 0);
 	//m_pd3dContext->Flush();
 
-	// 9. SRV ÇØÁ¦
+	// 9. SRV í•´ì œ
 	ID3D11ShaderResourceView* nullSRV[] = { nullptr };
 	m_pd3dContext->PSSetShaderResources(0, 1, nullSRV);
 
 	//ID3D11Buffer* nullBuffers[] = { nullptr };
 	//m_pd3dContext->PSSetConstantBuffers(0, 1, nullBuffers);
 	
-	// 10. È­¸é¿¡ Ç¥½Ã
+	// 10. í™”ë©´ì— í‘œì‹œ
 	Present();
 
 	
@@ -590,12 +590,12 @@ void Renderer::RenderEnd()
 
 void Renderer::Present()
 {
-	// ·»´õ¸µ ÀÛ¾÷ÀÌ ³¡³ª¸é ½º¿ÒÃ¼ÀÎ¿¡ ÇÁ·¹ÀÓÀ» Ç¥½Ã
+	// ë Œë”ë§ ì‘ì—…ì´ ëë‚˜ë©´ ìŠ¤ì™‘ì²´ì¸ì— í”„ë ˆì„ì„ í‘œì‹œ
 	HRESULT hr = m_pswapChain->Present(1, 0);
 
 	if (hr == DXGI_ERROR_DEVICE_REMOVED || hr == DXGI_ERROR_DEVICE_RESET)
 	{
-		Uninitialize();     // µğ¹ÙÀÌ½º°¡ Á¦°ÅµÇ°Å³ª ¸®¼ÂµÈ °æ¿ì, ÀçÃÊ±âÈ­ ÇÊ¿ä
+		Uninitialize();     // ë””ë°”ì´ìŠ¤ê°€ ì œê±°ë˜ê±°ë‚˜ ë¦¬ì…‹ëœ ê²½ìš°, ì¬ì´ˆê¸°í™” í•„ìš”
 		Initialize(m_hwnd);
 	}
 	else

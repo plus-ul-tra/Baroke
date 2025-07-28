@@ -9,7 +9,7 @@ Player::Player(float posX, float posY, float width, float height, XMFLOAT4 color
     // 깔끔하게 보기위해 AddComponent 에서 생성자파라미터 X
     // Set 함수 각자 만들어서 초기화 (Transform, Collider 참고)
     m_transform = AddComponent<Transform>();
-    m_bitmapRender = AddComponent<BitmapRender>("PandaSpriteSheet", width, height);
+    m_bitmapRender = AddComponent<BitmapRender>("PandaSpriteSheet.json", width, height);
     m_Collider  = AddComponent<Collider2D>();
 
     //GeoRender는 collider2D 있는 경우만 사용

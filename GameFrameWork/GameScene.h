@@ -1,11 +1,12 @@
 #pragma once
 #include "Engine.h"
 #include "Player.h"
+#include "Board.h"
 class GameScene : public SceneBase { 
 	
 private:
 	Player* m_player = nullptr;
-
+	std::unique_ptr<Board> m_board;
 	DirectX::XMVECTOR m_moveDir = DirectX::XMVectorZero();
 
 
@@ -28,4 +29,5 @@ public:
 
 	void KeyCommandMapping() override;
 
+	void OnInput(const MouseEvent& ev) override;
 };

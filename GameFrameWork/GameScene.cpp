@@ -1,17 +1,15 @@
 #include "cpch.h"
 #include "GameScene.h"
+#include "BoardObject.h"
 
 void GameScene::Initialize()
 {
 	std::cout << "Game Scene Init" << std::endl;
 	KeyCommandMapping();
-	// 초기화를 매번 이렇게 할 순 없긴해
-// 	auto playerObject = std::make_unique<Player>(
-// 		600.0f, 300.0f, 50.0f, 50.0f, DirectX::XMFLOAT4(1.0f, 0.0f, 0.0f, 1.0f) // 녹색
-// 	);
-// 	m_objectList.push_back(std::move(playerObject));
-
-	//실행 중 동적 생성/삭제는 어떻게?
+	m_board = CreateBoard(15);
+	auto boardObj = std::make_unique<BoardObject>( 
+		m_board.get(), 510, 90, 900, 900, 10);
+	m_objectList.emplace_back(std::move(boardObj));
 }
 
 void GameScene::FixedUpdate(double fixedDeltaTime)
@@ -137,3 +135,10 @@ void GameScene::KeyCommandMapping()
 		};
 }
 
+void GameScene::OnInput(const MouseEvent& ev) // mouseInput
+{
+	if (ev.type == MouseType::LUp)
+	{
+		std::cout << ev.pos.x << " " << ev.pos.y << std::endl;
+	}
+}

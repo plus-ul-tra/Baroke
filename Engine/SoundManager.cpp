@@ -1,5 +1,6 @@
 #include "pch.h"
 #include "SoundManager.h"
+#include "FileDirectory.h"
 
 void SoundManager::Initialize()
 {
@@ -9,8 +10,21 @@ void SoundManager::Initialize()
 }
 
 void SoundManager::LoadAll()
-{																//
-	for (const auto& entry : filesystem::directory_iterator(L"..//Resource//Sounds"))
+
+{
+	filesystem::path solutionRoot;
+	try
+	{
+		solutionRoot = FindSolutionRoot();
+	}
+	catch (...)
+	{
+		solutionRoot = GetExecutableDir();
+	}
+	filesystem::path resourcePath = solutionRoot/L"Resource"/L"Sounds";
+
+	for (const auto& entry : std::filesystem::recursive_directory_iterator(resourcePath))
+
 	{
 		if (entry.is_regular_file())
 		{
@@ -36,7 +50,7 @@ void SoundManager::LoadSound(const filesystem::path& filePath)
 FMOD::Sound* SoundManager::GetSound(const string& key) const
 {
 	auto it = m_sounds.find(key);
-	if (it == m_sounds.end()) throw runtime_error("ÇØ´ç »ç¿îµå¸¦ Ã£À» ¼ö ¾øÀ½");
+	if (it == m_sounds.end()) throw runtime_error("í•´ë‹¹ ì‚¬ìš´ë“œë¥¼ ì°¾ì„ ìˆ˜ ì—†ìŒ");
 
 	return it->second;
 }
@@ -45,7 +59,7 @@ void SoundManager::PlaySoundOnce(const string& key)
 {
 	FMOD::Sound* sound = GetSound(key);
 	if (sound) m_system->playSound(sound, nullptr, false, nullptr);
-	else throw runtime_error("ÇØ´ç »ç¿îµå¸¦ Ã£À» ¼ö ¾øÀ½");
+	else throw runtime_error("í•´ë‹¹ ì‚¬ìš´ë“œë¥¼ ì°¾ì„ ìˆ˜ ì—†ìŒ");
 }
 
 void SoundManager::Release()

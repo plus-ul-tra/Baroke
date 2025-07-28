@@ -10,7 +10,8 @@
 #include <unordered_map>
 #include <algorithm>
 #include <functional>
-//#include <d3dcompiler.h> 
+#include <stack>
+
 
 #include <DirectXMath.h>
 

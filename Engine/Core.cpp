@@ -21,13 +21,11 @@ bool MIYABI::Core::_CreateWindow()
 
 void MIYABI::Core::BootManagers()
 {
-
 	SceneManager::GetInstance().Initialize(static_cast<HWND>(GetWindowHandle()));
 	InputManager::GetInstance().Initialize(static_cast<HWND>(GetWindowHandle()));
 
 	SoundManager::GetInstance().Initialize(); // 사운드 매니저 초기화
-	SoundManager::GetInstance().PlaySoundOnce("TestSound.ogg"); 
-
+	SoundManager::GetInstance().PlaySoundOnce("TestSound.ogg");
 }
 
 
@@ -114,17 +112,23 @@ void MIYABI::Core::ProcessMouseInput(InputManager& input)
 	static MouseState prevMouseStatus = InputManager::GetInstance().GetMouseState();
 
 	MouseState curMouseStatus = InputManager::GetInstance().GetMouseState();
+
+	auto push = [&](MouseEvent ev) { SceneManager::GetInstance().PushInput(ev); };
+
 	// 마우스 좌클릭
-	if (prevMouseStatus.leftPressed && !curMouseStatus.leftPressed)
+	if (prevMouseStatus.leftPressed && !curMouseStatus.leftPressed)		// OnLButtonUp
 	{
+		push({ MouseType::LUp, curMouseStatus.pos ,m_dragStart ,m_dragEnd });
 		m_dragEnd = { curMouseStatus.pos.x, curMouseStatus.pos.y };
-		std::cout << "Left Mouse Button Released!" << std::endl;			// OnLButtonUp
+
 	}
 	else if (!prevMouseStatus.leftPressed && curMouseStatus.leftPressed)	// OnLButtonDown
 	{
+		push({ MouseType::LDown, curMouseStatus.pos ,m_dragStart ,m_dragEnd });
 		m_dragStart = { curMouseStatus.pos.x, curMouseStatus.pos.y };
 
-		std::cout << "Left Mouse Button Pressed!" << std::endl;
+		//std::cout << curMouseStatus.pos.x << " " << curMouseStatus.pos.y << std::endl;
+
 
 	}
 
@@ -134,12 +138,14 @@ void MIYABI::Core::ProcessMouseInput(InputManager& input)
 	if (prevMouseStatus.rightPressed && !curMouseStatus.rightPressed)		// OnRButtonUp
 	{
 
-		std::cout << "Right Mouse Button Released!" << std::endl;
+		push({ MouseType::RUp, curMouseStatus.pos ,m_dragStart ,m_dragEnd });
+
 	}
 	else if (!prevMouseStatus.rightPressed && curMouseStatus.rightPressed)	// OnRButtonDown
 	{
+		push({ MouseType::RDown, curMouseStatus.pos ,m_dragStart ,m_dragEnd });
+		m_dragStart = { curMouseStatus.pos.x, curMouseStatus.pos.y };
 
-		std::cout << "Right Mouse Button Pressed!" << std::endl;
 	}
 
 	// 마우스 이동 감지
@@ -148,12 +154,7 @@ void MIYABI::Core::ProcessMouseInput(InputManager& input)
 		//if (!curMouseStatus.leftPressed) return;
 
 		m_dragEnd = { curMouseStatus.pos.x, curMouseStatus.pos.y };
-		/*std::cout << "Mouse Moved: "
-			<< "X: " << prevMouseStatus.pos.x
-			<< ", Y: " << prevMouseStatus.pos.y
-			<< "=>  X: " << curMouseStatus.pos.x
-			<< ", Y: " << curMouseStatus.pos.y
-			<< std::endl;*/
+		push({ MouseType::Move, curMouseStatus.pos ,m_dragStart ,m_dragEnd });
 	}
 
 	prevMouseStatus = curMouseStatus;

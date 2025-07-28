@@ -95,3 +95,8 @@ void TitleScene::KeyCommandMapping()
 		};
 }
 
+void TitleScene::OnInput(const MouseEvent& ev)
+{
+
+}
+

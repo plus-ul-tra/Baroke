@@ -21,4 +21,4 @@
 #include "GeoRender.h"
 #include "BitmapRender.h"
 #include "Collider2D.h"
-
+#include "BoardLayoutComponent.h"

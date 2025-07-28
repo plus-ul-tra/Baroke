@@ -3,6 +3,7 @@
 #include "SceneBase.h"
 #include "Renderer.h" 
 #include "SpriteManager.h" // 일단 씬매니저에 넣어서 Resource폴더에서 전부 로드하게
+#include "InputEvents.h"
 
 //GameManager -> SceneManager -> Sences -> Objects XX
 // Core -> SceneManager( Scene1, Scene2, Scene3, ) 
@@ -22,7 +23,7 @@ private:
 	~SceneManager() = default;
 	
 	int m_currentSceneIndex = -1;
-	
+	std::queue<MouseEvent> m_inputQueue;
 	//renderer
 
 	std::unique_ptr<Renderer> m_renderer;
@@ -59,6 +60,8 @@ public:
 
 	void InitializeAllScenes();
 
+	void  PushInput(const MouseEvent& ev) { m_inputQueue.push(ev); }
+	void  DispatchInput();
 };
 
 
