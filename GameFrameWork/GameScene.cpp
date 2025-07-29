@@ -180,4 +180,8 @@ void GameScene::OnInput(const MouseEvent& ev) // mouseInput
 	{
 		std::cout << ev.pos.x << " " << ev.pos.y << std::endl;
 	}
+	if (ev.type == MouseType::Move)
+	{
+		
+	}
 }
