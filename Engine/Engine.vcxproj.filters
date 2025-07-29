@@ -85,7 +85,11 @@
     <ClCompile Include="Button.cpp">
       <Filter>Object</Filter>
     </ClCompile>
+
     <ClCompile Include="JokerManager.cpp">
+
+    <ClCompile Include="ShaderManager.cpp">
+
       <Filter>Managers</Filter>
     </ClCompile>
   </ItemGroup>
@@ -187,6 +191,9 @@
     </ClInclude>
     <ClInclude Include="Board.h" />
     <ClInclude Include="JokerManager.h">
+      
+    <ClInclude Include="ShaderManager.h">
+
       <Filter>Managers</Filter>
     </ClInclude>
   </ItemGroup>
