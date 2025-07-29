@@ -24,6 +24,7 @@ public:
 		m_transform->SetScale(XMVectorSet(1.0f, 1.0f, 1.0f, 1.0f));
 		m_transform->SetRotation(0.0f);
 	}
+
 	Button(float posX, float posY, float width, float height, const std::string& bitmapFile, int order = 0)
 		: m_width(width), m_height(height)
 	{

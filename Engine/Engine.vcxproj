@@ -154,10 +154,7 @@
     <ClCompile Include="AnimationClip.cpp" />
     <ClCompile Include="BaseRender.cpp" />
     <ClCompile Include="BitmapRender.cpp" />
-
-    <ClCompile Include="Board.cpp" />
     <ClCompile Include="Button.cpp" />
-
     <ClCompile Include="Collider2D.cpp" />
     <ClCompile Include="Component.h" />
     <ClCompile Include="Core.cpp" />
@@ -186,9 +183,7 @@
     <ClInclude Include="AnimationClip.h" />
     <ClInclude Include="BaseRender.h" />
     <ClInclude Include="BitmapRender.h" />
-
     <ClInclude Include="Board.h" />
-
     <ClInclude Include="BoardLayoutComponent.h" />
     <ClInclude Include="Button.h" />
     <ClInclude Include="Collider2D.h" />

@@ -301,14 +301,14 @@ void Renderer::InitializeShader(HWND hwnd)
 	ComPtr<ID3DBlob> vsBlob = nullptr; // 정점 셰이더 바이트
 	ComPtr<ID3DBlob> psBlob = nullptr; // 픽셀 셰이더 바이트
 	HRESULT hr;
-
+	// Vertex HLSL
 	hr = D3DReadFileToBlob(L"..\\Shader\\PassThrough_VS.cso", &vsBlob);
 	if (FAILED(hr)) {
 		std::cerr << "ERROR: Failed to read Vertex Shader CSO! HRESULT: 0x" << std::hex << hr << std::endl;
 		return;
 	}
 
-	// 픽셀 셰이더도 동일한 파일에서 로드
+	// PixelShader HLSL
 	hr = D3DReadFileToBlob(L"..\\Shader\\CRTFilter_PS.cso", &psBlob);
 	if (FAILED(hr)) {
 		std::cerr << "ERROR: Failed to read Pixel Shader CSO! HRESULT: 0x" << std::hex << hr << std::endl;
