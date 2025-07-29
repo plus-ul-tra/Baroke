@@ -30,7 +30,7 @@ private:
 	
 	std::vector<std::unique_ptr<SceneBase>> m_sceneList;  // 객체 컨테이너
 	map<string, int> m_sceneNameMap;					  // just name-index 맵핑, 이건 단순 편의를 위한 것
-
+	string m_currentPostProcessing;
 	// Scene으로 부터 그려야할 obejct를 받을 컨테이너 및 가져올 함수 필요.
 
 public:
@@ -62,6 +62,8 @@ public:
 
 	void  PushInput(const MouseEvent& ev) { m_inputQueue.push(ev); }
 	void  DispatchInput();
+
+	void ChangePostProcessing(const string& shaderName);
 };
 
 

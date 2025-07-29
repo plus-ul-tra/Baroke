@@ -10,6 +10,10 @@
 #include <wrl/client.h>
 #include <d3dcompiler.h>     //ReadFileToBlob 사용
 #include <DirectXMath.h>
+#include <string>
+
+
+#include "ShaderManager.h"
 
 struct Vertex
 {
@@ -23,7 +27,7 @@ struct TimeShaderConstants
 	float Padding[3]; // float 3개 = 12바이트. float(4) + Padding(12) = 16바이트
 };
 
-
+using namespace std;
 using namespace Microsoft::WRL;
 // UI, object
 // D3D11 메인 렌더 + Direct2D 오버레이
@@ -34,22 +38,22 @@ private:
 
 	//factory 8->7, device,Context 7->6 로
 	
-	ComPtr<ID2D1Factory>			m_pd2dFactory;
-	ComPtr<IWICImagingFactory>		m_pwicFactory;
-
-	ComPtr<ID3D11Device>			m_pd3dDevice;
-	ComPtr<ID2D1Device7>			m_pd2dDevice;
-	ComPtr<ID3D11RenderTargetView>  m_pd3dRenderTV;
-
-	ComPtr<IDXGISwapChain1>         m_pswapChain;
-	ComPtr<ID2D1DeviceContext7>     m_pd2dContext;
-	ComPtr<ID3D11DeviceContext>     m_pd3dContext;
-
-	ComPtr<ID2D1Bitmap1>            m_ptargetBitmap;
-
-	ComPtr<ID2D1SolidColorBrush>    m_pbrush;
-	ComPtr<ID2D1SolidColorBrush>    m_ptextBrush;
-	ComPtr<IDWriteTextFormat>       m_ptextFormat;
+	ComPtr<ID2D1Factory>			   m_pd2dFactory;
+	ComPtr<IWICImagingFactory>		   m_pwicFactory;
+									   
+	ComPtr<ID3D11Device>			   m_pd3dDevice;
+	ComPtr<ID2D1Device7>			   m_pd2dDevice;
+	ComPtr<ID3D11RenderTargetView>     m_pd3dRenderTV;
+									   
+	ComPtr<IDXGISwapChain1>            m_pswapChain;
+	ComPtr<ID2D1DeviceContext7>        m_pd2dContext;
+	ComPtr<ID3D11DeviceContext>        m_pd3dContext;
+									   
+	ComPtr<ID2D1Bitmap1>               m_ptargetBitmap;
+									   
+	ComPtr<ID2D1SolidColorBrush>       m_pbrush;
+	ComPtr<ID2D1SolidColorBrush>       m_ptextBrush;
+	ComPtr<IDWriteTextFormat>          m_ptextFormat;
 
 	// new
 	ComPtr<ID3D11Buffer>			   m_fullScreenVB;
@@ -57,24 +61,29 @@ private:
 	ComPtr<ID3D11RenderTargetView>     m_offScreenTargetView; 
 	ComPtr<ID3D11ShaderResourceView>   m_renderTargetSRV;
 
-	ComPtr<ID3D11VertexShader>      m_VertexShader;
-	ComPtr<ID3D11PixelShader>       m_PixelShader;
-	ComPtr<ID3D11InputLayout>       m_InputLayout;
-	ComPtr<ID3D11SamplerState>      m_samplerState;
+	ComPtr<ID3D11VertexShader>         m_VertexShader;
+	ComPtr<ID3D11PixelShader>          m_PixelShader;
+	ComPtr<ID3D11InputLayout>          m_InputLayout;
+	ComPtr<ID3D11SamplerState>         m_samplerState;
 
+	unique_ptr<ShaderManager>		   m_shaderManager;
+
+	string m_postProcessShaderName = "PassThrough"; //?
 
 	UINT m_screenWidth;
 	UINT m_screenHeight;
 
 	void CreateDeviceAndSwapChain(HWND hwnd);
-
 	void CreateShaderRenderTargets();
 	void CreateWriteResource();
 	void CreateFullScrennQuad();
-	void ReleaseRenderTargets();
 
+	void PostProcessing(const ShaderSet& shaderSet); //셰이더 적용
+	void ReleaseRenderTargets();
+	
 public:
-	Renderer() = default;
+	Renderer(){ /*cout <<"렌더러 생성자" << endl; cout << m_postProcessShaderName << endl;*/ }
+	
 	~Renderer() { Uninitialize(); }
 
 	void Initialize(HWND hwnd);
@@ -82,7 +91,8 @@ public:
 	void Uninitialize();
 	void Resize(UINT width, UINT height);
 
-
+	//외부에서 호출 아마 SceneManager에서 할것임
+	void SetPostProcessingMode(const string& shaderName) { m_postProcessShaderName = shaderName; }
 	void DrawCircle(float x1, float y1, float radius, const D2D1::ColorF& color);
 	void DrawRect(float left, float top, float right, float bottom, const D2D1::ColorF& color);
 

@@ -41,9 +41,6 @@ namespace MIYABI {
 
 		// Manager BootStrap
 		void BootManagers();
-
-
-
 		//------------------------------------ InputManager Start
 		bool KeyCommandMapping();
 

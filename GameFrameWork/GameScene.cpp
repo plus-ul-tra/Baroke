@@ -64,7 +64,7 @@ void GameScene::OnEnter()
 	std::cout << m_objectList.size() << std::endl;
 
 	// 버튼 생성
-	unique_ptr<Button> button1 = std::make_unique<Button>(100.0f, 100.0f, 200, 200, "Sample.png", 50);
+	unique_ptr<Button> button1 = std::make_unique<Button>(30.0f, 30.0f, 200, 200, "Sample.png", 50);
 	m_buttonList.emplace_back(button1.get());
 	m_objectList.emplace_back(std::move(button1));
 }
@@ -105,7 +105,7 @@ void GameScene::KeyCommandMapping()
 
 	m_commandMap["F2"] = [this]()
 		{
-			std::cout << "F2 Command Received" << std::endl;
+			SceneManager::GetInstance().ChangePostProcessing("CRTFilter");
 		};
 
 	m_commandMap["F3"] = [this]()
@@ -160,6 +160,11 @@ void GameScene::KeyCommandMapping()
 
 
 			std::cout << "F4 Command Received" << std::endl;
+		};
+
+	m_commandMap["F5"] = [this]()
+		{
+			SceneManager::GetInstance().ChangePostProcessing("PassThrough");
 		};
 
 	m_commandMap["Go"] = [this]()

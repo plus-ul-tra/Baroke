@@ -193,6 +193,7 @@ void Renderer::CreateFullScrennQuad()
 	}
 }
 
+
 void Renderer::CreateShaderRenderTargets() {
 	
 
@@ -267,12 +268,12 @@ void Renderer::ReleaseRenderTargets()
 
 void Renderer::Initialize(HWND hwnd)
 {
-	
+	//std::cout << m_postProcessShaderName << endl;
+	//std::cout << "dick" << m_postProcessShaderName << std::endl;
 	m_hwnd = hwnd;
-
 	CreateDeviceAndSwapChain(hwnd);
 
-	InitializeShader(hwnd);
+	m_shaderManager = make_unique<ShaderManager>(m_pd3dDevice.Get()); // shader Manager 생성자 및, read all shader자원
 	CreateShaderRenderTargets();
 	CreateFullScrennQuad();
 	//CreateTimeShaderBuffer();
@@ -287,6 +288,21 @@ void Renderer::Initialize(HWND hwnd)
 	
 	//예외처리 생략
 	m_pwicFactory = wicFactory;
+
+	D3D11_SAMPLER_DESC sampDesc = {};
+	sampDesc.Filter = D3D11_FILTER_MIN_MAG_MIP_LINEAR; // 부드러운 필터링
+	sampDesc.AddressU = D3D11_TEXTURE_ADDRESS_CLAMP;   // 텍스처 좌표가 범위를 벗어날 때 클램프
+	sampDesc.AddressV = D3D11_TEXTURE_ADDRESS_CLAMP;
+	sampDesc.AddressW = D3D11_TEXTURE_ADDRESS_CLAMP;
+	sampDesc.ComparisonFunc = D3D11_COMPARISON_NEVER;
+	sampDesc.MinLOD = 0;
+	sampDesc.MaxLOD = D3D11_FLOAT32_MAX; // 모든 밉맵 레벨 사용
+
+	hr = m_pd3dDevice->CreateSamplerState(&sampDesc, &m_samplerState);
+	if (FAILED(hr)) {
+		std::cerr << "ERROR: Failed to create Sampler State! HRESULT: 0x" << std::hex << hr << std::endl;
+		return;
+	}
 }
 
 void Renderer::InitializeShader(HWND hwnd)
@@ -309,7 +325,7 @@ void Renderer::InitializeShader(HWND hwnd)
 	}
 
 	// PixelShader HLSL
-	hr = D3DReadFileToBlob(L"..\\Shader\\CRTFilter_PS.cso", &psBlob);
+	hr = D3DReadFileToBlob(L"..\\Shader\\PassThrough_PS.cso", &psBlob);
 	if (FAILED(hr)) {
 		std::cerr << "ERROR: Failed to read Pixel Shader CSO! HRESULT: 0x" << std::hex << hr << std::endl;
 		return;
@@ -348,40 +364,26 @@ void Renderer::InitializeShader(HWND hwnd)
 		return;
 	}
 
-	// 4. 샘플러 상태 생성
-	D3D11_SAMPLER_DESC sampDesc = {};
-	sampDesc.Filter = D3D11_FILTER_MIN_MAG_MIP_LINEAR; // 부드러운 필터링
-	sampDesc.AddressU = D3D11_TEXTURE_ADDRESS_CLAMP;   // 텍스처 좌표가 범위를 벗어날 때 클램프
-	sampDesc.AddressV = D3D11_TEXTURE_ADDRESS_CLAMP;
-	sampDesc.AddressW = D3D11_TEXTURE_ADDRESS_CLAMP;
-	sampDesc.ComparisonFunc = D3D11_COMPARISON_NEVER;
-	sampDesc.MinLOD = 0;
-	sampDesc.MaxLOD = D3D11_FLOAT32_MAX; // 모든 밉맵 레벨 사용
-
-	hr = m_pd3dDevice->CreateSamplerState(&sampDesc, &m_samplerState);
-	if (FAILED(hr)) {
-		std::cerr << "ERROR: Failed to create Sampler State! HRESULT: 0x" << std::hex << hr << std::endl;
-		return;
-	}
 
 }
 
 void Renderer::Uninitialize()
 {
+	m_shaderManager.reset(); // unique_ptr 해제
 	ReleaseRenderTargets();
+	m_pwicFactory.Reset(); // ComPtr는 Reset()으로 명시적 해제
+	m_ptargetBitmap.Reset();
+	m_pbrush.Reset();
+	m_ptextBrush.Reset();
+	m_ptextFormat.Reset();
 
-	m_pwicFactory = nullptr;
+	m_pd2dContext.Reset();
+	m_pd2dDevice.Reset();
 
-	m_ptargetBitmap = nullptr;
-	m_pbrush = nullptr;
+	m_pswapChain.Reset();
+	m_pd3dContext.Reset();
+	m_pd3dDevice.Reset();
 
-	m_pd2dContext = nullptr;
-	m_pd2dDevice = nullptr;
-
-	m_pswapChain = nullptr;
-	m_pd3dDevice = nullptr;
-
-	//초기화 추가해야함
 }
 
 void Renderer::Resize(UINT width, UINT height)
@@ -508,11 +510,61 @@ void Renderer::RenderBegin()
 	m_pd2dContext->Clear(D2D1::ColorF(D2D1::ColorF::DarkGray)); // D2D로 그릴 영역을 클리어
 	
 }
+void Renderer::PostProcessing(const ShaderSet& shaderSet)
+{
+	if (!m_pd3dContext || !m_fullScreenVB || !m_renderTargetSRV) {
+		std::cerr << "ERROR: Essential resources not initialized for DrawFullScreenQuadWithShader." << std::endl;
+		return;
+	}
 
+	// 쉐이더 세트의 유효성 다시 확인)
+	if (!shaderSet.vs || !shaderSet.ps || !shaderSet.inputLayout) {
+		std::cerr << "ERROR: Provided ShaderSet is incomplete for DrawFullScreenQuadWithShader." << std::endl;
+		return;
+	}
+
+	// 5. IA 단계 설정
+	UINT stride = sizeof(Vertex);
+	UINT offset = 0;
+	m_pd3dContext->IASetInputLayout(shaderSet.inputLayout.Get()); // ShaderSet에서 InputLayout 사용
+	m_pd3dContext->IASetVertexBuffers(0, 1, m_fullScreenVB.GetAddressOf(), &stride, &offset);
+	m_pd3dContext->IASetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
+
+	// 6. 쉐이더 설정
+	m_pd3dContext->VSSetShader(shaderSet.vs.Get(), nullptr, 0);   // ShaderSet에서 VS 사용
+	m_pd3dContext->PSSetShader(shaderSet.ps.Get(), nullptr, 0);   // ShaderSet에서 PS 사용
+
+	// 7. D2D가 그린 텍스처 바인딩 (픽셀 쉐이더 입력)
+	ID3D11ShaderResourceView* srvs[] = { m_renderTargetSRV.Get() };
+	m_pd3dContext->PSSetShaderResources(0, 1, srvs);
+	m_pd3dContext->PSSetSamplers(0, 1, m_samplerState.GetAddressOf());
+
+	// 뷰포트 설정
+	D3D11_VIEWPORT viewport = {};
+	viewport.TopLeftX = 0.0f;
+	viewport.TopLeftY = 0.0f;
+	viewport.Width = static_cast<float>(m_screenWidth);
+	viewport.Height = static_cast<float>(m_screenHeight);
+	viewport.MinDepth = 0.0f;
+	viewport.MaxDepth = 1.0f;
+	m_pd3dContext->RSSetViewports(1, &viewport);
+	m_pd3dContext->RSSetState(nullptr); // 기본 래스터라이저 상태
+
+	// 깊이/스텐실 및 블렌드 스테이트 설정 (후처리 효과이므로 기본값 사용)
+	m_pd3dContext->OMSetDepthStencilState(nullptr, 0); // 깊이 테스트 비활성화
+	m_pd3dContext->OMSetBlendState(nullptr, nullptr, 0xFFFFFFFF); // 알파 블렌딩 비활성화
+
+	// 8. 풀스크린 Quad 드로우
+	m_pd3dContext->Draw(6, 0);
+
+	// 9. SRV 해제 (다음 프레임/드로우를 위해 리소스 바인딩을 끊어줌)
+	ID3D11ShaderResourceView* nullSRV[] = { nullptr };
+	m_pd3dContext->PSSetShaderResources(0, 1, nullSRV);
+}
 
 void Renderer::RenderEnd()
 {
-	if (!m_pd2dContext) {
+	if (!m_pd2dContext || !m_shaderManager) {
 		std::cerr << "ERROR: D2D context not initialized for ShaderRenderEnd." << std::endl;
 		return;
 	}
@@ -524,6 +576,7 @@ void Renderer::RenderEnd()
 		std::cerr << "D2D EndDraw failed: HRESULT: 0x" << std::hex << hr << std::endl;
 		return;
 	}
+
 	//m_pd3dContext->Flush();
 	// 
 	// 2. 백버퍼 RTV로 타겟 복구
@@ -534,60 +587,63 @@ void Renderer::RenderEnd()
 	float backBufferClearColor[4] = { 0.0f, 0.0f, 0.0f, 1.0f }; //black;
 	m_pd3dContext->ClearRenderTargetView(backBufferRTV, backBufferClearColor);
 
-	// 4. 셰이더 리소스 체크
-	if (!m_InputLayout || !m_VertexShader || !m_PixelShader || !m_samplerState || !m_fullScreenVB)
-	{
-		std::cerr << "ERROR: Shader pipeline resources not initialized." << std::endl;
-		return;
-	}
+	//// 4. 셰이더 리소스 체크
+	//if (!m_InputLayout || !m_VertexShader || !m_PixelShader || !m_samplerState || !m_fullScreenVB)
+	//{
+	//	std::cerr << "ERROR: Shader pipeline resources not initialized." << std::endl;
+	//	return;
+	//}
+	// ---------------------------------------------------------함수로 뺄 수 있음
+	
+	const ShaderSet& currentPostProcessShader = m_shaderManager->GetShaderSet(m_postProcessShaderName);
+	PostProcessing(currentPostProcessShader);
 
+	Present();
 	// 5. IA 단계 설정
-	UINT stride = sizeof(Vertex);
-	UINT offset = 0;
-	m_pd3dContext->IASetInputLayout(m_InputLayout.Get());
-	m_pd3dContext->IASetVertexBuffers(0, 1, m_fullScreenVB.GetAddressOf(), &stride, &offset);
-	m_pd3dContext->IASetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
+	//UINT stride = sizeof(Vertex);
+	//UINT offset = 0;
+	//m_pd3dContext->IASetInputLayout(m_InputLayout.Get());
+	//m_pd3dContext->IASetVertexBuffers(0, 1, m_fullScreenVB.GetAddressOf(), &stride, &offset);
+	//m_pd3dContext->IASetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
 
-	// 6. 셰이더 설정
-	m_pd3dContext->VSSetShader(m_VertexShader.Get(), nullptr, 0);
-	m_pd3dContext->PSSetShader(m_PixelShader.Get(), nullptr, 0);
+	//// 6. 셰이더 설정
+	//m_pd3dContext->VSSetShader(m_VertexShader.Get(), nullptr, 0);
+	//m_pd3dContext->PSSetShader(m_PixelShader.Get(), nullptr, 0);
 
-	// 7. D2D가 그린 텍스처 바인딩
-	ID3D11ShaderResourceView* srvs[] = { m_renderTargetSRV.Get() };
-	m_pd3dContext->PSSetShaderResources(0, 1, srvs);
-	m_pd3dContext->PSSetSamplers(0, 1, m_samplerState.GetAddressOf());
+	//// 7. D2D가 그린 텍스처 바인딩
+	//ID3D11ShaderResourceView* srvs[] = { m_renderTargetSRV.Get() };
+	//m_pd3dContext->PSSetShaderResources(0, 1, srvs);
+	//m_pd3dContext->PSSetSamplers(0, 1, m_samplerState.GetAddressOf());
 
-	D3D11_VIEWPORT viewport = {};
-	viewport.TopLeftX = 0.0f;
-	viewport.TopLeftY = 0.0f;
+	//D3D11_VIEWPORT viewport = {};
+	//viewport.TopLeftX = 0.0f;
+	//viewport.TopLeftY = 0.0f;
 
-	viewport.Width = static_cast<float>(m_screenWidth);
-	viewport.Height = static_cast<float>(m_screenHeight);
+	//viewport.Width = static_cast<float>(m_screenWidth);
+	//viewport.Height = static_cast<float>(m_screenHeight);
 
-	viewport.MinDepth = 0.0f; 
-	viewport.MaxDepth = 1.0f;
+	//viewport.MinDepth = 0.0f; 
+	//viewport.MaxDepth = 1.0f;
 
-	m_pd3dContext->RSSetViewports(1, &viewport);
-	m_pd3dContext->RSSetState(nullptr);
+	//m_pd3dContext->RSSetViewports(1, &viewport);
+	//m_pd3dContext->RSSetState(nullptr);
 
-	// 기본 깊이/스텐실 스테이트 (깊이 테스트 비활성화)
-	m_pd3dContext->OMSetDepthStencilState(nullptr, 0);
+	//// 기본 깊이/스텐실 스테이트 (깊이 테스트 비활성화)
+	//m_pd3dContext->OMSetDepthStencilState(nullptr, 0);
 
-	// 기본 블렌드 스테이트 (알파 블렌딩 비활성화, 불투명 렌더링)
-	m_pd3dContext->OMSetBlendState(nullptr, nullptr, 0xFFFFFFFF);
+	//// 기본 블렌드 스테이트 (알파 블렌딩 비활성화, 불투명 렌더링)
+	//m_pd3dContext->OMSetBlendState(nullptr, nullptr, 0xFFFFFFFF);
 
-	// 8. 풀스크린 Quad 드로우
-	m_pd3dContext->Draw(6, 0);
-	//m_pd3dContext->Flush();
+	//// 8. 풀스크린 Quad 드로우
+	//m_pd3dContext->Draw(6, 0);
+	////m_pd3dContext->Flush();
 
-	// 9. SRV 해제
-	ID3D11ShaderResourceView* nullSRV[] = { nullptr };
-	m_pd3dContext->PSSetShaderResources(0, 1, nullSRV);
+	//// 9. SRV 해제
+	//ID3D11ShaderResourceView* nullSRV[] = { nullptr };
+	//m_pd3dContext->PSSetShaderResources(0, 1, nullSRV);
 
 	
 	// 10. 화면에 표시
-	Present();
-
 	
 }
 
