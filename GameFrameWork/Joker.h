@@ -2,11 +2,11 @@
 #include "Engine.h"
 #include "StoneObject.h"
 
-//unordered_map<string, function<void(JokerInfo&)>> jokerFunctions =
-//{
-//	{"JokerStone1Function", [](JokerInfo& info) { cout << "Function: " << info.functionName << ", Description: " << info.description << endl; }},
-//	{"JokerStone2Function", [](JokerInfo& info) { cout << "Function: " << info.functionName << ", Description: " << info.description << endl; }}
-//};
+static unordered_map<string, function<void(JokerInfo&)>> jokerFunctions =
+{
+	{"JokerStone1Function", [](JokerInfo& info) { cout << "Function: " << info.functionName << ", Description: " << info.description << endl; }},
+	{"JokerStone2Function", [](JokerInfo& info) { cout << "Function: " << info.functionName << ", Description: " << info.description << endl; }}
+};
 
 class Joker : public StoneObject
 {
@@ -25,6 +25,6 @@ public:
 		m_sprite->SetOrder(1);
 		m_sprite->SetActive(true);
 
-		//jokerFunctions[jokerInfo.functionName](jokerInfo); // 함수 호출
+		jokerFunctions[jokerInfo.functionName](jokerInfo); // 함수 호출
 	}
 };
