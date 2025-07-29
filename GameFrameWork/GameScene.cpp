@@ -64,7 +64,7 @@ void GameScene::OnEnter()
 	std::cout << m_objectList.size() << std::endl;
 
 	// 버튼 생성
-	unique_ptr<Button> button1 = std::make_unique<Button>(600.0f, 600.0f, 200, 200, "Sample.png", 50);
+	unique_ptr<Button> button1 = std::make_unique<Button>(100.0f, 100.0f, 200, 200, "Sample.png", 50);
 	m_buttonList.emplace_back(button1.get());
 	m_objectList.emplace_back(std::move(button1));
 }

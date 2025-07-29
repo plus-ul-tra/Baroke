@@ -182,6 +182,7 @@
     <ClInclude Include="Button.h">
       <Filter>Object</Filter>
     </ClInclude>
+    <ClInclude Include="Board.h" />
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Common">
