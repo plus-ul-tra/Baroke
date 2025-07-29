@@ -6,10 +6,12 @@ class BoardLayoutComponent : public Component
 public:
 	BoardLayoutComponent(int offX, int offY, int cell, int padding = 0)
 		: m_offX(offX), m_offY(offY), m_cell(cell), m_padding(padding) {
+		std::cout << m_offX << " " << m_offY <<" "<< m_cell<< std::endl;
 	}
 
 	void Update(double) override {}
 	void OnEvent(const std::string&) override {}
+
 
 	POINT BoardToScreen(int r, int c) const {
 		return { m_offX + m_padding + c * m_cell,
@@ -21,6 +23,7 @@ public:
 		return { row, col };
 	}
 	int GetCell() { return m_cell; }
+
 private:
 	int m_offX, m_offY, m_cell, m_padding;
 };

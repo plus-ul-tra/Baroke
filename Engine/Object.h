@@ -1,6 +1,7 @@
 #pragma once
 #include <memory>
 #include"Component.h"
+#include "Renderer.h"
 
 class Component;
 
@@ -44,7 +45,7 @@ public:
 	//ÇÊ¼ö´Â ¾Æ´Ô
 	virtual void FixedUpdate(double deltaTime);
 	virtual void LateUpdate(double deltaTime);
-	virtual void Render() {}; 
+	virtual void Render(Renderer& renderer) {};
 	void _SendMessage(const mycore::MessageID msg, void* data = nullptr);
 
 	void SendEvent(const std::string& ev);

@@ -21,6 +21,9 @@
     <Filter Include="소스 파일\GameObjects">
       <UniqueIdentifier>{1eae1693-f355-4dd6-9baf-b35739dc75f1}</UniqueIdentifier>
     </Filter>
+    <Filter Include="소스 파일\Board">
+      <UniqueIdentifier>{bafb162a-eba5-451a-84fd-8dfd33380c84}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
@@ -47,6 +50,12 @@
     <ClCompile Include="BoardObject.cpp">
       <Filter>소스 파일\GameObjects</Filter>
     </ClCompile>
+    <ClCompile Include="StoneObject.cpp">
+      <Filter>소스 파일\GameObjects</Filter>
+    </ClCompile>
+    <ClCompile Include="Board.cpp">
+      <Filter>소스 파일\Board</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="GameManager.h">
@@ -72,6 +81,12 @@
     </ClInclude>
     <ClInclude Include="BoardObject.h">
       <Filter>소스 파일\GameObjects</Filter>
+    </ClInclude>
+    <ClInclude Include="StoneObject.h">
+      <Filter>소스 파일\GameObjects</Filter>
+    </ClInclude>
+    <ClInclude Include="Board.h">
+      <Filter>소스 파일\Board</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

@@ -35,6 +35,7 @@ void SceneBase::Render(Renderer& renderer) {
 				bitmapRenderComp->Render(renderer);
 			}
 		}
+		obj->Render(renderer);
 	}
 
 
