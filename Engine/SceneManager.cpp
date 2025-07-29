@@ -46,7 +46,6 @@ void SceneManager::Render()
 	if (MIYABI::Core::GetInstance().IsDebugMode()) {
 		ShowDebugInfo();
 	}
-	
 	m_renderer->RenderEnd();
 }
 

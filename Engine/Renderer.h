@@ -8,15 +8,30 @@
 #include <wincodec.h>                // WIC
 #include <d2d1helper.h>
 #include <wrl/client.h>
+#include <d3dcompiler.h>     //ReadFileToBlob 사용
+#include <DirectXMath.h>
+
+struct Vertex
+{
+	DirectX::XMFLOAT3 position;
+	DirectX::XMFLOAT2 texcoord;
+};
+
+struct TimeShaderConstants
+{
+	float Time;
+	float Padding[3]; // float 3개 = 12바이트. float(4) + Padding(12) = 16바이트
+};
 
 using namespace Microsoft::WRL;
-//UI, object
+// UI, object
+// D3D11 메인 렌더 + Direct2D 오버레이
 class Renderer {
 
 private:
 	HWND m_hwnd = NULL;
 
-	//factory 8->7, device, Context 7->6 로
+	//factory 8->7, device,Context 7->6 로
 	
 	ComPtr<ID2D1Factory>			m_pd2dFactory;
 	ComPtr<IWICImagingFactory>		m_pwicFactory;
@@ -35,11 +50,29 @@ private:
 	ComPtr<ID2D1SolidColorBrush>    m_ptextBrush;
 	ComPtr<IDWriteTextFormat>       m_ptextFormat;
 
+	// new
+	ComPtr<ID3D11Buffer>			   m_fullScreenVB;
+	ComPtr<ID3D11Texture2D>			   m_renderTargetTex;
+	ComPtr<ID3D11RenderTargetView>     m_offScreenTargetView; //off screen
+	ComPtr<ID3D11ShaderResourceView>   m_renderTargetSRV;
+
+	ComPtr<ID3D11VertexShader>      m_VertexShader;
+	ComPtr<ID3D11PixelShader>       m_PixelShader;
+	ComPtr<ID3D11InputLayout>       m_InputLayout;
+	ComPtr<ID3D11SamplerState>      m_samplerState;
+	//ComPtr<ID3D11Buffer>			m_timeShaderBuffer;
+
+	UINT m_screenWidth;
+	UINT m_screenHeight;
+
 	void CreateDeviceAndSwapChain(HWND hwnd);
 
-	void CreateRenderTargets();
-
+	void CreateShaderRenderTargets();
 	void CreateWriteResource();
+	void CreateFullScrennQuad();
+	//void CreateTimeShaderBuffer();
+	// 교체
+	/*void CreateShaders();*/
 
 	void ReleaseRenderTargets();
 
@@ -48,6 +81,7 @@ public:
 	~Renderer() { Uninitialize(); }
 
 	void Initialize(HWND hwnd);
+	void InitializeShader(HWND hwnd);
 	void Uninitialize();
 	void Resize(UINT width, UINT height);
 
@@ -74,11 +108,8 @@ public:
 	ID3D11DeviceContext* GetD3DContext() const { return m_pd3dContext.Get(); }
 	ID3D11RenderTargetView* GetD3DRenderTargetView() const { return m_pd3dRenderTV.Get(); }
 
-
-	//Render Routine
 	void RenderBegin();
-	void RenderBeginTest();
-	void RenderEnd(bool bpresent);
 	void RenderEnd();
+
 	void Present();
 };

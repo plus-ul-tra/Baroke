@@ -30,12 +30,12 @@ void TitleScene::Update(double deltaTime)
 }
 
 
-void TitleScene::Render(Renderer& renderer)
-{
-	renderer.RenderBegin();
-
-	renderer.RenderEnd();
-}
+//void TitleScene::Render(Renderer& renderer)
+//{
+//	renderer.RenderBegin();
+//
+//	renderer.RenderEnd();
+//}
 
 
 void TitleScene::OnEnter()
