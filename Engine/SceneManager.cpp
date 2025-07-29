@@ -11,6 +11,7 @@ SceneManager::SceneManager()
 void SceneManager::Initialize(HWND hwnd)
 {
 	m_renderer = make_unique<Renderer>();
+	//std::cout << "?" << std::endl;
 	m_renderer->Initialize(hwnd);
 	m_currentSceneIndex = 0;
 
@@ -106,4 +107,13 @@ void SceneManager::DispatchInput()
 		m_sceneList[m_currentSceneIndex]->OnInput(ev);
 		m_inputQueue.pop();
 	}
+}
+
+void SceneManager::ChangePostProcessing(const string& shaderName)
+{
+	if (m_currentPostProcessing != shaderName) {
+		m_renderer->SetPostProcessingMode(shaderName);
+		m_currentPostProcessing = shaderName;
+	}
+	
 }

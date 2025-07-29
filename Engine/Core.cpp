@@ -23,9 +23,8 @@ void MIYABI::Core::BootManagers()
 {
 	SceneManager::GetInstance().Initialize(static_cast<HWND>(GetWindowHandle()));
 	InputManager::GetInstance().Initialize(static_cast<HWND>(GetWindowHandle()));
-
-	SoundManager::GetInstance().Initialize(); // 사운드 매니저 초기화
-	SoundManager::GetInstance().PlaySoundOnce("TestSound.ogg");
+	SoundManager::GetInstance().Initialize(); 
+	//SoundManager::GetInstance().PlaySoundOnce("TestSound.ogg");
 }
 
 
@@ -37,6 +36,7 @@ bool MIYABI::Core::KeyCommandMapping()
 	m_keyCommandMap[VK_F2] = "F2";
 	m_keyCommandMap[VK_F3] = "F3";
 	m_keyCommandMap[VK_F4] = "F4";
+	m_keyCommandMap[VK_F5] = "F5";
 	m_keyCommandMap[VK_F8] = "DebugMode";
 	m_keyCommandMap[VK_F12] = "Skip";
 	m_keyCommandMap['W'] = "Go";

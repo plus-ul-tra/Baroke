@@ -9,7 +9,7 @@
 
 #include "SceneManager.h"
 #include "SceneBase.h"
-
+#include "ShaderManager.h"
 
 
 #include "Object.h"
@@ -25,4 +25,5 @@
 #include "StoneType.h"
 #include "CreateObject.h"
 #include "Button.h"
+
 //#include "StoneRendererComponent.h"
