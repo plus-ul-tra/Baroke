@@ -19,8 +19,8 @@ Player::Player(float posX, float posY, float width, float height, XMFLOAT4 color
     m_transform->SetScale(XMVectorSet(1.0f, 1.0f, 1.0f, 1.0f));
     m_transform->SetRotation(0.0f);
 
-    m_Collider->SetColliderType(ColliderType::Circle);
-    m_Collider->SetSize(100.0f, 100.0f); //collider 크기는 별도 지정
+    m_Collider->SetColliderType(ColliderType::Rectangle);
+    m_Collider->SetSize(50.0f, 50.0f); //collider 크기는 별도 지정
     m_Collider->SetColor(color); //컬러는 사실 GeoRender에서 결정해도됨
 
     m_geoRender->SetActive(true); //렌더링 활성화, 나중에 일괄로 바꿀 것

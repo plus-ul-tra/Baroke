@@ -168,10 +168,11 @@ void Renderer::CreateWriteResource()
 void Renderer::CreateFullScrennQuad()
 {
 	Vertex quadVertices[] =
-	{
+	{	// x,y,z                     u,v
 		{ {-1.0f,  1.0f, 0.0f}, {0.0f, 0.0f} },
 		{ { 1.0f,  1.0f, 0.0f}, {1.0f, 0.0f} },
 		{ {-1.0f, -1.0f, 0.0f}, {0.0f, 1.0f} },
+
 		{ { 1.0f,  1.0f, 0.0f}, {1.0f, 0.0f} },
 		{ { 1.0f, -1.0f, 0.0f}, {1.0f, 1.0f} },
 		{ {-1.0f, -1.0f, 0.0f}, {0.0f, 1.0f} }
@@ -250,15 +251,19 @@ void Renderer::ReleaseRenderTargets()
 	m_offScreenTargetView.Reset();
 	m_renderTargetTex.Reset();
 	m_renderTargetSRV.Reset();
+
 	m_pd3dRenderTV.Reset();
 	m_ptargetBitmap.Reset();
+
 	m_pbrush.Reset();
 	m_ptextBrush.Reset();
+
 	if (m_pd2dContext)
 	{
 		m_pd2dContext->SetTarget(nullptr);
 	}
 }
+
 
 void Renderer::Initialize(HWND hwnd)
 {
@@ -303,8 +308,8 @@ void Renderer::InitializeShader(HWND hwnd)
 		return;
 	}
 
-	// 픽셀 셰이더도 동일한 파일에서 로드합니다.
-	hr = D3DReadFileToBlob(L"..\\Shader\\PassThrough_PS.cso", &psBlob);
+	// 픽셀 셰이더도 동일한 파일에서 로드
+	hr = D3DReadFileToBlob(L"..\\Shader\\CRTFilter_PS.cso", &psBlob);
 	if (FAILED(hr)) {
 		std::cerr << "ERROR: Failed to read Pixel Shader CSO! HRESULT: 0x" << std::hex << hr << std::endl;
 		return;
@@ -383,7 +388,6 @@ void Renderer::Resize(UINT width, UINT height)
 {
 	if (nullptr == m_pswapChain) return;
 	ReleaseRenderTargets();
-	//CreateRenderTargets();
 	CreateShaderRenderTargets();
 }
 
@@ -505,6 +509,7 @@ void Renderer::RenderBegin()
 	
 }
 
+
 void Renderer::RenderEnd()
 {
 	if (!m_pd2dContext) {
@@ -579,8 +584,6 @@ void Renderer::RenderEnd()
 	ID3D11ShaderResourceView* nullSRV[] = { nullptr };
 	m_pd3dContext->PSSetShaderResources(0, 1, nullSRV);
 
-	//ID3D11Buffer* nullBuffers[] = { nullptr };
-	//m_pd3dContext->PSSetConstantBuffers(0, 1, nullBuffers);
 	
 	// 10. 화면에 표시
 	Present();

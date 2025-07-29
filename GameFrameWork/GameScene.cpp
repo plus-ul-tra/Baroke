@@ -188,8 +188,10 @@ void GameScene::OnInput(const MouseEvent& ev) // mouseInput
 	{
 		std::cout << ev.pos.x << " " << ev.pos.y << std::endl;
 	}
+
 	for (auto& button : m_buttonList)
 	{
 		button->CheckInput(ev);
+
 	}
 }

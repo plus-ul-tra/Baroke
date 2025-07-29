@@ -13,8 +13,7 @@ struct VS_OUTPUT
     float2 Tex : TEXCOORD0; // 텍스처 좌표 (보간될 값)
 };
 
-// 정점 셰이더 (Vertex Shader)
-// 풀스크린 쿼드 또는 삼각형의 정점 위치와 텍스처 좌표를 전달합니다.
+
 
 VS_OUTPUT VSMain(VS_INPUT Input)
 {
