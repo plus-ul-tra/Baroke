@@ -135,6 +135,11 @@ void GameScene::KeyCommandMapping()
 	m_commandMap["F4"] = [this]()
 		{
 			m_board->PlaceStone(0, 1, { StoneColor::Black ,StoneAbility::None });
+
+			// 새로운 오브젝트 생성
+			unique_ptr<NewObject> newObj = std::make_unique<NewObject>(100, 100, 50, 50, "Sample.png", 50);
+			m_objectList.emplace_back(std::move(newObj));
+
 			m_board->PlaceStone(1, 0, { StoneColor::Black ,StoneAbility::None });
 			m_board->PlaceStone(1, 2, { StoneColor::Black ,StoneAbility::None });
 			m_board->PlaceStone(2, 1, { StoneColor::Black ,StoneAbility::None });

@@ -23,4 +23,5 @@
 #include "Collider2D.h"
 #include "BoardLayoutComponent.h"
 #include "StoneType.h"
+#include "CreateObject.h"
 //#include "StoneRendererComponent.h"
