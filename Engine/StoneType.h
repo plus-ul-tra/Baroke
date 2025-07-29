@@ -1,6 +1,6 @@
 #pragma once
 
-enum class StoneColor : uint8_t { None, Black, White };
+enum class StoneColor : uint8_t { None, Black, White , Special };
 enum class StoneAbility : uint8_t { None };
 
 struct StoneInfo
@@ -10,3 +10,7 @@ struct StoneInfo
 };
 
 
+// 진화 여부
+// 세트효과
+// 코스트
+// 리턴

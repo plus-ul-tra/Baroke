@@ -45,6 +45,7 @@ bool Board::PlaceStone(int r, int c, StoneInfo info)
 }
 
 
+
 int Board::CountLiberty(int r, int c,
 	std::vector<std::pair<int, int>>& group,
 	std::array<std::array<bool, MAX_SIZE>, MAX_SIZE>& visited) const

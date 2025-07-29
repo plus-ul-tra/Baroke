@@ -16,8 +16,12 @@ void GameScene::Initialize()
 	m_board = CreateBoard(BOARD_SIZE);
 	auto boardObj = std::make_unique<BoardObject>( 
 		m_board.get(), POSX, POSY, WIDTH, HEIGHT, PADDING);
+	m_boardObj = boardObj.get();
 	m_objectList.emplace_back(std::move(boardObj));
 
+	m_board->PlaceStone(0, 0, { StoneColor::White ,StoneAbility::None });
+	m_board->PlaceStone(0, 1, { StoneColor::White ,StoneAbility::None });
+	m_board->PlaceStone(0, 2, { StoneColor::White ,StoneAbility::None });
 }
 
 void GameScene::FixedUpdate(double fixedDeltaTime)
@@ -154,6 +158,7 @@ void GameScene::KeyCommandMapping()
 			//unique_ptr<NewObject> newObj = std::make_unique<NewObject>(100, 100, 50, 50, "Sample.png", 50);
 			//m_objectList.emplace_back(std::move(newObj));
 
+
 			std::cout << "F4 Command Received" << std::endl;
 		};
 
@@ -195,6 +200,18 @@ void GameScene::OnInput(const MouseEvent& ev) // mouseInput
 	if (ev.type == MouseType::LUp)
 	{
 		std::cout << ev.pos.x << " " << ev.pos.y << std::endl;
+
+		auto [row, col] = m_boardObj->ScreenToBoard(ev.pos.x, ev.pos.y);
+
+
+		if (!m_board->IsOnBoard(row, col))                return;
+		if (m_board->GetStone(row, col).color != StoneColor::None) return;
+
+
+		bool ok = m_board->PlaceStone(row, col, { StoneColor::Black, StoneAbility::None });
+		if (!ok) return;                              
+
+                    
 	}
 
 // 	else if (ev.type == MouseType::Move)
