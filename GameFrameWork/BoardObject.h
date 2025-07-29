@@ -74,7 +74,7 @@ private:
 					auto stone =
 						std::make_unique<Joker>
 						(
-							JokerManager::GetInstance().GetJokerInfo(string("JokerStone1")),
+							JokerManager::GetInstance().GetJokerInfo("JokerStone1"),
 							static_cast<float>(p.x),
 							static_cast<float>(p.y),
 						size
@@ -87,7 +87,7 @@ private:
 					auto stone =
 						std::make_unique<Joker>
 						(
-							JokerManager::GetInstance().GetJokerInfo(string("JokerStone2")),
+							JokerManager::GetInstance().GetJokerInfo("JokerStone2"),
 							static_cast<float>(p.x),
 							static_cast<float>(p.y),
 						size
