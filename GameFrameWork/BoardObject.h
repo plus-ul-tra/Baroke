@@ -69,12 +69,25 @@ private:
 					stone->SetTagPos(r, c);           // (row,col) 기록
 					m_stones.emplace_back(std::move(stone));
 				}
-				else
+				else if (nodes[r][c].ability == StoneAbility::ability1)
 				{
 					auto stone =
 						std::make_unique<Joker>
 						(
 							JokerManager::GetInstance().GetJokerInfo(string("JokerStone1")),
+							static_cast<float>(p.x),
+							static_cast<float>(p.y),
+						size
+						);
+					stone->SetTagPos(r, c);           // (row,col) 기록
+					m_stones.emplace_back(std::move(stone));
+				}
+				else if (nodes[r][c].ability == StoneAbility::ability2)
+				{
+					auto stone =
+						std::make_unique<Joker>
+						(
+							JokerManager::GetInstance().GetJokerInfo(string("JokerStone2")),
 							static_cast<float>(p.x),
 							static_cast<float>(p.y),
 						size
