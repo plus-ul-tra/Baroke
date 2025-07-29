@@ -16,9 +16,6 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="pch.cpp" />
-    <ClCompile Include="Board.cpp">
-      <Filter>Board</Filter>
-    </ClCompile>
     <ClCompile Include="BaseRender.cpp">
       <Filter>Components</Filter>
     </ClCompile>
@@ -92,9 +89,6 @@
   <ItemGroup>
     <ClInclude Include="Engine.h" />
     <ClInclude Include="pch.h" />
-    <ClInclude Include="Board.h">
-      <Filter>Board</Filter>
-    </ClInclude>
     <ClInclude Include="BaseRender.h">
       <Filter>Components</Filter>
     </ClInclude>
@@ -190,9 +184,6 @@
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <Filter Include="Board">
-      <UniqueIdentifier>{11a63c8f-de9b-4c2d-8e93-28d546775ed6}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Common">
       <UniqueIdentifier>{66447822-75a8-4106-9d6e-7ace581ee941}</UniqueIdentifier>
     </Filter>

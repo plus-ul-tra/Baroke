@@ -5,11 +5,11 @@
 class Board
 {
 public:
-	static constexpr int MAX_SIZE = 15;
+	static constexpr int MAX_SIZE = 15; // 점의 개수
 	using NodeArray = std::array<std::array<StoneInfo, MAX_SIZE>, MAX_SIZE>;
 
 
-	Board(int size = 15) : m_size(size) {}
+	Board(int size = MAX_SIZE) : m_size(size) {}
 
 	int  Size() const { return m_size; }		// raw, col 크기 반환 
 
@@ -40,5 +40,5 @@ private:
 };
 
 
-std::unique_ptr<Board> CreateBoard(int size = 15);
+std::unique_ptr<Board> CreateBoard(int size = Board::MAX_SIZE);
 

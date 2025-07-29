@@ -3,6 +3,11 @@
 
 
 #define BOARD_SIZE 15
+#define PADDING 0
+#define POSX 582
+#define POSY 162
+#define WIDTH 756
+#define HEIGHT 756
 
 void GameScene::Initialize()
 {
@@ -10,12 +15,9 @@ void GameScene::Initialize()
 	KeyCommandMapping();
 	m_board = CreateBoard(BOARD_SIZE);
 	auto boardObj = std::make_unique<BoardObject>( 
-		m_board.get(), 510, 90, 900, 900, 10);
+		m_board.get(), POSX, POSY, WIDTH, HEIGHT, PADDING);
 	m_objectList.emplace_back(std::move(boardObj));
 
-
-	m_board->PlaceStone(6, 5, { StoneColor::Black ,StoneAbility::None });
-	m_board->PlaceStone(1, 1, { StoneColor::White ,StoneAbility::None });
 }
 
 void GameScene::FixedUpdate(double fixedDeltaTime)
@@ -137,15 +139,21 @@ void GameScene::KeyCommandMapping()
 
 	m_commandMap["F4"] = [this]()
 		{
-			m_board->PlaceStone(0, 1, { StoneColor::Black ,StoneAbility::None });
+
+			//m_board->PlaceStone(0, 1, { StoneColor::Black ,StoneAbility::None });
+			for (int i = 1; i < BOARD_SIZE-1; i++) 
+			{
+				for (int j = 1; j < BOARD_SIZE-1; j++) 
+				{
+					m_board->PlaceStone(i, j, { StoneColor::Black ,StoneAbility::None });
+				}
+			}
+
 
 			// 새로운 오브젝트 생성
-			unique_ptr<NewObject> newObj = std::make_unique<NewObject>(100, 100, 50, 50, "Sample.png", 50);
-			m_objectList.emplace_back(std::move(newObj));
+			//unique_ptr<NewObject> newObj = std::make_unique<NewObject>(100, 100, 50, 50, "Sample.png", 50);
+			//m_objectList.emplace_back(std::move(newObj));
 
-			m_board->PlaceStone(1, 0, { StoneColor::Black ,StoneAbility::None });
-			m_board->PlaceStone(1, 2, { StoneColor::Black ,StoneAbility::None });
-			m_board->PlaceStone(2, 1, { StoneColor::Black ,StoneAbility::None });
 			std::cout << "F4 Command Received" << std::endl;
 		};
 
@@ -189,9 +197,15 @@ void GameScene::OnInput(const MouseEvent& ev) // mouseInput
 		std::cout << ev.pos.x << " " << ev.pos.y << std::endl;
 	}
 
+// 	else if (ev.type == MouseType::Move)
+// 	{
+// 		std::cout << ev.pos.x << " " << ev.pos.y << std::endl;
+// 	}
+
 	for (auto& button : m_buttonList)
 	{
 		button->CheckInput(ev);
 
 	}
+
 }

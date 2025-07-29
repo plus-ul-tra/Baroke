@@ -1,14 +1,16 @@
 struct VS_OUTPUT
 {
-    float4 Pos : SV_POSITION; // Á¤Á¡ ¼ÎÀÌ´õ¿¡¼­ Àü´ŞµÈ Å¬¸³ °ø°£ ÁÂÇ¥
-    float2 Tex : TEXCOORD0; // ÅØ½ºÃ³ ÁÂÇ¥
+
+    float4 Pos : SV_POSITION; // ì •ì  ì…°ì´ë”ì—ì„œ ì „ë‹¬ëœ í´ë¦½ ê³µê°„ ì¢Œí‘œ
+    float2 Tex : TEXCOORD0; // í…ìŠ¤ì²˜ ì¢Œí‘œ
 };
 
-// ¼ÎÀÌ´õ ¸®¼Ò½º ¹× »ùÇÃ·¯
+// ì…°ì´ë” ë¦¬ì†ŒìŠ¤ ë° ìƒ˜í”ŒëŸ¬
 Texture2D g_Texture : register(t0);
 SamplerState g_Sampler : register(s0);
 
-// ÇÈ¼¿ ¼ÎÀÌ´õ: ÅØ½ºÃ³¸¦ ±×´ë·Î È­¸é¿¡ Ãâ·Â
+// í”½ì…€ ì…°ì´ë”: í…ìŠ¤ì²˜ë¥¼ ê·¸ëŒ€ë¡œ í™”ë©´ì— ì¶œë ¥
+
 float4 PSMain(VS_OUTPUT Input) : SV_Target
 {
     return g_Texture.Sample(g_Sampler, Input.Tex);
