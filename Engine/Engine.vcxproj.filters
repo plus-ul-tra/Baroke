@@ -228,5 +228,9 @@
       <Filter>ETC</Filter>
     </ClInclude>
 
+    <ClInclude Include="StoneType.h">
+      <Filter>ETC</Filter>
+    </ClInclude>
+
   </ItemGroup>
 </Project>

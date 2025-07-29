@@ -1,15 +1,22 @@
 #include "cpch.h"
 #include "GameScene.h"
-#include "BoardObject.h"
+
+
+#define BOARD_SIZE 15
 
 void GameScene::Initialize()
 {
 	std::cout << "Game Scene Init" << std::endl;
 	KeyCommandMapping();
-	m_board = CreateBoard(15);
+	m_board = CreateBoard(BOARD_SIZE);
 	auto boardObj = std::make_unique<BoardObject>( 
 		m_board.get(), 510, 90, 900, 900, 10);
 	m_objectList.emplace_back(std::move(boardObj));
+
+
+	m_board->PlaceStone(6, 5, { StoneColor::Black ,StoneAbility::None });
+	m_board->PlaceStone(1, 1, { StoneColor::White ,StoneAbility::None });
+
 }
 
 void GameScene::FixedUpdate(double fixedDeltaTime)
@@ -94,11 +101,43 @@ void GameScene::KeyCommandMapping()
 
 	m_commandMap["F3"] = [this]()
 		{
+			//------------------------------------------------------------------
+			// 1. 열 번호 헤더
+			//------------------------------------------------------------------
+			std::cout << "   ";                           // 좌측 여백
+			for (int col = 0; col < BOARD_SIZE; ++col)
+				std::cout << std::setw(3) << col;
+			std::cout << '\n';
+
+			//------------------------------------------------------------------
+			// 2. 행 단위로 격자 출력
+			//------------------------------------------------------------------
+			for (int row = 0; row < BOARD_SIZE; ++row)
+			{
+				std::cout << std::setw(2) << row << ' ';  // 행 번호 출력
+
+				for (int col = 0; col < BOARD_SIZE; ++col)
+				{
+					auto info = m_board->GetStone(row, col); 
+
+					char ch = '.';
+					if (info.color == StoneColor::Black)  ch = 'B';
+					else if (info.color == StoneColor::White)  ch = 'W';
+
+					std::cout << ' ' << ch << ' ';
+				}
+				std::cout << '\n';
+			}
+			std::cout << std::flush;
 			std::cout << "F3 Command Received" << std::endl;
 		};
 
 	m_commandMap["F4"] = [this]()
 		{
+			m_board->PlaceStone(0, 1, { StoneColor::Black ,StoneAbility::None });
+			m_board->PlaceStone(1, 0, { StoneColor::Black ,StoneAbility::None });
+			m_board->PlaceStone(1, 2, { StoneColor::Black ,StoneAbility::None });
+			m_board->PlaceStone(2, 1, { StoneColor::Black ,StoneAbility::None });
 			std::cout << "F4 Command Received" << std::endl;
 		};
 

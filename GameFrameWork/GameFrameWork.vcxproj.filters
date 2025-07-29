@@ -21,9 +21,6 @@
     <Filter Include="소스 파일\GameObjects">
       <UniqueIdentifier>{1eae1693-f355-4dd6-9baf-b35739dc75f1}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Board">
-      <UniqueIdentifier>{bb9632ef-e4cb-4849-8f58-27e06e66ad61}</UniqueIdentifier>
-    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
@@ -50,9 +47,6 @@
     <ClCompile Include="BoardObject.cpp">
       <Filter>소스 파일\GameObjects</Filter>
     </ClCompile>
-    <ClCompile Include="Board.cpp">
-      <Filter>Board</Filter>
-    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="GameManager.h">
@@ -78,9 +72,6 @@
     </ClInclude>
     <ClInclude Include="BoardObject.h">
       <Filter>소스 파일\GameObjects</Filter>
-    </ClInclude>
-    <ClInclude Include="Board.h">
-      <Filter>Board</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

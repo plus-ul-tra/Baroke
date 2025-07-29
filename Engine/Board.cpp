@@ -13,7 +13,11 @@ std::unique_ptr<Board> CreateBoard(int size)
 bool Board::PlaceStone(int r, int c, StoneInfo info)
 {
 	if (!IsOnBoard(r, c))            return false;						// 보드 밖이면 리턴
-	if (m_nodes[r][c].color != StoneColor::None) return false;			// 해당 노드 위에 돌이 있으면 리턴
+	if (m_nodes[r][c].color != StoneColor::None) 
+	{
+		std::cout << "돌 존재" << std::endl;
+		return false; 
+	}			// 해당 노드 위에 돌이 있으면 리턴
 
 	m_nodes[r][c] = info;
 
