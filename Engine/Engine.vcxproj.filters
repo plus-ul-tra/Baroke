@@ -1,243 +1,224 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup>
-    <Filter Include="Common">
-      <UniqueIdentifier>{4FC737F1-C7A5-4376-A066-2A32D752A2FF}</UniqueIdentifier>
-      <Extensions>cpp;c;cc;cxx;c++;cppm;ixx;def;odl;idl;hpj;bat;asm;asmx</Extensions>
-    </Filter>
-    <Filter Include="Window">
-      <UniqueIdentifier>{1da6cfa7-1bf6-4c7d-a92b-e206e4081d4d}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Timer">
-      <UniqueIdentifier>{94f5997f-a4b4-4d43-832a-59ba50ab1003}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Managers">
-      <UniqueIdentifier>{07dd99c3-40e5-476d-ae1a-87b79d1c76a8}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Utility">
-      <UniqueIdentifier>{13f3e9af-611a-4797-b5f9-efb78ea996aa}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="SceneBase">
-      <UniqueIdentifier>{f9aed09b-3b5f-480d-a80a-e2e7379656fe}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Object">
-      <UniqueIdentifier>{bb275a15-5bcd-4eaf-a951-3d77484a2f57}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Object\UI">
-      <UniqueIdentifier>{e0743788-c68a-4523-bc7b-40dc01a132ca}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Object\Actor">
-      <UniqueIdentifier>{7d5c84cf-10c9-43e0-a649-7671e5485ae0}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Object\Static">
-      <UniqueIdentifier>{29bed93f-fceb-48f4-bbdf-163dfb747654}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Utility\Math">
-      <UniqueIdentifier>{ab332733-d4cc-4457-b88b-fb27ce686fb9}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Core">
-      <UniqueIdentifier>{fb8e5520-60d1-4bd0-8508-f1f143afccaf}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Components">
-      <UniqueIdentifier>{318cf0cc-61a7-4761-a95b-d28cd8735b4a}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Renderer">
-      <UniqueIdentifier>{c59b61d1-32b3-4f74-9191-6f158db14baf}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Sprite">
-      <UniqueIdentifier>{a32c55bf-50b8-435e-8dc3-895bd79842dd}</UniqueIdentifier>
-    </Filter>
-
-    <Filter Include="HLSL">
-      <UniqueIdentifier>{d2e263db-a5e4-49a8-9da0-201410461953}</UniqueIdentifier>
-
-    <Filter Include="Board">
-      <UniqueIdentifier>{629727ec-ebcb-42c1-8f72-e5374784ca67}</UniqueIdentifier>
-
-    <Filter Include="ETC">
-      <UniqueIdentifier>{49f6db92-6a87-4ca4-b5ad-cc5403adda2f}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Managers\Parser">
-      <UniqueIdentifier>{fb6842f1-60c6-4a29-8224-feea525b1f83}</UniqueIdentifier>
-    </Filter>
+    <FxCompile Include="CRTFilter_PS.hlsl">
+      <Filter>Shader</Filter>
+    </FxCompile>
+    <FxCompile Include="PassThrough_PS.hlsl">
+      <Filter>Shader</Filter>
+    </FxCompile>
+    <FxCompile Include="PassThrough_VS.hlsl">
+      <Filter>Shader</Filter>
+    </FxCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="Window.cpp">
-      <Filter>Window</Filter>
-    </ClCompile>
-    <ClCompile Include="Timer.cpp">
-      <Filter>Timer</Filter>
-    </ClCompile>
-    <ClCompile Include="Renderer.cpp">
-      <Filter>Renderer</Filter>
-    </ClCompile>
-    <ClCompile Include="SceneManager.cpp">
-      <Filter>Managers</Filter>
-    </ClCompile>
-    <ClCompile Include="SceneBase.cpp">
-      <Filter>SceneBase</Filter>
-    </ClCompile>
-    <ClCompile Include="pch.cpp">
-      <Filter>Common</Filter>
-    </ClCompile>
-    <ClCompile Include="Object.cpp">
-      <Filter>Object</Filter>
-    </ClCompile>
-    <ClCompile Include="Core.cpp">
-      <Filter>Core</Filter>
-    </ClCompile>
-    <ClCompile Include="GameTimer.cpp">
-      <Filter>Timer</Filter>
-    </ClCompile>
-    <ClCompile Include="Component.h">
-      <Filter>Components</Filter>
-    </ClCompile>
-    <ClCompile Include="Transform.cpp">
-      <Filter>Components</Filter>
+    <ClCompile Include="pch.cpp" />
+    <ClCompile Include="Board.cpp">
+      <Filter>Board</Filter>
     </ClCompile>
     <ClCompile Include="BaseRender.cpp">
       <Filter>Components</Filter>
     </ClCompile>
-    <ClCompile Include="GeoRender.cpp">
-      <Filter>Components</Filter>
-    </ClCompile>
-    <ClCompile Include="InputManager.cpp">
-      <Filter>Managers</Filter>
-    </ClCompile>
-    <ClCompile Include="AnimationClip.cpp">
-      <Filter>Sprite</Filter>
-    </ClCompile>
-    <ClCompile Include="SpriteManager.cpp">
-      <Filter>Managers</Filter>
-    </ClCompile>
     <ClCompile Include="BitmapRender.cpp">
       <Filter>Components</Filter>
-    </ClCompile>
-    <ClCompile Include="SoundManager.cpp">
-      <Filter>Managers</Filter>
     </ClCompile>
     <ClCompile Include="Collider2D.cpp">
       <Filter>Components</Filter>
     </ClCompile>
-
+    <ClCompile Include="Component.h">
+      <Filter>Components</Filter>
+    </ClCompile>
+    <ClCompile Include="Core.cpp">
+      <Filter>Core</Filter>
+    </ClCompile>
+    <ClCompile Include="AnimationClip.cpp">
+      <Filter>Sprite</Filter>
+    </ClCompile>
+    <ClCompile Include="GameTimer.cpp">
+      <Filter>Timer</Filter>
+    </ClCompile>
     <ClCompile Include="FileDirectory.cpp">
-      <Filter>Utility</Filter>
+      <Filter>Utillity</Filter>
     </ClCompile>
-    <ClCompile Include="Board.cpp">
-      <Filter>Board</Filter>
+    <ClCompile Include="GeoRender.cpp">
+      <Filter>Components</Filter>
     </ClCompile>
-    <ClCompile Include="StoneParser.cpp">
-      <Filter>Managers\Parser</Filter>
+    <ClCompile Include="Object.cpp">
+      <Filter>Object</Filter>
+    </ClCompile>
+    <ClCompile Include="InputManager.cpp">
+      <Filter>Managers</Filter>
+    </ClCompile>
+    <ClCompile Include="Renderer.cpp">
+      <Filter>Renderer</Filter>
+    </ClCompile>
+    <ClCompile Include="SceneBase.cpp">
+      <Filter>SceneBase</Filter>
+    </ClCompile>
+    <ClCompile Include="SceneManager.cpp">
+      <Filter>Managers</Filter>
+    </ClCompile>
+    <ClCompile Include="SoundManager.cpp">
+      <Filter>Managers</Filter>
+    </ClCompile>
+    <ClCompile Include="SpriteManager.cpp">
+      <Filter>Managers</Filter>
     </ClCompile>
     <ClCompile Include="SpriteParser.cpp">
-      <Filter>Managers\Parser</Filter>
+      <Filter>Parser</Filter>
+    </ClCompile>
+    <ClCompile Include="StoneParser.cpp">
+      <Filter>Parser</Filter>
+    </ClCompile>
+    <ClCompile Include="Timer.cpp">
+      <Filter>Timer</Filter>
+    </ClCompile>
+    <ClCompile Include="Window.cpp">
+      <Filter>Window</Filter>
+    </ClCompile>
+    <ClCompile Include="Transform.cpp">
+      <Filter>Components</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Engine.h" />
-    <ClInclude Include="Window.h">
-      <Filter>Window</Filter>
+    <ClInclude Include="pch.h" />
+    <ClInclude Include="Board.h">
+      <Filter>Board</Filter>
     </ClInclude>
-    <ClInclude Include="Timer.h">
+    <ClInclude Include="BaseRender.h">
+      <Filter>Components</Filter>
+    </ClInclude>
+    <ClInclude Include="BitmapRender.h">
+      <Filter>Components</Filter>
+    </ClInclude>
+    <ClInclude Include="BoardLayoutComponent.h">
+      <Filter>Components</Filter>
+    </ClInclude>
+    <ClInclude Include="Collider2D.h">
+      <Filter>Components</Filter>
+    </ClInclude>
+    <ClInclude Include="Core.h">
+      <Filter>Core</Filter>
+    </ClInclude>
+    <ClInclude Include="CoreTypes.h">
+      <Filter>Core</Filter>
+    </ClInclude>
+    <ClInclude Include="AnimationClip.h">
+      <Filter>Sprite</Filter>
+    </ClInclude>
+    <ClInclude Include="GameTimer.h">
       <Filter>Timer</Filter>
+    </ClInclude>
+    <ClInclude Include="FileDirectory.h">
+      <Filter>Utillity</Filter>
+    </ClInclude>
+    <ClInclude Include="GeoRender.h">
+      <Filter>Components</Filter>
+    </ClInclude>
+    <ClInclude Include="Object.h">
+      <Filter>Object</Filter>
+    </ClInclude>
+    <ClInclude Include="InputManager.h">
+      <Filter>Managers</Filter>
+    </ClInclude>
+    <ClInclude Include="InputEvents.h">
+      <Filter>ETC</Filter>
     </ClInclude>
     <ClInclude Include="Renderer.h">
       <Filter>Renderer</Filter>
+    </ClInclude>
+    <ClInclude Include="SceneBase.h">
+      <Filter>SceneBase</Filter>
     </ClInclude>
     <ClInclude Include="SceneManager.h">
       <Filter>Managers</Filter>
     </ClInclude>
     <ClInclude Include="Singleton.h">
-      <Filter>Utility</Filter>
-    </ClInclude>
-    <ClInclude Include="SceneBase.h">
-      <Filter>SceneBase</Filter>
-    </ClInclude>
-    <ClInclude Include="pch.h" />
-    <ClInclude Include="Object.h">
-      <Filter>Object</Filter>
-    </ClInclude>
-    <ClInclude Include="UI.h">
-      <Filter>Object\UI</Filter>
-    </ClInclude>
-    <ClInclude Include="StaticObject.h">
-      <Filter>Object\Static</Filter>
-    </ClInclude>
-    <ClInclude Include="Actor.h">
-      <Filter>Object\Actor</Filter>
-    </ClInclude>
-    <ClInclude Include="Core.h">
-      <Filter>Core</Filter>
-    </ClInclude>
-    <ClInclude Include="GameTimer.h">
-      <Filter>Timer</Filter>
-    </ClInclude>
-    <ClInclude Include="CoreTypes.h">
-      <Filter>Components</Filter>
-    </ClInclude>
-    <ClInclude Include="Transform.h">
-      <Filter>Components</Filter>
-    </ClInclude>
-    <ClInclude Include="BaseRender.h">
-      <Filter>Components</Filter>
-    </ClInclude>
-    <ClInclude Include="GeoRender.h">
-      <Filter>Components</Filter>
-    </ClInclude>
-    <ClInclude Include="InputManager.h">
-      <Filter>Managers</Filter>
-    </ClInclude>
-    <ClInclude Include="AnimationClip.h">
-      <Filter>Sprite</Filter>
-    </ClInclude>
-    <ClInclude Include="SpriteManager.h">
-      <Filter>Managers</Filter>
-    </ClInclude>
-    <ClInclude Include="BitmapRender.h">
-      <Filter>Components</Filter>
+      <Filter>Utillity</Filter>
     </ClInclude>
     <ClInclude Include="SoundManager.h">
       <Filter>Managers</Filter>
     </ClInclude>
-    <ClInclude Include="Collider2D.h">
-      <Filter>Components</Filter>
+    <ClInclude Include="SpriteManager.h">
+      <Filter>Managers</Filter>
     </ClInclude>
-
-  </ItemGroup>
-  <ItemGroup>
-    <FxCompile Include="PassThrough_PS.hlsl">
-      <Filter>HLSL</Filter>
-    </FxCompile>
-    <FxCompile Include="PassThrough_VS.hlsl">
-      <Filter>HLSL</Filter>
-    </FxCompile>
-    <FxCompile Include="CRTFilter_PS.hlsl">
-      <Filter>HLSL</Filter>
-    </FxCompile>
-
-    <ClInclude Include="FileDirectory.h">
-      <Filter>Utility</Filter>
-    </ClInclude>
-    <ClInclude Include="BoardLayoutComponent.h">
-      <Filter>Components</Filter>
-    </ClInclude>
-    <ClInclude Include="Board.h">
-      <Filter>Board</Filter>
-    </ClInclude>
-    <ClInclude Include="InputEvents.h">
-      <Filter>ETC</Filter>
-    </ClInclude>
-    <ClInclude Include="StoneParser.h">
-      <Filter>Managers\Parser</Filter>
-    </ClInclude>
-    <ClInclude Include="json.hpp">
-      <Filter>Managers\Parser</Filter>
+    <ClInclude Include="StaticObject.h">
+      <Filter>Object</Filter>
     </ClInclude>
     <ClInclude Include="SpriteParser.h">
-      <Filter>Managers\Parser</Filter>
+      <Filter>Parser</Filter>
+    </ClInclude>
+    <ClInclude Include="StoneParser.h">
+      <Filter>Parser</Filter>
     </ClInclude>
     <ClInclude Include="StoneType.h">
       <Filter>ETC</Filter>
     </ClInclude>
+    <ClInclude Include="Timer.h">
+      <Filter>Timer</Filter>
+    </ClInclude>
+    <ClInclude Include="UI.h">
+      <Filter>Object</Filter>
+    </ClInclude>
+    <ClInclude Include="Window.h">
+      <Filter>Window</Filter>
+    </ClInclude>
+    <ClInclude Include="Transform.h">
+      <Filter>Components</Filter>
+    </ClInclude>
+    <ClInclude Include="json.hpp">
+      <Filter>Parser</Filter>
+    </ClInclude>
+    <ClInclude Include="Actor.h">
+      <Filter>Object</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <Filter Include="Board">
+      <UniqueIdentifier>{11a63c8f-de9b-4c2d-8e93-28d546775ed6}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Common">
+      <UniqueIdentifier>{66447822-75a8-4106-9d6e-7ace581ee941}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Components">
+      <UniqueIdentifier>{a15d6204-7791-41a3-a906-7f95a515b259}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Core">
+      <UniqueIdentifier>{a153aabb-b839-4b7c-a0ce-96a3a02253cd}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ETC">
+      <UniqueIdentifier>{64ec7b28-4416-4186-93ff-ba61d7f4de77}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Managers">
+      <UniqueIdentifier>{079f0a51-ee1f-4333-b1fd-a3db0ea4b442}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Object">
+      <UniqueIdentifier>{4a89a8b7-2f21-4718-af7b-0a6f29072b83}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Renderer">
+      <UniqueIdentifier>{aa443fbe-37a5-41c6-ac29-06a7de09b4d0}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="SceneBase">
+      <UniqueIdentifier>{5c16060a-6abc-4d11-b851-0b8f5f60e065}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Sprite">
+      <UniqueIdentifier>{191254d3-5da1-45cb-9443-a95d5106c67e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Shader">
+      <UniqueIdentifier>{6704c7e5-1023-4e44-af9c-c0de5a99e65f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Timer">
+      <UniqueIdentifier>{30355473-46ba-4fd2-8a3f-9f42cf7cf1b9}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Utillity">
+      <UniqueIdentifier>{187287ec-ff1f-4019-abc2-10131e708349}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Window">
+      <UniqueIdentifier>{55beeeea-0394-454e-86e2-a36407723bb0}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Parser">
+      <UniqueIdentifier>{6b212ac8-10d1-43a5-8e33-f7ee8113b0ea}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
 </Project>
