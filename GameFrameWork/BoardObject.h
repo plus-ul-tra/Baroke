@@ -2,7 +2,7 @@
 #include "Engine.h"      
 #include "Board.h"             
 #include "StoneObject.h"
-
+#include "Joker.h"
 
 class BoardObject : public Object
 {
@@ -59,13 +59,29 @@ private:
 				POINT p = m_layout->BoardToScreen(r, c);
 				float size = static_cast<float>(m_layout->GetCell()) - 10;
 
-				auto stone = std::make_unique<StoneObject>(
-					nodes[r][c].color,
-					static_cast<float>(p.x),
-					static_cast<float>(p.y),
-					size);
-				stone->SetTagPos(r, c);           // (row,col) 기록
-				m_stones.emplace_back(std::move(stone));
+				if (nodes[r][c].color != StoneColor::Special)
+				{
+					auto stone = std::make_unique<StoneObject>(
+						nodes[r][c].color,
+						static_cast<float>(p.x),
+						static_cast<float>(p.y),
+						size);
+					stone->SetTagPos(r, c);           // (row,col) 기록
+					m_stones.emplace_back(std::move(stone));
+				}
+				else
+				{
+					auto stone =
+						std::make_unique<Joker>
+						(
+							JokerManager::GetInstance().GetJokerInfo(string("JokerStone1")),
+							static_cast<float>(p.x),
+							static_cast<float>(p.y),
+						size
+						);
+					stone->SetTagPos(r, c);           // (row,col) 기록
+					m_stones.emplace_back(std::move(stone));
+				}
 			}
 	}
 
