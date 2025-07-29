@@ -16,7 +16,6 @@ void GameScene::Initialize()
 
 	m_board->PlaceStone(6, 5, { StoneColor::Black ,StoneAbility::None });
 	m_board->PlaceStone(1, 1, { StoneColor::White ,StoneAbility::None });
-
 }
 
 void GameScene::FixedUpdate(double fixedDeltaTime)
@@ -58,6 +57,10 @@ void GameScene::OnEnter()
 	m_objectList.push_back(std::move(playerObject));
 	std::cout << m_objectList.size() << std::endl;
 
+	// 버튼 생성
+	unique_ptr<Button> button1 = std::make_unique<Button>(600.0f, 600.0f, 200, 200, "Sample.png", 50);
+	m_buttonList.emplace_back(button1.get());
+	m_objectList.emplace_back(std::move(button1));
 }
 
 void GameScene::OnLeave()
@@ -184,5 +187,9 @@ void GameScene::OnInput(const MouseEvent& ev) // mouseInput
 	if (ev.type == MouseType::LUp)
 	{
 		std::cout << ev.pos.x << " " << ev.pos.y << std::endl;
+	}
+	for (auto& button : m_buttonList)
+	{
+		button->CheckInput(ev);
 	}
 }

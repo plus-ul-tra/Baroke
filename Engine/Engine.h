@@ -24,4 +24,5 @@
 #include "BoardLayoutComponent.h"
 #include "StoneType.h"
 #include "CreateObject.h"
+#include "Button.h"
 //#include "StoneRendererComponent.h"
