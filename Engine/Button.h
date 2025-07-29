@@ -38,9 +38,9 @@ public:
 		m_bitmapRender->SetActive(true);
 	}
 
-	void FixedUpdate(double deltaTime) override { Object::FixedUpdate(deltaTime); }
-	void Update(double deltaTime) override { Object::Update(deltaTime); }
-	void LateUpdate(double deltaTime) override { Object::LateUpdate(deltaTime); }
+	void Update(double deltaTime) override { Object::Update(deltaTime); ButtonFunction(); }
+
+	virtual void ButtonFunction() {}
 
 	XMVECTOR GetPosition() const { return m_transform->GetPosition(); }
 	void SetPosition(XMVECTOR pos) { m_transform->SetPosition(pos); }

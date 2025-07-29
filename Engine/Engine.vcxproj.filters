@@ -67,7 +67,7 @@
     <ClCompile Include="SpriteParser.cpp">
       <Filter>Parser</Filter>
     </ClCompile>
-    <ClCompile Include="StoneParser.cpp">
+    <ClCompile Include="JokerParser.cpp">
       <Filter>Parser</Filter>
     </ClCompile>
     <ClCompile Include="Timer.cpp">
@@ -85,7 +85,11 @@
     <ClCompile Include="Button.cpp">
       <Filter>Object</Filter>
     </ClCompile>
+
+    <ClCompile Include="JokerManager.cpp">
+
     <ClCompile Include="ShaderManager.cpp">
+
       <Filter>Managers</Filter>
     </ClCompile>
   </ItemGroup>
@@ -155,7 +159,7 @@
     <ClInclude Include="SpriteParser.h">
       <Filter>Parser</Filter>
     </ClInclude>
-    <ClInclude Include="StoneParser.h">
+    <ClInclude Include="JokerParser.h">
       <Filter>Parser</Filter>
     </ClInclude>
     <ClInclude Include="StoneType.h">
@@ -186,7 +190,10 @@
       <Filter>Object</Filter>
     </ClInclude>
     <ClInclude Include="Board.h" />
+    <ClInclude Include="JokerManager.h">
+      
     <ClInclude Include="ShaderManager.h">
+
       <Filter>Managers</Filter>
     </ClInclude>
   </ItemGroup>

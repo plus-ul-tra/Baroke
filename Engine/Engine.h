@@ -9,7 +9,9 @@
 
 #include "SceneManager.h"
 #include "SceneBase.h"
+#include "JokerManager.h"
 #include "ShaderManager.h"
+
 
 
 #include "Object.h"

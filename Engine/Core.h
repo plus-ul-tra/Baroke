@@ -4,9 +4,10 @@
 #include "Timer.h"
 #include "GameTimer.h"
 #include "SceneManager.h"
-#include"InputManager.h"
+#include "InputManager.h"
 #include "SoundManager.h"
 #include "InputEvents.h"
+#include "JokerManager.h"
 
 
 namespace MIYABI {
