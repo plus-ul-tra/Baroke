@@ -20,6 +20,7 @@ public:
 		int row = (py - m_offY - m_padding + m_cell / 2) / m_cell;
 		return { row, col };
 	}
+	int GetCell() { return m_cell; }
 private:
 	int m_offX, m_offY, m_cell, m_padding;
 };

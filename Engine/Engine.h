@@ -22,3 +22,5 @@
 #include "BitmapRender.h"
 #include "Collider2D.h"
 #include "BoardLayoutComponent.h"
+#include "StoneType.h"
+//#include "StoneRendererComponent.h"
