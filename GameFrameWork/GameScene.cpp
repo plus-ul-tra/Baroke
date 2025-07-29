@@ -214,6 +214,7 @@ void GameScene::OnInput(const MouseEvent& ev) // mouseInput
 
 
 		bool ok = m_board->PlaceStone(row, col, { StoneColor::Black, StoneAbility::None });
+
 		if (!ok) return;
 	}
 	else if (ev.type == MouseType::RDown)
@@ -226,6 +227,7 @@ void GameScene::OnInput(const MouseEvent& ev) // mouseInput
 
 		bool ok = m_board->PlaceStone(row, col, { StoneColor::Special ,StoneAbility::ability1 });
 		if (!ok) return;
+
 	}
 
 // 	else if (ev.type == MouseType::Move)
