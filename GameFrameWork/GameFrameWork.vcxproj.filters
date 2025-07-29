@@ -56,6 +56,9 @@
     <ClCompile Include="Board.cpp">
       <Filter>소스 파일\Board</Filter>
     </ClCompile>
+    <ClCompile Include="Joker.cpp">
+      <Filter>소스 파일\GameObjects</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="GameManager.h">
@@ -87,6 +90,9 @@
     </ClInclude>
     <ClInclude Include="Board.h">
       <Filter>소스 파일\Board</Filter>
+    </ClInclude>
+    <ClInclude Include="Joker.h">
+      <Filter>소스 파일\GameObjects</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

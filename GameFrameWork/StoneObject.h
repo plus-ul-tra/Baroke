@@ -5,6 +5,7 @@
 class StoneObject : public Object
 {
 public:
+	StoneObject() = default;
 	StoneObject(StoneColor color, float posX, float posY, float size)
 	{
 		m_transform = AddComponent<Transform>();
@@ -26,7 +27,7 @@ public:
 	std::pair<int, int> GetTagPos() const { return m_rc; }
 
 	void Update(double) override {}          
-private:
+protected:
 	Transform* m_transform{};
 	BitmapRender* m_sprite{};
 	std::pair<int, int> m_rc{ -1,-1 };
