@@ -154,9 +154,14 @@
     <ClCompile Include="AnimationClip.cpp" />
     <ClCompile Include="BaseRender.cpp" />
     <ClCompile Include="BitmapRender.cpp" />
+
+    <ClCompile Include="Board.cpp" />
+    <ClCompile Include="Button.cpp" />
+
     <ClCompile Include="Collider2D.cpp" />
     <ClCompile Include="Component.h" />
     <ClCompile Include="Core.cpp" />
+    <ClCompile Include="CreateObject.cpp" />
     <ClCompile Include="FileDirectory.cpp" />
     <ClCompile Include="GameTimer.cpp" />
     <ClCompile Include="GeoRender.cpp" />
@@ -181,10 +186,15 @@
     <ClInclude Include="AnimationClip.h" />
     <ClInclude Include="BaseRender.h" />
     <ClInclude Include="BitmapRender.h" />
+
+    <ClInclude Include="Board.h" />
+
     <ClInclude Include="BoardLayoutComponent.h" />
+    <ClInclude Include="Button.h" />
     <ClInclude Include="Collider2D.h" />
     <ClInclude Include="Core.h" />
     <ClInclude Include="CoreTypes.h" />
+    <ClInclude Include="CreateObject.h" />
     <ClInclude Include="Engine.h" />
     <ClInclude Include="FileDirectory.h" />
     <ClInclude Include="GameTimer.h" />
@@ -215,6 +225,12 @@
       <EntryPointName Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">PSMain</EntryPointName>
       <EntryPointName Condition="'$(Configuration)|$(Platform)'=='Release|x64'">PSMain</EntryPointName>
       <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Pixel</ShaderType>
+    </FxCompile>
+    <FxCompile Include="Parallax_VS.hlsl">
+      <EntryPointName Condition="'$(Configuration)|$(Platform)'=='Release|x64'">VSMain</EntryPointName>
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Vertex</ShaderType>
+      <EntryPointName Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">VSMain</EntryPointName>
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Vertex</ShaderType>
     </FxCompile>
     <FxCompile Include="PassThrough_PS.hlsl">
       <FileType>Text</FileType>

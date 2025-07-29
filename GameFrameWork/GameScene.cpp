@@ -18,10 +18,6 @@ void GameScene::Initialize()
 		m_board.get(), POSX, POSY, WIDTH, HEIGHT, PADDING);
 	m_objectList.emplace_back(std::move(boardObj));
 
-
-	//m_board->PlaceStone(0, 0, { StoneColor::Black ,StoneAbility::None });
-	//m_board->PlaceStone(1, 1, { StoneColor::White ,StoneAbility::None });
-
 }
 
 void GameScene::FixedUpdate(double fixedDeltaTime)
@@ -63,6 +59,10 @@ void GameScene::OnEnter()
 	m_objectList.push_back(std::move(playerObject));
 	std::cout << m_objectList.size() << std::endl;
 
+	// 버튼 생성
+	unique_ptr<Button> button1 = std::make_unique<Button>(600.0f, 600.0f, 200, 200, "Sample.png", 50);
+	m_buttonList.emplace_back(button1.get());
+	m_objectList.emplace_back(std::move(button1));
 }
 
 void GameScene::OnLeave()
@@ -139,6 +139,7 @@ void GameScene::KeyCommandMapping()
 
 	m_commandMap["F4"] = [this]()
 		{
+
 			//m_board->PlaceStone(0, 1, { StoneColor::Black ,StoneAbility::None });
 			for (int i = 1; i < BOARD_SIZE-1; i++) 
 			{
@@ -147,6 +148,12 @@ void GameScene::KeyCommandMapping()
 					m_board->PlaceStone(i, j, { StoneColor::Black ,StoneAbility::None });
 				}
 			}
+
+
+			// 새로운 오브젝트 생성
+			//unique_ptr<NewObject> newObj = std::make_unique<NewObject>(100, 100, 50, 50, "Sample.png", 50);
+			//m_objectList.emplace_back(std::move(newObj));
+
 			std::cout << "F4 Command Received" << std::endl;
 		};
 
@@ -194,4 +201,11 @@ void GameScene::OnInput(const MouseEvent& ev) // mouseInput
 // 	{
 // 		std::cout << ev.pos.x << " " << ev.pos.y << std::endl;
 // 	}
+
+	for (auto& button : m_buttonList)
+	{
+		button->CheckInput(ev);
+
+	}
+
 }

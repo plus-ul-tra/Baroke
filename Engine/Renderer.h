@@ -23,6 +23,7 @@ struct TimeShaderConstants
 	float Padding[3]; // float 3개 = 12바이트. float(4) + Padding(12) = 16바이트
 };
 
+
 using namespace Microsoft::WRL;
 // UI, object
 // D3D11 메인 렌더 + Direct2D 오버레이
@@ -53,14 +54,14 @@ private:
 	// new
 	ComPtr<ID3D11Buffer>			   m_fullScreenVB;
 	ComPtr<ID3D11Texture2D>			   m_renderTargetTex;
-	ComPtr<ID3D11RenderTargetView>     m_offScreenTargetView; //off screen
+	ComPtr<ID3D11RenderTargetView>     m_offScreenTargetView; 
 	ComPtr<ID3D11ShaderResourceView>   m_renderTargetSRV;
 
 	ComPtr<ID3D11VertexShader>      m_VertexShader;
 	ComPtr<ID3D11PixelShader>       m_PixelShader;
 	ComPtr<ID3D11InputLayout>       m_InputLayout;
 	ComPtr<ID3D11SamplerState>      m_samplerState;
-	//ComPtr<ID3D11Buffer>			m_timeShaderBuffer;
+
 
 	UINT m_screenWidth;
 	UINT m_screenHeight;
@@ -70,10 +71,6 @@ private:
 	void CreateShaderRenderTargets();
 	void CreateWriteResource();
 	void CreateFullScrennQuad();
-	//void CreateTimeShaderBuffer();
-	// 교체
-	/*void CreateShaders();*/
-
 	void ReleaseRenderTargets();
 
 public:
@@ -85,11 +82,8 @@ public:
 	void Uninitialize();
 	void Resize(UINT width, UINT height);
 
-	//디버깅용 기본 도형
-	//vector2 추가
+
 	void DrawCircle(float x1, float y1, float radius, const D2D1::ColorF& color);
-	//void DrawEllipse();
-	
 	void DrawRect(float left, float top, float right, float bottom, const D2D1::ColorF& color);
 
 	//텍스쳐

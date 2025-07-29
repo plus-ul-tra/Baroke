@@ -45,9 +45,9 @@ namespace MIYABI {
 
 
 		//------------------------------------ InputManager Start
-		bool KeyCommandMapping();	// Å°¿Í Ä¿¸Çµå ¸ÅÇÎ
+		bool KeyCommandMapping();
 
-		void ProcessInput();		// ÀÔ·Â Ã³¸®
+		void ProcessInput();
 		void ProcessKeyInput(InputManager& input);
 		void ProcessMouseInput(InputManager& input);
 		void ProcessMouseWheel(InputManager& input);
