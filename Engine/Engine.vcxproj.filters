@@ -209,5 +209,8 @@
     <ClInclude Include="InputEvents.h">
       <Filter>ETC</Filter>
     </ClInclude>
+    <ClInclude Include="StoneType.h">
+      <Filter>ETC</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>

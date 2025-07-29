@@ -194,6 +194,7 @@
     <ClInclude Include="SpriteManager.h" />
     <ClInclude Include="SpriteParser.h" />
     <ClInclude Include="StaticObject.h" />
+    <ClInclude Include="StoneType.h" />
     <ClInclude Include="Timer.h" />
     <ClInclude Include="Transform.h" />
     <ClInclude Include="UI.h" />
