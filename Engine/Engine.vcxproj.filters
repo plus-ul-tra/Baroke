@@ -82,6 +82,12 @@
     <ClCompile Include="Transform.cpp">
       <Filter>Components</Filter>
     </ClCompile>
+    <ClCompile Include="CreateObject.cpp">
+      <Filter>Object</Filter>
+    </ClCompile>
+    <ClCompile Include="Button.cpp">
+      <Filter>Object</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Engine.h" />
@@ -174,6 +180,12 @@
       <Filter>Parser</Filter>
     </ClInclude>
     <ClInclude Include="Actor.h">
+      <Filter>Object</Filter>
+    </ClInclude>
+    <ClInclude Include="CreateObject.h">
+      <Filter>Object</Filter>
+    </ClInclude>
+    <ClInclude Include="Button.h">
       <Filter>Object</Filter>
     </ClInclude>
   </ItemGroup>

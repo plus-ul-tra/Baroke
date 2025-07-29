@@ -3,6 +3,7 @@
 #include "Player.h"
 #include "Board.h"
 #include "BoardObject.h"
+
 class GameScene : public SceneBase { 
 	
 private:
@@ -10,6 +11,7 @@ private:
 	std::unique_ptr<Board> m_board;
 	DirectX::XMVECTOR m_moveDir = DirectX::XMVectorZero();
 
+	std::vector<std::unique_ptr<Button>> m_buttonList;
 
 public:
 	//GameScene() = default;
