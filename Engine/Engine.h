@@ -9,6 +9,7 @@
 
 #include "SceneManager.h"
 #include "SceneBase.h"
+#include "JokerManager.h"
 
 
 

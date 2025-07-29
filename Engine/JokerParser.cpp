@@ -1,39 +1,39 @@
 #include "pch.h"
-#include "StoneParser.h"
+#include "JokerParser.h"
 #include <fstream>
 #include "json.hpp"
 
-vector<pair<string, Stone>> StoneParser::LoadJson(const filesystem::path& path)
+vector<pair<string, JokerInfo>> JokerParser::LoadJson(const filesystem::path& path)
 {
 	ifstream in{ path };
 	if (!in || !in.is_open()) throw runtime_error(path.string() + "열기 실패");
 
 	nlohmann::json doc = nlohmann::json::parse(in);
-	vector<pair<string, Stone>> Stones;
-	Stones.reserve(doc["stones"].size());
+	vector<pair<string, JokerInfo>> Jokers;
+	Jokers.reserve(doc["stones"].size());
 
 	for (const auto& stone : doc["stones"])
 	{
-		Stone s;
+		JokerInfo s;
 		s.description = stone["description"].get<string>();
-		s.fileName = stone["fileName"].get<string>();
-		s.functionName = stone["functionName"].get<string>();
-		s.type = stone["type"].get<StoneType>();
+		s.fileName = stone["filename"].get<string>();
+		s.functionName = stone["function"].get<string>();
+		s.type = stone["type"].get<JokerType>();
 		s.price = stone["price"].get<int>();
 		s.activationCost = stone["activationCost"].get<int>();
 		s.returnValue = stone["returnValue"].get<int>();
 		s.duration = stone["duration"].get<int>();
 
-		Stones.emplace_back(stone["name"].get<string>(), move(s));
+		Jokers.emplace_back(stone["stonename"].get<string>(), move(s));
 	}
-	return Stones;
+	return Jokers;
 }
 
-vector<pair<string, Stone>> StoneParser::LoadCsv(const filesystem::path& path)
+vector<pair<string, JokerInfo>> JokerParser::LoadCsv(const filesystem::path& path)
 {
 	ifstream in{ path };
 	if (!in || !in.is_open()) throw runtime_error(path.string() + "열기 실패");
-	vector<pair<string, Stone>> Stones;
+	vector<pair<string, JokerInfo>> Jokers;
 	string line;
 	while (getline(in, line))
 	{
@@ -54,14 +54,14 @@ vector<pair<string, Stone>> StoneParser::LoadCsv(const filesystem::path& path)
 		ss.ignore(1);
 		ss >> duration;
 
-		Stone s
+		JokerInfo s
 		{
 			description, fileName, functionName,
-			static_cast<StoneType>(type),
+			static_cast<JokerType>(type),
 			price, activationCost, returnValue, duration
 		};
 
-		Stones.emplace_back(name, s);
+		Jokers.emplace_back(name, s);
 	}
-	return Stones;
+	return Jokers;
 }
