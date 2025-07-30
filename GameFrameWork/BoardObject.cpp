@@ -15,7 +15,7 @@ BoardObject::BoardObject(Board* board, int offX, int offY, int drawW, int drawH,
 	m_stoneOffset = _stoneoffset;
 	m_transform = AddComponent<Transform>();
 
-	m_bitmapRender = AddComponent<BitmapRender>("CyberPunk.png", drawW, drawH);
+	m_bitmapRender = AddComponent<BitmapRender>("Cyberpunk.png", drawW, drawH);
 
 
 	int cell =(drawW - 2 * padding) / (board->Size() - 1);
