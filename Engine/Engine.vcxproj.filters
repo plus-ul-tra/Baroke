@@ -1,244 +1,74 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup>
-    <FxCompile Include="CRTFilter_PS.hlsl">
-      <Filter>Shader</Filter>
-    </FxCompile>
-    <FxCompile Include="PassThrough_PS.hlsl">
-      <Filter>Shader</Filter>
-    </FxCompile>
-    <FxCompile Include="PassThrough_VS.hlsl">
-      <Filter>Shader</Filter>
-    </FxCompile>
-    <FxCompile Include="Parallax_VS.hlsl">
-      <Filter>Shader</Filter>
-    </FxCompile>
+    <FxCompile Include="CRTFilter_PS.hlsl" />
+    <FxCompile Include="Parallax_VS.hlsl" />
+    <FxCompile Include="PassThrough_PS.hlsl" />
+    <FxCompile Include="PassThrough_VS.hlsl" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="AnimationClip.cpp" />
+    <ClCompile Include="BaseRender.cpp" />
+    <ClCompile Include="BitmapRender.cpp" />
+    <ClCompile Include="Button.cpp" />
+    <ClCompile Include="Collider2D.cpp" />
+    <ClCompile Include="Component.h" />
+    <ClCompile Include="Core.cpp" />
+    <ClCompile Include="CreateObject.cpp" />
+    <ClCompile Include="FileDirectory.cpp" />
+    <ClCompile Include="GameTimer.cpp" />
+    <ClCompile Include="GeoRender.cpp" />
+    <ClCompile Include="InputManager.cpp" />
+    <ClCompile Include="JokerManager.cpp" />
+    <ClCompile Include="Object.cpp" />
     <ClCompile Include="pch.cpp" />
-    <ClCompile Include="BaseRender.cpp">
-      <Filter>Components</Filter>
-    </ClCompile>
-    <ClCompile Include="BitmapRender.cpp">
-      <Filter>Components</Filter>
-    </ClCompile>
-    <ClCompile Include="Collider2D.cpp">
-      <Filter>Components</Filter>
-    </ClCompile>
-    <ClCompile Include="Component.h">
-      <Filter>Components</Filter>
-    </ClCompile>
-    <ClCompile Include="Core.cpp">
-      <Filter>Core</Filter>
-    </ClCompile>
-    <ClCompile Include="AnimationClip.cpp">
-      <Filter>Sprite</Filter>
-    </ClCompile>
-    <ClCompile Include="GameTimer.cpp">
-      <Filter>Timer</Filter>
-    </ClCompile>
-    <ClCompile Include="FileDirectory.cpp">
-      <Filter>Utillity</Filter>
-    </ClCompile>
-    <ClCompile Include="GeoRender.cpp">
-      <Filter>Components</Filter>
-    </ClCompile>
-    <ClCompile Include="Object.cpp">
-      <Filter>Object</Filter>
-    </ClCompile>
-    <ClCompile Include="InputManager.cpp">
-      <Filter>Managers</Filter>
-    </ClCompile>
-    <ClCompile Include="Renderer.cpp">
-      <Filter>Renderer</Filter>
-    </ClCompile>
-    <ClCompile Include="SceneBase.cpp">
-      <Filter>SceneBase</Filter>
-    </ClCompile>
-    <ClCompile Include="SceneManager.cpp">
-      <Filter>Managers</Filter>
-    </ClCompile>
-    <ClCompile Include="SoundManager.cpp">
-      <Filter>Managers</Filter>
-    </ClCompile>
-    <ClCompile Include="SpriteManager.cpp">
-      <Filter>Managers</Filter>
-    </ClCompile>
-    <ClCompile Include="SpriteParser.cpp">
-      <Filter>Parser</Filter>
-    </ClCompile>
-    <ClCompile Include="JokerParser.cpp">
-      <Filter>Parser</Filter>
-    </ClCompile>
-    <ClCompile Include="Timer.cpp">
-      <Filter>Timer</Filter>
-    </ClCompile>
-    <ClCompile Include="Window.cpp">
-      <Filter>Window</Filter>
-    </ClCompile>
-    <ClCompile Include="Transform.cpp">
-      <Filter>Components</Filter>
-    </ClCompile>
-    <ClCompile Include="CreateObject.cpp">
-      <Filter>Object</Filter>
-    </ClCompile>
-    <ClCompile Include="Button.cpp">
-      <Filter>Object</Filter>
-    </ClCompile>
-
-    <ClCompile Include="JokerManager.cpp">
-
-    <ClCompile Include="ShaderManager.cpp">
-
-      <Filter>Managers</Filter>
-    </ClCompile>
+    <ClCompile Include="Renderer.cpp" />
+    <ClCompile Include="SceneBase.cpp" />
+    <ClCompile Include="SceneManager.cpp" />
+    <ClCompile Include="ShaderManager.cpp" />
+    <ClCompile Include="SoundManager.cpp" />
+    <ClCompile Include="SpriteManager.cpp" />
+    <ClCompile Include="SpriteParser.cpp" />
+    <ClCompile Include="JokerParser.cpp" />
+    <ClCompile Include="Timer.cpp" />
+    <ClCompile Include="Transform.cpp" />
+    <ClCompile Include="Window.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Actor.h" />
+    <ClInclude Include="AnimationClip.h" />
+    <ClInclude Include="BaseRender.h" />
+    <ClInclude Include="BitmapRender.h" />
+    <ClInclude Include="BoardLayoutComponent.h" />
+    <ClInclude Include="Button.h" />
+    <ClInclude Include="Collider2D.h" />
+    <ClInclude Include="Core.h" />
+    <ClInclude Include="CoreTypes.h" />
+    <ClInclude Include="CreateObject.h" />
     <ClInclude Include="Engine.h" />
+    <ClInclude Include="FileDirectory.h" />
+    <ClInclude Include="GameTimer.h" />
+    <ClInclude Include="GeoRender.h" />
+    <ClInclude Include="InputEvents.h" />
+    <ClInclude Include="InputManager.h" />
+    <ClInclude Include="JokerManager.h" />
+    <ClInclude Include="json.hpp" />
+    <ClInclude Include="Object.h" />
     <ClInclude Include="pch.h" />
-    <ClInclude Include="BaseRender.h">
-      <Filter>Components</Filter>
-    </ClInclude>
-    <ClInclude Include="BitmapRender.h">
-      <Filter>Components</Filter>
-    </ClInclude>
-    <ClInclude Include="BoardLayoutComponent.h">
-      <Filter>Components</Filter>
-    </ClInclude>
-    <ClInclude Include="Collider2D.h">
-      <Filter>Components</Filter>
-    </ClInclude>
-    <ClInclude Include="Core.h">
-      <Filter>Core</Filter>
-    </ClInclude>
-    <ClInclude Include="CoreTypes.h">
-      <Filter>Core</Filter>
-    </ClInclude>
-    <ClInclude Include="AnimationClip.h">
-      <Filter>Sprite</Filter>
-    </ClInclude>
-    <ClInclude Include="GameTimer.h">
-      <Filter>Timer</Filter>
-    </ClInclude>
-    <ClInclude Include="FileDirectory.h">
-      <Filter>Utillity</Filter>
-    </ClInclude>
-    <ClInclude Include="GeoRender.h">
-      <Filter>Components</Filter>
-    </ClInclude>
-    <ClInclude Include="Object.h">
-      <Filter>Object</Filter>
-    </ClInclude>
-    <ClInclude Include="InputManager.h">
-      <Filter>Managers</Filter>
-    </ClInclude>
-    <ClInclude Include="InputEvents.h">
-      <Filter>ETC</Filter>
-    </ClInclude>
-    <ClInclude Include="Renderer.h">
-      <Filter>Renderer</Filter>
-    </ClInclude>
-    <ClInclude Include="SceneBase.h">
-      <Filter>SceneBase</Filter>
-    </ClInclude>
-    <ClInclude Include="SceneManager.h">
-      <Filter>Managers</Filter>
-    </ClInclude>
-    <ClInclude Include="Singleton.h">
-      <Filter>Utillity</Filter>
-    </ClInclude>
-    <ClInclude Include="SoundManager.h">
-      <Filter>Managers</Filter>
-    </ClInclude>
-    <ClInclude Include="SpriteManager.h">
-      <Filter>Managers</Filter>
-    </ClInclude>
-    <ClInclude Include="StaticObject.h">
-      <Filter>Object</Filter>
-    </ClInclude>
-    <ClInclude Include="SpriteParser.h">
-      <Filter>Parser</Filter>
-    </ClInclude>
-    <ClInclude Include="JokerParser.h">
-      <Filter>Parser</Filter>
-    </ClInclude>
-    <ClInclude Include="StoneType.h">
-      <Filter>ETC</Filter>
-    </ClInclude>
-    <ClInclude Include="Timer.h">
-      <Filter>Timer</Filter>
-    </ClInclude>
-    <ClInclude Include="UI.h">
-      <Filter>Object</Filter>
-    </ClInclude>
-    <ClInclude Include="Window.h">
-      <Filter>Window</Filter>
-    </ClInclude>
-    <ClInclude Include="Transform.h">
-      <Filter>Components</Filter>
-    </ClInclude>
-    <ClInclude Include="json.hpp">
-      <Filter>Parser</Filter>
-    </ClInclude>
-    <ClInclude Include="Actor.h">
-      <Filter>Object</Filter>
-    </ClInclude>
-    <ClInclude Include="CreateObject.h">
-      <Filter>Object</Filter>
-    </ClInclude>
-    <ClInclude Include="Button.h">
-      <Filter>Object</Filter>
-    </ClInclude>
-    <ClInclude Include="Board.h" />
-    <ClInclude Include="JokerManager.h">
-      
-    <ClInclude Include="ShaderManager.h">
-
-      <Filter>Managers</Filter>
-    </ClInclude>
-  </ItemGroup>
-  <ItemGroup>
-    <Filter Include="Common">
-      <UniqueIdentifier>{66447822-75a8-4106-9d6e-7ace581ee941}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Components">
-      <UniqueIdentifier>{a15d6204-7791-41a3-a906-7f95a515b259}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Core">
-      <UniqueIdentifier>{a153aabb-b839-4b7c-a0ce-96a3a02253cd}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="ETC">
-      <UniqueIdentifier>{64ec7b28-4416-4186-93ff-ba61d7f4de77}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Managers">
-      <UniqueIdentifier>{079f0a51-ee1f-4333-b1fd-a3db0ea4b442}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Object">
-      <UniqueIdentifier>{4a89a8b7-2f21-4718-af7b-0a6f29072b83}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Renderer">
-      <UniqueIdentifier>{aa443fbe-37a5-41c6-ac29-06a7de09b4d0}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="SceneBase">
-      <UniqueIdentifier>{5c16060a-6abc-4d11-b851-0b8f5f60e065}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Sprite">
-      <UniqueIdentifier>{191254d3-5da1-45cb-9443-a95d5106c67e}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Shader">
-      <UniqueIdentifier>{6704c7e5-1023-4e44-af9c-c0de5a99e65f}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Timer">
-      <UniqueIdentifier>{30355473-46ba-4fd2-8a3f-9f42cf7cf1b9}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Utillity">
-      <UniqueIdentifier>{187287ec-ff1f-4019-abc2-10131e708349}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Window">
-      <UniqueIdentifier>{55beeeea-0394-454e-86e2-a36407723bb0}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Parser">
-      <UniqueIdentifier>{6b212ac8-10d1-43a5-8e33-f7ee8113b0ea}</UniqueIdentifier>
-    </Filter>
+    <ClInclude Include="Renderer.h" />
+    <ClInclude Include="SceneBase.h" />
+    <ClInclude Include="SceneManager.h" />
+    <ClInclude Include="ShaderManager.h" />
+    <ClInclude Include="Singleton.h" />
+    <ClInclude Include="SoundManager.h" />
+    <ClInclude Include="SpriteManager.h" />
+    <ClInclude Include="SpriteParser.h" />
+    <ClInclude Include="StaticObject.h" />
+    <ClInclude Include="JokerParser.h" />
+    <ClInclude Include="StoneType.h" />
+    <ClInclude Include="Timer.h" />
+    <ClInclude Include="Transform.h" />
+    <ClInclude Include="UI.h" />
+    <ClInclude Include="Window.h" />
   </ItemGroup>
 </Project>

@@ -3,10 +3,10 @@
 #include <filesystem>
 
 using namespace std;
-using AnimationClips = vector<pair<string, AnimationClip>>;
+using AnimationClipsMap = map<string, AnimationClip>;
 
 class SpriteParser
 {
 public:
-	static AnimationClips Load(const filesystem::path& path);
+	static AnimationClipsMap Load(const filesystem::path& path);
 };

@@ -28,7 +28,7 @@ public:
 		m_bitmapRender->Render(r);  
 
 		for (auto& sp : m_stones)
-			if (auto* bmp = sp->GetComponent<BitmapRender>())
+			if (auto* bmp = sp->GetComponent<BitmapRender3D>())
 				if (bmp->IsActive()) bmp->Render(r);
 	}
 
@@ -109,6 +109,6 @@ private:
 	Board* m_board;
 	BoardLayoutComponent* m_layout;
 	Transform* m_transform = nullptr;
-	BitmapRender* m_bitmapRender = nullptr;
+	BitmapRender3D* m_bitmapRender = nullptr;
 	std::vector<std::unique_ptr<StoneObject>> m_stones;
 };

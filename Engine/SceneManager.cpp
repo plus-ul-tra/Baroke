@@ -15,7 +15,7 @@ void SceneManager::Initialize(HWND hwnd)
 	m_renderer->Initialize(hwnd);
 	m_currentSceneIndex = 0;
 
-	SpriteManager::GetInstance().Initialize(m_renderer.get()); // SpriteManager에 렌더러 설정
+	SpriteManager::GetInstance().Initialize(m_renderer->GetDevice(),m_renderer->GetDeviceContext()); // SpriteManager에 렌더러 설정
 }
 
 

@@ -28,7 +28,7 @@ void SceneBase::Render(Renderer& renderer) {
 
 		}
 		//일반 그리기
-		if (auto bitmapRenderComp = obj->GetComponent<BitmapRender>())
+		if (auto bitmapRenderComp = obj->GetComponent<BitmapRender3D>())
 		{
 			if (bitmapRenderComp->IsActive())
 			{

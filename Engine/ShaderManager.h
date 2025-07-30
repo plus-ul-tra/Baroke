@@ -1,7 +1,6 @@
 #pragma once
 #include<d3dcompiler.h>
 #include <wrl/client.h>
-#include "Singleton.h"
 #include <string>
 #include <map>
 #include <d3d11.h>
@@ -16,7 +15,7 @@ struct ShaderSet {
 	//필요시 inputlayout;
 };
 
-// Renderer에서 쓸 셰이더 창고
+// Renderer에서 쓸 셰이더 창고 (부득이 하게 Postprocessing 용만 읽어야 할까)
 class ShaderManager {
 	
 private:
@@ -34,6 +33,4 @@ public:
 	~ShaderManager() { ReleaseShaders(); }
 	const ShaderSet& GetShaderSet(const string& shaderName);
 	void ReleaseShaders();
-
-
 };

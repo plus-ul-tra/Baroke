@@ -6,7 +6,7 @@ private:
 
 	Transform* m_transform = nullptr;
 	GeoRender* m_geoRender = nullptr;
-	BitmapRender* m_bitmapRender = nullptr;
+	BitmapRender3D* m_bitmapRender = nullptr;
 	Collider2D* m_Collider = nullptr;
 
 
@@ -23,17 +23,17 @@ public:
 
 	void Move(float dx, float dy);
 	void Move(DirectX::XMVECTOR direction, double deltaTime);
-// 	void MoveUp();
-// 	void MoveLeft();
-// 	void MoveDown();
-// 	void MoveRight();
+    // 	void MoveUp();
+    // 	void MoveLeft();
+    // 	void MoveDown();
+    // 	void MoveRight();
 
 
 
 	Transform* GetTransform() { return m_transform; }
 	Collider2D* GetCollider() { return m_Collider; }
 	GeoRender* GetGeoRender() { return m_geoRender; }
-	BitmapRender* GetBitmapRender() { return m_bitmapRender; }
+	BitmapRender3D* GetBitmapRender() { return m_bitmapRender; }
 
 
 };

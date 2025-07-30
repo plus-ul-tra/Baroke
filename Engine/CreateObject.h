@@ -4,7 +4,7 @@
 class NewObject : public Object
 {
 	Transform* m_transform = nullptr;
-	BitmapRender* m_bitmapRender = nullptr;
+	BitmapRender3D* m_bitmapRender = nullptr;
 	float m_speedPerSec = 0.0f;
 
 public:

@@ -9,7 +9,7 @@ public:
 	StoneObject(StoneColor color, float posX, float posY, float size)
 	{
 		m_transform = AddComponent<Transform>();
-		m_sprite = AddComponent<BitmapRender>(
+		m_sprite = AddComponent<BitmapRender3D>(
 			color == StoneColor::Black
 			? "Black_Stone.png"
 			: "White_Stone.png",
@@ -29,7 +29,7 @@ public:
 	void Update(double) override {}          
 protected:
 	Transform* m_transform{};
-	BitmapRender* m_sprite{};
+	BitmapRender3D* m_sprite{};
 	std::pair<int, int> m_rc{ -1,-1 };
 };
 

@@ -21,7 +21,7 @@ public:
 		m_transform->SetScale(XMVectorSet(1.0f, 1.0f, 1.0f, 1.0f));
 		m_transform->SetRotation(0.0f);
 
-		m_sprite = AddComponent<BitmapRender>(jokerInfo.fileName, size, size);
+		m_sprite = AddComponent<BitmapRender3D>(jokerInfo.fileName, size, size);
 		m_sprite->SetOrder(1);
 		m_sprite->SetActive(true);
 	}

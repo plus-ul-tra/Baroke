@@ -12,8 +12,7 @@ BoardObject::BoardObject(Board* board, int offX, int offY, int drawW, int drawH,
 {
 
 	m_transform = AddComponent<Transform>();
-	m_bitmapRender = AddComponent<BitmapRender>("test.png", drawW, drawH);
-
+	m_bitmapRender = AddComponent<BitmapRender3D>("test.png", drawW, drawH);
 	int cell =(drawW - 2 * padding) / (board->Size() - 1);
 	std::cout << "Cell : " << cell << ", board size : " << board->Size() << std::endl;
 	m_layout = AddComponent<BoardLayoutComponent>(

@@ -1,5 +1,4 @@
 #pragma once
-
 #include "Component.h"
 #include "CoreTypes.h"
 //#include "Renderer.h"
@@ -33,8 +32,7 @@ public :
 	void SetActive(bool isActive) { m_isActive = isActive; }
 	bool IsActive() const { return m_isActive; }
 	
-	// 값이 높을수록 더 앞에
-	void SetOrder(uint32_t z) { m_order = z; }
-	uint32_t GetOrder() const { return m_order; }
+	void SetOrder(uint32_t z) { m_order = z; }	  //이거 안씀
+	uint32_t GetOrder() const { return m_order; } //이거 안씀
 
 };

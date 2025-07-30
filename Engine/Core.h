@@ -24,8 +24,8 @@ namespace MIYABI {
 
 		
 		//Time °ü·Ã
-		Timer m_engineTimer; // Á¶ÀÛX
-		GameTimer m_gameTimer; // Á¶ÀÛ interface 
+		Timer m_engineTimer; 
+		GameTimer m_gameTimer; // interface 
 		
 		const double m_fixedDeltaTime = 0.02; // 50Fps
 		double m_fixedUpdateAccumulator;

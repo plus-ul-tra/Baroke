@@ -66,8 +66,8 @@ void GeoRender::Render(Renderer& renderer)
         
         float finalRadius = m_collider2D->GetRadius() * (XMVectorGetX(worldScale) + XMVectorGetY(worldScale)) / 2.0f;
 
-        renderer.DrawCircle(objWorldX, objWorldY,finalRadius, 
-                  m_collider2D->GetColor());
+        /*renderer.DrawCircle(objWorldX, objWorldY,finalRadius, 
+                  m_collider2D->GetColor());*/
     }
 }
 

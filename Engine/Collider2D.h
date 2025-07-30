@@ -2,7 +2,6 @@
 #include "Component.h"
 #include "Transform.h"
 #include <DirectXMath.h>
-//#include <DirectXCollision.h>
 
 //Collider의 주 역할은 충돌 check
 // 구현 Enter, exit, stay
