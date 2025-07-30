@@ -20,9 +20,12 @@ public:
 
 	StoneInfo GetStone(int r, int c) const { return m_nodes[r][c]; }	// 특정 노드 위의 있는 돌 반환
 
+
 	bool PlaceStone(int r, int c, StoneInfo info);
 
+	void SpawnStone(int count);
 
+	void ResetStone();
 
 	const NodeArray& GetNodes() const { return m_nodes; }				// 바둑판 모든 노드 반환
 

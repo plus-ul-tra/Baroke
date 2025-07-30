@@ -9,12 +9,12 @@ std::unique_ptr<Board> CreateBoard(int size)
 
 bool Board::PlaceStone(int r, int c, StoneInfo info)
 {
-	if (!IsOnBoard(r, c))            return false;						// º¸µå ¹ÛÀÌ¸é ¸®ÅÏ
+	if (!IsOnBoard(r, c))            return false;						// ë³´ë“œ ë°–ì´ë©´ ë¦¬í„´
 	if (m_nodes[r][c].color != StoneColor::None)
 	{
-		std::cout << "µ¹ Á¸Àç" << std::endl;
+		std::cout << "ëŒ ì¡´ì¬" << std::endl;
 		return false;
-	}			// ÇØ´ç ³ëµå À§¿¡ µ¹ÀÌ ÀÖÀ¸¸é ¸®ÅÏ
+	}			// í•´ë‹¹ ë…¸ë“œ ìœ„ì— ëŒì´ ìˆìœ¼ë©´ ë¦¬í„´
 
 	m_nodes[r][c] = info;
 
@@ -22,14 +22,14 @@ bool Board::PlaceStone(int r, int c, StoneInfo info)
 	int DR[4] = { -1, 1, 0, 0 };
 	int DC[4] = { 0, 0,-1, 1 };
 
-	for (int k = 0; k < 4; ++k)													// »ó ÇÏ ÁÂ ¿ì Ã¼Å©
+	for (int k = 0; k < 4; ++k)													// ìƒ í•˜ ì¢Œ ìš° ì²´í¬
 	{
 		int nr = r + DR[k];
 		int nc = c + DC[k];
 		if (!IsOnBoard(nr, nc)) continue;
 
 		StoneInfo neighbor = m_nodes[nr][nc];
-		if (neighbor.color == StoneColor::None || neighbor.color == info.color) // ºñ¾îÀÖ°Å³ª ¾Æ±º(Èæµ¹)ÀÌ¸é ½ºÅµ
+		if (neighbor.color == StoneColor::None || neighbor.color == info.color) // ë¹„ì–´ìˆê±°ë‚˜ ì•„êµ°(í‘ëŒ)ì´ë©´ ìŠ¤í‚µ
 			continue; 
 
 		std::vector<std::pair<int, int>> group;
@@ -41,6 +41,43 @@ bool Board::PlaceStone(int r, int c, StoneInfo info)
 
 	return true;
 }
+
+
+void Board::SpawnStone(int count)
+{
+	int N = Size();
+	std::vector<std::pair<int, int>> allPositions;
+
+	for (int r = 0; r < N; ++r)
+		for (int c = 0; c < N; ++c)
+			allPositions.emplace_back(r, c);
+
+	std::shuffle(allPositions.begin(), allPositions.end(), std::mt19937(std::random_device{}()));
+
+	// ì—¬ê¸°ì„œ ì—ëŸ¬ ë°œìƒ ì‹œ ëŒ€ë¶€ë¶„ <algorithm>ì´ ì—†ì–´ì„œ
+	int n = std::min(static_cast<int>(allPositions.size()), count);
+
+	for (int i = 0; i < n; ++i)
+	{
+		int r = allPositions[i].first;
+		int c = allPositions[i].second;
+		PlaceStone(r, c, { StoneColor::White, StoneAbility::None });
+	}
+}
+
+void Board::ResetStone()
+{
+	int N = Size();
+	for (int r = 0; r < N; ++r)
+	{
+		for (int c = 0; c < N; ++c)
+		{
+			m_nodes[r][c].color = StoneColor::None;
+			m_nodes[r][c].ability = StoneAbility::None;
+		}
+	}
+}
+
 
 int Board::CountLiberty(int r, int c,
 	std::vector<std::pair<int, int>>& group,
@@ -71,7 +108,7 @@ int Board::CountLiberty(int r, int c,
 
 			if (m_nodes[nr][nc].color == StoneColor::None)
 			{
-				// ºó Ä­ ¹ß°ß ¡æ ÀÚÀ¯µµ 1 Áõ°¡ (Áßº¹ ÀÚÀ¯µµ´Â ½Å°æ ¾²Áö ¾ÊÀ½)
+				// ë¹ˆ ì¹¸ ë°œê²¬ â†’ ììœ ë„ 1 ì¦ê°€ (ì¤‘ë³µ ììœ ë„ëŠ” ì‹ ê²½ ì“°ì§€ ì•ŠìŒ)
 				++liberties;
 			}
 			else if (m_nodes[nr][nc].color == targetColor && !visited[nr][nc])
@@ -101,4 +138,3 @@ void Board::ActivateAbility(const StoneInfo& stone, int , int )
 
 	(void)stone; 
 }
-

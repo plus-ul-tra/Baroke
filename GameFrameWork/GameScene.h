@@ -14,6 +14,8 @@ private:
 
 	std::vector<std::unique_ptr<Button>> m_buttonList;
 
+
+
 public:
 	//GameScene() = default;
 	GameScene() { std::cout << "Game Scene" << std::endl; }
@@ -34,4 +36,6 @@ public:
 	void KeyCommandMapping() override;
 
 	void OnInput(const MouseEvent& ev) override;
+
+	void DebugBoardState();
 };
