@@ -67,7 +67,7 @@ void MIYABI::Core::ProcessInput()
 void MIYABI::Core::ProcessKeyInput(InputManager& input)
 {
 
-	static const std::unordered_set<int> holdKeys = { 'W', 'A', 'S', 'D', VK_F2 };
+	static const std::unordered_set<int> holdKeys = { 'W', 'A', 'S', 'D' };
 
 	for (int vk = 0; vk < 256; ++vk)
 	{

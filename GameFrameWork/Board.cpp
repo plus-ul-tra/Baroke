@@ -42,6 +42,41 @@ bool Board::PlaceStone(int r, int c, StoneInfo info)
 	return true;
 }
 
+void Board::SpawnStone(int count)
+{
+	int N = Size();
+	std::vector<std::pair<int, int>> allPositions;
+
+	for (int r = 0; r < N; ++r)
+		for (int c = 0; c < N; ++c)
+			allPositions.emplace_back(r, c);
+
+	std::shuffle(allPositions.begin(), allPositions.end(), std::mt19937(std::random_device{}()));
+
+	// 여기서 에러 발생 시 대부분 <algorithm>이 없어서
+	int n = std::min(static_cast<int>(allPositions.size()), count);
+
+	for (int i = 0; i < n; ++i)
+	{
+		int r = allPositions[i].first;
+		int c = allPositions[i].second;
+		PlaceStone(r, c, { StoneColor::White, StoneAbility::None });
+	}
+}
+
+void Board::ResetStone()
+{
+	int N = Size();
+	for (int r = 0; r < N; ++r)
+	{
+		for (int c = 0; c < N; ++c)
+		{
+			m_nodes[r][c].color = StoneColor::None;
+			m_nodes[r][c].ability = StoneAbility::None;
+		}
+	}
+}
+
 int Board::CountLiberty(int r, int c,
 	std::vector<std::pair<int, int>>& group,
 	std::array<std::array<bool, MAX_SIZE>, MAX_SIZE>& visited) const
@@ -101,4 +136,3 @@ void Board::ActivateAbility(const StoneInfo& stone, int , int )
 
 	(void)stone; 
 }
-

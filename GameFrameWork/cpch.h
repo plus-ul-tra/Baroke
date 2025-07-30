@@ -1,4 +1,7 @@
 #pragma once
+#define NOMINMAX
+
+
 
 #include <Windows.h>
 
@@ -11,6 +14,8 @@
 #include <algorithm>
 #include <functional>
 #include <stack>
+#include <random>
+
 
 
 #include <DirectXMath.h>
