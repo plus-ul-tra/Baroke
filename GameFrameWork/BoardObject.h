@@ -59,7 +59,7 @@ private:
 				POINT p = m_layout->BoardToScreen(r, c);
 				float size = static_cast<float>(m_layout->GetCell()) - 10;
 
-				if (nodes[r][c].color != StoneColor::Special)
+				if (nodes[r][c].ability == StoneAbility::None)
 				{
 					auto stone = std::make_unique<StoneObject>(
 						nodes[r][c].color,
@@ -79,6 +79,7 @@ private:
 							static_cast<float>(p.y),
 						size
 						);
+					stone->UpdateAbility();
 					stone->SetTagPos(r, c);           // (row,col) 기록
 					m_stones.emplace_back(std::move(stone));
 				}
@@ -92,6 +93,7 @@ private:
 							static_cast<float>(p.y),
 						size
 						);
+					stone->UpdateAbility();
 					stone->SetTagPos(r, c);           // (row,col) 기록
 					m_stones.emplace_back(std::move(stone));
 				}

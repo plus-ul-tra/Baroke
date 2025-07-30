@@ -1,6 +1,4 @@
 #include "cpch.h"
-
-
 #include "Board.h"
 
 std::unique_ptr<Board> CreateBoard(int size)
@@ -43,8 +41,6 @@ bool Board::PlaceStone(int r, int c, StoneInfo info)
 
 	return true;
 }
-
-
 
 int Board::CountLiberty(int r, int c,
 	std::vector<std::pair<int, int>>& group,

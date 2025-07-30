@@ -24,7 +24,7 @@ public:
 		m_sprite = AddComponent<BitmapRender>(jokerInfo.fileName, size, size);
 		m_sprite->SetOrder(1);
 		m_sprite->SetActive(true);
-
-		jokerFunctions[jokerInfo.functionName](jokerInfo); // 함수 호출
 	}
+
+	void UpdateAbility() { jokerFunctions[jokerInfo.functionName](jokerInfo); }
 };
