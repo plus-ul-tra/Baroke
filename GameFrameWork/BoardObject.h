@@ -8,7 +8,9 @@ class BoardObject : public Object
 {
 public:
 	BoardObject(Board* b, int offX, int offY,
-		int drawW, int drawH, int padding = 0, int stoneOffset = 0);
+
+		int drawW, int drawH, int padding = 0, int _stoneoffset=0);
+
 
 	void Update(double) override
 	{
@@ -106,7 +108,9 @@ private:
 			[r, c](auto& s) { return s->GetTagPos() == std::pair{ r,c }; });
 	}
 
-	int m_stoneOffset = 0;
+
+	int m_stoneOffset;
+
 	Board* m_board;
 	BoardLayoutComponent* m_layout;
 	Transform* m_transform = nullptr;

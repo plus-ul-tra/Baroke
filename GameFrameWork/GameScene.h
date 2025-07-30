@@ -37,4 +37,6 @@ public:
 
 	void OnInput(const MouseEvent& ev) override;
 
+	void DebugStoneState();
+
 };

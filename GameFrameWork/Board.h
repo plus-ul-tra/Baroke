@@ -26,6 +26,10 @@ public:
 
 	bool PlaceStone(int r, int c, StoneInfo info);
 
+	void SpawnStone(int count);
+
+	void ResetStone();
+
 	const NodeArray& GetNodes() const { return m_nodes; }				// 바둑판 모든 노드 반환
 
 private:

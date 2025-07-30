@@ -10,45 +10,17 @@
 #define HEIGHT 900
 #define STONEOFFSET 10  // 0 기준 60 px
 
-void GameScene::DebugBoardState()
-{
-	//------------------------------------------------------------------
-// 1. 열 번호 헤더
-//------------------------------------------------------------------
-	std::cout << "   ";                           // 좌측 여백
-	for (int col = 0; col < BOARD_SIZE; ++col)
-		std::cout << std::setw(3) << col;
-	std::cout << '\n';
 
-	//------------------------------------------------------------------
-	// 2. 행 단위로 격자 출력
-	//------------------------------------------------------------------
-	for (int row = 0; row < BOARD_SIZE; ++row)
-	{
-		std::cout << std::setw(2) << row << ' ';  // 행 번호 출력
+#define STONEOFFSET 10
 
-		for (int col = 0; col < BOARD_SIZE; ++col)
-		{
-			auto info = m_board->GetStone(row, col);
-
-			char ch = '.';
-			if (info.color == StoneColor::Black)  ch = 'B';
-			else if (info.color == StoneColor::White)  ch = 'W';
-
-			std::cout << ' ' << ch << ' ';
-		}
-		std::cout << '\n';
-	}
-	std::cout << std::flush;
-	std::cout << "F3 Command Received" << std::endl;
-} // 디버그 함수
 
 void GameScene::Initialize()
 {
 	std::cout << "Game Scene Init" << std::endl;
 	KeyCommandMapping();
 	m_board = CreateBoard(BOARD_SIZE);
-	auto boardObj = std::make_unique<BoardObject>( 
+
+	auto boardObj = std::make_unique<BoardObject>(
 		m_board.get(), POSX, POSY, WIDTH, HEIGHT, PADDING, STONEOFFSET);
 	m_boardObj = boardObj.get();
 	m_objectList.emplace_back(std::move(boardObj));
@@ -145,25 +117,14 @@ void GameScene::KeyCommandMapping()
 	m_commandMap["F3"] = [this]()
 		{
 			m_board->ResetStone();
+
 			std::cout<<"object size : " << m_objectList.size() << std::endl;
+
 		};
 
 	m_commandMap["F4"] = [this]()
 		{
 			m_board->SpawnStone(5);
-			////m_board->PlaceStone(0, 1, { StoneColor::Black ,StoneAbility::None });
-			//for (int i = 1; i < BOARD_SIZE-1; i++) 
-			//{
-			//	for (int j = 1; j < BOARD_SIZE-1; j++) 
-			//	{
-			//		m_board->PlaceStone(i, j, { StoneColor::Black ,StoneAbility::None });
-			//	}
-			//}
-
-
-			// 새로운 오브젝트 생성
-			//unique_ptr<NewObject> newObj = std::make_unique<NewObject>(100, 100, 50, 50, "Sample.png", 50);
-			//m_objectList.emplace_back(std::move(newObj));
 
 
 			std::cout << "F4 Command Received" << std::endl;
@@ -263,4 +224,37 @@ void GameScene::OnInput(const MouseEvent& ev) // mouseInput
 
 	}
 
+}
+
+void GameScene::DebugStoneState()
+{
+	//------------------------------------------------------------------
+// 1. 열 번호 헤더
+//------------------------------------------------------------------
+	std::cout << "   ";                           // 좌측 여백
+	for (int col = 0; col < BOARD_SIZE; ++col)
+		std::cout << std::setw(3) << col;
+	std::cout << '\n';
+
+	//------------------------------------------------------------------
+	// 2. 행 단위로 격자 출력
+	//------------------------------------------------------------------
+	for (int row = 0; row < BOARD_SIZE; ++row)
+	{
+		std::cout << std::setw(2) << row << ' ';  // 행 번호 출력
+
+		for (int col = 0; col < BOARD_SIZE; ++col)
+		{
+			auto info = m_board->GetStone(row, col);
+
+			char ch = '.';
+			if (info.color == StoneColor::Black)  ch = 'B';
+			else if (info.color == StoneColor::White)  ch = 'W';
+
+			std::cout << ' ' << ch << ' ';
+		}
+		std::cout << '\n';
+	}
+	std::cout << std::flush;
+	std::cout << "F3 Command Received" << std::endl;
 }
