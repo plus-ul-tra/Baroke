@@ -13,8 +13,6 @@ void Button::CheckInput(const MouseEvent& mouseEvent)
 	{
 		m_isHovered = true;
 
-		std::cout << "ButtonRect Hovered at: " << mousePos.x << ", " << mousePos.y << std::endl;
-
 		m_inputType = mouseEvent.type;
 		if (m_inputType == MouseType::LDown) m_isPressed = true;
 		else m_isPressed = false;

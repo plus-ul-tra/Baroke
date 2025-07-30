@@ -2,6 +2,7 @@
 #include "SceneBase.h"
 #include "GeoRender.h"
 #include "BitmapRender.h"
+#include "TextRender.h"
 #include "Core.h"
 //using namespace MIYABI;
 //class Core;
@@ -35,10 +36,15 @@ void SceneBase::Render(Renderer& renderer) {
 				bitmapRenderComp->Render(renderer);
 			}
 		}
+		if (auto textRenderComp = obj->GetComponent<TextRender>())
+		{
+			if (textRenderComp->IsActive())
+			{
+				textRenderComp->Render(renderer);
+			}
+		}
 		obj->Render(renderer);
 	}
-
-
 }
 
 

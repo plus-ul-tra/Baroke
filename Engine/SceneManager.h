@@ -26,7 +26,7 @@ private:
 	std::queue<MouseEvent> m_inputQueue;
 	//renderer
 
-	std::unique_ptr<Renderer> m_renderer;
+	std::shared_ptr<Renderer> m_renderer;
 	
 	std::vector<std::unique_ptr<SceneBase>> m_sceneList;  // 객체 컨테이너
 	map<string, int> m_sceneNameMap;					  // just name-index 맵핑, 이건 단순 편의를 위한 것

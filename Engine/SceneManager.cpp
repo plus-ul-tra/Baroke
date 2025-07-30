@@ -10,12 +10,12 @@ SceneManager::SceneManager()
 
 void SceneManager::Initialize(HWND hwnd)
 {
-	m_renderer = make_unique<Renderer>();
+	m_renderer = make_shared<Renderer>();
 	//std::cout << "?" << std::endl;
 	m_renderer->Initialize(hwnd);
 	m_currentSceneIndex = 0;
 
-	SpriteManager::GetInstance().Initialize(m_renderer.get()); // SpriteManager에 렌더러 설정
+	SpriteManager::GetInstance().Initialize(m_renderer); // SpriteManager에 렌더러 설정
 }
 
 

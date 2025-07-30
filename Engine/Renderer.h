@@ -100,7 +100,7 @@ public:
 	void DrawBitmap(ID2D1Bitmap1* bitmap, D2D1_RECT_F dest);
 	void DrawBitmap(ID2D1Bitmap1* bitmap, D2D1_RECT_F destRect, D2D1_RECT_F srcRect, float opacity = 1.0f);
 
-	void DrawMessage(const wchar_t* text, float left, float top, float width, float height, const D2D1::ColorF& color);
+	void DrawMessage(const wchar_t* text, D2D1_RECT_F layoutRect, const D2D1::ColorF& color, ComPtr<IDWriteTextFormat> textFormat);
 
 	//추후적용
 	//void SetTransform(const D2D1_MATRIX_3X2_F matrix);
