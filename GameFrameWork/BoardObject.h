@@ -46,7 +46,7 @@ private:
 		{
 			auto* stoneobj = it->get();
 			auto pos = stoneobj->GetTagPos();
-			if (nodes[pos.first][pos.second].color == StoneColor::None)
+			if (nodes[pos.first][pos.second].color == StoneType::None)
 				it = m_stones.erase(it);        
 			else ++it;
 		}
@@ -55,50 +55,39 @@ private:
 		for (int r = 0; r < N; ++r)
 			for (int c = 0; c < N; ++c)
 			{
-				if (nodes[r][c].color == StoneColor::None) continue;
+				if (nodes[r][c].color == StoneType::None) continue;
 				if (HasStone(r, c)) continue;     // 이미 있으면 skip
 
 				POINT p = m_layout->BoardToScreen(r, c);
 				float size = static_cast<float>(m_layout->GetCell()) - m_stoneOffset;
 
-				if (nodes[r][c].ability == StoneAbility::None)
+				if (nodes[r][c].color != StoneType::Joker)
 				{
 					auto stone = std::make_unique<StoneObject>(
 						nodes[r][c].color,
 						static_cast<float>(p.x),
 						static_cast<float>(p.y),
 						size);
-					stone->SetTagPos(r, c);           // (row,col) 기록
+					stone->SetTagPos(r, c);
 					m_stones.emplace_back(std::move(stone));
-				}
-				else if (nodes[r][c].ability == StoneAbility::ability1)
+				} 
+				else
 				{
-					auto stone =
-						std::make_unique<Joker>
-						(
-							JokerManager::GetInstance().GetJokerInfo("JokerStone1"),
+					std::string key = AbilityToJokerName(nodes[r][c].ability);
+					if (!key.empty() && JokerManager::GetInstance().HasJokerInfo(key))
+					{
+						auto& info = JokerManager::GetInstance().GetJokerInfo(key);
+						auto stone = std::make_unique<Joker>(
+							info,
 							static_cast<float>(p.x),
 							static_cast<float>(p.y),
-						size
-						);
-					stone->UpdateAbility();
-					stone->SetTagPos(r, c);           // (row,col) 기록
-					m_stones.emplace_back(std::move(stone));
+							size);
+						stone->SetTagPos(r, c);
+						stone->Activate();
+						m_stones.emplace_back(std::move(stone));
+					}
 				}
-				else if (nodes[r][c].ability == StoneAbility::ability2)
-				{
-					auto stone =
-						std::make_unique<Joker>
-						(
-							JokerManager::GetInstance().GetJokerInfo("JokerStone2"),
-							static_cast<float>(p.x),
-							static_cast<float>(p.y),
-						size
-						);
-					stone->UpdateAbility();
-					stone->SetTagPos(r, c);           // (row,col) 기록
-					m_stones.emplace_back(std::move(stone));
-				}
+
 			}
 	}
 
@@ -107,7 +96,17 @@ private:
 		return std::any_of(m_stones.begin(), m_stones.end(),
 			[r, c](auto& s) { return s->GetTagPos() == std::pair{ r,c }; });
 	}
+	
 
+	std::string AbilityToJokerName(StoneAbility ab)
+	{
+		switch (ab)
+		{
+		case StoneAbility::ability1: return "JokerStone1";
+		case StoneAbility::ability2: return "JokerStone2";
+		default: return "";
+		}
+	}
 
 	int m_stoneOffset;
 

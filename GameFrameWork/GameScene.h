@@ -14,6 +14,7 @@ private:
 
 	std::vector<std::unique_ptr<Button>> m_buttonList;
 
+	//stoneType T = stoneType::Black;
 
 
 public:
@@ -38,4 +39,5 @@ public:
 	void OnInput(const MouseEvent& ev) override;
 
 	void DebugBoardState();
+	void RegisterJokerFunctions();
 };

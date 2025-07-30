@@ -18,6 +18,7 @@ private:
 	
 protected:
 	std::vector<std::unique_ptr<Object>> m_objectList;
+	std::vector<std::unique_ptr<Object>> m_UIList;
 	//render 에 대해서 따로 관리 생각
 	std::unordered_map<std::string, std::function<void()>> m_commandMap;
 	
@@ -29,6 +30,7 @@ public:
 	virtual void Initialize() = 0;
 	virtual void Update(double deltaTime) = 0;
 	virtual void Render(Renderer& renderer);
+	void RenderObject(Object* obj, Renderer& renderer);
 
 	// Scene에 따라서 구현 필수는 아님
 	virtual void FixedUpdate(double fixedDeltaTime);

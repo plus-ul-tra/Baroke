@@ -163,10 +163,12 @@
     <ClCompile Include="GameTimer.cpp" />
     <ClCompile Include="GeoRender.cpp" />
     <ClCompile Include="InputManager.cpp" />
+    <ClCompile Include="JokerFunctionRegistry.cpp" />
     <ClCompile Include="JokerManager.cpp" />
     <ClCompile Include="Object.cpp" />
     <ClCompile Include="pch.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Create</PrecompiledHeader>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">false</ExcludedFromBuild>
     </ClCompile>
     <ClCompile Include="Renderer.cpp" />
     <ClCompile Include="SceneBase.cpp" />
@@ -175,7 +177,9 @@
     <ClCompile Include="SoundManager.cpp" />
     <ClCompile Include="SpriteManager.cpp" />
     <ClCompile Include="SpriteParser.cpp" />
-    <ClCompile Include="JokerParser.cpp" />
+    <ClCompile Include="JokerParser.cpp">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
+    </ClCompile>
     <ClCompile Include="TextRender.cpp" />
     <ClCompile Include="Timer.cpp" />
     <ClCompile Include="Transform.cpp" />
@@ -198,6 +202,9 @@
     <ClInclude Include="GeoRender.h" />
     <ClInclude Include="InputEvents.h" />
     <ClInclude Include="InputManager.h" />
+    <ClInclude Include="ItemType.h" />
+    <ClInclude Include="JokerData.h" />
+    <ClInclude Include="JokerFunctionRegistry.h" />
     <ClInclude Include="JokerManager.h" />
     <ClInclude Include="json.hpp" />
     <ClInclude Include="Object.h" />
@@ -211,7 +218,9 @@
     <ClInclude Include="SpriteManager.h" />
     <ClInclude Include="SpriteParser.h" />
     <ClInclude Include="StaticObject.h" />
-    <ClInclude Include="JokerParser.h" />
+    <ClInclude Include="JokerParser.h">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
+    </ClInclude>
     <ClInclude Include="StoneType.h" />
     <ClInclude Include="TextRender.h" />
     <ClInclude Include="Timer.h" />
