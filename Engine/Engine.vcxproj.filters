@@ -36,6 +36,12 @@
     <ClCompile Include="TextRender.cpp">
       <Filter>UI</Filter>
     </ClCompile>
+    <ClCompile Include="BordManager.cpp">
+      <Filter>Manager</Filter>
+    </ClCompile>
+    <ClCompile Include="Stone.cpp">
+      <Filter>Stone</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Actor.h" />
@@ -76,10 +82,22 @@
     <ClInclude Include="TextRender.h">
       <Filter>UI</Filter>
     </ClInclude>
+    <ClInclude Include="BordManager.h">
+      <Filter>Manager</Filter>
+    </ClInclude>
+    <ClInclude Include="Stone.h">
+      <Filter>Stone</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="UI">
       <UniqueIdentifier>{0e1679b1-74d6-4789-8c60-75618aee0758}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Manager">
+      <UniqueIdentifier>{ae5ec2a7-145f-4c4e-86d6-2be027f3852f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Stone">
+      <UniqueIdentifier>{73244a32-725a-4bf5-ba29-0a631c03764b}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>
