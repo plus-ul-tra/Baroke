@@ -25,9 +25,10 @@ void GameScene::Initialize()
 	m_boardObj = boardObj.get();
 	m_objectList.emplace_back(std::move(boardObj));
 
-	m_board->PlaceStone(0, 0, { StoneColor::White ,StoneAbility::None });
-	m_board->PlaceStone(0, 1, { StoneColor::White ,StoneAbility::None });
-	m_board->PlaceStone(0, 2, { StoneColor::White ,StoneAbility::None });
+	m_board->PlaceStone(0, 0, { StoneType::White ,StoneAbility::None });
+	m_board->PlaceStone(0, 1, { StoneType::White ,StoneAbility::None });
+	m_board->PlaceStone(0, 2, { StoneType::White ,StoneAbility::None });
+	RegisterJokerFunctions();
 }
 
 void GameScene::FixedUpdate(double fixedDeltaTime)
@@ -68,11 +69,12 @@ void GameScene::OnEnter()
 	m_player = playerObject.get();
 	m_objectList.push_back(std::move(playerObject));
 	std::cout << m_objectList.size() << std::endl;
-
+// 	m_board->PlaceStone(2, 2, JokerManager::GetInstance().CreateStoneInfoFromJoker("JokerStone1"));
+// 	m_board->PlaceStone(4, 4, JokerManager::GetInstance().CreateStoneInfoFromJoker("JokerStone2"));
 	// 버튼 생성
-	//unique_ptr<Button> button1 = std::make_unique<Button>(30.0f, 30.0f, 200, 200, "Sample.png", 50);
-	//m_buttonList.emplace_back(button1.get());
-	//m_objectList.emplace_back(std::move(button1));
+// 	unique_ptr<Button> button1 = std::make_unique<Button>(30.0f, 30.0f, 200, 200, "Sample.png", 50);
+// 	m_buttonList.emplace_back(button1.get());
+// 	m_objectList.emplace_back(std::move(button1));
 }
 
 void GameScene::OnLeave()
@@ -179,44 +181,29 @@ void GameScene::OnInput(const MouseEvent& ev) // mouseInput
 
 
 		if (!m_board->IsOnBoard(row, col))  return;
-		if (m_board->GetStone(row, col).color != StoneColor::None) return;
+		if (m_board->GetStone(row, col).color != StoneType::None) return;
 
 
-		bool ok = m_board->PlaceStone(row, col, { StoneColor::Black, StoneAbility::None });
+		bool ok = m_board->PlaceStone(row, col, { StoneType::Black, StoneAbility::None }); // 착수
+		// m_board->PlaceStone(row, col, T);
+		// m_board->PlaceStone(row, col, );
+		// m_board->PlaceStone(row, col, );
     
 		if (!ok) return;
 	}
-	//if (ev.type == MouseType::LDown)
-	//{
-	//	std::cout << ev.pos.x << " " << ev.pos.y << std::endl;
 
-	//	auto [row, col] = m_boardObj->ScreenToBoard(ev.pos.x, ev.pos.y);
-
-
-	//	if (!m_board->IsOnBoard(row, col))                return;
-	//	if (m_board->GetStone(row, col).color != StoneColor::None) return;
-
-
-	//	bool ok = m_board->PlaceStone(row, col, { StoneColor::Special, StoneAbility::ability1 });
-	//	if (!ok) return;
-	//}
 	else if (ev.type == MouseType::RDown)
 	{
 		std::cout << ev.pos.x << " " << ev.pos.y << std::endl;
 		auto [row, col] = m_boardObj->ScreenToBoard(ev.pos.x, ev.pos.y);
 
 		if (!m_board->IsOnBoard(row, col)) return;
-		if (m_board->GetStone(row, col).color != StoneColor::None) return;
+		if (m_board->GetStone(row, col).color != StoneType::None) return;
 
-		bool ok = m_board->PlaceStone(row, col, { StoneColor::Special ,StoneAbility::ability1 });
+		bool ok = m_board->PlaceStone(row, col, { StoneType::Joker ,StoneAbility::ability1 });
 		if (!ok) return;
 
 	}
-
-// 	else if (ev.type == MouseType::Move)
-// 	{
-// 		std::cout << ev.pos.x << " " << ev.pos.y << std::endl;
-// 	}
 
 	for (auto& button : m_buttonList)
 	{
@@ -228,17 +215,12 @@ void GameScene::OnInput(const MouseEvent& ev) // mouseInput
 
 void GameScene::DebugBoardState()
 {
-	//------------------------------------------------------------------
-// 1. 열 번호 헤더
-//------------------------------------------------------------------
+
 	std::cout << "   ";                           // 좌측 여백
 	for (int col = 0; col < BOARD_SIZE; ++col)
 		std::cout << std::setw(3) << col;
 	std::cout << '\n';
 
-	//------------------------------------------------------------------
-	// 2. 행 단위로 격자 출력
-	//------------------------------------------------------------------
 	for (int row = 0; row < BOARD_SIZE; ++row)
 	{
 		std::cout << std::setw(2) << row << ' ';  // 행 번호 출력
@@ -248,8 +230,8 @@ void GameScene::DebugBoardState()
 			auto info = m_board->GetStone(row, col);
 
 			char ch = '.';
-			if (info.color == StoneColor::Black)  ch = 'B';
-			else if (info.color == StoneColor::White)  ch = 'W';
+			if (info.color == StoneType::Black)  ch = 'B';
+			else if (info.color == StoneType::White)  ch = 'W';
 
 			std::cout << ' ' << ch << ' ';
 		}
@@ -257,4 +239,19 @@ void GameScene::DebugBoardState()
 	}
 	std::cout << std::flush;
 	std::cout << "F3 Command Received" << std::endl;
+}
+
+void  GameScene::RegisterJokerFunctions()
+{
+	JokerFunctionRegistry::Get().Register("JokerStone1Function",
+		[](Joker& j) {
+			std::cout << "조커1 \n";
+
+		});
+
+	JokerFunctionRegistry::Get().Register("JokerStone2Function",
+		[](Joker& j) {
+			std::cout << "조커2\n";
+
+		});
 }

@@ -31,5 +31,7 @@
 
 #include "StoneType.h"
 #include "ItemType.h"
+#include "JokerData.h"
+#include "JokerFunctionRegistry.h"
 
 //#include "StoneRendererComponent.h"

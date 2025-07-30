@@ -10,7 +10,7 @@ std::unique_ptr<Board> CreateBoard(int size)
 bool Board::PlaceStone(int r, int c, StoneInfo info)
 {
 	if (!IsOnBoard(r, c))            return false;						// 보드 밖이면 리턴
-	if (m_nodes[r][c].color != StoneColor::None)
+	if (m_nodes[r][c].color != StoneType::None)
 	{
 		std::cout << "돌 존재" << std::endl;
 		return false;
@@ -29,7 +29,7 @@ bool Board::PlaceStone(int r, int c, StoneInfo info)
 		if (!IsOnBoard(nr, nc)) continue;
 
 		StoneInfo neighbor = m_nodes[nr][nc];
-		if (neighbor.color == StoneColor::None || neighbor.color == info.color) // 비어있거나 아군(흑돌)이면 스킵
+		if (neighbor.color == StoneType::None || neighbor.color == info.color) // 비어있거나 아군(흑돌)이면 스킵
 			continue; 
 
 		std::vector<std::pair<int, int>> group;
@@ -61,7 +61,7 @@ void Board::SpawnStone(int count)
 	{
 		int r = allPositions[i].first;
 		int c = allPositions[i].second;
-		PlaceStone(r, c, { StoneColor::White, StoneAbility::None });
+		PlaceStone(r, c, { StoneType::White, StoneAbility::None });
 	}
 }
 
@@ -72,7 +72,7 @@ void Board::ResetStone()
 	{
 		for (int c = 0; c < N; ++c)
 		{
-			m_nodes[r][c].color = StoneColor::None;
+			m_nodes[r][c].color = StoneType::None;
 			m_nodes[r][c].ability = StoneAbility::None;
 		}
 	}
@@ -83,8 +83,8 @@ int Board::CountLiberty(int r, int c,
 	std::vector<std::pair<int, int>>& group,
 	std::array<std::array<bool, MAX_SIZE>, MAX_SIZE>& visited) const
 {
-	StoneColor targetColor = m_nodes[r][c].color;
-	if (targetColor == StoneColor::None) return 0;
+	StoneType targetColor = m_nodes[r][c].color;
+	if (targetColor == StoneType::None) return 0;
 
 	int DR[4] = { -1, 1, 0, 0 };
 	int DC[4] = { 0, 0,-1, 1 };
@@ -106,7 +106,7 @@ int Board::CountLiberty(int r, int c,
 			int nc = cc + DC[k];
 			if (!IsOnBoard(nr, nc)) continue;
 
-			if (m_nodes[nr][nc].color == StoneColor::None)
+			if (m_nodes[nr][nc].color == StoneType::None)
 			{
 				// 빈 칸 발견 → 자유도 1 증가 (중복 자유도는 신경 쓰지 않음)
 				++liberties;
@@ -127,7 +127,7 @@ void Board::RemoveGroup(const std::vector<std::pair<int, int>>& group)
 	for (auto [r, c] : group)
 	{
 		StoneInfo captured = m_nodes[r][c];
-		m_nodes[r][c] = { StoneColor::None, StoneAbility::None };
+		m_nodes[r][c] = { StoneType::None, StoneAbility::None };
 		ActivateAbility(captured, r, c);
 	}
 }

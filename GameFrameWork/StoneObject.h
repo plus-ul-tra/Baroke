@@ -6,11 +6,11 @@ class StoneObject : public Object
 {
 public:
 	StoneObject() = default;
-	StoneObject(StoneColor color, float posX, float posY, float size)
+	StoneObject(StoneType color, float posX, float posY, float size)
 	{
 		m_transform = AddComponent<Transform>();
 		m_sprite = AddComponent<BitmapRender>(
-			color == StoneColor::Black
+			color == StoneType::Black
 			? "Black_Stone.png"
 			: "White_Stone.png",
 			size, size);
