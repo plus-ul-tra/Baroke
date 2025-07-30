@@ -7,6 +7,7 @@ private:
 	Transform* m_transform = nullptr;
 	GeoRender* m_geoRender = nullptr;
 	BitmapRender* m_bitmapRender = nullptr;
+	TextRender* m_textRender = nullptr;
 	Collider2D* m_Collider = nullptr;
 
 

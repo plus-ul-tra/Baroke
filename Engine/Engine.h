@@ -22,6 +22,7 @@
 
 #include "GeoRender.h"
 #include "BitmapRender.h"
+#include "TextRender.h"
 #include "Collider2D.h"
 #include "BoardLayoutComponent.h"
 #include "StoneType.h"

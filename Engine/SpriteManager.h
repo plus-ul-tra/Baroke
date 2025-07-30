@@ -16,10 +16,10 @@ class SpriteManager : public Singleton<SpriteManager>
 
 	unordered_map<string, ComPtr<ID2D1Bitmap1>> m_textures;
 	unordered_map<string, AnimationClips> m_animationClips;
-	Renderer* m_renderer = nullptr;
+	shared_ptr<Renderer> m_renderer = nullptr;
 
 public:
-	void Initialize(Renderer* renderer) { m_renderer = renderer; LoadAll(); }
+	void Initialize(shared_ptr<Renderer> renderer) { m_renderer = renderer; LoadAll(); }
 
 	void LoadAll();
 	ComPtr<ID2D1Bitmap1> LoadTexture(const filesystem::path& filePath);

@@ -176,6 +176,7 @@
     <ClCompile Include="SpriteManager.cpp" />
     <ClCompile Include="SpriteParser.cpp" />
     <ClCompile Include="JokerParser.cpp" />
+    <ClCompile Include="TextRender.cpp" />
     <ClCompile Include="Timer.cpp" />
     <ClCompile Include="Transform.cpp" />
     <ClCompile Include="Window.cpp" />
@@ -212,6 +213,7 @@
     <ClInclude Include="StaticObject.h" />
     <ClInclude Include="JokerParser.h" />
     <ClInclude Include="StoneType.h" />
+    <ClInclude Include="TextRender.h" />
     <ClInclude Include="Timer.h" />
     <ClInclude Include="Transform.h" />
     <ClInclude Include="UI.h" />

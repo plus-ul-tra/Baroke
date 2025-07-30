@@ -423,23 +423,21 @@ void Renderer::DrawBitmap(ID2D1Bitmap1* bitmap, D2D1_RECT_F destRect, D2D1_RECT_
 	); 
 }
 
-void Renderer::DrawMessage(const wchar_t* text, float left, float top, float width, float height, const D2D1::ColorF& color)
+void Renderer::DrawMessage(const wchar_t* text, D2D1_RECT_F layoutRect, const D2D1::ColorF& color, ComPtr<IDWriteTextFormat> textFormat)
 {
-	if (nullptr == m_ptextBrush)
-	{
-		HRESULT hr = m_pd2dContext->CreateSolidColorBrush(D2D1::ColorF(color), &m_ptextBrush);
-	}
+	if (nullptr == m_ptextBrush) HRESULT hr = m_pd2dContext->CreateSolidColorBrush(D2D1::ColorF(color), &m_ptextBrush);
 	m_ptextBrush->SetColor(color);
-	D2D1_RECT_F layoutRect = D2D1::RectF(left, top, left + width, top + height);
-	m_pd2dContext->DrawTextW(
+
+	m_pd2dContext->DrawTextW
+	(
 		text,
 		static_cast<UINT32>(wcslen(text)),
-		m_ptextFormat.Get(),
+		textFormat.Get(),
 		layoutRect,
 		m_ptextBrush.Get(),
 		D2D1_DRAW_TEXT_OPTIONS_NONE,
-		DWRITE_MEASURING_MODE_NATURAL);
-
+		DWRITE_MEASURING_MODE_NATURAL
+	);
 }
 
 void Renderer::CreateBitmapFromFile(const wchar_t* path, ID2D1Bitmap1*& outBitmap)

@@ -10,6 +10,7 @@ Player::Player(float posX, float posY, float width, float height, XMFLOAT4 color
     // Set 함수 각자 만들어서 초기화 (Transform, Collider 참고)
     m_transform = AddComponent<Transform>();
     m_bitmapRender = AddComponent<BitmapRender>("PandaSpriteSheet.json", width, height);
+	m_textRender = AddComponent<TextRender>("Player", width, height, 15.0f, D2D1::ColorF(D2D1::ColorF::Red), 0.5f, L"Arial");
     m_Collider  = AddComponent<Collider2D>();
 
     //GeoRender는 collider2D 있는 경우만 사용
@@ -26,7 +27,9 @@ Player::Player(float posX, float posY, float width, float height, XMFLOAT4 color
     m_geoRender->SetActive(true); //렌더링 활성화, 나중에 일괄로 바꿀 것
     m_geoRender->SetOrder(50);
 	m_bitmapRender->SetActive(true); // 렌더링 활성화
-
+    m_bitmapRender->SetOrder(50);
+    m_textRender->SetActive(true);
+    m_textRender->SetOrder(50);
 }
 
 void Player::FixedUpdate(double deltaTime)
