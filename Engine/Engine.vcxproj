@@ -198,6 +198,7 @@
     <ClInclude Include="GeoRender.h" />
     <ClInclude Include="InputEvents.h" />
     <ClInclude Include="InputManager.h" />
+    <ClInclude Include="ItemType.h" />
     <ClInclude Include="JokerManager.h" />
     <ClInclude Include="json.hpp" />
     <ClInclude Include="Object.h" />

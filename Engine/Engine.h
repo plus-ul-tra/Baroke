@@ -25,8 +25,11 @@
 #include "TextRender.h"
 #include "Collider2D.h"
 #include "BoardLayoutComponent.h"
-#include "StoneType.h"
+
 #include "CreateObject.h"
 #include "Button.h"
+
+#include "StoneType.h"
+#include "ItemType.h"
 
 //#include "StoneRendererComponent.h"

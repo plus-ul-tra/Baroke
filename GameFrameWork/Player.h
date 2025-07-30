@@ -1,17 +1,26 @@
 #pragma once
 #include "Engine.h"
 
+//플레이어가 가지고 있어야 되는 것들
+// 보유중인 바둑돌 정보
+// 잡은 흰돌의 개수
+// 보유중인 아이템
+
+
 class Player : public Object {
 private:
 
 	Transform* m_transform = nullptr;
-	GeoRender* m_geoRender = nullptr;
 	BitmapRender* m_bitmapRender = nullptr;
 	TextRender* m_textRender = nullptr;
-	Collider2D* m_Collider = nullptr;
+
+
 
 
 	float m_speedPerSec = 500.f;
+
+	int blackStone;
+	
 
 
 public:
@@ -24,16 +33,11 @@ public:
 
 	void Move(float dx, float dy);
 	void Move(DirectX::XMVECTOR direction, double deltaTime);
-// 	void MoveUp();
-// 	void MoveLeft();
-// 	void MoveDown();
-// 	void MoveRight();
+
 
 
 
 	Transform* GetTransform() { return m_transform; }
-	Collider2D* GetCollider() { return m_Collider; }
-	GeoRender* GetGeoRender() { return m_geoRender; }
 	BitmapRender* GetBitmapRender() { return m_bitmapRender; }
 
 

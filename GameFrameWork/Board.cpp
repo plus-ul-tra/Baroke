@@ -54,7 +54,7 @@ void Board::SpawnStone(int count)
 
 	std::shuffle(allPositions.begin(), allPositions.end(), std::mt19937(std::random_device{}()));
 
-	// 여기서 에러 발생 시 대부분 <algorithm>이 없어서
+
 	int n = std::min(static_cast<int>(allPositions.size()), count);
 
 	for (int i = 0; i < n; ++i)

@@ -10,7 +10,6 @@
     <ClCompile Include="AnimationClip.cpp" />
     <ClCompile Include="BaseRender.cpp" />
     <ClCompile Include="BitmapRender.cpp" />
-    <ClCompile Include="Button.cpp" />
     <ClCompile Include="Collider2D.cpp" />
     <ClCompile Include="Component.h" />
     <ClCompile Include="Core.cpp" />
@@ -33,7 +32,7 @@
     <ClCompile Include="Timer.cpp" />
     <ClCompile Include="Transform.cpp" />
     <ClCompile Include="Window.cpp" />
-    <ClCompile Include="TextRender.cpp">
+    <ClCompile Include="Button.cpp">
       <Filter>UI</Filter>
     </ClCompile>
   </ItemGroup>
@@ -43,16 +42,13 @@
     <ClInclude Include="BaseRender.h" />
     <ClInclude Include="BitmapRender.h" />
     <ClInclude Include="BoardLayoutComponent.h" />
-    <ClInclude Include="Button.h" />
     <ClInclude Include="Collider2D.h" />
     <ClInclude Include="Core.h" />
-    <ClInclude Include="CoreTypes.h" />
     <ClInclude Include="CreateObject.h" />
     <ClInclude Include="Engine.h" />
     <ClInclude Include="FileDirectory.h" />
     <ClInclude Include="GameTimer.h" />
     <ClInclude Include="GeoRender.h" />
-    <ClInclude Include="InputEvents.h" />
     <ClInclude Include="InputManager.h" />
     <ClInclude Include="JokerManager.h" />
     <ClInclude Include="json.hpp" />
@@ -68,18 +64,34 @@
     <ClInclude Include="SpriteParser.h" />
     <ClInclude Include="StaticObject.h" />
     <ClInclude Include="JokerParser.h" />
-    <ClInclude Include="StoneType.h" />
     <ClInclude Include="Timer.h" />
     <ClInclude Include="Transform.h" />
-    <ClInclude Include="UI.h" />
     <ClInclude Include="Window.h" />
-    <ClInclude Include="TextRender.h">
+    <ClInclude Include="StoneType.h">
+      <Filter>ETC</Filter>
+    </ClInclude>
+    <ClInclude Include="CoreTypes.h">
+      <Filter>ETC</Filter>
+    </ClInclude>
+    <ClInclude Include="InputEvents.h">
+      <Filter>ETC</Filter>
+    </ClInclude>
+    <ClInclude Include="ItemType.h">
+      <Filter>ETC</Filter>
+    </ClInclude>
+    <ClInclude Include="Button.h">
+      <Filter>UI</Filter>
+    </ClInclude>
+    <ClInclude Include="UI.h">
       <Filter>UI</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
+    <Filter Include="ETC">
+      <UniqueIdentifier>{8dd4ac8e-cc44-45ff-be81-34ab84653850}</UniqueIdentifier>
+    </Filter>
     <Filter Include="UI">
-      <UniqueIdentifier>{0e1679b1-74d6-4789-8c60-75618aee0758}</UniqueIdentifier>
+      <UniqueIdentifier>{1b1f38db-09ce-4f79-aa9b-07d356a0a72e}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>
