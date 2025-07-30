@@ -8,7 +8,7 @@ class BoardObject : public Object
 {
 public:
 	BoardObject(Board* b, int offX, int offY,
-		int drawW, int drawH, int padding = 0);
+		int drawW, int drawH, int padding = 0, int stoneOffset = 0);
 
 	void Update(double) override
 	{
@@ -57,7 +57,7 @@ private:
 				if (HasStone(r, c)) continue;     // 이미 있으면 skip
 
 				POINT p = m_layout->BoardToScreen(r, c);
-				float size = static_cast<float>(m_layout->GetCell()) - 10;
+				float size = static_cast<float>(m_layout->GetCell()) - m_stoneOffset;
 
 				if (nodes[r][c].ability == StoneAbility::None)
 				{
@@ -106,6 +106,7 @@ private:
 			[r, c](auto& s) { return s->GetTagPos() == std::pair{ r,c }; });
 	}
 
+	int m_stoneOffset = 0;
 	Board* m_board;
 	BoardLayoutComponent* m_layout;
 	Transform* m_transform = nullptr;
