@@ -136,39 +136,3 @@ void Board::ActivateAbility(const StoneInfo& stone, int , int )
 
 	(void)stone; 
 }
-
-void Board::SpawnStone(int count)
-{
-	int N = Size();
-	std::vector<std::pair<int, int>> allPositions;
-
-	// 전체 좌표 모으기
-	for (int r = 0; r < N; ++r)
-		for (int c = 0; c < N; ++c)
-			allPositions.emplace_back(r, c);
-
-	// 섞기
-	std::shuffle(allPositions.begin(), allPositions.end(), std::mt19937(std::random_device{}()));
-
-	// count 개만큼 돌 배치
-	int n = std::min(static_cast<int>(allPositions.size()), count);
-	for (int i = 0; i < n; ++i)
-	{
-		int r = allPositions[i].first;
-		int c = allPositions[i].second;
-		PlaceStone(r, c, { StoneColor::White, StoneAbility::None });
-	}
-}
-
-void Board::ResetStone()
-{
-	int N = Size();
-	for (int r = 0; r < N; ++r)
-	{
-		for (int c = 0; c < N; ++c)
-		{
-			m_nodes[r][c].color = StoneColor::None;
-			m_nodes[r][c].ability = StoneAbility::None;
-		}
-	}
-}

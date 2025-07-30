@@ -226,7 +226,7 @@ void GameScene::OnInput(const MouseEvent& ev) // mouseInput
 
 }
 
-void GameScene::DebugStoneState()
+void GameScene::DebugBoardState()
 {
 	//------------------------------------------------------------------
 // 1. 열 번호 헤더

@@ -20,9 +20,6 @@ public:
 
 	StoneInfo GetStone(int r, int c) const { return m_nodes[r][c]; }	// 특정 노드 위의 있는 돌 반환
 
-	void SpawnStone(int count);
-
-	void ResetStone();
 
 	bool PlaceStone(int r, int c, StoneInfo info);
 

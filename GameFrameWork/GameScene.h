@@ -14,7 +14,7 @@ private:
 
 	std::vector<std::unique_ptr<Button>> m_buttonList;
 
-	void DebugBoardState();
+
 
 public:
 	//GameScene() = default;
@@ -37,6 +37,5 @@ public:
 
 	void OnInput(const MouseEvent& ev) override;
 
-	void DebugStoneState();
-
+	void DebugBoardState();
 };
