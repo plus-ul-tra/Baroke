@@ -151,18 +151,21 @@ void BitmapRender3D::Render(Renderer& renderer)
 	}
 	else
 	{
-		currentSRV = m_textureSRV.Get();
-		// ComPtr<ID3D11Resource> resource;
-		// currentSRV->GetResource(resource.GetAddressOf());
-		// ComPtr<ID3D11Texture2D> texture2D;
-		// resource.As(&texture2D);
-		// D3D11_TEXTURE2D_DESC desc;
-		// texture2D->GetDesc(&desc);
-		// currentSourceRect = { 0, 0, (LONG)desc.Width, (LONG)desc.Height };
+		 currentSRV = m_textureSRV.Get();
+		 ComPtr<ID3D11Resource> resource;
+		 currentSRV->GetResource(resource.GetAddressOf());
+
+		 ComPtr<ID3D11Texture2D> texture2D;
+		 resource.As(&texture2D);
+
+		 D3D11_TEXTURE2D_DESC desc;
+		 texture2D->GetDesc(&desc);
+
+		 currentSourceRect = { 0, 0, (LONG)desc.Width, (LONG)desc.Height };
 	}
 
 	if (!currentSRV || !m_vertexBuffer || !m_indexBuffer) {
-		OutputDebugStringA("WARNING: BitmapRender3D: Missing SRV or buffers for rendering.\n");
+		cout << "ERROR: BitmapRender3D: Missing resources for rendering." << endl;
 		return;
 	}
 

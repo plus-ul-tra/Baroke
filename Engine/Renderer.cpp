@@ -37,7 +37,7 @@ void Renderer::Initialize(HWND hwnd)
 	CreateWriteResource();
 
 	// 기존 PassThrough 쉐이더 초기화 유지
-	InitializeShader(hwnd);
+	//InitializeShader(hwnd);
 
 	// 기존 WIC Factory 및 샘플러 상태 생성 유지
 	ComPtr<IWICImagingFactory> wicFactory;
@@ -63,7 +63,18 @@ void Renderer::Initialize(HWND hwnd)
 		std::cerr << "ERROR: Failed to create Post-processing Sampler State! HRESULT: 0x" << std::hex << hr << std::endl;
 		return;
 	}
-
+	D3D11_RASTERIZER_DESC rsDesc = {};
+	//rsDesc.FillMode = D3D11_FILL_SOLID;
+	//rsDesc.CullMode = D3D11_CULL_NONE; // 컬링 비활성화 (양면 렌더링)
+	//rsDesc.FrontCounterClockwise = FALSE; // Direct3D 기본 (시계 방향 정점 = 앞면)
+	//rsDesc.DepthBias = 0;
+	//rsDesc.DepthBiasClamp = 0.0f;
+	//rsDesc.SlopeScaledDepthBias = 0.0f;
+	//rsDesc.DepthClipEnable = TRUE;
+	//rsDesc.ScissorEnable = FALSE;
+	//rsDesc.MultisampleEnable = FALSE;
+	//rsDesc.AntialiasedLineEnable = FALSE;
+	//HRESULT hr_rs = m_pd3dDevice->CreateRasterizerState(&rsDesc, &m_pRasterizerState);
 	// --- 새로 추가될 D3D 스프라이트 렌더링 관련 초기화 ---
 	hr = CreateSpriteConstantBuffers();
 	if (FAILED(hr)) return; // 오류 시 조기 리턴
@@ -196,14 +207,14 @@ void Renderer::SetupSpriteCameraMatrices(UINT width, UINT height)
 	// left, right, bottom, top 값을 직접 설정해야 합니다.
 	// D3D의 클립 공간은 X, Y가 -1.0 ~ +1.0, Z는 0.0 ~ 1.0 (또는 -1.0 ~ 1.0) 입니다.
 	// 윈도우 좌상단 (0,0)에 매핑하려면
-	m_projectionMatrix = XMMatrixOrthographicOffCenterLH(
-		0.0f,                 // Left
-		static_cast<float>(width),    // Right
-		static_cast<float>(height),   // Bottom (Y축 상향 기준, Direct3D는 보통 Y 상향)
-		0.0f,                 // Top (하지만 보통 Direct2D처럼 Y 하향을 원하므로 Top/Bottom 교체 필요)
-		0.1f,                 // Near Z
-		100.0f                // Far Z
-	);
+	//m_projectionMatrix = XMMatrixOrthographicOffCenterLH(
+	//	0.0f,                 // Left
+	//	static_cast<float>(width),    // Right
+	//	static_cast<float>(height),   // Bottom (Y축 상향 기준, Direct3D는 보통 Y 상향)
+	//	0.0f,                 // Top (하지만 보통 Direct2D처럼 Y 하향을 원하므로 Top/Bottom 교체 필요)
+	//	0.1f,                 // Near Z
+	//	100.0f                // Far Z
+	//);
 
 	// 만약 Direct2D처럼 Y축이 아래로 증가하는 좌표계를 원한다면:
 	m_projectionMatrix = XMMatrixOrthographicOffCenterLH(
@@ -223,7 +234,7 @@ void Renderer::SetupSpriteCameraMatrices(UINT width, UINT height)
 	// 표준 D3D 뷰 행렬에서 Y축을 뒤집는 것은 권장되지 않으며, 보통 프로젝션 행렬이나 픽셀 쉐이더에서 처리합니다.
 	// 픽셀 쉐이더에서 텍스처 좌표 Y축을 1.0 - input.tex.y 로 변환하는 것이 일반적입니다.
 
-	OutputDebugStringA("INFO: Sprite Camera matrices (View/Projection) set.\n");
+	//OutputDebugStringA("INFO: Sprite Camera matrices (View/Projection) set.\n");
 }
 void Renderer::CreateFullScrennQuad()
 {
@@ -321,7 +332,8 @@ void Renderer::RenderBegin()
 	// 2. D3D 렌더링에 필요한 기본 상태 설정 (스프라이트 쉐이더에 사용)
 	const ShaderSet& spriteShaderSet = m_shaderManager->GetShaderSet("SpriteShader");
 	if (!spriteShaderSet.vs || !spriteShaderSet.ps || !spriteShaderSet.inputLayout) {
-		OutputDebugStringA("ERROR: 'SpriteShader' ShaderSet is incomplete or not found in Renderer. Cannot set D3D states.\n");
+		//OutputDebugStringA("ERROR: 'SpriteShader' ShaderSet is incomplete or not found in Renderer. Cannot set D3D states.\n");
+		cout << "spreiteShader fail" << endl;
 		return;
 	}
 
@@ -332,7 +344,7 @@ void Renderer::RenderBegin()
 
 	// 스프라이트 전용 샘플러 상태 설정
 	m_pd3dContext->PSSetSamplers(0, 1, m_pSpriteSamplerState.GetAddressOf());
-
+	//m_pd3dContext->RSSetState(m_pRasterizerState.Get());
 	// 뷰포트 설정
 	D3D11_VIEWPORT viewport = {};
 	viewport.TopLeftX = 0.0f;
@@ -436,6 +448,11 @@ void Renderer::DrawBitmap3D(
 		pAtlasCBuffer->sourceRectWidth = static_cast<float>(texDesc.Width);
 		pAtlasCBuffer->sourceRectHeight = static_cast<float>(texDesc.Height);
 	}
+
+	//std::cout << "sourceRect: " << pAtlasCBuffer->sourceRectX << ", " << pAtlasCBuffer->sourceRectY
+	//	<< ", " << pAtlasCBuffer->sourceRectWidth << " x " << pAtlasCBuffer->sourceRectHeight << std::endl;
+
+
 	m_pd3dContext->Unmap(m_pTextureAtlasCBuffer.Get(), 0);
 
 	m_pd3dContext->PSSetConstantBuffers(1, 1, m_pTextureAtlasCBuffer.GetAddressOf()); // 슬롯 1에 바인딩
@@ -463,7 +480,7 @@ void Renderer::RenderEnd()
 	m_pd2dContext->BeginDraw();
 
 	// D2D로 그릴 영역을 클리어 (투명하게 클리어하여 D3D 결과 위에 겹쳐지도록)
-	m_pd2dContext->Clear(D2D1::ColorF(0, 0, 0, 0)); // 완전 투명
+	m_pd2dContext->Clear(D2D1::ColorF(0, 0, 1, 0)); // 완전 투명
 
 	// 여기에 기존 D2D 기반 UI 그리기 함수 호출들 (DrawCircle, DrawRect, DrawMessage 등)
 	// 예: DrawCircle(100, 100, 50, D2D1::ColorF::Red);
@@ -494,6 +511,8 @@ void Renderer::RenderEnd()
 
 	// PostProcessing 적용, D2D 결과가 그려진 m_renderTargetSRV를 사용하여
 	// 이를 D3D 백버퍼에 그립니다.
+	//m_postProcessShaderName
+	//std::cout << "[Debug] PostProcessShaderName = " << m_postProcessShaderName << std::endl;
 	const ShaderSet& currentPostProcessShader = m_shaderManager->GetShaderSet(m_postProcessShaderName);
 	PostProcessing(currentPostProcessShader);
 
@@ -655,11 +674,11 @@ void Renderer::CreateDeviceAndSwapChain(HWND hwnd)
 	hr = d2dFactory->CreateDevice(dxgiDevice.Get(), &baseDevice);
 	if (FAILED(hr)) { std::cerr << "HRESULT6 = 0x" << std::hex << hr << std::endl; return; }
 
-	ComPtr<ID2D1Device7> d2dDevice; // ID2D1Device4 -> ID2D1Device7
+	ComPtr<ID2D1Device6> d2dDevice; // ID2D1Device4 -> ID2D1Device7
 	hr = baseDevice.As(&d2dDevice);
 	if (FAILED(hr)) { std::cerr << "HRESULT7 = 0x" << std::hex << hr << std::endl; return; }
 
-	ComPtr<ID2D1DeviceContext7> d2dContext; // ID2D1DeviceContext7 유지
+	ComPtr<ID2D1DeviceContext6> d2dContext; // ID2D1DeviceContext7 유지
 	hr = d2dDevice->CreateDeviceContext(D2D1_DEVICE_CONTEXT_OPTIONS_NONE, &d2dContext);
 	if (FAILED(hr)) { std::cerr << "HRESULT8 = 0x" << std::hex << hr << std::endl; return; }
 

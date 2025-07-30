@@ -32,6 +32,7 @@ void SceneBase::Render(Renderer& renderer) {
 		{
 			if (bitmapRenderComp->IsActive())
 			{
+				
 				bitmapRenderComp->Render(renderer);
 			}
 		}

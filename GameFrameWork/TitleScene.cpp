@@ -18,13 +18,6 @@ void TitleScene::Update(double deltaTime)
 	//test용 씬전환
 
 
-// 	if (m_elsapsedTime > 3.0) {
-// 
-// 
-// 		//SceneManager::GetInstance().LoadScene(std::string("Game1"));
-// 		SceneManager::GetInstance().ChangeScene(std::string("Game1"));
-// 
-// 	}
 
 
 }
