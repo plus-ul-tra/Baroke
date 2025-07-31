@@ -201,17 +201,15 @@ void Renderer::SetupSpriteCameraMatrices(UINT width, UINT height)
 	float halfW = width / 2.0f;
 	float halfH = height / 2.0f;
 
-	m_projectionMatrix = XMMatrixOrthographicOffCenterLH(
-		-halfW, halfW,    // Left, Right
-		-halfH, halfH,    // Bottom, Top
-		0.1f, 100.0f
-	);
+	//m_projectionMatrix = XMMatrixOrthographicOffCenterLH(
+	//	-halfW, halfW,    // Left, Right
+	//	-halfH, halfH,    // Bottom, Top
+	//	0.1f, 100.0f
+	//);
 	
 	
-	//m_projectionMatrix = XMMatrixOrthographicLH(orthographicWidth, orthographicHeight, 0.1f, 100.0f);
+	m_projectionMatrix = XMMatrixOrthographicLH(width, height, 0.1f, 100.0f);
 	
-	
-
 }
 //void Renderer::SetupSpriteCameraMatrices(UINT width, UINT height)
 //{
@@ -355,21 +353,21 @@ void Renderer::RenderBegin()
 
 
 	// 알파 블렌딩
-	 D3D11_BLEND_DESC blendDesc = {};
-	 blendDesc.AlphaToCoverageEnable = FALSE;
-	 blendDesc.IndependentBlendEnable = FALSE;
-	 blendDesc.RenderTarget[0].BlendEnable = TRUE;
-	 blendDesc.RenderTarget[0].SrcBlend = D3D11_BLEND_SRC_ALPHA;
-	 blendDesc.RenderTarget[0].DestBlend = D3D11_BLEND_INV_SRC_ALPHA;
-	 blendDesc.RenderTarget[0].BlendOp = D3D11_BLEND_OP_ADD;
-	 blendDesc.RenderTarget[0].SrcBlendAlpha = D3D11_BLEND_ONE;
-	 blendDesc.RenderTarget[0].DestBlendAlpha = D3D11_BLEND_ZERO;
-	 blendDesc.RenderTarget[0].BlendOpAlpha = D3D11_BLEND_OP_ADD;
-	 blendDesc.RenderTarget[0].RenderTargetWriteMask = D3D11_COLOR_WRITE_ENABLE_ALL;
+	D3D11_BLEND_DESC blendDesc = {};
+	blendDesc.AlphaToCoverageEnable = FALSE;
+	blendDesc.IndependentBlendEnable = FALSE;
+	blendDesc.RenderTarget[0].BlendEnable = TRUE;
+	blendDesc.RenderTarget[0].SrcBlend = D3D11_BLEND_SRC_ALPHA;
+	blendDesc.RenderTarget[0].DestBlend = D3D11_BLEND_INV_SRC_ALPHA;
+	blendDesc.RenderTarget[0].BlendOp = D3D11_BLEND_OP_ADD;
+	blendDesc.RenderTarget[0].SrcBlendAlpha = D3D11_BLEND_ONE;
+	blendDesc.RenderTarget[0].DestBlendAlpha = D3D11_BLEND_ZERO;
+	blendDesc.RenderTarget[0].BlendOpAlpha = D3D11_BLEND_OP_ADD;
+	blendDesc.RenderTarget[0].RenderTargetWriteMask = D3D11_COLOR_WRITE_ENABLE_ALL;
 
-	 ComPtr<ID3D11BlendState> pBlendState;
-	 m_pd3dDevice->CreateBlendState(&blendDesc, &pBlendState);
-	 m_pd3dContext->OMSetBlendState(pBlendState.Get(), nullptr, 0xFFFFFFFF);
+	ComPtr<ID3D11BlendState> pBlendState;
+	m_pd3dDevice->CreateBlendState(&blendDesc, &pBlendState);
+	m_pd3dContext->OMSetBlendState(pBlendState.Get(), nullptr, 0xFFFFFFFF);
 }
 
 void Renderer::DrawRect(float left, float top, float right, float bottom, const D2D1::ColorF& color)
@@ -406,9 +404,13 @@ void Renderer::DrawBitmap3D(
 		return;
 	}
 	ObjectTransformCBuffer* pCBuffer = static_cast<ObjectTransformCBuffer*>(mappedResource.pData);
+	
 	pCBuffer->World = worldMatrix; 
 	pCBuffer->View = m_viewMatrix;
-	pCBuffer->Projection = m_projectionMatrix;
+	pCBuffer->Projection = m_projectionMatrix ;
+
+	  // D2D1::Matrix3x2F::Scale(1.0f, -1.0f) * D2D1::Matrix3x2F::Translation(screenW / 2, screenH / 2);
+
 	m_pd3dContext->Unmap(m_pObjectTransformCBuffer.Get(), 0);
 
 	m_pd3dContext->VSSetConstantBuffers(0, 1, m_pObjectTransformCBuffer.GetAddressOf()); // 슬롯 0에 바인딩
@@ -513,7 +515,6 @@ void Renderer::RenderEnd()
 	const ShaderSet& currentPostProcessShader = m_shaderManager->GetShaderSet(m_postProcessShaderName);
 	//PostProcessing(currentPostProcessShader);
 
-	// 3. 최종 화면 표시
 	Present();
 }
 

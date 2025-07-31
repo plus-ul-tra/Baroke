@@ -88,6 +88,16 @@ private:
 	// 2D 렌더링을 위한 뷰/프로젝션 행렬 (변화하지 않으므로 미리 계산)
 	XMMATRIX m_viewMatrix;
 	XMMATRIX m_projectionMatrix;
+	XMMATRIX MakeFlipTranslate2D() {
+		using namespace DirectX;
+
+		XMMATRIX scale = XMMatrixScaling(1.0f, -1.0f, 1.0f);          
+		XMMATRIX translate = XMMatrixTranslation(1920 * 0.5f,          
+			1080 * 0.5f,     
+			0.0f);                
+
+		return scale * translate;                                   
+	}
 
 public:
 	Renderer() = default;

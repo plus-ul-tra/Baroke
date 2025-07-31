@@ -150,8 +150,8 @@ void InputManager::HandleMsgKeyUp(WPARAM wParam, LPARAM lParam)
 
 void InputManager::HandleMsgMouse(const MSG& msg)
 {
-	int x = GetXFromLParam(msg.lParam);
-	int y = GetYFromLParam(msg.lParam);
+	int x = GetXFromLParam(msg.lParam)-960;
+	int y = GetYFromLParam(msg.lParam) * -1 + 540;
 
 	m_CurMouse.pos = { x, y };
 

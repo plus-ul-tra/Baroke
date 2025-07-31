@@ -4,8 +4,8 @@
 
 #define BOARD_SIZE 15
 #define PADDING 0
-#define POSX 582
-#define POSY 162
+#define POSX 0
+#define POSY 0
 #define WIDTH 756
 #define HEIGHT 756
 
@@ -64,7 +64,7 @@ void GameScene::OnEnter()
 	std::cout << m_objectList.size() << std::endl;
 
 	// 버튼 생성
-	unique_ptr<Button> button1 = std::make_unique<Button>(30.0f, 30.0f, 200, 200, "Sample.png", 50);
+	unique_ptr<Button> button1 = std::make_unique<Button>(-800.0f, 300.0f, 200, 200, "Sample.png", 50);
 	m_buttonList.emplace_back(button1.get());
 	m_objectList.emplace_back(std::move(button1));
 }

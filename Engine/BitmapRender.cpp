@@ -72,6 +72,7 @@ XMMATRIX BitmapRender3D::GetWorldMatrix()
 	XMMATRIX translation = XMMatrixTranslationFromVector(m_transform->GetPosition());
 
 	return scale * rotation * translation;
+	//return translation * rotation * scale; // 순서에 따라 결과가 달라질 수 있음
 	
 }
 

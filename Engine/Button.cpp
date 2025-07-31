@@ -6,8 +6,8 @@ void Button::CheckInput(const MouseEvent& mouseEvent)
 	if (!m_isActive) { m_isPressed = false; return; }
 
 	POINT mousePos = mouseEvent.pos;
-	bool isInX = (mousePos.x >= m_transform->GetPosition().m128_f32[0] && mousePos.x <= m_transform->GetPosition().m128_f32[0] + m_width);
-	bool isInY = (mousePos.y >= m_transform->GetPosition().m128_f32[1] && mousePos.y <= m_transform->GetPosition().m128_f32[1] + m_height);
+	bool isInX = (mousePos.x >= m_transform->GetPosition().m128_f32[0] - m_width / 2 && mousePos.x <= m_transform->GetPosition().m128_f32[0] + m_width/2);
+	bool isInY = (mousePos.y >= m_transform->GetPosition().m128_f32[1] - m_height/ 2 && mousePos.y <= m_transform->GetPosition().m128_f32[1] + m_height/2);
 
 	if (isInX && isInY)
 	{
