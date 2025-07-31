@@ -44,13 +44,14 @@ public:
 
 	void Update(double deltaTime) override { Object::Update(deltaTime); ButtonFunction(); }
 
-	virtual void ButtonFunction() {}
+	virtual void ButtonFunction() = 0;
 
 	XMVECTOR GetPosition() const { return m_transform->GetPosition(); }
 	void SetPosition(XMVECTOR pos) { m_transform->SetPosition(pos); }
 
 	float GetWidth() const { return m_width; }
 	void SetWidth(float width) { m_width = width; }
+
 	float GetHeight() const { return m_height; }
 	void SetHeight(float height) { m_height = height; }
 

@@ -164,10 +164,12 @@
     <ClCompile Include="GameTimer.cpp" />
     <ClCompile Include="GeoRender.cpp" />
     <ClCompile Include="InputManager.cpp" />
+    <ClCompile Include="JokerFunctionRegistry.cpp" />
     <ClCompile Include="JokerManager.cpp" />
     <ClCompile Include="Object.cpp" />
     <ClCompile Include="pch.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Create</PrecompiledHeader>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">false</ExcludedFromBuild>
     </ClCompile>
     <ClCompile Include="Renderer.cpp" />
     <ClCompile Include="SceneBase.cpp" />
@@ -201,6 +203,9 @@
     <ClInclude Include="GeoRender.h" />
     <ClInclude Include="InputEvents.h" />
     <ClInclude Include="InputManager.h" />
+    <ClInclude Include="ItemType.h" />
+    <ClInclude Include="JokerData.h" />
+    <ClInclude Include="JokerFunctionRegistry.h" />
     <ClInclude Include="JokerManager.h" />
     <ClInclude Include="json.hpp" />
     <ClInclude Include="Object.h" />

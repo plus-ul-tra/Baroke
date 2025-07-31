@@ -18,7 +18,7 @@ public:
 		m_bitmapRender->SetOrder(0);
 		m_bitmapRender->SetActive(true);
 
-		BoardManager::GetInstance().Initialize(); // º¸µå ¸Å´ÏÀú ÃÊ±âÈ­
+		BoardManager::GetInstance().Initialize(); // ë³´ë“œ ë§¤ë‹ˆì € ì´ˆê¸°í™”
 	}
 	void Render(Renderer& r) override
 	{
@@ -32,10 +32,80 @@ public:
 
 
 
+// 	void RefreshStones() 
+// 	{
+// 		m_stones.clear();          // 1) ê¸°ì¡´ ìŠ¤í”„ë¼ì´íŠ¸ ì „ë¶€ ì œê±°
+// 	}
+
+// private:
+// 	void SyncStones()
+// 	{
+// 		const auto& nodes = m_board->GetNodes();
+// 		int N = m_board->Size();
+
+// 		// 1) í•„ìš” ì—†ëŠ” StoneObject ì œê±°
+// 		for (auto it = m_stones.begin(); it != m_stones.end(); )
+// 		{
+// 			auto* stoneobj = it->get();
+// 			auto pos = stoneobj->GetTagPos();
+// 			if (nodes[pos.first][pos.second].color == StoneType::None)
+// 				it = m_stones.erase(it);        
+// 			else ++it;
+// 		}
+
+// 		// 2) ìƒˆ ëŒ ìƒì„±
+// 		for (int r = 0; r < N; ++r)
+// 			for (int c = 0; c < N; ++c)
+// 			{
+// 				if (nodes[r][c].color == StoneType::None) continue;
+// 				if (HasStone(r, c)) continue;     // ì´ë¯¸ ìˆìœ¼ë©´ skip
+
+// 				POINT p = m_layout->BoardToScreen(r, c);
+// 				float size = static_cast<float>(m_layout->GetCell()) - m_stoneOffset;
+
+// 				if (nodes[r][c].color != StoneType::Joker)
+// 				{
+// 					auto stone = std::make_unique<StoneObject>(
+// 						nodes[r][c].color,
+// 						static_cast<float>(p.x),
+// 						static_cast<float>(p.y),
+// 						size);
+// 					stone->SetTagPos(r, c);
+// 					m_stones.emplace_back(std::move(stone));
+// 				} 
+// 				else
+// 				{
+// 					std::string key = AbilityToJokerName(nodes[r][c].ability);
+// 					if (!key.empty() && JokerManager::GetInstance().HasJokerInfo(key))
+// 					{
+// 						auto& info = JokerManager::GetInstance().GetJokerInfo(key);
+// 						auto stone = std::make_unique<Joker>(
+// 							info,
+// 							static_cast<float>(p.x),
+// 							static_cast<float>(p.y),
+// 							size);
+// 						stone->SetTagPos(r, c);
+// 						stone->Activate();
+// 						m_stones.emplace_back(std::move(stone));
+// 					}
+// 				}
+
+// 			}
+	
 
 
 
+// 	std::string AbilityToJokerName(StoneAbility ab)
+// 	{
+// 		switch (ab)
+// 		{
+// 		case StoneAbility::ability1: return "JokerStone1";
+// 		case StoneAbility::ability2: return "JokerStone2";
+// 		default: return "";
+// 		}
+// 	}
 
+// 	int m_stoneOffset;
 
 
 
@@ -61,7 +131,7 @@ public:
 //
 //	void Update(double) override
 //	{
-//		SyncStones();          // ¸Å ÇÁ·¹ÀÓ board »óÅÂ¿Í ¿ÀºêÁ§Æ®¸¦ ¸ÂÃã
+//		SyncStones();          // ë§¤ í”„ë ˆì„ board ìƒíƒœì™€ ì˜¤ë¸Œì íŠ¸ë¥¼ ë§ì¶¤
 //	}
 //	Board* GetBoard()       noexcept { return m_board; }
 //	const Board* GetBoard() const noexcept { return m_board; }
@@ -88,7 +158,7 @@ public:
 //		const auto& nodes = m_board->GetNodes();
 //		int N = m_board->Size();
 //
-//		// 1) ÇÊ¿ä ¾ø´Â StoneObject Á¦°Å
+//		// 1) í•„ìš” ì—†ëŠ” StoneObject ì œê±°
 //		for (auto it = m_stones.begin(); it != m_stones.end(); )
 //		{
 //			auto* stoneobj = it->get();
@@ -98,12 +168,12 @@ public:
 //			else ++it;
 //		}
 //
-//		// 2) »õ µ¹ »ı¼º
+//		// 2) ìƒˆ ëŒ ìƒì„±
 //		for (int r = 0; r < N; ++r)
 //			for (int c = 0; c < N; ++c)
 //			{
 //				if (nodes[r][c].color == StoneColor::None) continue;
-//				if (HasStone(r, c)) continue;     // ÀÌ¹Ì ÀÖÀ¸¸é skip
+//				if (HasStone(r, c)) continue;     // ì´ë¯¸ ìˆìœ¼ë©´ skip
 //
 //				POINT p = m_layout->BoardToScreen(r, c);
 //				float size = static_cast<float>(m_layout->GetCell()) - m_stoneOffset;
@@ -115,7 +185,7 @@ public:
 //						static_cast<float>(p.x),
 //						static_cast<float>(p.y),
 //						size);
-//					stone->SetTagPos(r, c);           // (row,col) ±â·Ï
+//					stone->SetTagPos(r, c);           // (row,col) ê¸°ë¡
 //					m_stones.emplace_back(std::move(stone));
 //				}
 //				else if (nodes[r][c].ability == StoneAbility::ability1)
@@ -129,7 +199,7 @@ public:
 //						size
 //						);
 //					stone->UpdateAbility();
-//					stone->SetTagPos(r, c);           // (row,col) ±â·Ï
+//					stone->SetTagPos(r, c);           // (row,col) ê¸°ë¡
 //					m_stones.emplace_back(std::move(stone));
 //				}
 //				else if (nodes[r][c].ability == StoneAbility::ability2)
@@ -143,7 +213,7 @@ public:
 //						size
 //						);
 //					stone->UpdateAbility();
-//					stone->SetTagPos(r, c);           // (row,col) ±â·Ï
+//					stone->SetTagPos(r, c);           // (row,col) ê¸°ë¡
 //					m_stones.emplace_back(std::move(stone));
 //				}
 //			}

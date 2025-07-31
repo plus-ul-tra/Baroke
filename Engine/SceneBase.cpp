@@ -45,6 +45,54 @@ void SceneBase::Render(Renderer& renderer) {
 		}
 		obj->Render(renderer);
 	}
+
+
+
+	for (const auto& ui : m_UIList) {
+
+		//디버그 모드 collider 상자 표시
+		if (MIYABI::Core::GetInstance().IsDebugMode()) {
+
+			if (auto geoRenderComp = ui->GetComponent<GeoRender>()) {
+
+				if (geoRenderComp->IsActive()) {
+					geoRenderComp->Render(renderer);
+				}
+			}
+
+		}
+		//일반 그리기
+		if (auto bitmapRenderComp = ui->GetComponent<BitmapRender>())
+		{
+			if (bitmapRenderComp->IsActive())
+			{
+				bitmapRenderComp->Render(renderer);
+			}
+		}
+		ui->Render(renderer);
+	}
+
+
+}
+
+void RenderObject(Object* obj, Renderer& renderer)
+{
+	// 디버그용 GeoRender
+	if (MIYABI::Core::GetInstance().IsDebugMode())
+	{
+		if (auto geo = obj->GetComponent<GeoRender>())
+			if (geo->IsActive())
+				geo->Render(renderer);
+	}
+
+	// 일반 비트맵 렌더
+	if (auto bmp = obj->GetComponent<BitmapRender>())
+		if (bmp->IsActive())
+			bmp->Render(renderer);
+
+	// 오브젝트 자체 렌더
+	obj->Render(renderer);
+
 }
 
 
