@@ -190,55 +190,47 @@ HRESULT Renderer::CreateSpriteSamplerState()
 
 void Renderer::SetupSpriteCameraMatrices(UINT width, UINT height)
 {
-	// 뷰 행렬: 2D 게임이므로 카메라를 (0,0, -1)에 두고 (0,0,0)을 바라보는 것으로 설정
+	
 	XMVECTOR Eye = XMVectorSet(0.0f, 0.0f, -1.0f, 0.0f);
-	XMVECTOR At = XMVectorSet(0.0f, 0.0f, 0.0f, 1.0f);
+	XMVECTOR lookAt = XMVectorSet(0.0f, 0.0f, 0.0f, 0.0f);
 	XMVECTOR Up = XMVectorSet(0.0f, 1.0f, 0.0f, 0.0f);
-	m_viewMatrix = XMMatrixLookAtLH(Eye, At, Up); // Left-Handed Coordinate System
 
-	// 투영 행렬: 직교 투영 (2D 렌더링에 적합)
-	// 일반적으로 화면 중앙을 (0,0)으로 두는 것이 편리
-	// 게임의 월드 좌표계에 맞게 orthographicHeight를 조절
-	// 예: 1000은 화면 전체 높이가 1000 월드 유닛임을 의미
-	float orthographicHeight = static_cast<float>(height); // 화면 픽셀 높이를 월드 높이로 사용
-	float orthographicWidth = static_cast<float>(width);   // 화면 픽셀 너비를 월드 너비로 사용
+	m_viewMatrix = XMMatrixLookAtLH(Eye, lookAt, Up);
 
-	// Renderer가 (0,0)을 좌상단으로 사용하는 윈도우 좌표계를 기본으로 한다면
-	// left, right, bottom, top 값을 직접 설정해야 합니다.
-	// D3D의 클립 공간은 X, Y가 -1.0 ~ +1.0, Z는 0.0 ~ 1.0 (또는 -1.0 ~ 1.0) 입니다.
-	// 윈도우 좌상단 (0,0)에 매핑하려면
+	// 중앙(0,0) 기준 좌표 → 좌상단(0,0) 기준 픽셀 좌표계로 맞춤
+	float halfW = width / 2.0f;
+	float halfH = height / 2.0f;
+
 	m_projectionMatrix = XMMatrixOrthographicOffCenterLH(
-		0.0f,                 // Left
-		static_cast<float>(width),    // Right
-		static_cast<float>(height),   // Bottom (Y축 상향 기준, Direct3D는 보통 Y 상향)
-		0.0f,                 // Top (하지만 보통 Direct2D처럼 Y 하향을 원하므로 Top/Bottom 교체 필요)
-		0.1f,                 // Near Z
-		100.0f                // Far Z
+		-halfW, halfW,    // Left, Right
+		-halfH, halfH,    // Bottom, Top
+		0.1f, 100.0f
 	);
-	m_projectionMatrix = XMMatrixOrthographicLH(width, height, 0.1f, 100.0f);
-	// 만약 Direct2D처럼 Y축이 아래로 증가하는 좌표계를 원한다면:
-	//m_projectionMatrix = XMMatrixOrthographicOffCenterLH(
-	//	0.0f,                      // Left
-	//	static_cast<float>(width), // Right
-	//	static_cast<float>(height),// Bottom (DirectX Math의 LH Ortho는 Y가 위로 증가)
-	//	0.0f,                      // Top
-	//	0.1f,                      // Near Z
-	//	100.0f                     // Far Z
-	//);
+	
+	
+	//m_projectionMatrix = XMMatrixOrthographicLH(orthographicWidth, orthographicHeight, 0.1f, 100.0f);
+	
+	
 
-
-
-	// Y축 뒤집기: 뷰 행렬에서 Y 스케일을 -1.0f로 하거나,
-	// 프로젝션 행렬에서 bottom과 top 값을 뒤집어 주거나,
-	// 픽셀 쉐이더에서 Texcoord.y = 1.0f - Texcoord.y; 를 하는 방법 등이 있습니다.
-	// 여기서는 가장 간단하게, 뷰 행렬에서 Y축을 뒤집는 방법을 사용해봅시다.
-	// (그러나 이 방법은 텍스처 좌표 Y축도 뒤집힐 수 있으므로, 텍스처 좌표가 문제가 되면 쉐이더에서 직접 뒤집는 것이 더 확실합니다.)
-
-	// 표준 D3D 뷰 행렬에서 Y축을 뒤집는 것은 권장되지 않으며, 보통 프로젝션 행렬이나 픽셀 쉐이더에서 처리합니다.
-	// 픽셀 쉐이더에서 텍스처 좌표 Y축을 1.0 - input.tex.y 로 변환하는 것이 일반적입니다.
-
-	//OutputDebugStringA("INFO: Sprite Camera matrices (View/Projection) set.\n");
 }
+//void Renderer::SetupSpriteCameraMatrices(UINT width, UINT height)
+//{
+//	// 카메라를 화면 앞쪽(음수 Z)에 배치 — 오브젝트가 Z=0 평면에 있도록
+//	XMVECTOR Eye = XMVectorSet(0.0f, 0.0f, -10.0f, 0.0f); // 뒤에서 앞으로 본다
+//	XMVECTOR LookAt = XMVectorSet(0.0f, 0.0f, 0.0f, 1.0f);
+//	XMVECTOR Up = XMVectorSet(0.0f, -1.0f, 0.0f, 0.0f); // Y아래 방향이 +가 되도록 뒤집음
+//	m_viewMatrix = XMMatrixLookAtLH(Eye, LookAt, Up);
+//
+//	// 직교 투영: 좌상단 0,0 / 우하단 width,height
+//	// NearZ/FarZ를 넉넉히 줘서 Z=0 평면이 보장되게 함
+//	m_projectionMatrix = XMMatrixOrthographicOffCenterLH(
+//		0.0f, (float)width,   // Left, Right
+//		(float)height, 0.0f,  // Bottom, Top (Y아래 증가)
+//		0.0f, 100.0f          // Near, Far
+//	);
+//}
+
+
 void Renderer::CreateFullScrennQuad()
 {
 	SpriteVertex quadVertices[] =
@@ -328,7 +320,7 @@ void Renderer::RenderBegin()
 	ID3D11RenderTargetView* rtv = m_pd3dRenderTV.Get();
 	m_pd3dContext->OMSetRenderTargets(1, &rtv, nullptr); // 깊이 버퍼는 2D 스프라이트에선 선택 사항
 
-	FLOAT backgroundColor[4] = { 1.0f, 1.0f, 0.0f, 1.0f }; //노랑 
+	FLOAT backgroundColor[4] = { 0.5f, 0.5f, 0.5f, 1.0f }; //노랑 
 	m_pd3dContext->ClearRenderTargetView(rtv, backgroundColor);
 	// m_pd3dContext->ClearDepthStencilView(m_pDepthStencilView.Get(), D3D11_CLEAR_DEPTH, 1.0f, 0); // 깊이 버퍼 사용 시
 
@@ -360,9 +352,11 @@ void Renderer::RenderBegin()
 	m_pd3dContext->RSSetState(nullptr); // 기본 래스터라이저 상태 (CullMode None)
 
 	m_pd3dContext->OMSetDepthStencilState(nullptr, 0); // 깊이 테스트 비활성화 (2D 스프라이트)
-	// 알파 블렌딩 활성화 (필요하다면)
-	 //D3D11_BLEND_DESC blendDesc = {};
-	 /*blendDesc.AlphaToCoverageEnable = FALSE;
+
+
+	// 알파 블렌딩
+	 D3D11_BLEND_DESC blendDesc = {};
+	 blendDesc.AlphaToCoverageEnable = FALSE;
 	 blendDesc.IndependentBlendEnable = FALSE;
 	 blendDesc.RenderTarget[0].BlendEnable = TRUE;
 	 blendDesc.RenderTarget[0].SrcBlend = D3D11_BLEND_SRC_ALPHA;
@@ -372,9 +366,10 @@ void Renderer::RenderBegin()
 	 blendDesc.RenderTarget[0].DestBlendAlpha = D3D11_BLEND_ZERO;
 	 blendDesc.RenderTarget[0].BlendOpAlpha = D3D11_BLEND_OP_ADD;
 	 blendDesc.RenderTarget[0].RenderTargetWriteMask = D3D11_COLOR_WRITE_ENABLE_ALL;
+
 	 ComPtr<ID3D11BlendState> pBlendState;
 	 m_pd3dDevice->CreateBlendState(&blendDesc, &pBlendState);
-	 m_pd3dContext->OMSetBlendState(pBlendState.Get(), nullptr, 0xFFFFFFFF);*/
+	 m_pd3dContext->OMSetBlendState(pBlendState.Get(), nullptr, 0xFFFFFFFF);
 }
 
 void Renderer::DrawRect(float left, float top, float right, float bottom, const D2D1::ColorF& color)
@@ -411,9 +406,9 @@ void Renderer::DrawBitmap3D(
 		return;
 	}
 	ObjectTransformCBuffer* pCBuffer = static_cast<ObjectTransformCBuffer*>(mappedResource.pData);
-	pCBuffer->World = XMMatrixTranspose(worldMatrix); // 쉐이더로 넘길 때 전치 (DX11에서 기본적으로 행 우선)
-	pCBuffer->View =  XMMatrixTranspose(m_viewMatrix);
-	pCBuffer->Projection = XMMatrixTranspose(m_projectionMatrix);
+	pCBuffer->World = worldMatrix; 
+	pCBuffer->View = m_viewMatrix;
+	pCBuffer->Projection = m_projectionMatrix;
 	m_pd3dContext->Unmap(m_pObjectTransformCBuffer.Get(), 0);
 
 	m_pd3dContext->VSSetConstantBuffers(0, 1, m_pObjectTransformCBuffer.GetAddressOf()); // 슬롯 0에 바인딩
@@ -451,10 +446,6 @@ void Renderer::DrawBitmap3D(
 		pAtlasCBuffer->sourceRectWidth = static_cast<float>(texDesc.Width);
 		pAtlasCBuffer->sourceRectHeight = static_cast<float>(texDesc.Height);
 	}
-	std::cout << "sourceRectWidth = " << pAtlasCBuffer->sourceRectWidth
-		<< ", sourceRectHeight = " << pAtlasCBuffer->sourceRectHeight << std::endl;
-	//std::cout << "sourceRect: " << pAtlasCBuffer->sourceRectX << ", " << pAtlasCBuffer->sourceRectY
-	//	<< ", " << pAtlasCBuffer->sourceRectWidth << " x " << pAtlasCBuffer->sourceRectHeight << std::endl;
 
 
 	m_pd3dContext->Unmap(m_pTextureAtlasCBuffer.Get(), 0);
@@ -519,7 +510,7 @@ void Renderer::RenderEnd()
 	//m_postProcessShaderName
 	//std::cout << "[Debug] PostProcessShaderName = " << m_postProcessShaderName << std::endl;
 	
-	//const ShaderSet& currentPostProcessShader = m_shaderManager->GetShaderSet(m_postProcessShaderName);
+	const ShaderSet& currentPostProcessShader = m_shaderManager->GetShaderSet(m_postProcessShaderName);
 	//PostProcessing(currentPostProcessShader);
 
 	// 3. 최종 화면 표시

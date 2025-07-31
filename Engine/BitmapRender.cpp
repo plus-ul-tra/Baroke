@@ -66,14 +66,7 @@ void BitmapRender3D::CreateQuadBuffers()  //Device가 너무 깊은 곳에 관여하는게 �
 
 XMMATRIX BitmapRender3D::GetWorldMatrix()
 {
-	//return XMMatrixTransformation2D(
-	//	XMVectorSet(1.0f, 1.0f, 0.0f, 0.0f),		   // Scale origin
-	//	0.0f,                                          // Rotation angle (radians)
-	//	m_transform->GetScale(),                       // Scale vector (from transform)
-	//	XMVectorSet(0.0f, 0.0f, 0.0f, 0.0f),		    // Rotation origin
-	//	m_transform->GetRotation(),                    // Rotation (around Z-axis for 2D)
-	//	m_transform->GetPosition()
-	//);
+	
 	XMMATRIX scale = XMMatrixScalingFromVector(m_transform->GetScale());
 	XMMATRIX rotation = XMMatrixRotationZ(m_transform->GetRotation()); // float OK
 	XMMATRIX translation = XMMatrixTranslationFromVector(m_transform->GetPosition());
@@ -81,6 +74,9 @@ XMMATRIX BitmapRender3D::GetWorldMatrix()
 	return scale * rotation * translation;
 	
 }
+
+
+
 
 void BitmapRender3D::SetSize(float width, float height)
 {

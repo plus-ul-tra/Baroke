@@ -12,7 +12,7 @@
 
 // ShaderManager가 정의된 헤더 포함 (현재 코드에 ShaderManager가 있다고 가정)
 #include "ShaderManager.h" 
-
+using namespace DirectX;
 // BitmapRender3D에서 사용하는 SpriteVertex 구조체는 Renderer.h에도 필요
 struct SpriteVertex
 {
@@ -86,8 +86,8 @@ private:
 	ComPtr<ID3D11SamplerState> m_pSpriteSamplerState; // 스프라이트 전용 샘플러 (다른 필터링 등)
 
 	// 2D 렌더링을 위한 뷰/프로젝션 행렬 (변화하지 않으므로 미리 계산)
-	DirectX::XMMATRIX m_viewMatrix;
-	DirectX::XMMATRIX m_projectionMatrix;
+	XMMATRIX m_viewMatrix;
+	XMMATRIX m_projectionMatrix;
 
 public:
 	Renderer() = default;

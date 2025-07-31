@@ -57,7 +57,7 @@ void GameScene::OnEnter()
 
 	std::cout << "Game1 Scene OnEnter" << std::endl;
 	auto playerObject = std::make_unique<Player>(
-		600.0f, 300.0f, 50.0f, 50.0f, DirectX::XMFLOAT4(1.0f, 0.0f, 0.0f, 1.0f)
+		100.0f, 100.0f, 50.0f, 50.0f, DirectX::XMFLOAT4(1.0f, 0.0f, 0.0f, 1.0f)
 	);
 	m_player = playerObject.get();
 	m_objectList.push_back(std::move(playerObject));
