@@ -66,14 +66,19 @@ void BitmapRender3D::CreateQuadBuffers()  //Device가 너무 깊은 곳에 관여하는게 �
 
 XMMATRIX BitmapRender3D::GetWorldMatrix()
 {
-	return XMMatrixTransformation2D(
-		XMVectorSet(1.0f, 1.0f, 0.0f, 0.0f),		   // Scale origin
-		0.0f,                                          // Rotation angle (radians)
-		m_transform->GetScale(),                       // Scale vector (from transform)
-		XMVectorSet(0.0f, 0.0f, 0.0f, 0.0f),		    // Rotation origin
-		m_transform->GetRotation(),                    // Rotation (around Z-axis for 2D)
-		m_transform->GetPosition()
-	);
+	//return XMMatrixTransformation2D(
+	//	XMVectorSet(1.0f, 1.0f, 0.0f, 0.0f),		   // Scale origin
+	//	0.0f,                                          // Rotation angle (radians)
+	//	m_transform->GetScale(),                       // Scale vector (from transform)
+	//	XMVectorSet(0.0f, 0.0f, 0.0f, 0.0f),		    // Rotation origin
+	//	m_transform->GetRotation(),                    // Rotation (around Z-axis for 2D)
+	//	m_transform->GetPosition()
+	//);
+	XMMATRIX scale = XMMatrixScalingFromVector(m_transform->GetScale());
+	XMMATRIX rotation = XMMatrixRotationZ(m_transform->GetRotation()); // float OK
+	XMMATRIX translation = XMMatrixTranslationFromVector(m_transform->GetPosition());
+
+	return scale * rotation * translation;
 	
 }
 
@@ -102,6 +107,7 @@ BitmapRender3D::BitmapRender3D(const string& spriteKey, float width, float heigh
 	// SpriteManager에 해당 키가 애니메이션 클립을 가지고 있는지 확인
 	if (spriteManager.IsAnimatedSprite(spriteKey))
 	{
+		std::cout << "애니" << endl;
 		// 애니메이션 클립 맵을 가져와 SpriteAnimator에 설정
 		m_animator.SetClips(&spriteManager.GetAnimationClips(spriteKey));
 		// 기본 클립을 설정
@@ -109,6 +115,7 @@ BitmapRender3D::BitmapRender3D(const string& spriteKey, float width, float heigh
 	}
 	else
 	{
+		std::cout << "일반" << endl;
 		// 일반 이미지 텍스처 SRV를 가져옴
 		m_textureSRV = spriteManager.GetTextureSRV(spriteKey);
 		if (!m_textureSRV) {

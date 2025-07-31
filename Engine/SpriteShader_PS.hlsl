@@ -37,5 +37,6 @@ float4 SpritePS(VS_OUTPUT input) : SV_TARGET
     
     // 텍스처를 샘플링하고 최종 색상 반환
     return Texture.Sample(SamplerTexture, float2(finalU, finalV));
+    //return float4(1.0f, 0.0f, 0.0f, 1.0f);
    
 }

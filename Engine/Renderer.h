@@ -54,8 +54,8 @@ private:
 	ComPtr<ID3D11DeviceContext> m_pd3dContext;
 	ComPtr<IDXGISwapChain1> m_pswapChain; // IDXGISwapChain1 사용 중
 
-	ComPtr<ID2D1Device6> m_pd2dDevice;
-	ComPtr<ID2D1DeviceContext6> m_pd2dContext;
+	ComPtr<ID2D1Device7> m_pd2dDevice;
+	ComPtr<ID2D1DeviceContext7> m_pd2dContext;
 
 	ComPtr<ID3D11RenderTargetView> m_pd3dRenderTV; // D3D 백버퍼용 RTV
 	ComPtr<ID3D11Texture2D> m_renderTargetTex;     // D2D가 그릴 Off-screen 텍스처

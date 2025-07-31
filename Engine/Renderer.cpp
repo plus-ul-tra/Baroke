@@ -192,7 +192,7 @@ void Renderer::SetupSpriteCameraMatrices(UINT width, UINT height)
 {
 	// 뷰 행렬: 2D 게임이므로 카메라를 (0,0, -1)에 두고 (0,0,0)을 바라보는 것으로 설정
 	XMVECTOR Eye = XMVectorSet(0.0f, 0.0f, -1.0f, 0.0f);
-	XMVECTOR At = XMVectorSet(0.0f, 0.0f, 0.0f, 0.0f);
+	XMVECTOR At = XMVectorSet(0.0f, 0.0f, 0.0f, 1.0f);
 	XMVECTOR Up = XMVectorSet(0.0f, 1.0f, 0.0f, 0.0f);
 	m_viewMatrix = XMMatrixLookAtLH(Eye, At, Up); // Left-Handed Coordinate System
 
@@ -207,24 +207,27 @@ void Renderer::SetupSpriteCameraMatrices(UINT width, UINT height)
 	// left, right, bottom, top 값을 직접 설정해야 합니다.
 	// D3D의 클립 공간은 X, Y가 -1.0 ~ +1.0, Z는 0.0 ~ 1.0 (또는 -1.0 ~ 1.0) 입니다.
 	// 윈도우 좌상단 (0,0)에 매핑하려면
+	m_projectionMatrix = XMMatrixOrthographicOffCenterLH(
+		0.0f,                 // Left
+		static_cast<float>(width),    // Right
+		static_cast<float>(height),   // Bottom (Y축 상향 기준, Direct3D는 보통 Y 상향)
+		0.0f,                 // Top (하지만 보통 Direct2D처럼 Y 하향을 원하므로 Top/Bottom 교체 필요)
+		0.1f,                 // Near Z
+		100.0f                // Far Z
+	);
+	m_projectionMatrix = XMMatrixOrthographicLH(width, height, 0.1f, 100.0f);
+	// 만약 Direct2D처럼 Y축이 아래로 증가하는 좌표계를 원한다면:
 	//m_projectionMatrix = XMMatrixOrthographicOffCenterLH(
-	//	0.0f,                 // Left
-	//	static_cast<float>(width),    // Right
-	//	static_cast<float>(height),   // Bottom (Y축 상향 기준, Direct3D는 보통 Y 상향)
-	//	0.0f,                 // Top (하지만 보통 Direct2D처럼 Y 하향을 원하므로 Top/Bottom 교체 필요)
-	//	0.1f,                 // Near Z
-	//	100.0f                // Far Z
+	//	0.0f,                      // Left
+	//	static_cast<float>(width), // Right
+	//	static_cast<float>(height),// Bottom (DirectX Math의 LH Ortho는 Y가 위로 증가)
+	//	0.0f,                      // Top
+	//	0.1f,                      // Near Z
+	//	100.0f                     // Far Z
 	//);
 
-	// 만약 Direct2D처럼 Y축이 아래로 증가하는 좌표계를 원한다면:
-	m_projectionMatrix = XMMatrixOrthographicOffCenterLH(
-		0.0f,                      // Left
-		static_cast<float>(width), // Right
-		static_cast<float>(height),// Bottom (DirectX Math의 LH Ortho는 Y가 위로 증가)
-		0.0f,                      // Top
-		0.1f,                      // Near Z
-		100.0f                     // Far Z
-	);
+
+
 	// Y축 뒤집기: 뷰 행렬에서 Y 스케일을 -1.0f로 하거나,
 	// 프로젝션 행렬에서 bottom과 top 값을 뒤집어 주거나,
 	// 픽셀 쉐이더에서 Texcoord.y = 1.0f - Texcoord.y; 를 하는 방법 등이 있습니다.
@@ -325,7 +328,7 @@ void Renderer::RenderBegin()
 	ID3D11RenderTargetView* rtv = m_pd3dRenderTV.Get();
 	m_pd3dContext->OMSetRenderTargets(1, &rtv, nullptr); // 깊이 버퍼는 2D 스프라이트에선 선택 사항
 
-	FLOAT backgroundColor[4] = { 0.0f, 0.125f, 0.3f, 1.0f }; // R, G, B, A
+	FLOAT backgroundColor[4] = { 1.0f, 1.0f, 0.0f, 1.0f }; //노랑 
 	m_pd3dContext->ClearRenderTargetView(rtv, backgroundColor);
 	// m_pd3dContext->ClearDepthStencilView(m_pDepthStencilView.Get(), D3D11_CLEAR_DEPTH, 1.0f, 0); // 깊이 버퍼 사용 시
 
@@ -358,20 +361,20 @@ void Renderer::RenderBegin()
 
 	m_pd3dContext->OMSetDepthStencilState(nullptr, 0); // 깊이 테스트 비활성화 (2D 스프라이트)
 	// 알파 블렌딩 활성화 (필요하다면)
-	// D3D11_BLEND_DESC blendDesc = {};
-	// blendDesc.AlphaToCoverageEnable = FALSE;
-	// blendDesc.IndependentBlendEnable = FALSE;
-	// blendDesc.RenderTarget[0].BlendEnable = TRUE;
-	// blendDesc.RenderTarget[0].SrcBlend = D3D11_BLEND_SRC_ALPHA;
-	// blendDesc.RenderTarget[0].DestBlend = D3D11_BLEND_INV_SRC_ALPHA;
-	// blendDesc.RenderTarget[0].BlendOp = D3D11_BLEND_OP_ADD;
-	// blendDesc.RenderTarget[0].SrcBlendAlpha = D3D11_BLEND_ONE;
-	// blendDesc.RenderTarget[0].DestBlendAlpha = D3D11_BLEND_ZERO;
-	// blendDesc.RenderTarget[0].BlendOpAlpha = D3D11_BLEND_OP_ADD;
-	// blendDesc.RenderTarget[0].RenderTargetWriteMask = D3D11_COLOR_WRITE_ENABLE_ALL;
-	// ComPtr<ID3D11BlendState> pBlendState;
-	// m_pd3dDevice->CreateBlendState(&blendDesc, &pBlendState);
-	// m_pd3dContext->OMSetBlendState(pBlendState.Get(), nullptr, 0xFFFFFFFF);
+	 //D3D11_BLEND_DESC blendDesc = {};
+	 /*blendDesc.AlphaToCoverageEnable = FALSE;
+	 blendDesc.IndependentBlendEnable = FALSE;
+	 blendDesc.RenderTarget[0].BlendEnable = TRUE;
+	 blendDesc.RenderTarget[0].SrcBlend = D3D11_BLEND_SRC_ALPHA;
+	 blendDesc.RenderTarget[0].DestBlend = D3D11_BLEND_INV_SRC_ALPHA;
+	 blendDesc.RenderTarget[0].BlendOp = D3D11_BLEND_OP_ADD;
+	 blendDesc.RenderTarget[0].SrcBlendAlpha = D3D11_BLEND_ONE;
+	 blendDesc.RenderTarget[0].DestBlendAlpha = D3D11_BLEND_ZERO;
+	 blendDesc.RenderTarget[0].BlendOpAlpha = D3D11_BLEND_OP_ADD;
+	 blendDesc.RenderTarget[0].RenderTargetWriteMask = D3D11_COLOR_WRITE_ENABLE_ALL;
+	 ComPtr<ID3D11BlendState> pBlendState;
+	 m_pd3dDevice->CreateBlendState(&blendDesc, &pBlendState);
+	 m_pd3dContext->OMSetBlendState(pBlendState.Get(), nullptr, 0xFFFFFFFF);*/
 }
 
 void Renderer::DrawRect(float left, float top, float right, float bottom, const D2D1::ColorF& color)
@@ -409,7 +412,7 @@ void Renderer::DrawBitmap3D(
 	}
 	ObjectTransformCBuffer* pCBuffer = static_cast<ObjectTransformCBuffer*>(mappedResource.pData);
 	pCBuffer->World = XMMatrixTranspose(worldMatrix); // 쉐이더로 넘길 때 전치 (DX11에서 기본적으로 행 우선)
-	pCBuffer->View = XMMatrixTranspose(m_viewMatrix);
+	pCBuffer->View =  XMMatrixTranspose(m_viewMatrix);
 	pCBuffer->Projection = XMMatrixTranspose(m_projectionMatrix);
 	m_pd3dContext->Unmap(m_pObjectTransformCBuffer.Get(), 0);
 
@@ -424,7 +427,7 @@ void Renderer::DrawBitmap3D(
 	resource.As(&texture2D);
 	D3D11_TEXTURE2D_DESC texDesc;
 	texture2D->GetDesc(&texDesc);
-
+	//std::cout << "Tex size: " << texDesc.Width << " x " << texDesc.Height << std::endl; 완료
 	hr = m_pd3dContext->Map(m_pTextureAtlasCBuffer.Get(), 0, D3D11_MAP_WRITE_DISCARD, 0, &mappedResource);
 	if (FAILED(hr)) {
 		OutputDebugStringA("ERROR: Failed to map TextureAtlasCBuffer.\n");
@@ -448,7 +451,8 @@ void Renderer::DrawBitmap3D(
 		pAtlasCBuffer->sourceRectWidth = static_cast<float>(texDesc.Width);
 		pAtlasCBuffer->sourceRectHeight = static_cast<float>(texDesc.Height);
 	}
-
+	std::cout << "sourceRectWidth = " << pAtlasCBuffer->sourceRectWidth
+		<< ", sourceRectHeight = " << pAtlasCBuffer->sourceRectHeight << std::endl;
 	//std::cout << "sourceRect: " << pAtlasCBuffer->sourceRectX << ", " << pAtlasCBuffer->sourceRectY
 	//	<< ", " << pAtlasCBuffer->sourceRectWidth << " x " << pAtlasCBuffer->sourceRectHeight << std::endl;
 
@@ -470,17 +474,17 @@ void Renderer::RenderEnd()
 	// D3D 렌더 타겟을 D2D가 그릴 Off-screen 텍스처로 다시 설정
 	// 현재 Renderer::RenderBegin()에서 m_pd3dRenderTV (백버퍼)로 설정했으므로,
 	// 여기서 다시 m_offScreenTargetView (D2D용)로 변경
-	ID3D11RenderTargetView* rtv = m_offScreenTargetView.Get();
-	m_pd3dContext->OMSetRenderTargets(1, &rtv, nullptr); // 깊이 버퍼는 2D에선 nullptr
-
-	// D2D 컨텍스트의 렌더 타겟을 Off-screen 비트맵으로 설정
-	m_pd2dContext->SetTarget(m_ptargetBitmap.Get());
-
-	// D2D 드로잉 시작
-	m_pd2dContext->BeginDraw();
-
-	// D2D로 그릴 영역을 클리어 (투명하게 클리어하여 D3D 결과 위에 겹쳐지도록)
-	m_pd2dContext->Clear(D2D1::ColorF(0, 0, 1, 0)); // 완전 투명
+	//ID3D11RenderTargetView* rtv = m_offScreenTargetView.Get();
+	//m_pd3dContext->OMSetRenderTargets(1, &rtv, nullptr); // 깊이 버퍼는 2D에선 nullptr
+	//
+	//// D2D 컨텍스트의 렌더 타겟을 Off-screen 비트맵으로 설정
+	//m_pd2dContext->SetTarget(m_ptargetBitmap.Get());
+	//
+	//// D2D 드로잉 시작
+	//m_pd2dContext->BeginDraw();
+	//
+	//// D2D로 그릴 영역을 클리어 (투명하게 클리어하여 D3D 결과 위에 겹쳐지도록)
+	//m_pd2dContext->Clear(D2D1::ColorF(0.5f, 0.5f, 0.5f, 1.0f));
 
 	// 여기에 기존 D2D 기반 UI 그리기 함수 호출들 (DrawCircle, DrawRect, DrawMessage 등)
 	// 예: DrawCircle(100, 100, 50, D2D1::ColorF::Red);
@@ -488,22 +492,23 @@ void Renderer::RenderEnd()
 	// ...
 
 	// D2D 드로잉 종료
-	HRESULT hr = m_pd2dContext->EndDraw();
-	if (FAILED(hr) && hr != D2DERR_RECREATE_TARGET)
-	{
-		std::cerr << "D2D EndDraw failed: HRESULT: 0x" << std::hex << hr << std::endl;
-		// DXGI_ERROR_DEVICE_REMOVED 또는 DXGI_ERROR_DEVICE_RESET 발생 시
-		if (hr == DXGI_ERROR_DEVICE_REMOVED || hr == DXGI_ERROR_DEVICE_RESET) {
-			Uninitialize();
-			Initialize(m_hwnd);
-		}
-		return;
-	}
+	//HRESULT hr = m_pd2dContext->EndDraw();
+	//if (FAILED(hr) && hr != D2DERR_RECREATE_TARGET)
+	//{
+	//	std::cerr << "D2D EndDraw failed: HRESULT: 0x" << std::hex << hr << std::endl;
+	//	// DXGI_ERROR_DEVICE_REMOVED 또는 DXGI_ERROR_DEVICE_RESET 발생 시
+	//	if (hr == DXGI_ERROR_DEVICE_REMOVED || hr == DXGI_ERROR_DEVICE_RESET) {
+	//		Uninitialize();
+	//		Initialize(m_hwnd);
+	//	}
+	//	return;
+	//}
 
 	// 2. D2D로 그려진 Off-screen 텍스처를 Direct3D 백버퍼로 합성
 	// 최종 렌더 타겟을 다시 D3D 백버퍼로 복구
-	ID3D11RenderTargetView* backBufferRTV = m_pd3dRenderTV.Get();
-	m_pd3dContext->OMSetRenderTargets(1, &backBufferRTV, nullptr);
+	// 
+	//ID3D11RenderTargetView* backBufferRTV = m_pd3dRenderTV.Get();
+	//m_pd3dContext->OMSetRenderTargets(1, &backBufferRTV, nullptr);
 
 	// 백버퍼 클리어 (필요하다면, 이미 RenderBegin에서 클리어했으므로 생략 가능)
 	// float backBufferClearColor[4] = { 0.0f, 0.0f, 0.0f, 1.0f };
@@ -513,8 +518,9 @@ void Renderer::RenderEnd()
 	// 이를 D3D 백버퍼에 그립니다.
 	//m_postProcessShaderName
 	//std::cout << "[Debug] PostProcessShaderName = " << m_postProcessShaderName << std::endl;
-	const ShaderSet& currentPostProcessShader = m_shaderManager->GetShaderSet(m_postProcessShaderName);
-	PostProcessing(currentPostProcessShader);
+	
+	//const ShaderSet& currentPostProcessShader = m_shaderManager->GetShaderSet(m_postProcessShaderName);
+	//PostProcessing(currentPostProcessShader);
 
 	// 3. 최종 화면 표시
 	Present();
@@ -674,11 +680,11 @@ void Renderer::CreateDeviceAndSwapChain(HWND hwnd)
 	hr = d2dFactory->CreateDevice(dxgiDevice.Get(), &baseDevice);
 	if (FAILED(hr)) { std::cerr << "HRESULT6 = 0x" << std::hex << hr << std::endl; return; }
 
-	ComPtr<ID2D1Device6> d2dDevice; // ID2D1Device4 -> ID2D1Device7
+	ComPtr<ID2D1Device7> d2dDevice; // ID2D1Device4 -> ID2D1Device7
 	hr = baseDevice.As(&d2dDevice);
 	if (FAILED(hr)) { std::cerr << "HRESULT7 = 0x" << std::hex << hr << std::endl; return; }
 
-	ComPtr<ID2D1DeviceContext6> d2dContext; // ID2D1DeviceContext7 유지
+	ComPtr<ID2D1DeviceContext7> d2dContext; // ID2D1DeviceContext7 유지
 	hr = d2dDevice->CreateDeviceContext(D2D1_DEVICE_CONTEXT_OPTIONS_NONE, &d2dContext);
 	if (FAILED(hr)) { std::cerr << "HRESULT8 = 0x" << std::hex << hr << std::endl; return; }
 
