@@ -19,6 +19,7 @@ inline bool operator==(const POINT& lhs, const POINT& rhs)
 }
 
 constexpr int SIZE_DEFAULT = 15;
+using Board = array<array<shared_ptr<Stone>, SIZE_DEFAULT>, SIZE_DEFAULT>;
 
 class BoardManager : public Singleton<BoardManager>
 {
@@ -26,7 +27,7 @@ class BoardManager : public Singleton<BoardManager>
 	BoardManager() = default;
 	~BoardManager() = default;
 
-	array<array<shared_ptr<Stone>, SIZE_DEFAULT>, SIZE_DEFAULT> m_board; // 바둑판
+	Board m_board; // 바둑판
 	unordered_map<POINT, StoneType> m_stoneTypeMap; // 위치별 돌 종류 맵 // 사석 판정용
 
 	vector<pair<POINT, StoneAbility>> m_jokerPositions; // 조커 돌 위치와 능력 벡터
@@ -47,5 +48,11 @@ public:
 	POINT BoardToScreenPosition(POINT boardPos) const { return { boardPos.x * 50, boardPos.y * 50 }; }
 
 	bool PlaceStone(POINT selectedPosition, StoneType stoneType, StoneAbility stoneAbility);
+
 	shared_ptr<Stone> GetStone(POINT);
+	Board GetBoard() const { return m_board; }
+
+	// 돌 변경 함수
+	void SetStoneType(StoneType type) { m_stoneType = type; }
+	void SetStoneAbility(StoneAbility ability) { m_stoneAbility = ability; }
 };

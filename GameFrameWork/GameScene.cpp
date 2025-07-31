@@ -124,6 +124,21 @@ void GameScene::KeyCommandMapping()
 
 			//std::cout<<"object size : " << m_objectList.size() << std::endl;
 
+			BoardManager::GetInstance().InputBasedGameLoop({ 100, 100 });
+
+			Board board = BoardManager::GetInstance().GetBoard();
+			for (int r = 0; r < BOARD_SIZE; ++r)
+			{
+				for (int c = 0; c < BOARD_SIZE; ++c)
+				{
+					if (board[r][c])
+					{
+						auto stone = board[r][c];
+						m_objectList.emplace_back(stone.get());
+					}
+				}
+			}
+
 		};
 
 	m_commandMap["F4"] = [this]()
