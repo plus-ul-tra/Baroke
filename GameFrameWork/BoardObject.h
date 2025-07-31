@@ -34,6 +34,10 @@ public:
 				if (bmp->IsActive()) bmp->Render(r);
 	}
 
+	void RefreshStones() 
+	{
+		m_stones.clear();          // 1) 기존 스프라이트 전부 제거
+	}
 
 private:
 	void SyncStones()
@@ -96,7 +100,7 @@ private:
 		return std::any_of(m_stones.begin(), m_stones.end(),
 			[r, c](auto& s) { return s->GetTagPos() == std::pair{ r,c }; });
 	}
-	
+
 
 	std::string AbilityToJokerName(StoneAbility ab)
 	{

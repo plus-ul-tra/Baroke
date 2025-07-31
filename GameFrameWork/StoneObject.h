@@ -16,7 +16,6 @@ public:
 			size, size);
 
 		m_transform->SetPosition(XMVectorSet(posX - size / 2 , posY - size / 2, 0.0f, 1.0f));
-		std::cout <<"위치"<< posX << " " << posY <<", 사이즈 :"<<size<< std::endl;
 		m_transform->SetScale(XMVectorSet(1.0f, 1.0f, 1.0f, 1.0f));
 		m_transform->SetRotation(0.0f);
 

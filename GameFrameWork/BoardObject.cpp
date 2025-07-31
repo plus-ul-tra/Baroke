@@ -30,3 +30,8 @@ BoardObject::BoardObject(Board* board, int offX, int offY, int drawW, int drawH,
 	m_bitmapRender->SetOrder(0);
 	m_bitmapRender->SetActive(true); // 렌더링 활성화
 }
+
+
+//튜토리얼 >> 조커
+
+//튜토리얼 >> UI >> 쉐이더 작업이 끝나고  UI 박스
