@@ -6,7 +6,7 @@
 //vector<pair<string, JokerStoneData>> JokerParser::LoadJson(const filesystem::path& path)
 //{
 //	ifstream in{ path };
-//	if (!in || !in.is_open()) throw runtime_error(path.string() + "¿­±â ½ÇÆÐ");
+//	if (!in || !in.is_open()) throw runtime_error(path.string() + "ì—´ê¸° ì‹¤íŒ¨");
 //
 //	nlohmann::json doc = nlohmann::json::parse(in);
 //	vector<pair<string, JokerStoneData>> Jokers;
@@ -32,7 +32,7 @@
 //vector<pair<string, JokerStoneData>> JokerParser::LoadCsv(const filesystem::path& path)
 //{
 //	ifstream in{ path };
-//	if (!in || !in.is_open()) throw runtime_error(path.string() + "¿­±â ½ÇÆÐ");
+//	if (!in || !in.is_open()) throw runtime_error(path.string() + "ì—´ê¸° ì‹¤íŒ¨");
 //	vector<pair<string, JokerStoneData>> Jokers;
 //	string line;
 //	while (getline(in, line))
@@ -45,7 +45,7 @@
 //		getline(ss, fileName, ',');
 //		getline(ss, functionName, ',');
 //		ss >> type;
-//		ss.ignore(1); // ÄÞ¸¶ ¹«½Ã
+//		ss.ignore(1); // ì½¤ë§ˆ ë¬´ì‹œ
 //		ss >> price;
 //		ss.ignore(1);
 //		ss >> activationCost;

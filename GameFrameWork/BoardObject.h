@@ -1,122 +1,236 @@
 #pragma once
-#include "Engine.h"      
-#include "Board.h"             
-#include "StoneObject.h"
-#include "Joker.h"
+#include "Engine.h"
 
 class BoardObject : public Object
 {
-public:
-	BoardObject(Board* b, int offX, int offY,
-
-		int drawW, int drawH, int padding = 0, int _stoneoffset=0);
-
-
-	void Update(double) override
-	{
-		SyncStones();          // ∏≈ «¡∑π¿” board ªÛ≈¬øÕ ø¿∫Í¡ß∆Æ∏¶ ∏¬√„
-	}
-	Board* GetBoard()       noexcept { return m_board; }
-	const Board* GetBoard() const noexcept { return m_board; }
-
-	POINT BoardToScreen(int r, int c) const { return m_layout->BoardToScreen(r, c); }
-	std::pair<int, int> ScreenToBoard(int x, int y) const { return m_layout->ScreenToBoard(x, y); }
-
-	std::vector<std::unique_ptr<StoneObject>>& StealStones() { return m_stones; }
-
-	void Render(Renderer& r) override
-	{
-
-		m_bitmapRender->Render(r);  
-
-		for (auto& sp : m_stones)
-			if (auto* bmp = sp->GetComponent<BitmapRender>())
-				if (bmp->IsActive()) bmp->Render(r);
-	}
-
-	void RefreshStones() 
-	{
-		m_stones.clear();          // 1) ±‚¡∏ Ω∫«¡∂Û¿Ã∆Æ ¿¸∫Œ ¡¶∞≈
-	}
-
-private:
-	void SyncStones()
-	{
-		const auto& nodes = m_board->GetNodes();
-		int N = m_board->Size();
-
-		// 1) « ø‰ æ¯¥¬ StoneObject ¡¶∞≈
-		for (auto it = m_stones.begin(); it != m_stones.end(); )
-		{
-			auto* stoneobj = it->get();
-			auto pos = stoneobj->GetTagPos();
-			if (nodes[pos.first][pos.second].color == StoneType::None)
-				it = m_stones.erase(it);        
-			else ++it;
-		}
-
-		// 2) ªı µπ ª˝º∫
-		for (int r = 0; r < N; ++r)
-			for (int c = 0; c < N; ++c)
-			{
-				if (nodes[r][c].color == StoneType::None) continue;
-				if (HasStone(r, c)) continue;     // ¿ÃπÃ ¿÷¿∏∏È skip
-
-				POINT p = m_layout->BoardToScreen(r, c);
-				float size = static_cast<float>(m_layout->GetCell()) - m_stoneOffset;
-
-				if (nodes[r][c].color != StoneType::Joker)
-				{
-					auto stone = std::make_unique<StoneObject>(
-						nodes[r][c].color,
-						static_cast<float>(p.x),
-						static_cast<float>(p.y),
-						size);
-					stone->SetTagPos(r, c);
-					m_stones.emplace_back(std::move(stone));
-				} 
-				else
-				{
-					std::string key = AbilityToJokerName(nodes[r][c].ability);
-					if (!key.empty() && JokerManager::GetInstance().HasJokerInfo(key))
-					{
-						auto& info = JokerManager::GetInstance().GetJokerInfo(key);
-						auto stone = std::make_unique<Joker>(
-							info,
-							static_cast<float>(p.x),
-							static_cast<float>(p.y),
-							size);
-						stone->SetTagPos(r, c);
-						stone->Activate();
-						m_stones.emplace_back(std::move(stone));
-					}
-				}
-
-			}
-	}
-
-	bool HasStone(int r, int c) const
-	{
-		return std::any_of(m_stones.begin(), m_stones.end(),
-			[r, c](auto& s) { return s->GetTagPos() == std::pair{ r,c }; });
-	}
-
-
-	std::string AbilityToJokerName(StoneAbility ab)
-	{
-		switch (ab)
-		{
-		case StoneAbility::ability1: return "JokerStone1";
-		case StoneAbility::ability2: return "JokerStone2";
-		default: return "";
-		}
-	}
-
-	int m_stoneOffset;
-
-	Board* m_board;
-	BoardLayoutComponent* m_layout;
 	Transform* m_transform = nullptr;
 	BitmapRender* m_bitmapRender = nullptr;
-	std::vector<std::unique_ptr<StoneObject>> m_stones;
+
+public:
+	BoardObject(int offX, int offY, int drawW, int drawH, int padding = 0)
+	{
+		m_transform = AddComponent<Transform>();
+		m_transform->SetPosition(XMVectorSet(offX, offY, 0.0f, 1.0f));
+		m_transform->SetScale(XMVectorSet(1.0f, 1.0f, 1.0f, 1.0f));
+		m_transform->SetRotation(0.0f);
+
+		m_bitmapRender = AddComponent<BitmapRender>("Cyberpunk.png", drawW, drawH);
+		m_bitmapRender->SetOrder(0);
+		m_bitmapRender->SetActive(true);
+
+		BoardManager::GetInstance().Initialize(); // Î≥¥Îìú Îß§ÎãàÏ†Ä Ï¥àÍ∏∞Ìôî
+	}
+	void Render(Renderer& r) override
+	{
+		if (m_bitmapRender) m_bitmapRender->Render(r);
+	}
+
+	void Update(double) override {}
 };
+
+
+
+
+
+// 	void RefreshStones() 
+// 	{
+// 		m_stones.clear();          // 1) Í∏∞Ï°¥ Ïä§ÌîÑÎùºÏù¥Ìä∏ Ï†ÑÎ∂Ä Ï†úÍ±∞
+// 	}
+
+// private:
+// 	void SyncStones()
+// 	{
+// 		const auto& nodes = m_board->GetNodes();
+// 		int N = m_board->Size();
+
+// 		// 1) ÌïÑÏöî ÏóÜÎäî StoneObject Ï†úÍ±∞
+// 		for (auto it = m_stones.begin(); it != m_stones.end(); )
+// 		{
+// 			auto* stoneobj = it->get();
+// 			auto pos = stoneobj->GetTagPos();
+// 			if (nodes[pos.first][pos.second].color == StoneType::None)
+// 				it = m_stones.erase(it);        
+// 			else ++it;
+// 		}
+
+// 		// 2) ÏÉà Îèå ÏÉùÏÑ±
+// 		for (int r = 0; r < N; ++r)
+// 			for (int c = 0; c < N; ++c)
+// 			{
+// 				if (nodes[r][c].color == StoneType::None) continue;
+// 				if (HasStone(r, c)) continue;     // Ïù¥ÎØ∏ ÏûàÏúºÎ©¥ skip
+
+// 				POINT p = m_layout->BoardToScreen(r, c);
+// 				float size = static_cast<float>(m_layout->GetCell()) - m_stoneOffset;
+
+// 				if (nodes[r][c].color != StoneType::Joker)
+// 				{
+// 					auto stone = std::make_unique<StoneObject>(
+// 						nodes[r][c].color,
+// 						static_cast<float>(p.x),
+// 						static_cast<float>(p.y),
+// 						size);
+// 					stone->SetTagPos(r, c);
+// 					m_stones.emplace_back(std::move(stone));
+// 				} 
+// 				else
+// 				{
+// 					std::string key = AbilityToJokerName(nodes[r][c].ability);
+// 					if (!key.empty() && JokerManager::GetInstance().HasJokerInfo(key))
+// 					{
+// 						auto& info = JokerManager::GetInstance().GetJokerInfo(key);
+// 						auto stone = std::make_unique<Joker>(
+// 							info,
+// 							static_cast<float>(p.x),
+// 							static_cast<float>(p.y),
+// 							size);
+// 						stone->SetTagPos(r, c);
+// 						stone->Activate();
+// 						m_stones.emplace_back(std::move(stone));
+// 					}
+// 				}
+
+// 			}
+	
+
+
+
+// 	std::string AbilityToJokerName(StoneAbility ab)
+// 	{
+// 		switch (ab)
+// 		{
+// 		case StoneAbility::ability1: return "JokerStone1";
+// 		case StoneAbility::ability2: return "JokerStone2";
+// 		default: return "";
+// 		}
+// 	}
+
+// 	int m_stoneOffset;
+
+
+
+
+
+
+
+
+
+
+//#include "Engine.h"      
+//#include "Board.h"             
+//#include "StoneObject.h"
+//#include "Joker.h"
+//
+//class BoardObject : public Object
+//{
+//public:
+//	BoardObject(Board* b, int offX, int offY,
+//
+//		int drawW, int drawH, int padding = 0, int _stoneoffset=0);
+//
+//
+//	void Update(double) override
+//	{
+//		SyncStones();          // Îß§ ÌîÑÎ†àÏûÑ board ÏÉÅÌÉúÏôÄ Ïò§Î∏åÏ†ùÌä∏Î•º ÎßûÏ∂§
+//	}
+//	Board* GetBoard()       noexcept { return m_board; }
+//	const Board* GetBoard() const noexcept { return m_board; }
+//
+//	POINT BoardToScreen(int r, int c) const { return m_layout->BoardToScreen(r, c); }
+//	std::pair<int, int> ScreenToBoard(int x, int y) const { return m_layout->ScreenToBoard(x, y); }
+//
+//	std::vector<std::unique_ptr<StoneObject>>& StealStones() { return m_stones; }
+//
+//	void Render(Renderer& r) override
+//	{
+//
+//		m_bitmapRender->Render(r);  
+//
+//		for (auto& sp : m_stones)
+//			if (auto* bmp = sp->GetComponent<BitmapRender>())
+//				if (bmp->IsActive()) bmp->Render(r);
+//	}
+//
+//
+//private:
+//	void SyncStones()
+//	{
+//		const auto& nodes = m_board->GetNodes();
+//		int N = m_board->Size();
+//
+//		// 1) ÌïÑÏöî ÏóÜÎäî StoneObject Ï†úÍ±∞
+//		for (auto it = m_stones.begin(); it != m_stones.end(); )
+//		{
+//			auto* stoneobj = it->get();
+//			auto pos = stoneobj->GetTagPos();
+//			if (nodes[pos.first][pos.second].color == StoneColor::None)
+//				it = m_stones.erase(it);        
+//			else ++it;
+//		}
+//
+//		// 2) ÏÉà Îèå ÏÉùÏÑ±
+//		for (int r = 0; r < N; ++r)
+//			for (int c = 0; c < N; ++c)
+//			{
+//				if (nodes[r][c].color == StoneColor::None) continue;
+//				if (HasStone(r, c)) continue;     // Ïù¥ÎØ∏ ÏûàÏúºÎ©¥ skip
+//
+//				POINT p = m_layout->BoardToScreen(r, c);
+//				float size = static_cast<float>(m_layout->GetCell()) - m_stoneOffset;
+//
+//				if (nodes[r][c].ability == StoneAbility::None)
+//				{
+//					auto stone = std::make_unique<StoneObject>(
+//						nodes[r][c].color,
+//						static_cast<float>(p.x),
+//						static_cast<float>(p.y),
+//						size);
+//					stone->SetTagPos(r, c);           // (row,col) Í∏∞Î°ù
+//					m_stones.emplace_back(std::move(stone));
+//				}
+//				else if (nodes[r][c].ability == StoneAbility::ability1)
+//				{
+//					auto stone =
+//						std::make_unique<Joker>
+//						(
+//							JokerManager::GetInstance().GetJokerInfo("JokerStone1"),
+//							static_cast<float>(p.x),
+//							static_cast<float>(p.y),
+//						size
+//						);
+//					stone->UpdateAbility();
+//					stone->SetTagPos(r, c);           // (row,col) Í∏∞Î°ù
+//					m_stones.emplace_back(std::move(stone));
+//				}
+//				else if (nodes[r][c].ability == StoneAbility::ability2)
+//				{
+//					auto stone =
+//						std::make_unique<Joker>
+//						(
+//							JokerManager::GetInstance().GetJokerInfo("JokerStone2"),
+//							static_cast<float>(p.x),
+//							static_cast<float>(p.y),
+//						size
+//						);
+//					stone->UpdateAbility();
+//					stone->SetTagPos(r, c);           // (row,col) Í∏∞Î°ù
+//					m_stones.emplace_back(std::move(stone));
+//				}
+//			}
+//	}
+//
+//	bool HasStone(int r, int c) const
+//	{
+//		return std::any_of(m_stones.begin(), m_stones.end(),
+//			[r, c](auto& s) { return s->GetTagPos() == std::pair{ r,c }; });
+//	}
+//
+//
+//	int m_stoneOffset;
+//
+//	Board* m_board;
+//	BoardLayoutComponent* m_layout;
+//	Transform* m_transform = nullptr;
+//	BitmapRender* m_bitmapRender = nullptr;
+//	std::vector<std::unique_ptr<StoneObject>> m_stones;
+//};

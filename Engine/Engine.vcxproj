@@ -154,6 +154,7 @@
     <ClCompile Include="AnimationClip.cpp" />
     <ClCompile Include="BaseRender.cpp" />
     <ClCompile Include="BitmapRender.cpp" />
+    <ClCompile Include="BoardManager.cpp" />
     <ClCompile Include="Button.cpp" />
     <ClCompile Include="Collider2D.cpp" />
     <ClCompile Include="Component.h" />
@@ -177,9 +178,8 @@
     <ClCompile Include="SoundManager.cpp" />
     <ClCompile Include="SpriteManager.cpp" />
     <ClCompile Include="SpriteParser.cpp" />
-    <ClCompile Include="JokerParser.cpp">
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
-    </ClCompile>
+    <ClCompile Include="JokerParser.cpp" />
+    <ClCompile Include="Stone.cpp" />
     <ClCompile Include="TextRender.cpp" />
     <ClCompile Include="Timer.cpp" />
     <ClCompile Include="Transform.cpp" />
@@ -191,6 +191,7 @@
     <ClInclude Include="BaseRender.h" />
     <ClInclude Include="BitmapRender.h" />
     <ClInclude Include="BoardLayoutComponent.h" />
+    <ClInclude Include="BoardManager.h" />
     <ClInclude Include="Button.h" />
     <ClInclude Include="Collider2D.h" />
     <ClInclude Include="Core.h" />
@@ -218,9 +219,8 @@
     <ClInclude Include="SpriteManager.h" />
     <ClInclude Include="SpriteParser.h" />
     <ClInclude Include="StaticObject.h" />
-    <ClInclude Include="JokerParser.h">
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
-    </ClInclude>
+    <ClInclude Include="JokerParser.h" />
+    <ClInclude Include="Stone.h" />
     <ClInclude Include="StoneType.h" />
     <ClInclude Include="TextRender.h" />
     <ClInclude Include="Timer.h" />

@@ -9,6 +9,17 @@
 //	Active,
 //	Trigger
 //};
+//struct JokerInfo
+//{
+//	string description;
+//	string fileName;
+//	string functionName;
+//	JokerType type;
+//	int price;
+//	int activationCost;
+//	int returnValue;
+//	int duration;
+//};
 //
 //
 //class JokerParser

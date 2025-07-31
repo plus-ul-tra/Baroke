@@ -1,6 +1,7 @@
 #pragma once
-#include "Engine.h"
 #include "BaseRender.h"
+#include "Renderer.h"
+#include "Transform.h"
 
 class TextRender : public BaseRender
 {

@@ -11,6 +11,7 @@
 #include "SceneBase.h"
 #include "JokerManager.h"
 #include "ShaderManager.h"
+#include "BoardManager.h"
 
 
 
