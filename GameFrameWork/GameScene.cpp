@@ -14,20 +14,57 @@
 #define STONEOFFSET 10
 
 
+void GameScene::StartStage()
+{
+	m_stageNo++;
+	m_board->ResetStone();
+	m_boardObj->RefreshStones();
+	int spawn = 3 + (m_stageNo - 1);
+	m_board->SpawnStone(spawn);
+	m_whiteLeft = spawn;
+	std::cout << "Stage "<<m_stageNo<<" start, Spawn White Conut : " <<spawn<< std::endl;
+	DebugBoardState();
+}
+
+int GameScene::CountWhite() const
+{
+	int cnt = 0;
+	for (const auto& row : m_board->GetNodes())
+		for (const auto& n : row)
+			if (n.color == StoneType::White) ++cnt;
+	return cnt;
+}
+
+int GameScene::CountBlack() const
+{
+	int cnt = 0;
+	for (const auto& row : m_board->GetNodes())
+		for (const auto& n : row)
+			if (n.color == StoneType::Black) ++cnt;
+	return cnt;
+}
+
+void GameScene::CheckStageClear()
+{
+	if (CountWhite() == 0) {
+		std::cout << "Stage Clear -> Move to Shop" << std::endl;
+		m_money += 3 + (m_stageNo - 1);
+		std::cout << "Money : " << m_money << std::endl;
+
+		StartStage();
+
+
+		//SceneManager::GetInstance().ChangeScene("Shop");
+	}
+}
+
+
+
 void GameScene::Initialize()
 {
 	std::cout << "Game Scene Init" << std::endl;
 	KeyCommandMapping();
-	m_board = CreateBoard(BOARD_SIZE);
 
-	auto boardObj = std::make_unique<BoardObject>(
-		m_board.get(), POSX, POSY, WIDTH, HEIGHT, PADDING, STONEOFFSET);
-	m_boardObj = boardObj.get();
-	m_objectList.emplace_back(std::move(boardObj));
-
-	m_board->PlaceStone(0, 0, { StoneType::White ,StoneAbility::None });
-	m_board->PlaceStone(0, 1, { StoneType::White ,StoneAbility::None });
-	m_board->PlaceStone(0, 2, { StoneType::White ,StoneAbility::None });
 	RegisterJokerFunctions();
 }
 
@@ -43,6 +80,7 @@ void GameScene::Update(double deltaTime)
 	for (auto& a : m_objectList) {
 		a->Update(deltaTime);
 	}
+	CheckStageClear();
 }
 
 void GameScene::LateUpdate(double deltaTime)
@@ -63,14 +101,22 @@ void GameScene::OnEnter()
 {
 
 	std::cout << "Game1 Scene OnEnter" << std::endl;
+
+	m_board = CreateBoard(BOARD_SIZE);
+	auto boardObj = std::make_unique<BoardObject>(
+		m_board.get(), POSX, POSY, WIDTH, HEIGHT, PADDING, STONEOFFSET);
+	m_boardObj = boardObj.get();
+	m_objectList.emplace_back(std::move(boardObj));
+
+
+
 	auto playerObject = std::make_unique<Player>(
 		600.0f, 300.0f, 50.0f, 50.0f, DirectX::XMFLOAT4(1.0f, 0.0f, 0.0f, 1.0f) // 녹색
 	);
 	m_player = playerObject.get();
 	m_objectList.push_back(std::move(playerObject));
-	std::cout << m_objectList.size() << std::endl;
-// 	m_board->PlaceStone(2, 2, JokerManager::GetInstance().CreateStoneInfoFromJoker("JokerStone1"));
-// 	m_board->PlaceStone(4, 4, JokerManager::GetInstance().CreateStoneInfoFromJoker("JokerStone2"));
+
+	StartStage();
 	// 버튼 생성
 // 	unique_ptr<Button> button1 = std::make_unique<Button>(30.0f, 30.0f, 200, 200, "Sample.png", 50);
 // 	m_buttonList.emplace_back(button1.get());
@@ -175,7 +221,7 @@ void GameScene::OnInput(const MouseEvent& ev) // mouseInput
 	if (ev.type == MouseType::LDown)
 	{
 
-		std::cout << ev.pos.x << " " << ev.pos.y << std::endl;
+		//std::cout << ev.pos.x << " " << ev.pos.y << std::endl;
 
 		auto [row, col] = m_boardObj->ScreenToBoard(ev.pos.x, ev.pos.y);
 
@@ -184,6 +230,7 @@ void GameScene::OnInput(const MouseEvent& ev) // mouseInput
 		if (m_board->GetStone(row, col).color != StoneType::None) return;
 
 
+		if (m_BlackStone == CountBlack()) return;
 		bool ok = m_board->PlaceStone(row, col, { StoneType::Black, StoneAbility::None }); // 착수
 		// m_board->PlaceStone(row, col, T);
 		// m_board->PlaceStone(row, col, );
