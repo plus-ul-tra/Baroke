@@ -1,18 +1,16 @@
 #include "pch.h"
 #include "Renderer.h"
-#include "SpriteManager.h" // SpriteManager 초기화 호출을 위해 포함
-//#include "Utils.h" // RETURN_IF_FAILED, OutputDebugStringA (추가 필요)
+#include "SpriteManager.h" 
 
-#include <d3dcompiler.h> // 쉐이더 컴파일 (D3DCompile)
-#include <DirectXMath.h> // DirectX Math
+
+#include <d3dcompiler.h> // 쉐이더 컴파일 
+#include <DirectXMath.h> 
 
 #pragma comment(lib, "d3d11.lib")
 #pragma comment(lib, "dxgi.lib")
-#pragma comment(lib, "d3dcompiler.lib") // D3DCompile 함수를 위해 링크
+#pragma comment(lib, "d3dcompiler.lib") 
 
 using namespace DirectX;
-
-// D3D11CreateDeviceWithSwapChain 이 아니라 D3D11CreateDevice로 시작하는 기존 방식 유지
 
 Renderer::~Renderer()
 {
@@ -22,33 +20,24 @@ Renderer::~Renderer()
 void Renderer::Initialize(HWND hwnd)
 {
 	m_hwnd = hwnd;
-	// 기존 D3D11 Device, DXGI SwapChain, D2D Device/Context 생성 로직 유지
+
 	CreateDeviceAndSwapChain(hwnd);
 
-	// 기존 ShaderManager 초기화 유지
-	// ShaderManager가 Renderer 내부에 있는 m_pd3dDevice를 사용해야 함
 	m_shaderManager = std::make_unique<ShaderManager>(m_pd3dDevice.Get());
-	// ShaderManager에서 SpriteShader_VS.hlsl, SpriteShader_PS.hlsl을 로드하도록 설정해야 합니다.
-	// 예: m_shaderManager->LoadShader("SpriteShader", L"Shaders/SpriteShader_VS.cso", L"Shaders/SpriteShader_PS.cso", layout_for_sprite_shader);
 
-	// 기존 Render Targets, FullScreen Quad, WriteResource 생성 유지
 	CreateShaderRenderTargets();
 	CreateFullScrennQuad();
 	CreateWriteResource();
-
-	// 기존 PassThrough 쉐이더 초기화 유지
-	//InitializeShader(hwnd);
-
-	// 기존 WIC Factory 및 샘플러 상태 생성 유지
+	
 	ComPtr<IWICImagingFactory> wicFactory;
 	HRESULT hr = CoCreateInstance(CLSID_WICImagingFactory,
 		nullptr,
 		CLSCTX_INPROC_SERVER,
 		IID_PPV_ARGS(&wicFactory));
-	//DX::ThrowIfFailed(hr); // 예외 처리 생략됨
+
 	m_pwicFactory = wicFactory;
 
-	// (기존) Post-processing용 샘플러 상태
+	// Post-processing용 샘플러 상태
 	D3D11_SAMPLER_DESC sampDesc = {};
 	sampDesc.Filter = D3D11_FILTER_MIN_MAG_MIP_LINEAR;
 	sampDesc.AddressU = D3D11_TEXTURE_ADDRESS_CLAMP;
@@ -63,7 +52,7 @@ void Renderer::Initialize(HWND hwnd)
 		std::cerr << "ERROR: Failed to create Post-processing Sampler State! HRESULT: 0x" << std::hex << hr << std::endl;
 		return;
 	}
-	D3D11_RASTERIZER_DESC rsDesc = {};
+	//D3D11_RASTERIZER_DESC rsDesc = {};
 	//rsDesc.FillMode = D3D11_FILL_SOLID;
 	//rsDesc.CullMode = D3D11_CULL_NONE; // 컬링 비활성화 (양면 렌더링)
 	//rsDesc.FrontCounterClockwise = FALSE; // Direct3D 기본 (시계 방향 정점 = 앞면)
@@ -75,17 +64,18 @@ void Renderer::Initialize(HWND hwnd)
 	//rsDesc.MultisampleEnable = FALSE;
 	//rsDesc.AntialiasedLineEnable = FALSE;
 	//HRESULT hr_rs = m_pd3dDevice->CreateRasterizerState(&rsDesc, &m_pRasterizerState);
-	// --- 새로 추가될 D3D 스프라이트 렌더링 관련 초기화 ---
+
 	hr = CreateSpriteConstantBuffers();
-	if (FAILED(hr)) return; // 오류 시 조기 리턴
+	if (FAILED(hr)) return; 
 
 	hr = CreateSpriteSamplerState();
 	if (FAILED(hr)) return;
 
+	hr = CreateBlendState();
+	if (FAILED(hr)) return;
+
 	SetupSpriteCameraMatrices(m_screenWidth, m_screenHeight);
 
-	// SpriteManager 초기화 (이제 Renderer가 D3D Device/Context를 제공)
-	// 기존 초기화 위치에 따라 조정. 여기서는 Renderer 초기화의 마지막에 호출
 	SpriteManager::GetInstance().Initialize(m_pd3dDevice.Get(), m_pd3dContext.Get());
 
 	OutputDebugStringA("INFO: Renderer initialized successfully.\n");
@@ -103,18 +93,18 @@ void Renderer::Uninitialize()
 
 	// 기존 D2D/D3D 리소스 해제
 	m_shaderManager.reset();
-	ReleaseRenderTargets(); // 이 안에 D2D 관련 Reset 포함
+	ReleaseRenderTargets(); 
 	m_pwicFactory.Reset();
 	m_ptargetBitmap.Reset();
 	m_pbrush.Reset();
 	m_ptextBrush.Reset();
 	m_ptextFormat.Reset();
 
-	m_InputLayout.Reset(); // PassThrough 쉐이더용
+	m_InputLayout.Reset(); 
 	m_PixelShader.Reset();
 	m_VertexShader.Reset();
 
-	m_samplerState.Reset(); // Post-processing용
+	m_samplerState.Reset(); 
 
 	m_pd2dContext.Reset();
 	m_pd2dDevice.Reset();
@@ -132,13 +122,11 @@ void Renderer::Resize(UINT width, UINT height)
 
 	// 기존 D2D Render Targets 해제 후 다시 생성
 	ReleaseRenderTargets();
-	CreateShaderRenderTargets(); // m_screenWidth, m_screenHeight 업데이트 됨
-
+	CreateShaderRenderTargets(); 
 	// D3D 스프라이트 렌더링 카메라 행렬도 업데이트
 	SetupSpriteCameraMatrices(m_screenWidth, m_screenHeight);
 }
 
-// --- D3D 기반 스프라이트 렌더링을 위한 헬퍼 함수 구현 ---
 
 HRESULT Renderer::CreateSpriteConstantBuffers()
 {
@@ -156,10 +144,10 @@ HRESULT Renderer::CreateSpriteConstantBuffers()
 	hr = m_pd3dDevice->CreateBuffer(&cbDesc, nullptr, m_pObjectTransformCBuffer.GetAddressOf());
 	//RETURN_IF_FAILED(hr);
 
-	// TextureAtlasCBuffer (텍스처 아틀라스 정보)
+	// TextureAtlasCBuffer 
 	cbDesc.ByteWidth = sizeof(TextureAtlasCBuffer);
 	hr = m_pd3dDevice->CreateBuffer(&cbDesc, nullptr, m_pTextureAtlasCBuffer.GetAddressOf());
-	//RETURN_IF_FAILED(hr);
+
 
 	OutputDebugStringA("INFO: Sprite Constant Buffers created.\n");
 	return S_OK;
@@ -172,7 +160,7 @@ HRESULT Renderer::CreateSpriteSamplerState()
 	D3D11_SAMPLER_DESC sampDesc = {};
 	sampDesc.Filter = D3D11_FILTER_MIN_MAG_MIP_POINT; // 픽셀 아트에 적합
 	// sampDesc.Filter = D3D11_FILTER_MIN_MAG_MIP_LINEAR; // 부드러운 필터링
-	sampDesc.AddressU = D3D11_TEXTURE_ADDRESS_WRAP; // UV 좌표 범위 넘어갈 시 랩핑
+	sampDesc.AddressU = D3D11_TEXTURE_ADDRESS_WRAP; 
 	sampDesc.AddressV = D3D11_TEXTURE_ADDRESS_WRAP;
 	sampDesc.AddressW = D3D11_TEXTURE_ADDRESS_WRAP;
 	sampDesc.ComparisonFunc = D3D11_COMPARISON_NEVER;
@@ -188,6 +176,22 @@ HRESULT Renderer::CreateSpriteSamplerState()
 
 
 
+HRESULT Renderer::CreateBlendState()
+{
+	D3D11_BLEND_DESC bd = {};
+	bd.RenderTarget[0].BlendEnable = TRUE;
+	bd.RenderTarget[0].SrcBlend = D3D11_BLEND_SRC_ALPHA;
+	bd.RenderTarget[0].DestBlend = D3D11_BLEND_INV_SRC_ALPHA;
+	bd.RenderTarget[0].BlendOp = D3D11_BLEND_OP_ADD;
+	bd.RenderTarget[0].SrcBlendAlpha = D3D11_BLEND_ONE;
+	bd.RenderTarget[0].DestBlendAlpha = D3D11_BLEND_ZERO;
+	bd.RenderTarget[0].BlendOpAlpha = D3D11_BLEND_OP_ADD;
+	bd.RenderTarget[0].RenderTargetWriteMask = D3D11_COLOR_WRITE_ENABLE_ALL;
+
+	m_pd3dDevice->CreateBlendState(&bd, &m_blendState);
+	return S_OK;
+}
+
 void Renderer::SetupSpriteCameraMatrices(UINT width, UINT height)
 {
 	
@@ -201,33 +205,9 @@ void Renderer::SetupSpriteCameraMatrices(UINT width, UINT height)
 	float halfW = width / 2.0f;
 	float halfH = height / 2.0f;
 
-	//m_projectionMatrix = XMMatrixOrthographicOffCenterLH(
-	//	-halfW, halfW,    // Left, Right
-	//	-halfH, halfH,    // Bottom, Top
-	//	0.1f, 100.0f
-	//);
-	
-	
-	m_projectionMatrix = XMMatrixOrthographicLH(width, height, 0.1f, 100.0f);
+	m_projectionMatrix = XMMatrixOrthographicLH(width, height, 0.1f, 100.0f); //직교투영
 	
 }
-//void Renderer::SetupSpriteCameraMatrices(UINT width, UINT height)
-//{
-//	// 카메라를 화면 앞쪽(음수 Z)에 배치 — 오브젝트가 Z=0 평면에 있도록
-//	XMVECTOR Eye = XMVectorSet(0.0f, 0.0f, -10.0f, 0.0f); // 뒤에서 앞으로 본다
-//	XMVECTOR LookAt = XMVectorSet(0.0f, 0.0f, 0.0f, 1.0f);
-//	XMVECTOR Up = XMVectorSet(0.0f, -1.0f, 0.0f, 0.0f); // Y아래 방향이 +가 되도록 뒤집음
-//	m_viewMatrix = XMMatrixLookAtLH(Eye, LookAt, Up);
-//
-//	// 직교 투영: 좌상단 0,0 / 우하단 width,height
-//	// NearZ/FarZ를 넉넉히 줘서 Z=0 평면이 보장되게 함
-//	m_projectionMatrix = XMMatrixOrthographicOffCenterLH(
-//		0.0f, (float)width,   // Left, Right
-//		(float)height, 0.0f,  // Bottom, Top (Y아래 증가)
-//		0.0f, 100.0f          // Near, Far
-//	);
-//}
-
 
 void Renderer::CreateFullScrennQuad()
 {
@@ -266,12 +246,11 @@ void Renderer::CreateShaderRenderTargets() {
 	D3D11_TEXTURE2D_DESC backBufferDesc;
 	backBuffer->GetDesc(&backBufferDesc);
 
-	// 1. Direct3D 백버퍼용 RenderTargetView 생성 (최종 Present 전 D3D가 렌더링하는 대상)
 	hr = m_pd3dDevice->CreateRenderTargetView(backBuffer.Get(), nullptr, &m_pd3dRenderTV);
 
 	m_screenWidth = backBufferDesc.Width;
 	m_screenHeight = backBufferDesc.Height;
-	// 2. Direct2D가 그릴 Off-screen 텍스처 (Shader Resource로 사용될 텍스처) 생성
+
 	D3D11_TEXTURE2D_DESC texDesc = {};
 	texDesc.Width = m_screenWidth;
 	texDesc.Height = m_screenHeight;
@@ -283,17 +262,15 @@ void Renderer::CreateShaderRenderTargets() {
 	texDesc.BindFlags = D3D11_BIND_RENDER_TARGET | D3D11_BIND_SHADER_RESOURCE; // D2D가 그리고 셰이더가 읽음
 
 	hr = m_pd3dDevice->CreateTexture2D(&texDesc, nullptr, &m_renderTargetTex);
-	// 3. Off-screen 텍스처에 대한 RenderTargetView (Direct2D가 이 텍스처에 그림)
-	hr = m_pd3dDevice->CreateRenderTargetView(m_renderTargetTex.Get(), nullptr, &m_offScreenTargetView);
-	// 4. Off-screen 텍스처에 대한 ShaderResourceView (Direct3D 셰이더가 이 텍스처를 읽음)
+
+	hr = m_pd3dDevice->CreateRenderTargetView(m_renderTargetTex.Get(), nullptr, &m_offScreenRTV);
+	
 	hr = m_pd3dDevice->CreateShaderResourceView(m_renderTargetTex.Get(), nullptr, &m_renderTargetSRV);
-	// 5. Off-screen 텍스처를 Direct2D Bitmap으로 래핑 (Direct2D의 렌더링 대상)
+	
 
 	// this
 	ComPtr<IDXGISurface> dxgiOffscreenSurface;
-	hr = m_renderTargetTex.As(&dxgiOffscreenSurface); // m_pOffscreenRenderTargetTexture 사용
-
-
+	hr = m_renderTargetTex.As(&dxgiOffscreenSurface);
 
 	D2D1_BITMAP_PROPERTIES1 bitmapProps = {};
 	bitmapProps.pixelFormat.format = DXGI_FORMAT_B8G8R8A8_UNORM;
@@ -301,29 +278,27 @@ void Renderer::CreateShaderRenderTargets() {
 	bitmapProps.bitmapOptions = D2D1_BITMAP_OPTIONS_TARGET; // CANNOT_DRAW 제거
 
 	hr = m_pd2dContext->CreateBitmapFromDxgiSurface(dxgiOffscreenSurface.Get(), &bitmapProps, &m_ptargetBitmap);
-
-	// 6. Direct2D 컨텍스트의 렌더 타겟을 이 off-screen 비트맵으로 설정 (렌더링 시작 전에 다시 설정할 수도 있음)
 	m_pd2dContext->SetTarget(m_ptargetBitmap.Get());
-
-	// 7. 기본 D2D 브러시 생성
 	hr = m_pd2dContext->CreateSolidColorBrush(D2D1::ColorF(D2D1::ColorF::White), &m_pbrush);
 
 }
 
-// --- 렌더링 흐름 제어 함수 수정 ---
+
 void Renderer::RenderBegin()
 {
-	// 1. Direct3D 백버퍼를 최종 렌더 타겟으로 설정하고 클리어합니다.
-	// 이제 D3D 스프라이트는 이 백버퍼에 직접 그려집니다.
-	ID3D11RenderTargetView* rtv = m_pd3dRenderTV.Get();
-	m_pd3dContext->OMSetRenderTargets(1, &rtv, nullptr); // 깊이 버퍼는 2D 스프라이트에선 선택 사항
 
-	FLOAT backgroundColor[4] = { 0.5f, 0.5f, 0.5f, 1.0f }; //노랑 
+	//ID3D11RenderTargetView* rtv = m_pd3dRenderTV.Get();
+	ID3D11RenderTargetView* rtv = m_offScreenRTV.Get();
+	m_pd3dContext->OMSetRenderTargets(1, &rtv, nullptr); 
+
+	FLOAT backgroundColor[4] = { 0.5f, 0.5f, 0.5f, 1.0f }; 
 	m_pd3dContext->ClearRenderTargetView(rtv, backgroundColor);
 	// m_pd3dContext->ClearDepthStencilView(m_pDepthStencilView.Get(), D3D11_CLEAR_DEPTH, 1.0f, 0); // 깊이 버퍼 사용 시
 
-	// 2. D3D 렌더링에 필요한 기본 상태 설정 (스프라이트 쉐이더에 사용)
-	const ShaderSet& spriteShaderSet = m_shaderManager->GetShaderSet("SpriteShader");
+	// D3D 렌더링에 필요한 기본 상태 설정
+	const ShaderSet& spriteShaderSet = m_shaderManager->GetShaderSet("SpriteShader"); // 적용 ★★★
+
+
 	if (!spriteShaderSet.vs || !spriteShaderSet.ps || !spriteShaderSet.inputLayout) {
 		//OutputDebugStringA("ERROR: 'SpriteShader' ShaderSet is incomplete or not found in Renderer. Cannot set D3D states.\n");
 		cout << "spreiteShader fail" << endl;
@@ -335,9 +310,9 @@ void Renderer::RenderBegin()
 	m_pd3dContext->IASetInputLayout(spriteShaderSet.inputLayout.Get());
 	m_pd3dContext->IASetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
 
-	// 스프라이트 전용 샘플러 상태 설정
+	// 스프라이트 전용 샘플러
 	m_pd3dContext->PSSetSamplers(0, 1, m_pSpriteSamplerState.GetAddressOf());
-	//m_pd3dContext->RSSetState(m_pRasterizerState.Get());
+	
 	// 뷰포트 설정
 	D3D11_VIEWPORT viewport = {};
 	viewport.TopLeftX = 0.0f;
@@ -349,33 +324,10 @@ void Renderer::RenderBegin()
 	m_pd3dContext->RSSetViewports(1, &viewport);
 	m_pd3dContext->RSSetState(nullptr); // 기본 래스터라이저 상태 (CullMode None)
 
-	m_pd3dContext->OMSetDepthStencilState(nullptr, 0); // 깊이 테스트 비활성화 (2D 스프라이트)
-
-
-	// 알파 블렌딩
-	D3D11_BLEND_DESC blendDesc = {};
-	blendDesc.AlphaToCoverageEnable = FALSE;
-	blendDesc.IndependentBlendEnable = FALSE;
-	blendDesc.RenderTarget[0].BlendEnable = TRUE;
-	blendDesc.RenderTarget[0].SrcBlend = D3D11_BLEND_SRC_ALPHA;
-	blendDesc.RenderTarget[0].DestBlend = D3D11_BLEND_INV_SRC_ALPHA;
-	blendDesc.RenderTarget[0].BlendOp = D3D11_BLEND_OP_ADD;
-	blendDesc.RenderTarget[0].SrcBlendAlpha = D3D11_BLEND_ONE;
-	blendDesc.RenderTarget[0].DestBlendAlpha = D3D11_BLEND_ZERO;
-	blendDesc.RenderTarget[0].BlendOpAlpha = D3D11_BLEND_OP_ADD;
-	blendDesc.RenderTarget[0].RenderTargetWriteMask = D3D11_COLOR_WRITE_ENABLE_ALL;
-
-	ComPtr<ID3D11BlendState> pBlendState;
-	m_pd3dDevice->CreateBlendState(&blendDesc, &pBlendState);
-	m_pd3dContext->OMSetBlendState(pBlendState.Get(), nullptr, 0xFFFFFFFF);
+	m_pd3dContext->OMSetDepthStencilState(nullptr, 0); // 깊이 테스트 비활성화 
+	m_pd3dContext->OMSetBlendState(m_blendState.Get(), nullptr, 0xFFFFFFFF);
 }
 
-void Renderer::DrawRect(float left, float top, float right, float bottom, const D2D1::ColorF& color)
-{
-	m_pbrush->SetColor(color);
-	m_pd2dContext->DrawRectangle(D2D1::Rect(left, top, right, bottom), m_pbrush.Get());
-
-}
 
 void Renderer::DrawBitmap3D(
 	ID3D11Buffer* pVertexBuffer,
@@ -390,13 +342,13 @@ void Renderer::DrawBitmap3D(
 		return;
 	}
 
-	// 1. 버텍스 및 인덱스 버퍼 바인딩
+	// 버텍스 및 인덱스 버퍼 바인딩
 	UINT stride = sizeof(SpriteVertex); // SpriteVertex 구조체 크기 (BitmapRender3D.h에 정의)
 	UINT offset = 0;
 	m_pd3dContext->IASetVertexBuffers(0, 1, &pVertexBuffer, &stride, &offset);
 	m_pd3dContext->IASetIndexBuffer(pIndexBuffer, DXGI_FORMAT_R16_UINT, 0); // WORD (unsigned short) 사용시
 
-	// 2. 상수 버퍼 업데이트 및 바인딩 (World-View-Projection)
+	// 상수 버퍼 업데이트 및 바인딩 (World-View-Projection)
 	D3D11_MAPPED_SUBRESOURCE mappedResource;
 	HRESULT hr = m_pd3dContext->Map(m_pObjectTransformCBuffer.Get(), 0, D3D11_MAP_WRITE_DISCARD, 0, &mappedResource);
 	if (FAILED(hr)) {
@@ -415,9 +367,8 @@ void Renderer::DrawBitmap3D(
 
 	m_pd3dContext->VSSetConstantBuffers(0, 1, m_pObjectTransformCBuffer.GetAddressOf()); // 슬롯 0에 바인딩
 
-	// 3. 텍스처 아틀라스 상수 버퍼 업데이트 및 바인딩
+	
 	// pSourceRect는 텍셀 단위 픽셀 좌표 (예: {10, 20, 50, 60})
-	// 텍스처의 전체 크기를 가져와야 합니다.
 	ComPtr<ID3D11Resource> resource;
 	pTextureSRV->GetResource(resource.GetAddressOf());
 	ComPtr<ID3D11Texture2D> texture2D;
@@ -434,7 +385,7 @@ void Renderer::DrawBitmap3D(
 	pAtlasCBuffer->textureWidth = static_cast<float>(texDesc.Width);
 	pAtlasCBuffer->textureHeight = static_cast<float>(texDesc.Height);
 
-	// sourceRect가 nullptr 일 경우 전체 텍스처 사용 (비 애니메이션 스프라이트)
+	// sourceRect가 nullptr 일 경우 전체 텍스처 사용 
 	if (pSourceRect) {
 		pAtlasCBuffer->sourceRectX = static_cast<float>(pSourceRect->left);
 		pAtlasCBuffer->sourceRectY = static_cast<float>(pSourceRect->top);
@@ -442,7 +393,7 @@ void Renderer::DrawBitmap3D(
 		pAtlasCBuffer->sourceRectHeight = static_cast<float>(pSourceRect->bottom - pSourceRect->top);
 	}
 	else {
-		// pSourceRect가 nullptr이면 전체 텍스처 사용 (0,0,width,height)
+		// pSourceRect가 nullptr이면 전체 텍스처 사용 
 		pAtlasCBuffer->sourceRectX = 0.0f;
 		pAtlasCBuffer->sourceRectY = 0.0f;
 		pAtlasCBuffer->sourceRectWidth = static_cast<float>(texDesc.Width);
@@ -454,78 +405,92 @@ void Renderer::DrawBitmap3D(
 
 	m_pd3dContext->PSSetConstantBuffers(1, 1, m_pTextureAtlasCBuffer.GetAddressOf()); // 슬롯 1에 바인딩
 
-	// 4. 텍스처 SRV 바인딩
+	// 텍스처 SRV 바인딩
 	m_pd3dContext->PSSetShaderResources(0, 1, &pTextureSRV); // 슬롯 0에 바인딩
 
-	// 5. 드로우 콜
+	// 드로우 콜
 	m_pd3dContext->DrawIndexed(6, 0, 0); // 인덱스 6개 (쿼드 2개 삼각형), 시작 인덱스 0, 베이스 버텍스 0
 }
 
-void Renderer::RenderEnd()
+
+
+void Renderer::PostProcessing(const ShaderSet& shaderSet)
 {
-	// 1. Direct3D 렌더링이 모두 끝난 후, 이제 Direct2D UI를 그릴 차례
-	// D3D 렌더 타겟을 D2D가 그릴 Off-screen 텍스처로 다시 설정
-	// 현재 Renderer::RenderBegin()에서 m_pd3dRenderTV (백버퍼)로 설정했으므로,
-	// 여기서 다시 m_offScreenTargetView (D2D용)로 변경
-	//ID3D11RenderTargetView* rtv = m_offScreenTargetView.Get();
-	//m_pd3dContext->OMSetRenderTargets(1, &rtv, nullptr); // 깊이 버퍼는 2D에선 nullptr
-	//
-	//// D2D 컨텍스트의 렌더 타겟을 Off-screen 비트맵으로 설정
-	//m_pd2dContext->SetTarget(m_ptargetBitmap.Get());
-	//
-	//// D2D 드로잉 시작
-	//m_pd2dContext->BeginDraw();
-	//
-	//// D2D로 그릴 영역을 클리어 (투명하게 클리어하여 D3D 결과 위에 겹쳐지도록)
-	//m_pd2dContext->Clear(D2D1::ColorF(0.5f, 0.5f, 0.5f, 1.0f));
+	if (!m_pd3dContext || !m_fullScreenVB || !m_renderTargetSRV) {
+		std::cerr << "ERROR: Essential resources not initialized for DrawFullScreenQuadWithShader." << std::endl;
+		return;
+	}
 
-	// 여기에 기존 D2D 기반 UI 그리기 함수 호출들 (DrawCircle, DrawRect, DrawMessage 등)
-	// 예: DrawCircle(100, 100, 50, D2D1::ColorF::Red);
-	// 예: DrawMessage(L"Hello D2D!", 10, 10, 200, 30, D2D1::ColorF::White);
-	// ...
+	// 쉐이더 세트의 유효성 다시 확인
+	if (!shaderSet.vs || !shaderSet.ps || !shaderSet.inputLayout) {
+		std::cerr << "ERROR: Provided ShaderSet is incomplete for DrawFullScreenQuadWithShader." << std::endl;
+		return;
+	}
 
-	// D2D 드로잉 종료
-	//HRESULT hr = m_pd2dContext->EndDraw();
-	//if (FAILED(hr) && hr != D2DERR_RECREATE_TARGET)
-	//{
-	//	std::cerr << "D2D EndDraw failed: HRESULT: 0x" << std::hex << hr << std::endl;
-	//	// DXGI_ERROR_DEVICE_REMOVED 또는 DXGI_ERROR_DEVICE_RESET 발생 시
-	//	if (hr == DXGI_ERROR_DEVICE_REMOVED || hr == DXGI_ERROR_DEVICE_RESET) {
-	//		Uninitialize();
-	//		Initialize(m_hwnd);
-	//	}
-	//	return;
-	//}
+	// 5. IA 설정
+	UINT stride = sizeof(SpriteVertex);
+	UINT offset = 0;
+	m_pd3dContext->IASetInputLayout(shaderSet.inputLayout.Get()); // ShaderSet에서 InputLayout 사용
+	m_pd3dContext->IASetVertexBuffers(0, 1, m_fullScreenVB.GetAddressOf(), &stride, &offset);
+	m_pd3dContext->IASetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
 
-	// 2. D2D로 그려진 Off-screen 텍스처를 Direct3D 백버퍼로 합성
-	// 최종 렌더 타겟을 다시 D3D 백버퍼로 복구
-	// 
-	//ID3D11RenderTargetView* backBufferRTV = m_pd3dRenderTV.Get();
-	//m_pd3dContext->OMSetRenderTargets(1, &backBufferRTV, nullptr);
+	// 쉐이더 설정
+	m_pd3dContext->VSSetShader(shaderSet.vs.Get(), nullptr, 0);   // ShaderSet에서 VS 사용
+	m_pd3dContext->PSSetShader(shaderSet.ps.Get(), nullptr, 0);   // ShaderSet에서 PS 사용
 
-	// 백버퍼 클리어 (필요하다면, 이미 RenderBegin에서 클리어했으므로 생략 가능)
-	// float backBufferClearColor[4] = { 0.0f, 0.0f, 0.0f, 1.0f };
-	// m_pd3dContext->ClearRenderTargetView(backBufferRTV, backBufferClearColor);
+	// D2D 텍스처 바인딩 (픽셀 쉐이더 입력)
+	ID3D11ShaderResourceView* srvs[] = { m_renderTargetSRV.Get() };
+	m_pd3dContext->PSSetShaderResources(0, 1, srvs);
+	m_pd3dContext->PSSetSamplers(0, 1, m_samplerState.GetAddressOf());
 
-	// PostProcessing 적용, D2D 결과가 그려진 m_renderTargetSRV를 사용하여
-	// 이를 D3D 백버퍼에 그립니다.
-	//m_postProcessShaderName
-	//std::cout << "[Debug] PostProcessShaderName = " << m_postProcessShaderName << std::endl;
+	// 뷰포트 설정
+	D3D11_VIEWPORT viewport = {};
+	viewport.TopLeftX = 0.0f;
+	viewport.TopLeftY = 0.0f;
+	viewport.Width = static_cast<float>(m_screenWidth);
+	viewport.Height = static_cast<float>(m_screenHeight);
+	viewport.MinDepth = 0.0f;
+	viewport.MaxDepth = 1.0f;
+	m_pd3dContext->RSSetViewports(1, &viewport);
+	//m_pd3dContext->RSSetState(nullptr); // 기본 래스터라이저 상태
+
+
+	m_pd3dContext->OMSetDepthStencilState(nullptr, 0); // 깊이 테스트 비활성화
+	m_pd3dContext->OMSetBlendState(nullptr, nullptr, 0xFFFFFFFF); // 알파 블렌딩 비활성화
 	
-	const ShaderSet& currentPostProcessShader = m_shaderManager->GetShaderSet(m_postProcessShaderName);
-	//PostProcessing(currentPostProcessShader);
+
+	m_pd3dContext->Draw(6, 0);
+
+	// SRV 해제 (다음 프레임/드로우를 위해 리소스 바인딩을 끊기)
+	ID3D11ShaderResourceView* nullSRV[] = { nullptr };
+	m_pd3dContext->PSSetShaderResources(0, 1, nullSRV);
+}
+
+
+
+void Renderer::RenderEnd()
+{	
+	// SRV 해제
+	ID3D11ShaderResourceView* nullSRV[] = { nullptr };
+	m_pd3dContext->PSSetShaderResources(0, 1, nullSRV);
+	// 타겟전환
+	ID3D11RenderTargetView* backBufferRTV = m_pd3dRenderTV.Get();
+	m_pd3dContext->OMSetRenderTargets(1, &backBufferRTV, nullptr);
+
+	const ShaderSet& currentPostProcessShader = m_shaderManager->GetShaderSet(m_postProcessShaderName);    //★★ 쉐이더 변경
+	PostProcessing(currentPostProcessShader); 
 
 	Present();
 }
 
 void Renderer::ReleaseRenderTargets()
 {
-	m_offScreenTargetView.Reset();
+	m_offScreenRTV.Reset();
 	m_renderTargetTex.Reset();
 	m_renderTargetSRV.Reset();
 
 	m_pd3dRenderTV.Reset();
-	m_ptargetBitmap.Reset();
+	//m_ptargetBitmap.Reset();
 
 	m_pbrush.Reset();
 	m_ptextBrush.Reset();
@@ -598,14 +563,6 @@ void Renderer::InitializeShader(HWND hwnd)
 
 }
 
-
-// 나머지 기존 Renderer 함수들 (CreateDeviceAndSwapChain, CreateWriteResource, 
-// CreateFullScrennQuad, CreateShaderRenderTargets, ReleaseRenderTargets,
-// InitializeShader, DrawCircle, DrawRect, DrawBitmap, DrawMessage,
-// CreateBitmapFromFile, PostProcessing, Present)은 변경 없이 유지됩니다.
-// 단, CreateDeviceAndSwapChain은 ID2D1Factory8, ID2D1Device7, ID2D1DeviceContext7으로 수정 필요
-
-// --- CreateDeviceAndSwapChain (기존 코드에서 버전만 수정) ---
 void Renderer::CreateDeviceAndSwapChain(HWND hwnd)
 {
 	D3D_FEATURE_LEVEL featureLevels[] = { D3D_FEATURE_LEVEL_11_0 };
@@ -688,57 +645,7 @@ void Renderer::CreateDeviceAndSwapChain(HWND hwnd)
 	m_pd2dContext = d2dContext;
 }
 
-void Renderer::PostProcessing(const ShaderSet& shaderSet)
-{
-	if (!m_pd3dContext || !m_fullScreenVB || !m_renderTargetSRV) {
-		std::cerr << "ERROR: Essential resources not initialized for DrawFullScreenQuadWithShader." << std::endl;
-		return;
-	}
 
-	// 쉐이더 세트의 유효성 다시 확인
-	if (!shaderSet.vs || !shaderSet.ps || !shaderSet.inputLayout) {
-		std::cerr << "ERROR: Provided ShaderSet is incomplete for DrawFullScreenQuadWithShader." << std::endl;
-		return;
-	}
-
-	// 5. IA 설정
-	UINT stride = sizeof(SpriteVertex);
-	UINT offset = 0;
-	m_pd3dContext->IASetInputLayout(shaderSet.inputLayout.Get()); // ShaderSet에서 InputLayout 사용
-	m_pd3dContext->IASetVertexBuffers(0, 1, m_fullScreenVB.GetAddressOf(), &stride, &offset);
-	m_pd3dContext->IASetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
-
-	// 쉐이더 설정
-	m_pd3dContext->VSSetShader(shaderSet.vs.Get(), nullptr, 0);   // ShaderSet에서 VS 사용
-	m_pd3dContext->PSSetShader(shaderSet.ps.Get(), nullptr, 0);   // ShaderSet에서 PS 사용
-
-	// D2D 텍스처 바인딩 (픽셀 쉐이더 입력)
-	ID3D11ShaderResourceView* srvs[] = { m_renderTargetSRV.Get() };
-	m_pd3dContext->PSSetShaderResources(0, 1, srvs);
-	m_pd3dContext->PSSetSamplers(0, 1, m_samplerState.GetAddressOf());
-
-	// 뷰포트 설정
-	D3D11_VIEWPORT viewport = {};
-	viewport.TopLeftX = 0.0f;
-	viewport.TopLeftY = 0.0f;
-	viewport.Width = static_cast<float>(m_screenWidth);
-	viewport.Height = static_cast<float>(m_screenHeight);
-	viewport.MinDepth = 0.0f;
-	viewport.MaxDepth = 1.0f;
-	m_pd3dContext->RSSetViewports(1, &viewport);
-	m_pd3dContext->RSSetState(nullptr); // 기본 래스터라이저 상태
-
-
-	m_pd3dContext->OMSetDepthStencilState(nullptr, 0); // 깊이 테스트 비활성화
-	m_pd3dContext->OMSetBlendState(nullptr, nullptr, 0xFFFFFFFF); // 알파 블렌딩 비활성화
-
-	// Quad 드로우
-	m_pd3dContext->Draw(6, 0);
-
-	// SRV 해제 (다음 프레임/드로우를 위해 리소스 바인딩을 끊기)
-	ID3D11ShaderResourceView* nullSRV[] = { nullptr };
-	m_pd3dContext->PSSetShaderResources(0, 1, nullSRV);
-}
 
 void Renderer::CreateWriteResource()
 {
@@ -778,7 +685,3 @@ void Renderer::Present()
 		Initialize(m_hwnd);
 	}
 }
-
-// CreateWriteResource, CreateFullScrennQuad, CreateShaderRenderTargets, ReleaseRenderTargets, InitializeShader, 
-// DrawCircle, DrawRect, DrawBitmap, DrawMessage, CreateBitmapFromFile, PostProcessing, Present 함수는
-// 위에 정의된 대로 (혹은 기존 코드와 동일하게) 유지됩니다.
