@@ -72,7 +72,7 @@ public:
 
 struct JokerInfo // 조커 돌 정보
 {
-	string fileName = "Sample.png"; // 조커 돌 이미지 파일 이름
+	string fileName = "JokerStone1.png"; // 조커 돌 이미지 파일 이름
 	string description = "Sample Description"; // 조커 돌 능력 설명
 	int cost = 0; // 조커 돌 능력 사용 비용(흑돌)
 	int returnCost = 0; // 조커 돌 능력 사용 후 반환 비용(흑돌)

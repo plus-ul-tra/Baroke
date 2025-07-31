@@ -129,9 +129,11 @@ void GameScene::KeyCommandMapping()
 			BoardManager::GetInstance().InputBasedGameLoop({ 70, 70 });
 
 			Board board = BoardManager::GetInstance().GetBoard();
-			for (int r = 0; r < BOARD_SIZE; ++r)
+			int boardSize = BoardManager::GetInstance().GetBoardSize();
+
+			for (int r = 0; r < boardSize; ++r)
 			{
-				for (int c = 0; c < BOARD_SIZE; ++c)
+				for (int c = 0; c < boardSize; ++c)
 				{
 					if (board[r][c])
 					{

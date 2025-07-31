@@ -51,6 +51,7 @@ public:
 
 	shared_ptr<Stone> GetStone(POINT);
 	Board GetBoard() const { return m_board; }
+	int GetBoardSize() const { return SIZE_DEFAULT; }
 
 	// 돌 변경 함수
 	void SetStoneType(StoneType type) { m_stoneType = type; }
