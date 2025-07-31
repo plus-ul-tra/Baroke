@@ -56,6 +56,8 @@ void BoardManager::InputBasedGameLoop(POINT mousePos)
 	// 사석 판정
 
 	m_selectedPosition = { -1, -1 }; // 마지막으로 선택된 위치 초기화
+	m_stoneType = StoneType::White; // 돌 타입 초기화
+	m_stoneAbility = StoneAbility::None; // 돌 능력 초기화
 }
 
 void BoardManager::JokerAbilityUpdate()
@@ -93,27 +95,26 @@ bool BoardManager::PlaceStone(POINT selectedPosition, StoneType stoneType, Stone
 	if (stoneType == StoneType::White)
 	{
 		// 흰 돌 생성 // row, col, size는 나중에 스크린에 맞는 좌표로 변경해야함
-		m_board[selectedPosition.x][selectedPosition.y] = make_shared<WhiteStone>(selectedPosition, 50.0f);
+		m_board[selectedPosition.x][selectedPosition.y] = make_shared<WhiteStone>(BoardToScreenPosition(selectedPosition), 50.0f);
 	}
 	else
 	{
 		if (stoneAbility == StoneAbility::None)
 		{
 			// 만약 능력이 없는 흑돌이라면 일반 흑돌 생성
-			m_board[selectedPosition.x][selectedPosition.y] = make_shared<BlackStone>(selectedPosition, 50.0f);
+			m_board[selectedPosition.x][selectedPosition.y] = make_shared<BlackStone>(BoardToScreenPosition(selectedPosition), 50.0f);
 		}
 		else
 		{
 			// 능력이 있디면 조커 돌로 생성 // 흑돌이지만 능력이 있는 경우도 조커 돌로 생성
-			m_board[selectedPosition.x][selectedPosition.y] = make_shared<JokerStone>(selectedPosition, 50.0f, stoneAbility);
+			m_board[selectedPosition.x][selectedPosition.y] = make_shared<JokerStone>(BoardToScreenPosition(selectedPosition), 50.0f, stoneAbility);
+			// 능력이 있는 조커 돌의 경우 능력 벡터에 추가
+			m_jokerPositions.emplace_back(selectedPosition, stoneAbility);
 		}
 	}
 
 	// 사석 판정용 돌 타입 저장 // JokerStone이라도 StoneType::Black 이라면 흑돌로 저장
 	m_stoneTypeMap[selectedPosition] = stoneType;
-
-	// 능력이 있는 조커 돌의 경우 능력 벡터에 추가
-	if (stoneType == StoneType::Joker) { m_jokerPositions.emplace_back(selectedPosition, stoneAbility); }
 
 	return true;
 }

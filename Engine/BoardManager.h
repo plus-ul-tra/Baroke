@@ -44,8 +44,8 @@ public:
 	void JokerAbilityUpdate(); // 조커 능력 실행
 
 	// 마우스 위치와 바둑판 위치 변환 함수 아직 미구현
-	POINT MouseToBoardPosition(POINT mousePos) const { return { mousePos.x / 50, mousePos.y / 50 }; }
-	POINT BoardToScreenPosition(POINT boardPos) const { return { boardPos.x * 50, boardPos.y * 50 }; }
+	POINT MouseToBoardPosition(POINT mousePos) const { return { mousePos.x / 5, mousePos.y / 5 }; }
+	POINT BoardToScreenPosition(POINT boardPos) const { return { boardPos.x * 5, boardPos.y * 5 }; }
 
 	bool PlaceStone(POINT selectedPosition, StoneType stoneType, StoneAbility stoneAbility);
 

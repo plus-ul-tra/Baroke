@@ -124,7 +124,9 @@ void GameScene::KeyCommandMapping()
 
 			//std::cout<<"object size : " << m_objectList.size() << std::endl;
 
-			BoardManager::GetInstance().InputBasedGameLoop({ 100, 100 });
+			BoardManager::GetInstance().SetStoneType(StoneType::Black);
+			BoardManager::GetInstance().SetStoneAbility(StoneAbility::JokerAbility1);
+			BoardManager::GetInstance().InputBasedGameLoop({ 70, 70 });
 
 			Board board = BoardManager::GetInstance().GetBoard();
 			for (int r = 0; r < BOARD_SIZE; ++r)
