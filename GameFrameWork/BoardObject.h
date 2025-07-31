@@ -17,6 +17,8 @@ public:
 		m_bitmapRender = AddComponent<BitmapRender>("Cyberpunk.png", drawW, drawH);
 		m_bitmapRender->SetOrder(0);
 		m_bitmapRender->SetActive(true);
+
+		BoardManager::GetInstance().Initialize(); // 보드 매니저 초기화
 	}
 	void Render(Renderer& r) override
 	{

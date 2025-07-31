@@ -78,7 +78,7 @@ struct JokerInfo // 조커 돌 정보
 	int returnCost = 0; // 조커 돌 능력 사용 후 반환 비용(흑돌)
 	int cooldown = 0; // 조커 돌 능력 쿨타임
 };
-unordered_map<StoneAbility, JokerInfo> m_jokerInfoMap; // 조커 돌 능력 정보 맵 // 능력의 기본값 저장용
+extern unordered_map<StoneAbility, JokerInfo> m_jokerInfoMap; // 조커 돌 능력 정보 맵 // 능력의 기본값 저장용
 
 class JokerStone : public Stone
 {
