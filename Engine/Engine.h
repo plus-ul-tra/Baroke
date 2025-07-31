@@ -28,5 +28,6 @@
 #include "StoneType.h"
 #include "CreateObject.h"
 #include "Button.h"
+#include "BoardManager.h"
 
 //#include "StoneRendererComponent.h"

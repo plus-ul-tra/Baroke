@@ -1,5 +1,7 @@
 #pragma once
-#include "Engine.h"
+#include "Object.h"
+#include "Transform.h"
+#include "BitmapRender.h"
 
 class NewObject : public Object
 {

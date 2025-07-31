@@ -36,7 +36,7 @@
     <ClCompile Include="TextRender.cpp">
       <Filter>UI</Filter>
     </ClCompile>
-    <ClCompile Include="BordManager.cpp">
+    <ClCompile Include="BoardManager.cpp">
       <Filter>Manager</Filter>
     </ClCompile>
     <ClCompile Include="Stone.cpp">
@@ -82,7 +82,7 @@
     <ClInclude Include="TextRender.h">
       <Filter>UI</Filter>
     </ClInclude>
-    <ClInclude Include="BordManager.h">
+    <ClInclude Include="BoardManager.h">
       <Filter>Manager</Filter>
     </ClInclude>
     <ClInclude Include="Stone.h">

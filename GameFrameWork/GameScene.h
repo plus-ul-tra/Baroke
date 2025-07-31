@@ -9,7 +9,7 @@ class GameScene : public SceneBase {
 private:
 	Player* m_player = nullptr;
 	BoardObject* m_boardObj = nullptr;
-	std::unique_ptr<Board> m_board;
+	//std::unique_ptr<Board> m_board;
 	DirectX::XMVECTOR m_moveDir = DirectX::XMVectorZero();
 
 	std::vector<std::unique_ptr<Button>> m_buttonList;

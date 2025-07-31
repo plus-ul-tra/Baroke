@@ -1,5 +1,9 @@
 #pragma once
-#include "Engine.h"
+#include "Object.h"
+#include "Transform.h"
+#include "BitmapRender.h"
+#include "InputManager.h"
+#include "InputEvents.h"
 
 class Button : public Object
 {

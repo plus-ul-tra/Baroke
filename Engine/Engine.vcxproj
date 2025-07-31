@@ -154,7 +154,7 @@
     <ClCompile Include="AnimationClip.cpp" />
     <ClCompile Include="BaseRender.cpp" />
     <ClCompile Include="BitmapRender.cpp" />
-    <ClCompile Include="BordManager.cpp" />
+    <ClCompile Include="BoardManager.cpp" />
     <ClCompile Include="Button.cpp" />
     <ClCompile Include="Collider2D.cpp" />
     <ClCompile Include="Component.h" />
@@ -189,7 +189,7 @@
     <ClInclude Include="BaseRender.h" />
     <ClInclude Include="BitmapRender.h" />
     <ClInclude Include="BoardLayoutComponent.h" />
-    <ClInclude Include="BordManager.h" />
+    <ClInclude Include="BoardManager.h" />
     <ClInclude Include="Button.h" />
     <ClInclude Include="Collider2D.h" />
     <ClInclude Include="Core.h" />
