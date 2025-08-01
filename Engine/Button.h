@@ -9,7 +9,7 @@ class Button : public Object
 {
 protected:
 	Transform* m_transform = nullptr;
-	BitmapRender* m_bitmapRender = nullptr;
+	BitmapRender3D* m_bitmapRender = nullptr;
 
 	float m_width = 0;
 	float m_height = 0;
@@ -37,14 +37,14 @@ public:
 		m_transform->SetScale(XMVectorSet(1.0f, 1.0f, 1.0f, 1.0f));
 		m_transform->SetRotation(0.0f);
 
-		m_bitmapRender = AddComponent<BitmapRender>(bitmapFile, width, height);
+		m_bitmapRender = AddComponent<BitmapRender3D>(bitmapFile, width, height);
 		m_bitmapRender->SetOrder(order);
 		m_bitmapRender->SetActive(true);
 	}
 
 	void Update(double deltaTime) override { Object::Update(deltaTime); ButtonFunction(); }
 
-	virtual void ButtonFunction() = 0;
+	virtual void ButtonFunction() {};
 
 	XMVECTOR GetPosition() const { return m_transform->GetPosition(); }
 	void SetPosition(XMVECTOR pos) { m_transform->SetPosition(pos); }

@@ -59,11 +59,11 @@ void TextRender::Render(Renderer& renderer)
 		objWorldY + (m_height * XMVectorGetY(worldScale))
 	);
 
-	renderer.DrawMessage
+	/*renderer.DrawMessage
 	(
 		std::wstring(m_renderText.begin(), m_renderText.end()).c_str(),
 		textRect,
 		m_textColor,
 		m_textFormat
-	);
+	);*/
 }

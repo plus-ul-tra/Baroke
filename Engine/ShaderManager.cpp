@@ -71,6 +71,10 @@ ShaderManager::ShaderManager(ID3D11Device* pDevice) : m_pDevice(pDevice)
 	if (FAILED(hr)) {
 		cout << "리드 실패" << endl;
 	}
+	hr = ReadShaderResource("..\\Shader\\SpriteShader_VS.cso", "..\\Shader\\SpriteShader_PS.cso", "SpriteShader", quadLayout, numQuadElements);
+	if (FAILED(hr)) {
+		cout << "리드 실패" << endl;
+	}
 
 }
 

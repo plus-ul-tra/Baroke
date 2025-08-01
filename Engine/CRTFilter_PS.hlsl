@@ -68,13 +68,13 @@ float4 PSMain(VS_OUTPUT Input) : SV_Target
     finalColor.rgb *= scanlineFactor;
 
     // 4. 비네트 효과
-    //float2 uv = distortedUV - 0.5;
-    //float dist = length(uv);
-    //float vignetteStart = 0.63;
-    //float vignetteEnd = 0.9;
-    //float vignettePower = 10.0;
-    //float vignette = smoothstep(vignetteStart, vignetteEnd, dist);
-    //finalColor.rgb *= (1.0 - vignette * vignettePower);
+    float2 uv = distortedUV - 0.5;
+    float dist = length(uv);
+    float vignetteStart = 0.65;
+    float vignetteEnd = 0.9;
+    float vignettePower = 10.0;
+    float vignette = smoothstep(vignetteStart, vignetteEnd, dist);
+    finalColor.rgb *= (1.0 - vignette * vignettePower);
     
     return finalColor;
 }

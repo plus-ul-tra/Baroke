@@ -4,7 +4,7 @@
 NewObject::NewObject(float posX, float posY, float width, float height, const std::string& bitmapKey, int order, float speed)
 {
 	m_transform = AddComponent<Transform>();
-	m_bitmapRender = AddComponent<BitmapRender>(bitmapKey, width, height);
+	m_bitmapRender = AddComponent<BitmapRender3D>(bitmapKey, width, height);
 	m_bitmapRender->SetOrder(order);
 	m_bitmapRender->SetActive(true);
 

@@ -11,7 +11,7 @@ class Player : public Object {
 private:
 
 	Transform* m_transform = nullptr;
-	BitmapRender* m_bitmapRender = nullptr;
+	BitmapRender3D* m_bitmapRender = nullptr;
 	TextRender* m_textRender = nullptr;
 
 
@@ -38,7 +38,7 @@ public:
 
 
 	Transform* GetTransform() { return m_transform; }
-	BitmapRender* GetBitmapRender() { return m_bitmapRender; }
+	BitmapRender3D* GetBitmapRender() { return m_bitmapRender; }
 
 
 };

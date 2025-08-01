@@ -4,7 +4,7 @@
 class BoardObject : public Object
 {
 	Transform* m_transform = nullptr;
-	BitmapRender* m_bitmapRender = nullptr;
+	BitmapRender3D* m_bitmapRender = nullptr;
 	int m_cell;
 	int m_stoneOffset;
 	Board m_board;
@@ -20,7 +20,7 @@ public:
 		m_transform->SetScale(XMVectorSet(1.0f, 1.0f, 1.0f, 1.0f));
 		m_transform->SetRotation(0.0f);
 
-		m_bitmapRender = AddComponent<BitmapRender>("Cyberpunk.png", drawW, drawH);
+		m_bitmapRender = AddComponent<BitmapRender3D>("Space.png", drawW, drawH);
 		m_bitmapRender->SetOrder(0);
 		m_bitmapRender->SetActive(true);
 
@@ -31,7 +31,7 @@ public:
 		if (m_bitmapRender) m_bitmapRender->Render(r);
 
 		for (auto& sp : m_stones)
-			if (auto* bmp = sp->GetComponent<BitmapRender>())
+			if (auto* bmp = sp->GetComponent<BitmapRender3D>())
 				if (bmp->IsActive()) bmp->Render(r);
 	}
 

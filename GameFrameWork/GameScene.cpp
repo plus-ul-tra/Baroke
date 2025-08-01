@@ -4,58 +4,14 @@
 
 #define BOARD_SIZE 15
 #define PADDING 72
-#define POSX 510
-#define POSY 90
+#define POSX 0
+#define POSY 0
 #define WIDTH 900
 #define HEIGHT 900
 #define CELL 54  // 0 기준 54 pxs
 #define STONEOFFSET 10  
 
 
-// void GameScene::StartStage()
-// {
-// 	m_stageNo++;
-// 	//m_board->ResetStone();
-// 	//m_boardObj->RefreshStones();
-// 	int spawn = 3 + (m_stageNo - 1);
-// 	//m_board->SpawnStone(spawn);
-// 	m_whiteLeft = spawn;
-// 	std::cout << "Stage "<<m_stageNo<<" start, Spawn White Conut : " <<spawn<< std::endl;
-// 	DebugBoardState();
-// }
-
-// int GameScene::CountWhite() const
-// {
-// 	int cnt = 0;
-// 	for (const auto& row : m_board->GetNodes())
-// 		for (const auto& n : row)
-// 			if (n.color == StoneType::White) ++cnt;
-// 	return cnt;
-// }
-// 
-// int GameScene::CountBlack() const
-// {
-// 	int cnt = 0;
-// 	for (const auto& row : m_board->GetNodes())
-// 		for (const auto& n : row)
-// 			if (n.color == StoneType::Black) ++cnt;
-// 	return cnt;
-// }
-
-
-// void GameScene::CheckStageClear()
-// {
-// 	if (CountWhite() == 0) {
-// 		std::cout << "Stage Clear -> Move to Shop" << std::endl;
-// 		m_money += 3 + (m_stageNo - 1);
-// 		std::cout << "Money : " << m_money << std::endl;
-// 
-// 		StartStage();
-// 
-// 
-// 		//SceneManager::GetInstance().ChangeScene("Shop");
-// 	}
-// }
 
 void GameScene::StartStage()
 {
@@ -148,22 +104,25 @@ void GameScene::OnEnter()
 	std::cout << "Game1 Scene OnEnter" << std::endl;
 
 	auto playerObject = std::make_unique<Player>(
-		600.0f, 300.0f, 50.0f, 50.0f, DirectX::XMFLOAT4(1.0f, 0.0f, 0.0f, 1.0f) // 녹색
+		0.0f, 0.0f, 50.0f, 50.0f, DirectX::XMFLOAT4(1.0f, 0.0f, 0.0f, 1.0f) // 녹색
 	);
-
 	m_player = playerObject.get();
 	m_objectList.push_back(std::move(playerObject));
 
+	unique_ptr<Button> button1 = std::make_unique<Button>(-800.0f, 300.0f, 200, 200, "Sample.png", 50);
+	m_buttonList.emplace_back(button1.get());
+	m_objectList.emplace_back(std::move(button1));
+
 	//StartStage();
 	// 버튼 생성
-// 	unique_ptr<Button> button1 = std::make_unique<Button>(30.0f, 30.0f, 200, 200, "Sample.png", 50);
-// 	m_buttonList.emplace_back(button1.get());
-// 	m_objectList.emplace_back(std::move(button1));
+ 
 
-	unique_ptr<BoardObject> boardObj = std::make_unique<BoardObject>(POSX, POSY, WIDTH, HEIGHT, CELL,STONEOFFSET , PADDING);
+	unique_ptr<BoardObject> boardObj = std::make_unique<BoardObject>(POSX, POSY, WIDTH, HEIGHT, CELL, STONEOFFSET, PADDING);
 	m_boardObj = boardObj.get();
 	m_objectList.emplace_back(std::move(boardObj));
 	StartStage();
+
+	
 }
 
 void GameScene::OnLeave()

@@ -22,7 +22,7 @@ class Stone : public Object
 {
 protected:
 	Transform* m_transform {};
-	BitmapRender* m_sprite {};
+	BitmapRender3D* m_sprite {};
 
 	POINT m_position = { -1, -1 }; // µ¹ À§Ä¡
 
@@ -46,7 +46,7 @@ public:
 		m_transform->SetScale(XMVectorSet(1.0f, 1.0f, 1.0f, 1.0f));
 		m_transform->SetRotation(0.0f);
 
-		m_sprite = AddComponent<BitmapRender>("White_Stone.png", size, size);
+		m_sprite = AddComponent<BitmapRender3D>("White_Stone.png", size, size);
 		m_sprite->SetOrder(1);
 		m_sprite->SetActive(true);
 	}
@@ -64,7 +64,7 @@ public:
 		m_transform->SetScale(XMVectorSet(1.0f, 1.0f, 1.0f, 1.0f));
 		m_transform->SetRotation(0.0f);
 
-		m_sprite = AddComponent<BitmapRender>("Black_Stone.png", size, size);
+		m_sprite = AddComponent<BitmapRender3D>("Black_Stone.png", size, size);
 		m_sprite->SetOrder(1);
 		m_sprite->SetActive(true);
 	}
@@ -95,7 +95,7 @@ public:
 		m_transform->SetScale(XMVectorSet(1.0f, 1.0f, 1.0f, 1.0f));
 		m_transform->SetRotation(0.0f);
 
-		m_sprite = AddComponent<BitmapRender>(m_jokerInfo.fileName.c_str(), size, size);
+		m_sprite = AddComponent<BitmapRender3D>(m_jokerInfo.fileName.c_str(), size, size);
 		m_sprite->SetOrder(1);
 		m_sprite->SetActive(true);
 	}
