@@ -37,43 +37,34 @@ class BoardManager : public Singleton<BoardManager>
 	StoneAbility m_stoneAbility = StoneAbility::None;
 
 	int m_offX, m_offY, m_cell, m_padding, m_stoneOffset;
+
 public:
 	void Initialize(int offX, int offY, int _cell,int _stoneOffset, int padding = 0);
-	void PlaceRandomStones(int amount); // 게임 시작 시 랜덤으로 돌을 놓기 위한 함수 // 아직 미구현
-
+	void PlaceRandomStones(int amount); // 게임 시작 시 랜덤으로 돌을 놓기 위한 함수
 
 	bool InputBasedGameLoop(POINT mousePos); // 클릭으로 돌 놓기
 	bool InputBasedGameLoop(int row, int col); // 배열에 접근으로 돌 놓기
 
-	void JokerAbilityUpdate(); // 조커 능력 실행
+	void JokerAbilityUpdate(); // 모든 조커 능력 실행
 
-	// 마우스 위치와 바둑판 위치 변환 함수 아직 미구현
-	POINT MouseToBoardPosition(POINT mousePos) const {
-		return { (mousePos.x - m_offX - m_padding + m_cell / 2) / m_cell,
-				 (mousePos.y - m_offY - m_padding + m_cell / 2) / m_cell };
-	}
-	POINT BoardToScreenPosition(POINT boardPos) const  // row, col
-	{ 
-		return
-		{
-			m_offX + m_padding + boardPos.x * m_cell,
-			m_offY + m_padding + boardPos.y * m_cell
-		};
-	}
-
+	POINT MouseToBoardPosition(POINT mousePos) const; // 마우스 좌표를 바둑판 좌표로 변환
+	POINT BoardToScreenPosition(POINT boardPos) const; // 바둑판 좌표를 스크린 좌표로 변환
 
 	bool PlaceStone(POINT selectedPosition, StoneType stoneType, StoneAbility stoneAbility);
-
 	void ResetStone();
+
 	shared_ptr<Stone> GetStone(POINT);
+	bool IsJokerStone(POINT position) const;
+
 	Board GetBoard() const { return m_board; }
 	int GetBoardSize() const { return SIZE_DEFAULT; }
-	unordered_map<POINT, StoneType> GetStoneTypeMap() {	return  m_stoneTypeMap;	}
 
-	// 돌 변경 함수
+	unordered_map<POINT, StoneType> GetStoneTypeMap() {	return  m_stoneTypeMap;	}
+	int GetStoneTypeAmount(StoneType type) const;
+
+	// 다음 착수 돌 변경 함수
 	void SetStoneType(StoneType type) { m_stoneType = type; }
 	void SetStoneAbility(StoneAbility ability) { m_stoneAbility = ability; }
-
 
 private:
 	int CountLiberty(int r, int c,
