@@ -4,9 +4,6 @@ struct VS_INPUT
     float2 Tex : TEXCOORD0; // 텍스처 좌표 (2D)
 };
 
-
-// 정점 셰이더 출력 (픽셀 셰이더 입력) 구조체
-
 struct VS_OUTPUT
 {
     float4 Pos : SV_POSITION; // 최종 클립 공간 위치

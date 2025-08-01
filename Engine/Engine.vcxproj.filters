@@ -7,6 +7,7 @@
     <FxCompile Include="PassThrough_VS.hlsl" />
     <FxCompile Include="SpriteShader_PS.hlsl" />
     <FxCompile Include="SpriteShader_VS.hlsl" />
+    <FxCompile Include="NoiseBlend_PS.hlsl" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="AnimationClip.cpp" />

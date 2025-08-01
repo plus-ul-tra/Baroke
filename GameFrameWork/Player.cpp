@@ -50,8 +50,6 @@ void Player::LateUpdate(double deltaTime)
 // void Player::MoveRight() { Move(1.0f, 0.0f); }
 
 
-// 버니합 발생 수정해야됨! - 준혁
-// 수정완료 ( MoveUp, Down, Left, Right 사용 >> 벡터 사용 )
 void Player::Move(float dx, float dy)
 {
 	float distance = m_speedPerSec;

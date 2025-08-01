@@ -2,6 +2,7 @@
 #include "Engine.h"
 #include "Player.h"
 #include "BoardObject.h"
+#include "BackGround.h"
 
 class GameScene : public SceneBase { 
 	
