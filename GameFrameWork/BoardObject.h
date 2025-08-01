@@ -7,8 +7,9 @@ class BoardObject : public Object
 	BitmapRender3D* m_bitmapRender = nullptr;
 	int m_cell;
 	int m_stoneOffset;
+	BoardManager& m_boardManager = BoardManager::GetInstance(); // 싱글톤 보드 매니저
 	Board m_board;
-	std::vector</*std::unique_ptr<Stone>*/Stone*> m_stones;
+	std::vector<Stone*> m_stones;
 
 public:
 	BoardObject(int offX, int offY, int drawW, int drawH, int _cell, int _stoneOffset = 0,int padding = 0)
@@ -24,7 +25,7 @@ public:
 		m_bitmapRender->SetOrder(0);
 		m_bitmapRender->SetActive(true);
 
-		BoardManager::GetInstance().Initialize(offX, offY, drawW, drawH, _cell, m_stoneOffset, padding); // 보드 매니저 초기화
+		m_boardManager.Initialize(offX, offY, drawW, drawH, _cell, m_stoneOffset, padding); // 보드 매니저 초기화
 	}
 	void Render(Renderer& r) override
 	{
@@ -45,9 +46,9 @@ inline void BoardObject::BoardSync()
 {
 	m_stones.clear();
 
-	m_board = BoardManager::GetInstance().GetBoard();
+	m_board = m_boardManager.GetBoard();
 
-	int boardSize = BoardManager::GetInstance().GetBoardSize();
+	int boardSize = m_boardManager.GetBoardSize();
 
 	for (int r = 0; r < boardSize; ++r)
 	{
