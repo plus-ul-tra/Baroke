@@ -21,7 +21,7 @@ public:
 		m_transform->SetScale(XMVectorSet(1.0f, 1.0f, 1.0f, 1.0f));
 		m_transform->SetRotation(0.0f);
 
-		m_bitmapRender = AddComponent<BitmapRender3D>("test.png", drawW, drawH);
+		m_bitmapRender = AddComponent<BitmapRender3D>("Space.png", drawW, drawH);
 		m_bitmapRender->SetOrder(0);
 		m_bitmapRender->SetActive(true);
 
