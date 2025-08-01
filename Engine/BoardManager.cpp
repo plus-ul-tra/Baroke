@@ -11,24 +11,38 @@ static unordered_map<StoneAbility, function<void(shared_ptr<JokerStone>)>> g_abi
 	{ StoneAbility::JokerAbility1, [](shared_ptr<JokerStone> jokerStone)
 	{
 		// 조커 능력 1
-		cout << jokerStone->GetPosition().x << ", " << jokerStone->GetPosition().y << endl;
+		cout << "JokerAbility1" << endl;
 	} },
 
 	{ StoneAbility::JokerAbility2, [](shared_ptr<JokerStone> jokerStone)
 	{
 		// 조커 능력 2
-		cout << jokerStone->GetPosition().x << ", " << jokerStone->GetPosition().y << endl;
+		cout << "JokerAbility2" << endl;
 	} },
 
 	{ StoneAbility::JokerAbility3, [](shared_ptr<JokerStone> jokerStone)
 	{
 		// 조커 능력 3
-		cout << jokerStone->GetPosition().x << ", " << jokerStone->GetPosition().y << endl;
+		cout << "JokerAbility3" << endl;
+	} },
+
+	{ StoneAbility::JokerAbility4, [](shared_ptr<JokerStone> jokerStone)
+	{
+		// 조커 능력 4
+		cout << "JokerAbility4" << endl;
+	} },
+
+	{ StoneAbility::JokerAbility5, [](shared_ptr<JokerStone> jokerStone)
+	{
+		// 조커 능력 5
+		cout << "JokerAbility5" << endl;
 	} }
 };
 
 void BoardManager::Initialize(int offX, int offY, int drawW, int drawH, int _cell, int _stoneOffset, int padding)
 {
+	InitializeJokerInfoMap(); // 조커 능력 정보 초기화
+
 	m_offX = offX;
 	m_offY = offY;
 	m_drawW = (drawW / 2) - padding;
@@ -252,6 +266,15 @@ int BoardManager::GetStoneTypeAmount(StoneType type) const
 	}
 
 	return count;
+}
+
+void BoardManager::InitializeJokerInfoMap()
+{
+	m_jokerInfoMap[StoneAbility::JokerAbility1] = { "JokerStone1.png", 10, 5, 0 };
+	m_jokerInfoMap[StoneAbility::JokerAbility2] = { "JokerStone2.png", 15, 7, 0 };
+	m_jokerInfoMap[StoneAbility::JokerAbility3] = { "JokerStone3.png", 20, 10, 0 };
+	m_jokerInfoMap[StoneAbility::JokerAbility4] = { "JokerStone4.png", 25, 12, 0 };
+	m_jokerInfoMap[StoneAbility::JokerAbility5] = { "JokerStone5.png", 30, 15, 0 };
 }
 
 int BoardManager::CountLiberty(

@@ -38,6 +38,7 @@ class BoardManager : public Singleton<BoardManager>
 
 	// Initialize 변수들
 	int m_offX = 0, m_offY = 0, m_drawW = 0, m_drawH = 0, m_cell = 0, m_padding = 0, m_stoneOffset = 0;
+	void InitializeJokerInfoMap();
 
 	int CountLiberty // 사석 판정용 함수
 	(
