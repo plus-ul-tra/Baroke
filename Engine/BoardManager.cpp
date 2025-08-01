@@ -157,7 +157,7 @@ bool BoardManager::PlaceStone(POINT selectedPosition, StoneType stoneType, Stone
 		else
 		{
 			// 능력이 있디면 조커 돌로 생성 // 흑돌이지만 능력이 있는 경우도 조커 돌로 생성
-			m_board[selectedPosition.x][selectedPosition.y] = make_shared<JokerStone>(BoardToScreenPosition(selectedPosition), m_cell-m_stoneOffset, stoneAbility);
+			m_board[selectedPosition.x][selectedPosition.y] = make_shared<JokerStone>(BoardToScreenPosition(selectedPosition), m_cell - m_stoneOffset, stoneAbility);
 			// 능력이 있는 조커 돌의 경우 능력 벡터에 추가
 			m_jokerPositions.emplace_back(selectedPosition, stoneAbility);
 		}
@@ -199,7 +199,7 @@ void BoardManager::ResetStone()
 
 shared_ptr<Stone> BoardManager::GetStone(POINT position)
 {
-	if (isValidPoint(position))
+	if (!isValidPoint(position))
 	{
 		std::cout << "유효하지 않은 위치: (" << position.x << ", " << position.y << ")" << std::endl;
 		return nullptr;
