@@ -16,5 +16,5 @@ public:
     GeoRender() = default;
     virtual ~GeoRender() = default;
     void SetOwner(Object* owner) override;
-    void Render(Renderer& renderer) override;
+    void Render(Renderer& renderer , const string& mode) override;
 };

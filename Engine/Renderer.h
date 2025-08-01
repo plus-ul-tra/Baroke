@@ -24,9 +24,17 @@ struct SpriteVertex
 // 쉐이더로 전달될 상수 버퍼 구조체들
 struct alignas(16) ObjectTransformCBuffer
 {
-	DirectX::XMMATRIX World;
-	DirectX::XMMATRIX View;
-	DirectX::XMMATRIX Projection;
+	XMMATRIX World;
+	XMMATRIX View;
+	XMMATRIX Projection;
+};
+
+struct alignas(16) TimeCBuffer {
+
+	float time; // 현재 시간 (초 단위)
+	float deltaTime; // 마지막 프레임과의 시간 차이 (초 단위)
+	float padding[2]; // 16바이트 정렬을 위한 패딩
+
 };
 
 struct alignas(16) TextureAtlasCBuffer
@@ -79,8 +87,8 @@ private:
 
 	ComPtr<ID3D11SamplerState>        m_samplerState; // PostProcessing에 사용
 
-	unique_ptr<ShaderManager>    m_shaderManager;
-	string                       m_postProcessShaderName = "PassThrough"; // 기본 포스트 프로세싱 쉐이더 이름
+	unique_ptr<ShaderManager>         m_shaderManager;
+	string                            m_postProcessShaderName = "PassThrough"; // 기본 포스트 프로세싱 쉐이더 이름
 
 
 	ComPtr<ID3D11Buffer>              m_pObjectTransformCBuffer; // 월드-뷰-프로젝션 행렬
@@ -92,7 +100,7 @@ private:
 
 	XMMATRIX                          m_viewMatrix;
 	XMMATRIX                          m_projectionMatrix;
-
+	ComPtr<ID3D11Buffer>				m_pTimeCBuffer;
 public:
 	Renderer() = default;
 	~Renderer();
@@ -103,6 +111,7 @@ public:
 
 	// 렌더링 흐름 제어 함수
 	void RenderBegin();
+	void SetShaderMode(const string& mode);
 	void PostProcessing(const ShaderSet& shaderSet); // 기존 유지
 	void RenderEnd();
 	void Present();
@@ -126,7 +135,7 @@ private:
 	void CreateWriteResource(); //
 	void CreateFullScrennQuad();//
 	void CreateShaderRenderTargets();
-
+	void CreateTimeCBuffer();
 	void ReleaseRenderTargets();
 	void InitializeShader(HWND hwnd); // PassThrough 쉐이더 초기화에 사용
 

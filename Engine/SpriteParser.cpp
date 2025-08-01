@@ -44,12 +44,6 @@ AnimationClipsMap SpriteParser::Load(const filesystem::path& path)
 
 	if (!doc["meta"].contains("frameTags")) {
 
-		//OutputDebugStringA(("WARNING: SpriteParser: No 'frameTags' found in JSON file: " + path.filename().string() + "\n").c_str());
-		// 만약 단일 클립을 기본으로 만들고 싶다면:
-		// AnimationClip defaultClip;
-		// defaultClip.SetName("default");
-		// for (const auto& f : allFrames) defaultClip.AddFrame(f);
-		// clipsMap.emplace("default", move(defaultClip));
 		return clipsMap;
 	}
 

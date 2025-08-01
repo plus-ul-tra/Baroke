@@ -2,6 +2,7 @@
 #include "BaseRender.h"
 #include "Renderer.h"
 #include "Transform.h"
+#include <string>
 
 class TextRender : public BaseRender
 {
@@ -22,5 +23,5 @@ public:
 	TextRender(const string& text, float width, float height, float fontSize, D2D1::ColorF m_textColor = D2D1::ColorF(D2D1::ColorF::Black), float textDelay = 0.0f, const wchar_t* fontName = L"Arial");
 
 	void Update(double deltaTime) override;
-	void Render(Renderer& renderer) override;
+	void Render(Renderer& renderer , const string& mode) override;
 };

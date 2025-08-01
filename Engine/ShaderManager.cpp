@@ -1,7 +1,8 @@
 #pragma once
 #include "pch.h"
 #include "ShaderManager.h"
-
+#include "SpriteManager.h"
+#include "FileDirectory.h"
 HRESULT ShaderManager::ReadShaderBlob(const std::string& filePath, ID3DBlob** ppBlobOut)
 {
 	std::wstring wFilePath(filePath.begin(), filePath.end());
@@ -51,19 +52,16 @@ HRESULT ShaderManager::ReadShaderResource(const string& vertexShaderPath,
 
 }
 
-ShaderManager::ShaderManager(ID3D11Device* pDevice) : m_pDevice(pDevice)
+void ShaderManager::ReadAllShaders()
 {
-	//여기서 싹 다 읽어버리기
-	assert(pDevice != nullptr);
 	D3D11_INPUT_ELEMENT_DESC quadLayout[] = {
 	   {"POSITION", 0, DXGI_FORMAT_R32G32B32_FLOAT, 0, 0, D3D11_INPUT_PER_VERTEX_DATA, 0},
 	   {"TEXCOORD", 0, DXGI_FORMAT_R32G32_FLOAT, 0, D3D11_APPEND_ALIGNED_ELEMENT, D3D11_INPUT_PER_VERTEX_DATA, 0}
 	};
 	UINT numQuadElements = ARRAYSIZE(quadLayout);
 
-	//여기에 사용할 Shader 추가, Vertex Shader없는 경우 기본값으로 설정
 	HRESULT hr;
-	hr = ReadShaderResource("..\\Shader\\PassThrough_VS.cso", "..\\Shader\\PassThrough_PS.cso","PassThrough", quadLayout, numQuadElements);
+	hr = ReadShaderResource("..\\Shader\\PassThrough_VS.cso", "..\\Shader\\PassThrough_PS.cso", "PassThrough", quadLayout, numQuadElements);
 	if (FAILED(hr)) {
 		cout << "리드 실패" << endl;
 	}
@@ -71,15 +69,42 @@ ShaderManager::ShaderManager(ID3D11Device* pDevice) : m_pDevice(pDevice)
 	if (FAILED(hr)) {
 		cout << "리드 실패" << endl;
 	}
+
 	hr = ReadShaderResource("..\\Shader\\SpriteShader_VS.cso", "..\\Shader\\SpriteShader_PS.cso", "SpriteShader", quadLayout, numQuadElements);
 	if (FAILED(hr)) {
 		cout << "리드 실패" << endl;
 	}
-
+	/*hr = ReadShaderResource("..\\Shader\\SpriteShader_VS.cso", "..\\Shader\\NoiseBlend_PS.cso", "NoiseBlend", quadLayout, numQuadElements);
+	if (FAILED(hr)) {
+		cout << "리드 실패" << endl;
+	}*/
 }
 
-const ShaderSet& ShaderManager::GetShaderSet(const string& shaderName)
+
+
+ShaderManager::ShaderManager(ID3D11Device* pDevice) : m_pDevice(pDevice)
 {
+	
+	//여기에 사용할 모든 Shader 추가, Vertex Shader없는 경우 기본값으로 설정
+	
+	ReadAllShaders();
+
+	// 공용 shader 자원 load
+}
+
+// 오브젝트용 쉐이더 검색
+const ShaderSet& ShaderManager::GetOBJShaderSet(const string& shaderName)
+{	
+	auto it = m_shaderSets.find(shaderName);
+	if (it != m_shaderSets.end()) {
+		return it->second;
+	}
+	return m_shaderSets.at("SpriteShader"); // 못찾은 경우
+}
+
+// 포스트 프로세싱용 쉐이더 검색
+const ShaderSet& ShaderManager::GetPostShaderSet(const string& shaderName)
+{	
 	auto it = m_shaderSets.find(shaderName);
 	if (it != m_shaderSets.end()) {
 		return it->second;
@@ -88,7 +113,17 @@ const ShaderSet& ShaderManager::GetShaderSet(const string& shaderName)
 
 }
 
+const ID3D11ShaderResourceView* ShaderManager::GetShaderResource(const string& resourceName)
+{
+	auto it = m_shaderResources.find(resourceName);
+	if (it != m_shaderResources.end()) {
+		return it->second.Get();
+	}
+	return nullptr; // 못찾은 경우
+}
+
 void ShaderManager::ReleaseShaders()
 {
 	m_shaderSets.clear();
+	m_shaderResources.clear();
 }

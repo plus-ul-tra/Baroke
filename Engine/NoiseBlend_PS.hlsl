@@ -3,8 +3,10 @@ Texture2D g_NoiseTex : register(t1);
 SamplerState g_Sampler : register(s0);
 
 cbuffer TimeBuffer : register(b0)
-{
+{ 
     float time;
+    float deltaTime;
+    float2 padding;
 }
 
 struct VS_OUTPUT // 버텍스 쉐이더 출력 구조체와 동일

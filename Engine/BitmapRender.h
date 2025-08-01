@@ -43,7 +43,7 @@ public:
 	~BitmapRender3D() = default;
 
 	void Update(double deltaTime) override;
-	void Render(Renderer& renderer) override;
+	void Render(Renderer& renderer, const string& shadermode) override;
 
 	//void SetAnimator(const string& animationKey) { m_animator.SetClips(&SpriteManager::GetInstance().GetAnimationClips(animationKey)); }
 	//SpriteAnimator& GetAnimator() { return m_animator; }

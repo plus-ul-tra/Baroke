@@ -137,7 +137,8 @@ void BitmapRender3D::Update(double deltaTime)
 
 }
 
-void BitmapRender3D::Render(Renderer& renderer)
+//실제 자원으로 그리기
+void BitmapRender3D::Render(Renderer& renderer, const string& shadermode)
 {
 	if (!m_isActive || !m_transform) { return; }
 
@@ -174,7 +175,9 @@ void BitmapRender3D::Render(Renderer& renderer)
 	}
 
 	XMMATRIX worldMatrix = GetWorldMatrix();
-
+	// 반드시 전에 ShaderMode전달.
+	renderer.SetShaderMode(shadermode); // 쉐이더 모드 설정
+	// ㄹㅇ 그리기
 	renderer.DrawBitmap3D(
 		m_vertexBuffer.Get(),   // 버텍스 버퍼
 		m_indexBuffer.Get(),    // 인덱스 버퍼

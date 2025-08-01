@@ -54,7 +54,7 @@ void SpriteManager::LoadAll()
 		{
 			if (entry.path().extension() == L".png")
 			{
-				LoadTextureSRV(entry.path());
+				LoadTextureSRV(entry.path()); 
 			}
 			if (entry.path().extension() == L".json")
 			{

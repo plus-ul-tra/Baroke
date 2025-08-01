@@ -28,12 +28,13 @@ public:
 		m_boardManager.Initialize(offX, offY, drawW, drawH, _cell, m_stoneOffset, padding); // 보드 매니저 초기화
 	}
 	void Render(Renderer& r) override
-	{
-		if (m_bitmapRender) m_bitmapRender->Render(r);
+	{	// 보드 shader는 따로 설정 렌더 호출을 분리해놓음;;
+		if (m_bitmapRender) m_bitmapRender->Render(r, "SpriteShader"); // 보드가 자기 그림
 
+		// 바둑돌 shader는 따로 설정 렌더 호출을 분리해놓음;;
 		for (auto& sp : m_stones)
 			if (auto* bmp = sp->GetComponent<BitmapRender3D>())
-				if (bmp->IsActive()) bmp->Render(r);
+				if (bmp->IsActive()) bmp->Render(r,"SpriteShader"); // 돌그리기
 
 	}
 
