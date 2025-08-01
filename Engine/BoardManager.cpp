@@ -11,19 +11,31 @@ static unordered_map<StoneAbility, function<void(shared_ptr<JokerStone>)>> g_abi
 	{ StoneAbility::JokerAbility1, [](shared_ptr<JokerStone> jokerStone)
 	{
 		// 조커 능력 1
-		cout << jokerStone->GetPosition().x << ", " << jokerStone->GetPosition().y << endl;
+		cout << "JokerAbility1" << endl;
 	} },
 
 	{ StoneAbility::JokerAbility2, [](shared_ptr<JokerStone> jokerStone)
 	{
 		// 조커 능력 2
-		cout << jokerStone->GetPosition().x << ", " << jokerStone->GetPosition().y << endl;
+		cout << "JokerAbility2" << endl;
 	} },
 
 	{ StoneAbility::JokerAbility3, [](shared_ptr<JokerStone> jokerStone)
 	{
 		// 조커 능력 3
-		cout << jokerStone->GetPosition().x << ", " << jokerStone->GetPosition().y << endl;
+		cout << "JokerAbility3" << endl;
+	} },
+
+	{ StoneAbility::JokerAbility4, [](shared_ptr<JokerStone> jokerStone)
+	{
+		// 조커 능력 4
+		cout << "JokerAbility4" << endl;
+	} },
+
+	{ StoneAbility::JokerAbility5, [](shared_ptr<JokerStone> jokerStone)
+	{
+		// 조커 능력 5
+		cout << "JokerAbility5" << endl;
 	} }
 };
 

@@ -89,18 +89,16 @@ void GameScene::OnEnter()
 	m_buttonList.emplace_back(button1.get());
 	m_objectList.emplace_back(std::move(button1));
 
-	unique_ptr<Button> button2 = std::make_unique<Button>( 790.0f, 0.0f, 300, 700, "Sample.png", 50);
+	unique_ptr<JokerButton> button2 = std::make_unique<JokerButton>( 600.0f, 400.0f, 100, 100, "Sample.png", 50);
+	button2->SetButtonJoker(Joker, JokerAbility1);
 	m_buttonList.emplace_back(button2.get());
 	m_objectList.emplace_back(std::move(button2));
-	//StartStage();
-	// 버튼 생성
 
 	unique_ptr<BoardObject> boardObj = std::make_unique<BoardObject>(POSX, POSY, WIDTH, HEIGHT, CELL, STONEOFFSET, PADDING);
 	m_boardObj = boardObj.get();
 	m_objectList.emplace_back(std::move(boardObj));
-	StartStage();
 
-	
+	StartStage();
 }
 
 void GameScene::OnLeave()

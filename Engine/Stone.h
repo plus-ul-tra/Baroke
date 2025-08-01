@@ -15,7 +15,9 @@ enum StoneAbility // 능력 혹은 이름
 
 	JokerAbility1,
 	JokerAbility2,
-	JokerAbility3
+	JokerAbility3,
+	JokerAbility4,
+	JokerAbility5
 };
 
 class Stone : public Object

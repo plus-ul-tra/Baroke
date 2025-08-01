@@ -4,6 +4,7 @@
 #include "BitmapRender.h"
 #include "InputManager.h"
 #include "InputEvents.h"
+#include "BoardManager.h"
 
 class Button : public Object
 {
@@ -19,6 +20,8 @@ protected:
 	bool m_isPressed = false;
 
 	MouseType m_inputType = MouseType::Move;
+
+	virtual void ButtonFunction() {}; // 버튼 기능을 구현하는 함수, 자식 클래스에서 오버라이드
 
 public:
 	Button(float posX, float posY, float width, float height)
@@ -44,8 +47,6 @@ public:
 
 	void Update(double deltaTime) override { Object::Update(deltaTime); ButtonFunction(); }
 
-	virtual void ButtonFunction() {};
-
 	XMVECTOR GetPosition() const { return m_transform->GetPosition(); }
 	void SetPosition(XMVECTOR pos) { m_transform->SetPosition(pos); }
 
@@ -59,4 +60,19 @@ public:
 	void SetIsActive(bool active) { m_isActive = active; }
 
 	void CheckInput(const MouseEvent& mouseEvent);
+};
+
+class JokerButton : public Button
+{
+	StoneType m_stoneType = StoneType::Joker;
+	StoneAbility m_jokerAbility = StoneAbility::None;
+
+	void ButtonFunction() override;
+
+public:
+	JokerButton(float posX, float posY, float width, float height, const std::string& bitmapFile, int order = 0)
+		: Button(posX, posY, width, height, bitmapFile, order) {}
+
+
+	void SetButtonJoker(StoneType stoneType, StoneAbility ability) { m_jokerAbility = ability; m_stoneType = stoneType; }
 };
