@@ -5,11 +5,6 @@
 static constexpr int DR[4] = { -1, 1, 0, 0 };
 static constexpr int DC[4] = { 0, 0,-1, 1 };
 
-inline bool IsOnBoard(int r, int c)
-{
-	return r >= 0 && r < SIZE_DEFAULT && c >= 0 && c < SIZE_DEFAULT;
-}
-
 // 돌 능력에 대한 함수 맵 // 해당하는 조커와 조커의 위치를 받음 // 나중에 다른 위치로 이동할 수도 있음
 static unordered_map<StoneAbility, function<void(shared_ptr<JokerStone>)>> g_abilityFunctions =
 {
@@ -66,7 +61,7 @@ void BoardManager::PlaceRandomStones(int amount)
 }
 
 
-bool BoardManager::InputBasedGameLoop(POINT mousePos)
+bool BoardManager::InputBasedGameLoop(POINT mousePos) // 마우스 클릭으로 돌 놓기
 {
 	m_selectedPosition = MouseToBoardPosition(mousePos);
 	std::cout << m_selectedPosition.x << " " << m_selectedPosition.y << std::endl;
@@ -82,17 +77,13 @@ bool BoardManager::InputBasedGameLoop(POINT mousePos)
 	return true;
 }
 
-bool BoardManager::InputBasedGameLoop(int row, int col) // row , col 입력 받아서 해당 배열에 액세스 해서 넣으면댐
+bool BoardManager::InputBasedGameLoop(int row, int col) // 바둑판 기준 row , col 입력 받아서 해당 배열에 액세스 해서 넣으면댐
 {
-
-/*	m_selectedPosition = BoardToScreenPosition({ row,col });*/
-
 	std::cout <<"row , col = " << row << " " << col << std::endl;
 	// 만약 돌은 놓기가 실패했다면 리턴
 	if (!PlaceStone({row,col}, m_stoneType, m_stoneAbility)) return false;
 
 	JokerAbilityUpdate(); // 조커 능력 업데이트
-
 
 	m_selectedPosition = { -1, -1 }; // 마지막으로 선택된 위치 초기화
 	m_stoneType = StoneType::Black; // 돌 타입 초기화
@@ -140,7 +131,7 @@ POINT BoardManager::BoardToScreenPosition(POINT boardPos) const
 
 bool BoardManager::PlaceStone(POINT selectedPosition, StoneType stoneType, StoneAbility stoneAbility)
 {
-	if (selectedPosition.x < 0 || selectedPosition.x >= SIZE_DEFAULT || selectedPosition.y < 0 || selectedPosition.y >= SIZE_DEFAULT)
+	if (!isValidPoint(selectedPosition))
 	{
 		std::cout << "유효하지 않은 위치: (" << selectedPosition.x << ", " << selectedPosition.y << ")" << std::endl;
 		return false;
@@ -175,10 +166,9 @@ bool BoardManager::PlaceStone(POINT selectedPosition, StoneType stoneType, Stone
 	// 사석 판정용 돌 타입 저장 // JokerStone이라도 StoneType::Black 이라면 흑돌로 저장
 	m_stoneTypeMap[selectedPosition] = stoneType;
 
-
 	for (int k = 0; k < 4; ++k) {
 		int nr = selectedPosition.x + DR[k], nc = selectedPosition.y + DC[k];
-		if (!IsOnBoard(nr, nc)) continue;
+		if (!isValidPoint({nr, nc})) continue;
 
 		auto it = m_stoneTypeMap.find({ nr, nc });
 		if (it == m_stoneTypeMap.end() || it->second == StoneType::Black || it->second == StoneType::Joker) continue;
@@ -220,7 +210,7 @@ shared_ptr<Stone> BoardManager::GetStone(POINT position)
 
 bool BoardManager::IsJokerStone(POINT position) const
 {
-	if (m_jokerPositions.size() > 0) return false;
+	if (m_jokerPositions.size() < 0) return false;
 
 	for (const auto& joker : m_jokerPositions) // 조커 돌 위치와 능력 벡터를 순회
 	{
@@ -238,7 +228,15 @@ int BoardManager::GetStoneTypeAmount(StoneType type) const
 	int count = 0;
 	for (const auto& pair : m_stoneTypeMap)
 	{
-		if (pair.second == type && !IsJokerStone(pair.first))
+		if (type == StoneType::Joker)
+		{
+			if (IsJokerStone(pair.first))
+			{
+				++count;
+			}
+			continue;
+		}
+		if (!IsJokerStone(pair.first) && pair.second == type)
 		{
 			++count;
 		}
@@ -266,7 +264,7 @@ int BoardManager::CountLiberty(
 
 		for (int k = 0; k < 4; ++k) {
 			int nr = cr + DR[k], nc = cc + DC[k];
-			if (!IsOnBoard(nr, nc)) continue;
+			if (!isValidPoint({nr, nc})) continue;
 
 			auto it = m_stoneTypeMap.find({ nr,nc });
 			if (it == m_stoneTypeMap.end()) { ++libs; continue; }  // 상하 좌우 체크 후 흰돌을 못 찾은 경우

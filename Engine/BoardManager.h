@@ -36,7 +36,16 @@ class BoardManager : public Singleton<BoardManager>
 	StoneType m_stoneType = StoneType::Black;
 	StoneAbility m_stoneAbility = StoneAbility::None;
 
-	int m_offX, m_offY, m_cell, m_padding, m_stoneOffset;
+	// Initialize 변수들
+	int m_offX = 0, m_offY = 0, m_cell = 0, m_padding = 0, m_stoneOffset = 0;
+
+	int CountLiberty // 사석 판정용 함수
+	(
+		int r, int c,
+		std::vector<POINT>& group,
+		std::array<std::array<bool, SIZE_DEFAULT>, SIZE_DEFAULT>& visited
+	) const;
+	void RemoveGroup(const std::vector<POINT>& group); // 사석 판정된 돌 그룹 제거 함수
 
 public:
 	void Initialize(int offX, int offY, int _cell,int _stoneOffset, int padding = 0);
@@ -50,6 +59,7 @@ public:
 	POINT MouseToBoardPosition(POINT mousePos) const; // 마우스 좌표를 바둑판 좌표로 변환
 	POINT BoardToScreenPosition(POINT boardPos) const; // 바둑판 좌표를 스크린 좌표로 변환
 
+	bool isValidPoint(POINT position) const { return position.x >= 0 && position.x < SIZE_DEFAULT && position.y >= 0 && position.y < SIZE_DEFAULT; }
 	bool PlaceStone(POINT selectedPosition, StoneType stoneType, StoneAbility stoneAbility);
 	void ResetStone();
 
@@ -65,10 +75,4 @@ public:
 	// 다음 착수 돌 변경 함수
 	void SetStoneType(StoneType type) { m_stoneType = type; }
 	void SetStoneAbility(StoneAbility ability) { m_stoneAbility = ability; }
-
-private:
-	int CountLiberty(int r, int c,
-		std::vector<POINT>& group,
-		std::array<std::array<bool, SIZE_DEFAULT>, SIZE_DEFAULT>& visited) const;
-	void RemoveGroup(const std::vector<POINT>& group);
 };
