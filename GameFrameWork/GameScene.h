@@ -21,11 +21,6 @@ private:
 	 
  	void  StartStage();				// 스테이지 시작
  	void  CheckStageClear();		// 스테이지 클리어 체크
-	int   CountWhite() const;		// 스테이지 클리어 체크용 내부 함수
-	int	  CountBlack() const;		// 착수한 흑돌 개수 체크
-
-
-
 
 public:
 	//GameScene() = default;

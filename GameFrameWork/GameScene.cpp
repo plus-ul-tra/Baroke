@@ -1,7 +1,6 @@
 #include "cpch.h"
 #include "GameScene.h"
 
-
 #define BOARD_SIZE 15
 #define PADDING 72
 #define POSX 0
@@ -9,9 +8,7 @@
 #define WIDTH 900
 #define HEIGHT 900
 #define CELL 54  // 0 기준 54 pxs
-#define STONEOFFSET 10  
-
-
+#define STONEOFFSET 10
 
 void GameScene::StartStage()
 {
@@ -20,14 +17,13 @@ void GameScene::StartStage()
 	int spawn = 3 + (m_stageNo - 1);
 
 	m_board.PlaceRandomStones(spawn);
-	m_whiteLeft = spawn;
+	m_whiteLeft = m_board.GetStoneTypeAmount(White);
 	std::cout << "Stage " << m_stageNo << " start, Spawn White Conut : " << spawn << std::endl;
 }
 
-
 void GameScene::CheckStageClear()
 {
-	if (CountWhite() == 0)  // 스테이지 클리어
+	if (m_board.GetStoneTypeAmount(White) <= 0)  // 스테이지 클리어
 	{
 		std::cout << "stage clear >> move to shop" << std::endl;
 		m_money += 3 + (m_stageNo - 1);
@@ -35,30 +31,6 @@ void GameScene::CheckStageClear()
 
 		StartStage();
 	}
-}
-
-int GameScene::CountWhite() const
-{
-	const auto& typeMap = m_board.GetStoneTypeMap();
-	int cnt = 0;
-
-	for (const auto& [pos, color] : typeMap)
-		if (color == StoneType::White)
-			++cnt;
-
-	return cnt;
-}
-
-int GameScene::CountBlack() const // 조커 중에 흑돌로 취급되는 놈 체크 해야됨
-{
-	const auto& typeMap = m_board.GetStoneTypeMap();
-	int cnt = 0;
-
-	for (const auto& [pos, color] : typeMap)
-		if (color == StoneType::Black)
-			++cnt;
-
-	return cnt;
 }
 
 void GameScene::Initialize()
@@ -115,7 +87,6 @@ void GameScene::OnEnter()
 
 	//StartStage();
 	// 버튼 생성
- 
 
 	unique_ptr<BoardObject> boardObj = std::make_unique<BoardObject>(POSX, POSY, WIDTH, HEIGHT, CELL, STONEOFFSET, PADDING);
 	m_boardObj = boardObj.get();
@@ -126,7 +97,6 @@ void GameScene::OnEnter()
 }
 
 void GameScene::OnLeave()
-
 {
 	std::cout << "Game1 Scene Left" << std::endl;
 	Reset();
@@ -166,17 +136,7 @@ void GameScene::KeyCommandMapping()
 
 	m_commandMap["F3"] = [this]()
 		{
-
 			m_board.PlaceRandomStones(3);
-
-// 			for (int i = 0; i < BOARD_SIZE; i++) 
-// 			{
-// 				for (int j = 0; j < BOARD_SIZE; j++) 
-// 				{
-// 					BoardManager::GetInstance().InputBasedGameLoop(i,j);
-// 				}
-// 			}		
-
 		};
 
 	m_commandMap["F4"] = [this]()
@@ -241,6 +201,5 @@ void GameScene::OnInput(const MouseEvent& ev)
 	{
 		button->CheckInput(ev);
 	}
-
 }
 
