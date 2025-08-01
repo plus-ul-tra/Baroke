@@ -27,29 +27,40 @@ class BoardManager : public Singleton<BoardManager>
 	BoardManager() = default;
 	~BoardManager() = default;
 
-	Board m_board; // ¹ÙµÏÆÇ
-	unordered_map<POINT, StoneType> m_stoneTypeMap; // À§Ä¡º° µ¹ Á¾·ù ¸Ê // »ç¼® ÆÇÁ¤¿ë
+	Board m_board; // ë°”ë‘‘íŒ
+	unordered_map<POINT, StoneType> m_stoneTypeMap; // ìœ„ì¹˜ë³„ ëŒ ì¢…ë¥˜ ë§µ // ì‚¬ì„ íŒì •ìš©
 
-	vector<pair<POINT, StoneAbility>> m_jokerPositions; // Á¶Ä¿ µ¹ À§Ä¡¿Í ´É·Â º¤ÅÍ
+	vector<pair<POINT, StoneAbility>> m_jokerPositions; // ì¡°ì»¤ ëŒ ìœ„ì¹˜ì™€ ëŠ¥ë ¥ ë²¡í„°
 
-	POINT m_selectedPosition = { -1, -1 }; // ÀÎÇ²À¸·Î ¼±ÅÃµÈ ¹ÙµÏÆÇ À§Ä¡
+	POINT m_selectedPosition = { -1, -1 }; // ì¸í’‹ìœ¼ë¡œ ì„ íƒëœ ë°”ë‘‘íŒ ìœ„ì¹˜
 	StoneType m_stoneType = StoneType::Black;
 	StoneAbility m_stoneAbility = StoneAbility::None;
 
-	int m_offX, m_offY, m_drawW, m_drawH, m_cell, m_padding, m_stoneOffset;
+	// Initialize ë³€ìˆ˜ë“¤
+	int m_offX = 0, m_offY = 0, m_drawW = 0, m_drawH = 0, m_cell = 0, m_padding = 0, m_stoneOffset = 0;
+
+	int CountLiberty // ì‚¬ì„ íŒì •ìš© í•¨ìˆ˜
+	(
+		int r, int c,
+		std::vector<POINT>& group,
+		std::array<std::array<bool, SIZE_DEFAULT>, SIZE_DEFAULT>& visited
+	) const;
+	void RemoveGroup(const std::vector<POINT>& group); // ì‚¬ì„ íŒì •ëœ ëŒ ê·¸ë£¹ ì œê±° í•¨ìˆ˜
 
 public:
 	void Initialize(int offX, int offY, int drawW, int drawH, int _cell, int _stoneOffset, int padding = 0);
-	void PlaceRandomStones(int amount); // °ÔÀÓ ½ÃÀÛ ½Ã ·£´ıÀ¸·Î µ¹À» ³õ±â À§ÇÑ ÇÔ¼ö
+	void PlaceRandomStones(int amount); // ê²Œì„ ì‹œì‘ ì‹œ ëœë¤ìœ¼ë¡œ ëŒì„ ë†“ê¸° ìœ„í•œ í•¨ìˆ˜
 
-	bool InputBasedGameLoop(POINT mousePos); // Å¬¸¯À¸·Î µ¹ ³õ±â
-	bool InputBasedGameLoop(int row, int col); // ¹è¿­¿¡ Á¢±ÙÀ¸·Î µ¹ ³õ±â
 
-	void JokerAbilityUpdate(); // ¸ğµç Á¶Ä¿ ´É·Â ½ÇÇà
+	bool InputBasedGameLoop(POINT mousePos); // í´ë¦­ìœ¼ë¡œ ëŒ ë†“ê¸°
+	bool InputBasedGameLoop(int row, int col); // ë°°ì—´ì— ì ‘ê·¼ìœ¼ë¡œ ëŒ ë†“ê¸°
 
-	POINT MouseToBoardPosition(POINT mousePos) const; // ¸¶¿ì½º ÁÂÇ¥¸¦ ¹ÙµÏÆÇ ÁÂÇ¥·Î º¯È¯
-	POINT BoardToScreenPosition(POINT boardPos) const; // ¹ÙµÏÆÇ ÁÂÇ¥¸¦ ½ºÅ©¸° ÁÂÇ¥·Î º¯È¯
+	void JokerAbilityUpdate(); // ëª¨ë“  ì¡°ì»¤ ëŠ¥ë ¥ ì‹¤í–‰
 
+	POINT MouseToBoardPosition(POINT mousePos) const; // ë§ˆìš°ìŠ¤ ì¢Œí‘œë¥¼ ë°”ë‘‘íŒ ì¢Œí‘œë¡œ ë³€í™˜
+	POINT BoardToScreenPosition(POINT boardPos) const; // ë°”ë‘‘íŒ ì¢Œí‘œë¥¼ ìŠ¤í¬ë¦° ì¢Œí‘œë¡œ ë³€í™˜
+
+	bool isValidPoint(POINT position) const { return position.x >= 0 && position.x < SIZE_DEFAULT && position.y >= 0 && position.y < SIZE_DEFAULT; }
 	bool PlaceStone(POINT selectedPosition, StoneType stoneType, StoneAbility stoneAbility);
 	void ResetStone();
 
@@ -62,13 +73,7 @@ public:
 	unordered_map<POINT, StoneType> GetStoneTypeMap() {	return  m_stoneTypeMap;	}
 	int GetStoneTypeAmount(StoneType type) const;
 
-	// ´ÙÀ½ Âø¼ö µ¹ º¯°æ ÇÔ¼ö
+	// ë‹¤ìŒ ì°©ìˆ˜ ëŒ ë³€ê²½ í•¨ìˆ˜
 	void SetStoneType(StoneType type) { m_stoneType = type; }
 	void SetStoneAbility(StoneAbility ability) { m_stoneAbility = ability; }
-
-private:
-	int CountLiberty(int r, int c,
-		std::vector<POINT>& group,
-		std::array<std::array<bool, SIZE_DEFAULT>, SIZE_DEFAULT>& visited) const;
-	void RemoveGroup(const std::vector<POINT>& group);
 };
