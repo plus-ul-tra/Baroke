@@ -51,6 +51,7 @@ public:
 	void Initialize(int offX, int offY, int drawW, int drawH, int _cell, int _stoneOffset, int padding = 0);
 	void PlaceRandomStones(int amount); // 게임 시작 시 랜덤으로 돌을 놓기 위한 함수
 
+
 	bool InputBasedGameLoop(POINT mousePos); // 클릭으로 돌 놓기
 	bool InputBasedGameLoop(int row, int col); // 배열에 접근으로 돌 놓기
 
