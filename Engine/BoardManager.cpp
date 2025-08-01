@@ -199,7 +199,7 @@ void BoardManager::ResetStone()
 
 shared_ptr<Stone> BoardManager::GetStone(POINT position)
 {
-	if (position.x < 0 || position.x >= SIZE_DEFAULT || position.y < 0 || position.y >= SIZE_DEFAULT)
+	if (isValidPoint(position))
 	{
 		std::cout << "유효하지 않은 위치: (" << position.x << ", " << position.y << ")" << std::endl;
 		return nullptr;

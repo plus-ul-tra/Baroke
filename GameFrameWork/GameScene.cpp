@@ -87,7 +87,6 @@ void GameScene::OnEnter()
 
 	//StartStage();
 	// 버튼 생성
- 
 
 	unique_ptr<BoardObject> boardObj = std::make_unique<BoardObject>(POSX, POSY, WIDTH, HEIGHT, CELL, STONEOFFSET, PADDING);
 	m_boardObj = boardObj.get();
@@ -137,22 +136,18 @@ void GameScene::KeyCommandMapping()
 
 	m_commandMap["F3"] = [this]()
 		{
-
 			m_board.PlaceRandomStones(3);
-
-// 			for (int i = 0; i < BOARD_SIZE; i++) 
-// 			{
-// 				for (int j = 0; j < BOARD_SIZE; j++) 
-// 				{
-// 					BoardManager::GetInstance().InputBasedGameLoop(i,j);
-// 				}
-// 			}		
-
 		};
 
 	m_commandMap["F4"] = [this]()
 		{
-
+			for (int i = 0; i < BOARD_SIZE; i++)
+			{
+				for (int j = 0; j < BOARD_SIZE; j++)
+				{
+					BoardManager::GetInstance().InputBasedGameLoop(i, j);
+				}
+			}
 		};
 
 	m_commandMap["F5"] = [this]()
