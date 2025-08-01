@@ -8,7 +8,7 @@ class BoardObject : public Object
 	int m_cell;
 	int m_stoneOffset;
 	Board m_board;
-	std::vector<std::unique_ptr<Stone>> m_stones;
+	std::vector</*std::unique_ptr<Stone>*/Stone*> m_stones;
 
 public:
 	BoardObject(int offX, int offY, int drawW, int drawH, int _cell, int _stoneOffset = 0,int padding = 0)
@@ -33,6 +33,7 @@ public:
 		for (auto& sp : m_stones)
 			if (auto* bmp = sp->GetComponent<BitmapRender3D>())
 				if (bmp->IsActive()) bmp->Render(r);
+
 	}
 
 	void Update(double) override {}
@@ -42,6 +43,8 @@ public:
 
 inline void BoardObject::BoardSync()
 {
+	m_stones.clear();
+
 	m_board = BoardManager::GetInstance().GetBoard();
 
 	int boardSize = BoardManager::GetInstance().GetBoardSize();
