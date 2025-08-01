@@ -32,15 +32,6 @@
     <ClCompile Include="Timer.cpp" />
     <ClCompile Include="Transform.cpp" />
     <ClCompile Include="Window.cpp" />
-    <ClCompile Include="JokerManager.cpp">
-      <Filter>ETC</Filter>
-    </ClCompile>
-    <ClCompile Include="JokerParser.cpp">
-      <Filter>ETC</Filter>
-    </ClCompile>
-    <ClCompile Include="JokerFunctionRegistry.cpp">
-      <Filter>ETC</Filter>
-    </ClCompile>
     <ClCompile Include="BoardManager.cpp">
       <Filter>Manager</Filter>
     </ClCompile>
@@ -78,24 +69,11 @@
     <ClInclude Include="SpriteManager.h" />
     <ClInclude Include="SpriteParser.h" />
     <ClInclude Include="StaticObject.h" />
-    <ClInclude Include="StoneType.h" />
     <ClInclude Include="TextRender.h" />
     <ClInclude Include="Timer.h" />
     <ClInclude Include="Transform.h" />
     <ClInclude Include="UI.h" />
     <ClInclude Include="Window.h" />
-    <ClInclude Include="JokerManager.h">
-      <Filter>ETC</Filter>
-    </ClInclude>
-    <ClInclude Include="JokerParser.h">
-      <Filter>ETC</Filter>
-    </ClInclude>
-    <ClInclude Include="JokerData.h">
-      <Filter>ETC</Filter>
-    </ClInclude>
-    <ClInclude Include="JokerFunctionRegistry.h">
-      <Filter>ETC</Filter>
-    </ClInclude>
     <ClInclude Include="BoardManager.h">
       <Filter>Manager</Filter>
     </ClInclude>

@@ -1,4 +1,5 @@
 #pragma once
+#define NOMINMAX
 
 // clinet ³ëÃâ½ÃÅ³ °Í¸¸
 #include "Singleton.h"
@@ -9,7 +10,6 @@
 
 #include "SceneManager.h"
 #include "SceneBase.h"
-#include "JokerManager.h"
 #include "ShaderManager.h"
 #include "BoardManager.h"
 
@@ -30,9 +30,9 @@
 #include "CreateObject.h"
 #include "Button.h"
 
-#include "StoneType.h"
+
 #include "ItemType.h"
-#include "JokerData.h"
-#include "JokerFunctionRegistry.h"
+
+
 
 //#include "StoneRendererComponent.h"

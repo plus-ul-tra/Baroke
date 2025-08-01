@@ -7,7 +7,7 @@
 #include "InputManager.h"
 #include "SoundManager.h"
 #include "InputEvents.h"
-#include "JokerManager.h"
+
 
 
 namespace MIYABI {
