@@ -5,36 +5,38 @@
 static constexpr int DR[4] = { -1, 1, 0, 0 };
 static constexpr int DC[4] = { 0, 0,-1, 1 };
 
-// µ¹ ´É·Â¿¡ ´ëÇÑ ÇÔ¼ö ¸Ê // ÇØ´çÇÏ´Â Á¶Ä¿¿Í Á¶Ä¿ÀÇ À§Ä¡¸¦ ¹ŞÀ½ // ³ªÁß¿¡ ´Ù¸¥ À§Ä¡·Î ÀÌµ¿ÇÒ ¼öµµ ÀÖÀ½
+// ëŒ ëŠ¥ë ¥ì— ëŒ€í•œ í•¨ìˆ˜ ë§µ // í•´ë‹¹í•˜ëŠ” ì¡°ì»¤ì™€ ì¡°ì»¤ì˜ ìœ„ì¹˜ë¥¼ ë°›ìŒ // ë‚˜ì¤‘ì— ë‹¤ë¥¸ ìœ„ì¹˜ë¡œ ì´ë™í•  ìˆ˜ë„ ìˆìŒ
 static unordered_map<StoneAbility, function<void(shared_ptr<JokerStone>)>> g_abilityFunctions =
 {
 	{ StoneAbility::JokerAbility1, [](shared_ptr<JokerStone> jokerStone)
 	{
-		// Á¶Ä¿ ´É·Â 1
+		// ì¡°ì»¤ ëŠ¥ë ¥ 1
 		cout << jokerStone->GetPosition().x << ", " << jokerStone->GetPosition().y << endl;
 	} },
 
 	{ StoneAbility::JokerAbility2, [](shared_ptr<JokerStone> jokerStone)
 	{
-		// Á¶Ä¿ ´É·Â 2
+		// ì¡°ì»¤ ëŠ¥ë ¥ 2
 		cout << jokerStone->GetPosition().x << ", " << jokerStone->GetPosition().y << endl;
 	} },
 
 	{ StoneAbility::JokerAbility3, [](shared_ptr<JokerStone> jokerStone)
 	{
-		// Á¶Ä¿ ´É·Â 3
+		// ì¡°ì»¤ ëŠ¥ë ¥ 3
 		cout << jokerStone->GetPosition().x << ", " << jokerStone->GetPosition().y << endl;
 	} }
 };
 
-void BoardManager::Initialize(int offX, int offY, int _cell,int _stoneOffset, int padding)
+void BoardManager::Initialize(int offX, int offY, int drawW, int drawH, int _cell, int _stoneOffset, int padding)
 {
 	m_offX = offX;
 	m_offY = offY;
+	m_drawW = (drawW / 2) - padding;
+	m_drawH = (drawH / 2) - padding;
 	m_cell = _cell;
 	m_padding = padding;
 	m_stoneOffset = _stoneOffset;
-	// ¹ÙµÏÆÇ ÃÊ±âÈ­
+	// ë°”ë‘‘íŒ ì´ˆê¸°í™”
 	ResetStone();
 }
 
@@ -61,33 +63,33 @@ void BoardManager::PlaceRandomStones(int amount)
 }
 
 
-bool BoardManager::InputBasedGameLoop(POINT mousePos) // ¸¶¿ì½º Å¬¸¯À¸·Î µ¹ ³õ±â
+bool BoardManager::InputBasedGameLoop(POINT mousePos) // ë§ˆìš°ìŠ¤ í´ë¦­ìœ¼ë¡œ ëŒ ë†“ê¸°
 {
 	m_selectedPosition = MouseToBoardPosition(mousePos);
 	std::cout << m_selectedPosition.x << " " << m_selectedPosition.y << std::endl;
-	// ¸¸¾à µ¹Àº ³õ±â°¡ ½ÇÆĞÇß´Ù¸é ¸®ÅÏ
+	// ë§Œì•½ ëŒì€ ë†“ê¸°ê°€ ì‹¤íŒ¨í–ˆë‹¤ë©´ ë¦¬í„´
 	if (!PlaceStone(m_selectedPosition, m_stoneType, m_stoneAbility)) return false;
 
-	JokerAbilityUpdate(); // Á¶Ä¿ ´É·Â ¾÷µ¥ÀÌÆ®
+	JokerAbilityUpdate(); // ì¡°ì»¤ ëŠ¥ë ¥ ì—…ë°ì´íŠ¸
 
-	m_selectedPosition = { -1, -1 }; // ¸¶Áö¸·À¸·Î ¼±ÅÃµÈ À§Ä¡ ÃÊ±âÈ­
-	m_stoneType = StoneType::Black; // µ¹ Å¸ÀÔ ÃÊ±âÈ­
-	m_stoneAbility = StoneAbility::None; // µ¹ ´É·Â ÃÊ±âÈ­
+	m_selectedPosition = { -1, -1 }; // ë§ˆì§€ë§‰ìœ¼ë¡œ ì„ íƒëœ ìœ„ì¹˜ ì´ˆê¸°í™”
+	m_stoneType = StoneType::Black; // ëŒ íƒ€ì… ì´ˆê¸°í™”
+	m_stoneAbility = StoneAbility::None; // ëŒ ëŠ¥ë ¥ ì´ˆê¸°í™”
 
 	return true;
 }
 
-bool BoardManager::InputBasedGameLoop(int row, int col) // ¹ÙµÏÆÇ ±âÁØ row , col ÀÔ·Â ¹Ş¾Æ¼­ ÇØ´ç ¹è¿­¿¡ ¾×¼¼½º ÇØ¼­ ³ÖÀ¸¸é´ï
+bool BoardManager::InputBasedGameLoop(int row, int col) // ë°”ë‘‘íŒ ê¸°ì¤€ row , col ì…ë ¥ ë°›ì•„ì„œ í•´ë‹¹ ë°°ì—´ì— ì•¡ì„¸ìŠ¤ í•´ì„œ ë„£ìœ¼ë©´ëŒ
 {
 	std::cout <<"row , col = " << row << " " << col << std::endl;
-	// ¸¸¾à µ¹Àº ³õ±â°¡ ½ÇÆĞÇß´Ù¸é ¸®ÅÏ
+	// ë§Œì•½ ëŒì€ ë†“ê¸°ê°€ ì‹¤íŒ¨í–ˆë‹¤ë©´ ë¦¬í„´
 	if (!PlaceStone({row,col}, m_stoneType, m_stoneAbility)) return false;
 
-	JokerAbilityUpdate(); // Á¶Ä¿ ´É·Â ¾÷µ¥ÀÌÆ®
+	JokerAbilityUpdate(); // ì¡°ì»¤ ëŠ¥ë ¥ ì—…ë°ì´íŠ¸
 
-	m_selectedPosition = { -1, -1 }; // ¸¶Áö¸·À¸·Î ¼±ÅÃµÈ À§Ä¡ ÃÊ±âÈ­
-	m_stoneType = StoneType::Black; // µ¹ Å¸ÀÔ ÃÊ±âÈ­
-	m_stoneAbility = StoneAbility::None; // µ¹ ´É·Â ÃÊ±âÈ­
+	m_selectedPosition = { -1, -1 }; // ë§ˆì§€ë§‰ìœ¼ë¡œ ì„ íƒëœ ìœ„ì¹˜ ì´ˆê¸°í™”
+	m_stoneType = StoneType::Black; // ëŒ íƒ€ì… ì´ˆê¸°í™”
+	m_stoneAbility = StoneAbility::None; // ëŒ ëŠ¥ë ¥ ì´ˆê¸°í™”
 
 	return true;
 }
@@ -96,12 +98,12 @@ void BoardManager::JokerAbilityUpdate()
 {
 	for (const auto& joker : m_jokerPositions)
 	{
-		POINT position = joker.first; // Á¶Ä¿ µ¹ÀÇ À§Ä¡
-		shared_ptr<Stone> stone = GetStone(position); // ÇØ´ç À§Ä¡ÀÇ Stone(Object) °¡Á®¿À±â
+		POINT position = joker.first; // ì¡°ì»¤ ëŒì˜ ìœ„ì¹˜
+		shared_ptr<Stone> stone = GetStone(position); // í•´ë‹¹ ìœ„ì¹˜ì˜ Stone(Object) ê°€ì ¸ì˜¤ê¸°
 
-		StoneAbility ability = joker.second; // Á¶Ä¿ µ¹ÀÇ ´É·Â
+		StoneAbility ability = joker.second; // ì¡°ì»¤ ëŒì˜ ëŠ¥ë ¥
 
-		shared_ptr<JokerStone> jokerStone = dynamic_pointer_cast<JokerStone>(stone); // StoneÀ» JokerStoneÀ¸·Î Ä³½ºÆÃ
+		shared_ptr<JokerStone> jokerStone = dynamic_pointer_cast<JokerStone>(stone); // Stoneì„ JokerStoneìœ¼ë¡œ ìºìŠ¤íŒ…
 
 		auto it = g_abilityFunctions.find(ability);
 		if (it != g_abilityFunctions.end())
@@ -111,21 +113,28 @@ void BoardManager::JokerAbilityUpdate()
 	}
 }
 
+
+
 POINT BoardManager::MouseToBoardPosition(POINT mousePos) const
 {
 	return
 	{
-		(mousePos.x - m_offX - m_padding + m_cell / 2) / m_cell,
-		(mousePos.y - m_offY - m_padding + m_cell / 2) / m_cell
+		(mousePos.x+ m_drawW + m_cell/2)/ m_cell,
+		-(mousePos.y - m_drawH - m_cell / 2) / m_cell
+//  		(mousePos.x - m_offX - m_padding + m_cell / 2) / m_cell,
+//  		(mousePos.y - m_offY - m_padding + m_cell / 2) / m_cell
 	};
 }
 
+// ë³´ë“œ ì¸ë±ìŠ¤(row, col) â†’ í™”ë©´(í”½ì…€)
 POINT BoardManager::BoardToScreenPosition(POINT boardPos) const
 {
 	return
 	{
-		m_offX + m_padding + boardPos.x * m_cell,
-		m_offY + m_padding + boardPos.y * m_cell
+		boardPos.x*m_cell- m_drawW - m_cell / 2,
+		-boardPos.y*m_cell + m_drawH - m_cell / 2
+//  		m_offX + m_padding + boardPos.x * m_cell,
+//  		m_offY + m_padding + boardPos.y * m_cell
 	};
 }
 
@@ -133,37 +142,37 @@ bool BoardManager::PlaceStone(POINT selectedPosition, StoneType stoneType, Stone
 {
 	if (!isValidPoint(selectedPosition))
 	{
-		std::cout << "À¯È¿ÇÏÁö ¾ÊÀº À§Ä¡: (" << selectedPosition.x << ", " << selectedPosition.y << ")" << std::endl;
+		std::cout << "ìœ íš¨í•˜ì§€ ì•Šì€ ìœ„ì¹˜: (" << selectedPosition.x << ", " << selectedPosition.y << ")" << std::endl;
 		return false;
 	}
 	if (m_board[selectedPosition.x][selectedPosition.y])
 	{
-		std::cout << "ÀÌ¹Ì µ¹ÀÌ ÀÖ´Â À§Ä¡: (" << selectedPosition.x << ", " << selectedPosition.y << ")" << std::endl;
+		std::cout << "ì´ë¯¸ ëŒì´ ìˆëŠ” ìœ„ì¹˜: (" << selectedPosition.x << ", " << selectedPosition.y << ")" << std::endl;
 		return false;
 	}
 
 	if (stoneType == StoneType::White)
 	{
-		// Èò µ¹ »ı¼º // row, col, size´Â ³ªÁß¿¡ ½ºÅ©¸°¿¡ ¸Â´Â ÁÂÇ¥·Î º¯°æÇØ¾ßÇÔ
-		m_board[selectedPosition.x][selectedPosition.y] = make_shared<WhiteStone>(BoardToScreenPosition(selectedPosition), m_cell - m_stoneOffset);
+		// í° ëŒ ìƒì„± // row, col, sizeëŠ” ë‚˜ì¤‘ì— ìŠ¤í¬ë¦°ì— ë§ëŠ” ì¢Œí‘œë¡œ ë³€ê²½í•´ì•¼í•¨
+		m_board[selectedPosition.x][selectedPosition.y] = make_shared<WhiteStone>(BoardToScreenPosition(selectedPosition), m_cell , m_stoneOffset);
 	}
 	else
 	{
 		if (stoneAbility == StoneAbility::None)
 		{
-			// ¸¸¾à ´É·ÂÀÌ ¾ø´Â Èæµ¹ÀÌ¶ó¸é ÀÏ¹İ Èæµ¹ »ı¼º
-			m_board[selectedPosition.x][selectedPosition.y] = make_shared<BlackStone>(BoardToScreenPosition(selectedPosition), m_cell - m_stoneOffset);
+			// ë§Œì•½ ëŠ¥ë ¥ì´ ì—†ëŠ” í‘ëŒì´ë¼ë©´ ì¼ë°˜ í‘ëŒ ìƒì„±
+			m_board[selectedPosition.x][selectedPosition.y] = make_shared<BlackStone>(BoardToScreenPosition(selectedPosition), m_cell , m_stoneOffset);
 		}
 		else
 		{
-			// ´É·ÂÀÌ ÀÖµğ¸é Á¶Ä¿ µ¹·Î »ı¼º // Èæµ¹ÀÌÁö¸¸ ´É·ÂÀÌ ÀÖ´Â °æ¿ìµµ Á¶Ä¿ µ¹·Î »ı¼º
-			m_board[selectedPosition.x][selectedPosition.y] = make_shared<JokerStone>(BoardToScreenPosition(selectedPosition), m_cell - m_stoneOffset, stoneAbility);
-			// ´É·ÂÀÌ ÀÖ´Â Á¶Ä¿ µ¹ÀÇ °æ¿ì ´É·Â º¤ÅÍ¿¡ Ãß°¡
+			// ëŠ¥ë ¥ì´ ìˆë””ë©´ ì¡°ì»¤ ëŒë¡œ ìƒì„± // í‘ëŒì´ì§€ë§Œ ëŠ¥ë ¥ì´ ìˆëŠ” ê²½ìš°ë„ ì¡°ì»¤ ëŒë¡œ ìƒì„±
+			m_board[selectedPosition.x][selectedPosition.y] = make_shared<JokerStone>(BoardToScreenPosition(selectedPosition), m_cell , m_stoneOffset, stoneAbility);
+			// ëŠ¥ë ¥ì´ ìˆëŠ” ì¡°ì»¤ ëŒì˜ ê²½ìš° ëŠ¥ë ¥ ë²¡í„°ì— ì¶”ê°€
 			m_jokerPositions.emplace_back(selectedPosition, stoneAbility);
 		}
 	}
 
-	// »ç¼® ÆÇÁ¤¿ë µ¹ Å¸ÀÔ ÀúÀå // JokerStoneÀÌ¶óµµ StoneType::Black ÀÌ¶ó¸é Èæµ¹·Î ÀúÀå
+	// ì‚¬ì„ íŒì •ìš© ëŒ íƒ€ì… ì €ì¥ // JokerStoneì´ë¼ë„ StoneType::Black ì´ë¼ë©´ í‘ëŒë¡œ ì €ì¥
 	m_stoneTypeMap[selectedPosition] = stoneType;
 
 	for (int k = 0; k < 4; ++k) {
@@ -175,7 +184,7 @@ bool BoardManager::PlaceStone(POINT selectedPosition, StoneType stoneType, Stone
 		std::vector<POINT> grp;
 		std::array<std::array<bool, SIZE_DEFAULT>, SIZE_DEFAULT> vis{};
 		if (CountLiberty(nr, nc, grp, vis) == 0)
-			RemoveGroup(grp);          // Èò µ¹¸¸ Á¦°Å
+			RemoveGroup(grp);          // í° ëŒë§Œ ì œê±°
 	}
 
 	return true;
@@ -187,21 +196,21 @@ void BoardManager::ResetStone()
 	{
 		for (int j = 0; j < SIZE_DEFAULT; ++j)
 		{
-			m_board[i][j] = nullptr; // ¸ğµç À§Ä¡¸¦ nullptr·Î ÃÊ±âÈ­
+			m_board[i][j] = nullptr; // ëª¨ë“  ìœ„ì¹˜ë¥¼ nullptrë¡œ ì´ˆê¸°í™”
 		}
 	}
-	m_stoneTypeMap.clear(); // µ¹ Á¾·ù ¸Ê ÃÊ±âÈ­
-	m_jokerPositions.clear(); // Á¶Ä¿ µ¹ À§Ä¡¿Í ´É·Â º¤ÅÍ ÃÊ±âÈ­
-	m_selectedPosition = { -1, -1 }; // ¼±ÅÃµÈ À§Ä¡ ÃÊ±âÈ­
-	m_stoneType = StoneType::Black; // ±âº» µ¹ Å¸ÀÔÀº Èò µ¹
-	m_stoneAbility = StoneAbility::None; // ±âº» µ¹ ´É·ÂÀº ¾øÀ½
+	m_stoneTypeMap.clear(); // ëŒ ì¢…ë¥˜ ë§µ ì´ˆê¸°í™”
+	m_jokerPositions.clear(); // ì¡°ì»¤ ëŒ ìœ„ì¹˜ì™€ ëŠ¥ë ¥ ë²¡í„° ì´ˆê¸°í™”
+	m_selectedPosition = { -1, -1 }; // ì„ íƒëœ ìœ„ì¹˜ ì´ˆê¸°í™”
+	m_stoneType = StoneType::Black; // ê¸°ë³¸ ëŒ íƒ€ì…ì€ í° ëŒ
+	m_stoneAbility = StoneAbility::None; // ê¸°ë³¸ ëŒ ëŠ¥ë ¥ì€ ì—†ìŒ
 }
 
 shared_ptr<Stone> BoardManager::GetStone(POINT position)
 {
 	if (!isValidPoint(position))
 	{
-		std::cout << "À¯È¿ÇÏÁö ¾ÊÀº À§Ä¡: (" << position.x << ", " << position.y << ")" << std::endl;
+		std::cout << "ìœ íš¨í•˜ì§€ ì•Šì€ ìœ„ì¹˜: (" << position.x << ", " << position.y << ")" << std::endl;
 		return nullptr;
 	}
 
@@ -212,7 +221,7 @@ bool BoardManager::IsJokerStone(POINT position) const
 {
 	if (m_jokerPositions.size() < 0) return false;
 
-	for (const auto& joker : m_jokerPositions) // Á¶Ä¿ µ¹ À§Ä¡¿Í ´É·Â º¤ÅÍ¸¦ ¼øÈ¸
+	for (const auto& joker : m_jokerPositions) // ì¡°ì»¤ ëŒ ìœ„ì¹˜ì™€ ëŠ¥ë ¥ ë²¡í„°ë¥¼ ìˆœíšŒ
 	{
 		if (position == joker.first)
 		{
@@ -267,9 +276,9 @@ int BoardManager::CountLiberty(
 			if (!isValidPoint({nr, nc})) continue;
 
 			auto it = m_stoneTypeMap.find({ nr,nc });
-			if (it == m_stoneTypeMap.end()) { ++libs; continue; }  // »óÇÏ ÁÂ¿ì Ã¼Å© ÈÄ Èòµ¹À» ¸ø Ã£Àº °æ¿ì
-			if (it->second ==StoneType::Joker) { ++libs; continue; }  // »óÇÏ ÁÂ¿ì Ã¼Å© ÈÄ Èòµ¹À» ¸ø Ã£Àº °æ¿ì
-			if (it->second == target && !visited[nr][nc]) {			// »óÇÏ ÁÂ¿ì Ã¼Å© ÈÄ Èòµ¹À» Ã£Àº °æ¿ì
+			if (it == m_stoneTypeMap.end()) { ++libs; continue; }  // ìƒí•˜ ì¢Œìš° ì²´í¬ í›„ í°ëŒì„ ëª» ì°¾ì€ ê²½ìš°
+			if (it->second ==StoneType::Joker) { ++libs; continue; }  // ìƒí•˜ ì¢Œìš° ì²´í¬ í›„ í°ëŒì„ ëª» ì°¾ì€ ê²½ìš°
+			if (it->second == target && !visited[nr][nc]) {			// ìƒí•˜ ì¢Œìš° ì²´í¬ í›„ í°ëŒì„ ì°¾ì€ ê²½ìš°
 				visited[nr][nc] = true;  st.push({ nr,nc });
 			}
 		}

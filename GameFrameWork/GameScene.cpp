@@ -141,13 +141,7 @@ void GameScene::KeyCommandMapping()
 
 	m_commandMap["F4"] = [this]()
 		{
-			for (int i = 0; i < BOARD_SIZE; i++)
-			{
-				for (int j = 0; j < BOARD_SIZE; j++)
-				{
-					BoardManager::GetInstance().InputBasedGameLoop(i, j);
-				}
-			}
+			m_board.ResetStone();
 		};
 
 	m_commandMap["F5"] = [this]()
@@ -197,7 +191,7 @@ void GameScene::OnInput(const MouseEvent& ev)
 	else if (ev.type == MouseType::RDown)
 	{
 		std::cout << ev.pos.x << " " << ev.pos.y << std::endl;
-		m_board.SetStoneType(Black);
+		m_board.SetStoneType(Joker);
 		m_board.SetStoneAbility(JokerAbility1);
 		m_board.InputBasedGameLoop(ev.pos);
 		std::cout << "Joker Stone Count : " << m_board.GetStoneTypeAmount(Joker) << std::endl;

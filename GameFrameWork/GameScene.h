@@ -15,7 +15,7 @@ private:
 	std::vector<std::unique_ptr<Button>> m_buttonList;
 
 	int m_stageNo = 0;		// 스테이지 단계
-	int m_BlackStone = 30;	// 착수 가능한 흑돌
+	int m_BlackStone = 500;	// 착수 가능한 흑돌
 	int m_whiteLeft = 0;	// 남은 흰돌 개수
 	int m_money = 0;		// 보유중인 흰 돌 = 머니
 	 
