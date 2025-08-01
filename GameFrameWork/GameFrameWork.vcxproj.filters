@@ -41,6 +41,9 @@
     <ClCompile Include="cpch.cpp">
       <Filter>소스 파일</Filter>
     </ClCompile>
+    <ClCompile Include="BackGround.cpp">
+      <Filter>소스 파일\GameObjects</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="GameManager.h">
@@ -62,6 +65,9 @@
       <Filter>소스 파일\GameObjects</Filter>
     </ClInclude>
     <ClInclude Include="BoardObject.h">
+      <Filter>소스 파일\GameObjects</Filter>
+    </ClInclude>
+    <ClInclude Include="BackGround.h">
       <Filter>소스 파일\GameObjects</Filter>
     </ClInclude>
   </ItemGroup>

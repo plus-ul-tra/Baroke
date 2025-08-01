@@ -103,16 +103,23 @@ void GameScene::OnEnter()
 
 	std::cout << "Game1 Scene OnEnter" << std::endl;
 
+	unique_ptr<BackGround> backGround = std::make_unique<BackGround>(0, 0, 1920, 1080);
+	m_objectList.emplace_back(std::move(backGround));
+
+
 	auto playerObject = std::make_unique<Player>(
 		0.0f, 0.0f, 50.0f, 50.0f, DirectX::XMFLOAT4(1.0f, 0.0f, 0.0f, 1.0f) // 녹색
 	);
 	m_player = playerObject.get();
 	m_objectList.push_back(std::move(playerObject));
 
-	unique_ptr<Button> button1 = std::make_unique<Button>(-800.0f, 300.0f, 200, 200, "Sample.png", 50);
+	unique_ptr<Button> button1 = std::make_unique<Button>(-820.0f, 0.0f, 200, 700, "Sample.png", 50);
 	m_buttonList.emplace_back(button1.get());
 	m_objectList.emplace_back(std::move(button1));
 
+	unique_ptr<Button> button2 = std::make_unique<Button>( 790.0f, 0.0f, 300, 700, "Sample.png", 50);
+	m_buttonList.emplace_back(button2.get());
+	m_objectList.emplace_back(std::move(button2));
 	//StartStage();
 	// 버튼 생성
  
