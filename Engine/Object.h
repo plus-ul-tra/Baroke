@@ -1,5 +1,6 @@
 #pragma once
 #include <memory>
+#include <string>
 #include"Component.h"
 #include "Renderer.h"
 
@@ -9,7 +10,7 @@ class Object {
 	
 private:
 	std::vector<std::unique_ptr<Component>> m_Components;
-
+	
 public:
 	template<typename T, typename... Args>
 	T* AddComponent(Args&&... args)

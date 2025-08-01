@@ -29,7 +29,7 @@ void GeoRender::SetOwner(Object* owner)
     SetCollider2D();
 }
 
-void GeoRender::Render(Renderer& renderer, const string& mode)
+void GeoRender::Render(Renderer& renderer)
 {
        
 	if (!m_isActive || !m_collider2D)

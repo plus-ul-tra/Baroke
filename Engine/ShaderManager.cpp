@@ -59,25 +59,27 @@ void ShaderManager::ReadAllShaders()
 	   {"TEXCOORD", 0, DXGI_FORMAT_R32G32_FLOAT, 0, D3D11_APPEND_ALIGNED_ELEMENT, D3D11_INPUT_PER_VERTEX_DATA, 0}
 	};
 	UINT numQuadElements = ARRAYSIZE(quadLayout);
-
+	// 사용할 쉐이더 여기에 추가
 	HRESULT hr;
 	hr = ReadShaderResource("..\\Shader\\PassThrough_VS.cso", "..\\Shader\\PassThrough_PS.cso", "PassThrough", quadLayout, numQuadElements);
 	if (FAILED(hr)) {
-		cout << "리드 실패" << endl;
-	}
-	hr = ReadShaderResource("..\\Shader\\PassThrough_VS.cso", "..\\Shader\\CRTFilter_PS.cso", "CRTFilter", quadLayout, numQuadElements);
-	if (FAILED(hr)) {
-		cout << "리드 실패" << endl;
+		cout << "PassThrough리드 실패" << endl;
 	}
 
-	hr = ReadShaderResource("..\\Shader\\SpriteShader_VS.cso", "..\\Shader\\SpriteShader_PS.cso", "SpriteShader", quadLayout, numQuadElements);
+	hr = ReadShaderResource("..\\Shader\\PassThrough_VS.cso", "..\\Shader\\CRTFilter_PS.cso", "CRTFilter", quadLayout, numQuadElements);
 	if (FAILED(hr)) {
-		cout << "리드 실패" << endl;
+		cout << "CRTFilter리드 실패" << endl;
 	}
-	/*hr = ReadShaderResource("..\\Shader\\SpriteShader_VS.cso", "..\\Shader\\NoiseBlend_PS.cso", "NoiseBlend", quadLayout, numQuadElements);
+
+	hr = ReadShaderResource("..\\Shader\\DefaultShader_VS.cso", "..\\Shader\\DefaultShader_PS.cso", "DefaultShader", quadLayout, numQuadElements);
 	if (FAILED(hr)) {
-		cout << "리드 실패" << endl;
-	}*/
+		cout << "DefaultShader리드 실패" << endl;
+	}
+
+	hr = ReadShaderResource("..\\Shader\\DefaultShader_VS.cso", "..\\Shader\\NoiseBlend_PS.cso", "NoiseBlend", quadLayout, numQuadElements);
+	if (FAILED(hr)) {
+		cout << "NoiseBlend리드 실패" << endl;
+	}
 }
 
 
@@ -99,7 +101,7 @@ const ShaderSet& ShaderManager::GetOBJShaderSet(const string& shaderName)
 	if (it != m_shaderSets.end()) {
 		return it->second;
 	}
-	return m_shaderSets.at("SpriteShader"); // 못찾은 경우
+	return m_shaderSets.at("NoiseBlend"); // 못찾은 경우
 }
 
 // 포스트 프로세싱용 쉐이더 검색

@@ -41,7 +41,7 @@ void TextRender::Update(double deltaTime)
 	m_renderText = m_text.substr(0, charCount);
 }
 
-void TextRender::Render(Renderer& renderer, const string& mode)
+void TextRender::Render(Renderer& renderer)
 {
 	if (!m_isActive || !m_transform) { return; }
 

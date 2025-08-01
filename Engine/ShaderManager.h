@@ -34,8 +34,10 @@ private:
 public:
 	ShaderManager(ID3D11Device* pDevice); //생성시 자원 read
 	~ShaderManager() { ReleaseShaders(); }
+	
 	const ShaderSet& GetOBJShaderSet(const string& shaderName);
 	const ShaderSet& GetPostShaderSet(const string& shaderName);
+
 	const ID3D11ShaderResourceView* GetShaderResource(const string& resourceName);
 	void ReleaseShaders();
 

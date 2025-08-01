@@ -22,7 +22,7 @@ void SceneBase::Render(Renderer& renderer) {
 		{
 			if (bitmapRenderComp->IsActive())
 			{
-				bitmapRenderComp->Render(renderer,"SpriteShader");
+				bitmapRenderComp->Render(renderer);
 			}
 		}
 
@@ -40,18 +40,18 @@ void SceneBase::Render(Renderer& renderer) {
 
 
 	// --- UI
-	for (const auto& ui : m_UIList) {
+	//for (const auto& ui : m_UIList) {
 
-		//일반 그리기
-		if (auto bitmapRenderComp = ui->GetComponent<BitmapRender3D>())
-		{
-			if (bitmapRenderComp->IsActive())
-			{
-				bitmapRenderComp->Render(renderer, "SpriteShader");
-			}
-		}
-		ui->Render(renderer);
-	}
+	//	//일반 그리기
+	//	if (auto bitmapRenderComp = ui->GetComponent<BitmapRender3D>())
+	//	{
+	//		if (bitmapRenderComp->IsActive())
+	//		{
+	//			bitmapRenderComp->Render(renderer, "DefaultShader");
+	//		}
+	//	}
+	//	ui->Render(renderer);
+	//}
 
 
 }

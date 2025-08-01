@@ -13,4 +13,5 @@ BackGround::BackGround(float posX, float posY, float width, float height)
 	m_transform->SetRotation(0.0f);
 
 	m_bitmapRender->SetActive(true);
+	m_bitmapRender->SetShaderType("NoiseBlend"); // 쉐이더 타입 설정
 }

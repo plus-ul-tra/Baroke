@@ -25,7 +25,7 @@ protected:
 public :
 	virtual ~BaseRender() = default;
 
-	virtual void Render(Renderer& renderer, const string& shadermode) = 0;
+	virtual void Render(Renderer& renderer) = 0;
 
 	void Update(double deltaTime) override {}
 	void OnEvent(const string& ev) override {}

@@ -52,6 +52,7 @@ void Renderer::Initialize(HWND hwnd)
 		std::cerr << "ERROR: Failed to create Post-processing Sampler State! HRESULT: 0x" << std::hex << hr << std::endl;
 		return;
 	}
+
 	//D3D11_RASTERIZER_DESC rsDesc = {};
 	//rsDesc.FillMode = D3D11_FILL_SOLID;
 	//rsDesc.CullMode = D3D11_CULL_NONE; // 컬링 비활성화 (양면 렌더링)
@@ -65,7 +66,7 @@ void Renderer::Initialize(HWND hwnd)
 	//rsDesc.AntialiasedLineEnable = FALSE;
 	//HRESULT hr_rs = m_pd3dDevice->CreateRasterizerState(&rsDesc, &m_pRasterizerState);
 
-	//CreateTimeCBuffer();
+	CreateTimeCBuffer();
 
 	hr = CreateSpriteConstantBuffers();
 	if (FAILED(hr)) return;
@@ -334,47 +335,47 @@ void Renderer::SetShaderMode(const string& mode) {
 	// cso 바인딩
 	// 추가 자원(normal, noise) 있는 경우 if 로 분기하죠
 
-	const ShaderSet& spriteShaderSet = m_shaderManager->GetOBJShaderSet(mode);
-	//const ShaderSet& spriteShaderSet = m_shaderManager->GetShaderSet(mode); //적용 ★★★
+	const ShaderSet& DefaultShaderSet = m_shaderManager->GetOBJShaderSet(mode);
+	//const ShaderSet& DefaultShaderSet = m_shaderManager->GetShaderSet(mode); //적용 ★★★
 
-	if (!spriteShaderSet.vs || !spriteShaderSet.ps || !spriteShaderSet.inputLayout) {
-		//OutputDebugStringA("ERROR: 'SpriteShader' ShaderSet is incomplete or not found in Renderer. Cannot set D3D states.\n");
+	if (!DefaultShaderSet.vs || !DefaultShaderSet.ps || !DefaultShaderSet.inputLayout) {
+		//OutputDebugStringA("ERROR: 'DefaultShader' ShaderSet is incomplete or not found in Renderer. Cannot set D3D states.\n");
 		//cout << "spreiteShader fail" << endl;
 		return;
 	}
 
-	m_pd3dContext->VSSetShader(spriteShaderSet.vs.Get(), nullptr, 0);
-	m_pd3dContext->PSSetShader(spriteShaderSet.ps.Get(), nullptr, 0);
-	m_pd3dContext->IASetInputLayout(spriteShaderSet.inputLayout.Get());
+	m_pd3dContext->VSSetShader(DefaultShaderSet.vs.Get(), nullptr, 0);
+	m_pd3dContext->PSSetShader(DefaultShaderSet.ps.Get(), nullptr, 0);
+	m_pd3dContext->IASetInputLayout(DefaultShaderSet.inputLayout.Get());
 	m_pd3dContext->IASetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
 
 	// 스프라이트 전용 샘플러
 	m_pd3dContext->PSSetSamplers(0, 1, m_pSpriteSamplerState.GetAddressOf());
 
-	//if (mode == "NoiseBlend") {
-	//	// SRV 리턴
-	//	auto noiseSRV = SpriteManager::GetInstance().GetTextureSRV("PerlinNoise.png");
-	//	ID3D11ShaderResourceView* srvs[1] = { noiseSRV.Get() };
-	//	m_pd3dContext->PSSetShaderResources(1, 1, srvs);
+	if (mode == "NoiseBlend") {
+		// SRV 리턴
+		auto noiseSRV = SpriteManager::GetInstance().GetTextureSRV("PerlinNoise.png");
+		ID3D11ShaderResourceView* srvs[1] = { noiseSRV.Get() };
+		m_pd3dContext->PSSetShaderResources(1, 1, srvs);
+		//cout << "NoiseBlend shader mode set." << endl;
+		
+		// -fakeTime 범용으로 수정 필요 // 실제 deltaTime를 사용해야 함
+		TimeCBuffer timeData{};
+		static float fakeTime = 0.0f;
+		if (fakeTime > 1000.0f) fakeTime = 0.0f;
+		fakeTime += 0.0008f;
+		timeData.time = fakeTime;
+		timeData.deltaTime = 1.0f; // 고정 델타타임
+		timeData.padding[0] = 0.0f;
+		timeData.padding[1] = 0.0f;
 
-	//	TimeCBuffer timeData{};
-	//	static float fakeTime = 0.0f;
+		// 3. 상수 버퍼에 쓰기
+		m_pd3dContext->UpdateSubresource(m_pTimeCBuffer.Get(), 0, nullptr, &timeData, 0, 0);
 
-	//	// 프레임마다 조금씩 증가 (고정값)
-	//	fakeTime += 0.016f; // 약 60fps 가정
-
-	//	timeData.time = fakeTime;
-	//	timeData.deltaTime = 0.016f; // 고정 델타타임
-	//	timeData.padding[0] = 0.0f;
-	//	timeData.padding[1] = 0.0f;
-
-	//	// 3. 상수 버퍼에 쓰기
-	//	m_pd3dContext->UpdateSubresource(m_pTimeCBuffer.Get(), 0, nullptr, &timeData, 0, 0);
-
-	//	// 4. Pixel Shader에 바인딩 (b1)
-	//	ID3D11Buffer* cbuffers[1] = { m_pTimeCBuffer.Get() };
-	//	m_pd3dContext->PSSetConstantBuffers(0, 1, cbuffers);
-	//}
+		// 4. Pixel Shader에 바인딩 (b1)
+		ID3D11Buffer* cbuffers[1] = { m_pTimeCBuffer.Get() };
+		m_pd3dContext->PSSetConstantBuffers(0, 1, cbuffers);
+	}
 
 }
 
@@ -456,8 +457,11 @@ void Renderer::DrawBitmap3D(
 
 	m_pd3dContext->PSSetConstantBuffers(1, 1, m_pTextureAtlasCBuffer.GetAddressOf()); // 슬롯 1에 바인딩
 
-	// 텍스처 SRV 바인딩
-	m_pd3dContext->PSSetShaderResources(0, 1, &pTextureSRV); // 슬롯 0에 바인딩
+	
+
+	m_pd3dContext->PSSetShaderResources(0, 1, &pTextureSRV);
+		
+
 
 	// 드로우 콜
 	m_pd3dContext->DrawIndexed(6, 0, 0); // 인덱스 6개 (쿼드 2개 삼각형), 시작 인덱스 0, 베이스 버텍스 0
@@ -680,11 +684,11 @@ void Renderer::CreateDeviceAndSwapChain(HWND hwnd)
 	hr = d2dFactory->CreateDevice(dxgiDevice.Get(), &baseDevice);
 	if (FAILED(hr)) { std::cerr << "HRESULT6 = 0x" << std::hex << hr << std::endl; return; }
 
-	ComPtr<ID2D1Device7> d2dDevice; // ID2D1Device4 -> ID2D1Device7
+	ComPtr<ID2D1Device6> d2dDevice; // ID2D1Device4 -> ID2D1Device7
 	hr = baseDevice.As(&d2dDevice);
 	if (FAILED(hr)) { std::cerr << "HRESULT7 = 0x" << std::hex << hr << std::endl; return; }
 
-	ComPtr<ID2D1DeviceContext7> d2dContext; // ID2D1DeviceContext7 유지
+	ComPtr<ID2D1DeviceContext6> d2dContext; // ID2D1DeviceContext7 유지
 	hr = d2dDevice->CreateDeviceContext(D2D1_DEVICE_CONTEXT_OPTIONS_NONE, &d2dContext);
 	if (FAILED(hr)) { std::cerr << "HRESULT8 = 0x" << std::hex << hr << std::endl; return; }
 
