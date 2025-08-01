@@ -1,4 +1,5 @@
 #pragma once
+#define NOMINMAX
 
 #include <Windows.h>
 
@@ -26,6 +27,7 @@
 #include <sstream>
 #include <stack>
 #include <queue>
+#include <random>
 
 #include <array>
 

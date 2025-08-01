@@ -21,9 +21,6 @@
     <Filter Include="소스 파일\GameObjects">
       <UniqueIdentifier>{1eae1693-f355-4dd6-9baf-b35739dc75f1}</UniqueIdentifier>
     </Filter>
-    <Filter Include="소스 파일\Board">
-      <UniqueIdentifier>{bafb162a-eba5-451a-84fd-8dfd33380c84}</UniqueIdentifier>
-    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
@@ -32,32 +29,17 @@
     <ClCompile Include="GameManager.cpp">
       <Filter>소스 파일\GameManager</Filter>
     </ClCompile>
-    <ClCompile Include="cpch.cpp">
-      <Filter>소스 파일</Filter>
-    </ClCompile>
     <ClCompile Include="TitleScene.cpp">
       <Filter>소스 파일\Scenes</Filter>
     </ClCompile>
     <ClCompile Include="GameScene.cpp">
       <Filter>소스 파일\Scenes</Filter>
     </ClCompile>
-    <ClCompile Include="Monster.cpp">
-      <Filter>소스 파일\GameObjects</Filter>
-    </ClCompile>
     <ClCompile Include="Player.cpp">
       <Filter>소스 파일\GameObjects</Filter>
     </ClCompile>
-    <ClCompile Include="BoardObject.cpp">
-      <Filter>소스 파일\GameObjects</Filter>
-    </ClCompile>
-    <ClCompile Include="StoneObject.cpp">
-      <Filter>소스 파일\GameObjects</Filter>
-    </ClCompile>
-    <ClCompile Include="Board.cpp">
-      <Filter>소스 파일\Board</Filter>
-    </ClCompile>
-    <ClCompile Include="Joker.cpp">
-      <Filter>소스 파일\GameObjects</Filter>
+    <ClCompile Include="cpch.cpp">
+      <Filter>소스 파일</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -76,22 +58,10 @@
     <ClInclude Include="GameScene.h">
       <Filter>소스 파일\Scenes</Filter>
     </ClInclude>
-    <ClInclude Include="Monster.h">
-      <Filter>소스 파일\GameObjects</Filter>
-    </ClInclude>
     <ClInclude Include="Player.h">
       <Filter>소스 파일\GameObjects</Filter>
     </ClInclude>
     <ClInclude Include="BoardObject.h">
-      <Filter>소스 파일\GameObjects</Filter>
-    </ClInclude>
-    <ClInclude Include="StoneObject.h">
-      <Filter>소스 파일\GameObjects</Filter>
-    </ClInclude>
-    <ClInclude Include="Board.h">
-      <Filter>소스 파일\Board</Filter>
-    </ClInclude>
-    <ClInclude Include="Joker.h">
       <Filter>소스 파일\GameObjects</Filter>
     </ClInclude>
   </ItemGroup>
