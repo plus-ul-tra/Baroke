@@ -10,7 +10,6 @@ Player::Player(float posX, float posY, float width, float height, XMFLOAT4 color
     // Set 함수 각자 만들어서 초기화 (Transform, Collider 참고)
     m_transform = AddComponent<Transform>();
     m_bitmapRender = AddComponent<BitmapRender3D>("PandaSpriteSheet.json", width, height);
-
 	//m_textRender = AddComponent<TextRender>("Player", width, height, 15.0f, D2D1::ColorF(D2D1::ColorF::Red), 0.5f, L"Arial");
 
     m_transform->SetPosition(XMVectorSet(posX, posY, 0.0f, 1.0f));

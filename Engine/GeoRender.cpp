@@ -59,15 +59,15 @@ void GeoRender::Render(Renderer& renderer)
         // TODO: 회전 처리는 Renderer::DrawRectangle 함수에서 Direct2D의 Transform 적용을 통해 구현해야 합니다.
         // 예를 들어, renderer->SetTransform(D2D1_MATRIX_3X2_F); 후 그리기 Why?
 
-        renderer.DrawRect(drawX, drawY, drawX + finalWidth, drawY + finalHeight, 
-            m_collider2D->GetColor());
+     //   renderer.DrawRect(drawX, drawY, drawX + finalWidth, drawY + finalHeight, 
+     //       m_collider2D->GetColor());
     }
     else if (m_collider2D->GetColliderType() == ColliderType::Circle) {
         
         float finalRadius = m_collider2D->GetRadius() * (XMVectorGetX(worldScale) + XMVectorGetY(worldScale)) / 2.0f;
 
-        renderer.DrawCircle(objWorldX, objWorldY,finalRadius, 
-                  m_collider2D->GetColor());
+		// renderer.DrawCircle(objWorldX, objWorldY,finalRadius, 
+		//           m_collider2D->GetColor());
     }
 }
 
