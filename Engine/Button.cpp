@@ -36,7 +36,6 @@ void JokerButton::ButtonFunction()
 {
 	if (m_isPressed)
 	{
-		std::cout << "Joker Button Pressed" << std::endl;
 		BoardManager::GetInstance().SetStoneType(m_stoneType);
 		BoardManager::GetInstance().SetStoneAbility(m_jokerAbility);
 	}

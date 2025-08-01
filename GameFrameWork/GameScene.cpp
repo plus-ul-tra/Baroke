@@ -10,6 +10,34 @@
 #define CELL 54  // 0 기준 54 pxs
 #define STONEOFFSET 10
 
+void GameScene::SetUIJokerButton()
+{
+	unique_ptr<JokerButton> jokerButton1 = std::make_unique<JokerButton>(600.0f, 400.0f, 100, 100, "Sample.png", 50);
+	jokerButton1->SetButtonJoker(Joker, JokerAbility1);
+	m_buttonList.emplace_back(jokerButton1.get());
+	m_UIList.emplace_back(std::move(jokerButton1));
+
+	unique_ptr<JokerButton> jokerButton2 = std::make_unique<JokerButton>(600.0f, 200.0f, 100, 100, "Sample.png", 50);
+	jokerButton2->SetButtonJoker(Joker, JokerAbility2);
+	m_buttonList.emplace_back(jokerButton2.get());
+	m_UIList.emplace_back(std::move(jokerButton2));
+
+	unique_ptr<JokerButton> jokerButton3 = std::make_unique<JokerButton>(600.0f, 0.0f, 100, 100, "Sample.png", 50);
+	jokerButton3->SetButtonJoker(Joker, JokerAbility3);
+	m_buttonList.emplace_back(jokerButton3.get());
+	m_UIList.emplace_back(std::move(jokerButton3));
+
+	unique_ptr<JokerButton> jokerButton4 = std::make_unique<JokerButton>(600.0f, -200.0f, 100, 100, "Sample.png", 50);
+	jokerButton4->SetButtonJoker(Joker, JokerAbility4);
+	m_buttonList.emplace_back(jokerButton4.get());
+	m_UIList.emplace_back(std::move(jokerButton4));
+
+	unique_ptr<JokerButton> jokerButton5 = std::make_unique<JokerButton>(600.0f, -400.0f, 100, 100, "Sample.png", 50);
+	jokerButton5->SetButtonJoker(Joker, JokerAbility5);
+	m_buttonList.emplace_back(jokerButton5.get());
+	m_UIList.emplace_back(std::move(jokerButton5));
+}
+
 void GameScene::StartStage()
 {
 	m_stageNo++;
@@ -49,8 +77,13 @@ void GameScene::FixedUpdate(double fixedDeltaTime)
 
 void GameScene::Update(double deltaTime)
 {
-	for (auto& a : m_objectList) {
-		a->Update(deltaTime);
+	for (auto& object : m_objectList)
+	{
+		object->Update(deltaTime);
+	}
+	for (auto& UI : m_UIList)
+	{
+		UI->Update(deltaTime);
 	}
 	m_boardObj->BoardSync();
 	CheckStageClear();
@@ -89,14 +122,11 @@ void GameScene::OnEnter()
 	m_buttonList.emplace_back(button1.get());
 	m_objectList.emplace_back(std::move(button1));
 
-	unique_ptr<JokerButton> button2 = std::make_unique<JokerButton>( 600.0f, 400.0f, 100, 100, "Sample.png", 50);
-	button2->SetButtonJoker(Joker, JokerAbility1);
-	m_buttonList.emplace_back(button2.get());
-	m_objectList.emplace_back(std::move(button2));
-
 	unique_ptr<BoardObject> boardObj = std::make_unique<BoardObject>(POSX, POSY, WIDTH, HEIGHT, CELL, STONEOFFSET, PADDING);
 	m_boardObj = boardObj.get();
 	m_objectList.emplace_back(std::move(boardObj));
+
+	SetUIJokerButton();
 
 	StartStage();
 }
