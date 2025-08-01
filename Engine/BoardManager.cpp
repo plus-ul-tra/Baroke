@@ -75,7 +75,6 @@ bool BoardManager::InputBasedGameLoop(POINT mousePos)
 
 	JokerAbilityUpdate(); // 조커 능력 업데이트
 
-
 	m_selectedPosition = { -1, -1 }; // 마지막으로 선택된 위치 초기화
 	m_stoneType = StoneType::Black; // 돌 타입 초기화
 	m_stoneAbility = StoneAbility::None; // 돌 능력 초기화
@@ -119,6 +118,24 @@ void BoardManager::JokerAbilityUpdate()
 			it->second(jokerStone);
 		}
 	}
+}
+
+POINT BoardManager::MouseToBoardPosition(POINT mousePos) const
+{
+	return
+	{
+		(mousePos.x - m_offX - m_padding + m_cell / 2) / m_cell,
+		(mousePos.y - m_offY - m_padding + m_cell / 2) / m_cell
+	};
+}
+
+POINT BoardManager::BoardToScreenPosition(POINT boardPos) const
+{
+	return
+	{
+		m_offX + m_padding + boardPos.x * m_cell,
+		m_offY + m_padding + boardPos.y * m_cell
+	};
 }
 
 bool BoardManager::PlaceStone(POINT selectedPosition, StoneType stoneType, StoneAbility stoneAbility)
@@ -171,8 +188,6 @@ bool BoardManager::PlaceStone(POINT selectedPosition, StoneType stoneType, Stone
 			RemoveGroup(grp);          // 흰 돌만 제거
 	}
 
-
-
 	return true;
 }
 
@@ -201,6 +216,35 @@ shared_ptr<Stone> BoardManager::GetStone(POINT position)
 	}
 
 	return m_board[position.x][position.y];
+}
+
+bool BoardManager::IsJokerStone(POINT position) const
+{
+	if (m_jokerPositions.size() > 0) return false;
+
+	for (const auto& joker : m_jokerPositions) // 조커 돌 위치와 능력 벡터를 순회
+	{
+		if (position == joker.first)
+		{
+			return true;
+		}
+	}
+
+	return false;
+}
+
+int BoardManager::GetStoneTypeAmount(StoneType type) const
+{
+	int count = 0;
+	for (const auto& pair : m_stoneTypeMap)
+	{
+		if (pair.second == type && !IsJokerStone(pair.first))
+		{
+			++count;
+		}
+	}
+
+	return count;
 }
 
 int BoardManager::CountLiberty(

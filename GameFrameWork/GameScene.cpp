@@ -60,10 +60,10 @@
 void GameScene::StartStage()
 {
 	m_stageNo++;
-	BoardManager::GetInstance().ResetStone();
+	m_board.ResetStone();
 	int spawn = 3 + (m_stageNo - 1);
 
-	BoardManager::GetInstance().PlaceRandomStones(spawn);
+	m_board.PlaceRandomStones(spawn);
 	m_whiteLeft = spawn;
 	std::cout << "Stage " << m_stageNo << " start, Spawn White Conut : " << spawn << std::endl;
 }
@@ -83,7 +83,7 @@ void GameScene::CheckStageClear()
 
 int GameScene::CountWhite() const
 {
-	const auto& typeMap = BoardManager::GetInstance().GetStoneTypeMap(); 
+	const auto& typeMap = m_board.GetStoneTypeMap();
 	int cnt = 0;
 
 	for (const auto& [pos, color] : typeMap)
@@ -95,7 +95,7 @@ int GameScene::CountWhite() const
 
 int GameScene::CountBlack() const // 조커 중에 흑돌로 취급되는 놈 체크 해야됨
 {
-	const auto& typeMap = BoardManager::GetInstance().GetStoneTypeMap();
+	const auto& typeMap = m_board.GetStoneTypeMap();
 	int cnt = 0;
 
 	for (const auto& [pos, color] : typeMap)
@@ -208,7 +208,7 @@ void GameScene::KeyCommandMapping()
 	m_commandMap["F3"] = [this]()
 		{
 
-			BoardManager::GetInstance().PlaceRandomStones(3);
+			m_board.PlaceRandomStones(3);
 
 // 			for (int i = 0; i < BOARD_SIZE; i++) 
 // 			{
@@ -263,19 +263,19 @@ void GameScene::OnInput(const MouseEvent& ev)
 {
 	if (ev.type == MouseType::LDown)
 	{
-		if (m_BlackStone <= CountBlack()) return;
-		std::cout <<"Black Stone Count : " << CountBlack() << std::endl;
+		if (m_BlackStone <= m_board.GetStoneTypeAmount(Black)) return;
 		std::cout << ev.pos.x << " " << ev.pos.y << std::endl;
-		BoardManager::GetInstance().InputBasedGameLoop( ev.pos );
-
+		m_board.InputBasedGameLoop(ev.pos);
+		std::cout << "Black Stone Count : " << m_board.GetStoneTypeAmount(Black) << std::endl;
 	}
 
 	else if (ev.type == MouseType::RDown)
 	{
 		std::cout << ev.pos.x << " " << ev.pos.y << std::endl;
-		BoardManager::GetInstance().SetStoneType(Joker);
-		BoardManager::GetInstance().SetStoneAbility(JokerAbility1);
-		BoardManager::GetInstance().InputBasedGameLoop(ev.pos);
+		m_board.SetStoneType(Black);
+		m_board.SetStoneAbility(JokerAbility1);
+		m_board.InputBasedGameLoop(ev.pos);
+		std::cout << "Joker Stone Count : " << m_board.GetStoneTypeAmount(Joker) << std::endl;
 	}
 
 	for (auto& button : m_buttonList)
