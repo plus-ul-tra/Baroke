@@ -37,16 +37,16 @@ public:
 class WhiteStone : public Stone
 {
 public:
-	WhiteStone(POINT position, float size)
+	WhiteStone(POINT position, float size, int offset)
 	{
 		m_position = position;
 
 		m_transform = AddComponent<Transform>();
-		m_transform->SetPosition(XMVectorSet(static_cast<float>(position.x) - size / 2, static_cast<float>(position.y) - size / 2, 0.0f, 1.0f));
+		m_transform->SetPosition(XMVectorSet(static_cast<float>(position.x) + size / 2, static_cast<float>(position.y) + size / 2, 0.0f, 1.0f));
 		m_transform->SetScale(XMVectorSet(1.0f, 1.0f, 1.0f, 1.0f));
 		m_transform->SetRotation(0.0f);
 
-		m_sprite = AddComponent<BitmapRender3D>("White_Stone.png", size, size);
+		m_sprite = AddComponent<BitmapRender3D>("White_Stone.png", size- offset, size - offset);
 		m_sprite->SetOrder(1);
 		m_sprite->SetActive(true);
 	}
@@ -55,16 +55,16 @@ public:
 class BlackStone : public Stone
 {
 public:
-	BlackStone(POINT position, float size)
+	BlackStone(POINT position, float size, int offset)
 	{
 		m_position = position;
 
 		m_transform = AddComponent<Transform>();
-		m_transform->SetPosition(XMVectorSet(static_cast<float>(position.x) - size / 2, static_cast<float>(position.y) - size / 2, 0.0f, 1.0f));
+		m_transform->SetPosition(XMVectorSet(static_cast<float>(position.x) + size / 2, static_cast<float>(position.y) + size / 2, 0.0f, 1.0f));
 		m_transform->SetScale(XMVectorSet(1.0f, 1.0f, 1.0f, 1.0f));
 		m_transform->SetRotation(0.0f);
 
-		m_sprite = AddComponent<BitmapRender3D>("Black_Stone.png", size, size);
+		m_sprite = AddComponent<BitmapRender3D>("Black_Stone.png", size - offset, size - offset);
 		m_sprite->SetOrder(1);
 		m_sprite->SetActive(true);
 	}
@@ -85,17 +85,17 @@ class JokerStone : public Stone
 	JokerInfo m_jokerInfo; // 조커 돌 능력 정보
 
 public:
-	JokerStone(POINT position, float size, StoneAbility ability)
+	JokerStone(POINT position, float size, int offset, StoneAbility ability)
 	{
 		m_jokerInfo = m_jokerInfoMap[ability]; // 조커 돌 능력 정보 가져오기(복사)
 		m_position = position;
 
 		m_transform = AddComponent<Transform>();
-		m_transform->SetPosition(XMVectorSet(static_cast<float>(position.x) - size / 2, static_cast<float>(position.y) - size / 2, 0.0f, 1.0f));
+		m_transform->SetPosition(XMVectorSet(static_cast<float>(position.x) + size / 2, static_cast<float>(position.y) + size / 2, 0.0f, 1.0f));
 		m_transform->SetScale(XMVectorSet(1.0f, 1.0f, 1.0f, 1.0f));
 		m_transform->SetRotation(0.0f);
 
-		m_sprite = AddComponent<BitmapRender3D>(m_jokerInfo.fileName.c_str(), size, size);
+		m_sprite = AddComponent<BitmapRender3D>(m_jokerInfo.fileName.c_str(), size - offset, size - offset);
 		m_sprite->SetOrder(1);
 		m_sprite->SetActive(true);
 	}

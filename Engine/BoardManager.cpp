@@ -32,10 +32,12 @@ static unordered_map<StoneAbility, function<void(shared_ptr<JokerStone>)>> g_abi
 	} }
 };
 
-void BoardManager::Initialize(int offX, int offY, int _cell,int _stoneOffset, int padding)
+void BoardManager::Initialize(int offX, int offY, int drawW, int drawH, int _cell, int _stoneOffset, int padding)
 {
 	m_offX = offX;
 	m_offY = offY;
+	m_drawW = (drawW / 2) - padding;
+	m_drawH = (drawH / 2) - padding;
 	m_cell = _cell;
 	m_padding = padding;
 	m_stoneOffset = _stoneOffset;
@@ -120,21 +122,28 @@ void BoardManager::JokerAbilityUpdate()
 	}
 }
 
+
+
 POINT BoardManager::MouseToBoardPosition(POINT mousePos) const
 {
 	return
 	{
-		(mousePos.x - m_offX - m_padding + m_cell / 2) / m_cell,
-		(mousePos.y - m_offY - m_padding + m_cell / 2) / m_cell
+		(mousePos.x+ m_drawW + m_cell/2)/ m_cell,
+		-(mousePos.y - m_drawH - m_cell / 2) / m_cell
+//  		(mousePos.x - m_offX - m_padding + m_cell / 2) / m_cell,
+//  		(mousePos.y - m_offY - m_padding + m_cell / 2) / m_cell
 	};
 }
 
+// 보드 인덱스(row, col) → 화면(픽셀)
 POINT BoardManager::BoardToScreenPosition(POINT boardPos) const
 {
 	return
 	{
-		m_offX + m_padding + boardPos.x * m_cell,
-		m_offY + m_padding + boardPos.y * m_cell
+		boardPos.x*m_cell- m_drawW - m_cell / 2,
+		-boardPos.y*m_cell + m_drawH - m_cell / 2
+//  		m_offX + m_padding + boardPos.x * m_cell,
+//  		m_offY + m_padding + boardPos.y * m_cell
 	};
 }
 
@@ -154,19 +163,19 @@ bool BoardManager::PlaceStone(POINT selectedPosition, StoneType stoneType, Stone
 	if (stoneType == StoneType::White)
 	{
 		// 흰 돌 생성 // row, col, size는 나중에 스크린에 맞는 좌표로 변경해야함
-		m_board[selectedPosition.x][selectedPosition.y] = make_shared<WhiteStone>(BoardToScreenPosition(selectedPosition), m_cell - m_stoneOffset);
+		m_board[selectedPosition.x][selectedPosition.y] = make_shared<WhiteStone>(BoardToScreenPosition(selectedPosition), m_cell , m_stoneOffset);
 	}
 	else
 	{
 		if (stoneAbility == StoneAbility::None)
 		{
 			// 만약 능력이 없는 흑돌이라면 일반 흑돌 생성
-			m_board[selectedPosition.x][selectedPosition.y] = make_shared<BlackStone>(BoardToScreenPosition(selectedPosition), m_cell - m_stoneOffset);
+			m_board[selectedPosition.x][selectedPosition.y] = make_shared<BlackStone>(BoardToScreenPosition(selectedPosition), m_cell , m_stoneOffset);
 		}
 		else
 		{
 			// 능력이 있디면 조커 돌로 생성 // 흑돌이지만 능력이 있는 경우도 조커 돌로 생성
-			m_board[selectedPosition.x][selectedPosition.y] = make_shared<JokerStone>(BoardToScreenPosition(selectedPosition), m_cell-m_stoneOffset, stoneAbility);
+			m_board[selectedPosition.x][selectedPosition.y] = make_shared<JokerStone>(BoardToScreenPosition(selectedPosition), m_cell , m_stoneOffset, stoneAbility);
 			// 능력이 있는 조커 돌의 경우 능력 벡터에 추가
 			m_jokerPositions.emplace_back(selectedPosition, stoneAbility);
 		}

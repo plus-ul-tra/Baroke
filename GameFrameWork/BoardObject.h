@@ -24,7 +24,7 @@ public:
 		m_bitmapRender->SetOrder(0);
 		m_bitmapRender->SetActive(true);
 
-		BoardManager::GetInstance().Initialize(offX, offY, _cell, m_stoneOffset, padding); // 보드 매니저 초기화
+		BoardManager::GetInstance().Initialize(offX, offY, drawW, drawH, _cell, m_stoneOffset, padding); // 보드 매니저 초기화
 	}
 	void Render(Renderer& r) override
 	{
