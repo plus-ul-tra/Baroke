@@ -27,14 +27,14 @@ void SceneBase::Render(Renderer& renderer) {
 		}
 
 		// 안씀
-		/*if (auto textRenderComp = obj->GetComponent<TextRender>())
-		{
-			if (textRenderComp->IsActive())
-			{
-				textRenderComp->Render(renderer);
-			}
-		}
-		obj->Render(renderer);*/
+		//if (auto textRenderComp = obj->GetComponent<TextRender>())
+		//{
+		//	if (textRenderComp->IsActive())
+		//	{
+		//		textRenderComp->Render(renderer);
+		//	}
+		//}
+		obj->Render(renderer);
 	}
 
 
@@ -56,25 +56,25 @@ void SceneBase::Render(Renderer& renderer) {
 
 }
 //
-//void RenderObject(Object* obj, Renderer& renderer)
-//{
-//	// 디버그용 GeoRender
-//	if (MIYABI::Core::GetInstance().IsDebugMode())
-//	{
-//		if (auto geo = obj->GetComponent<GeoRender>())
-//			if (geo->IsActive())
-//				geo->Render(renderer);
-//	}
-//
-//	// 일반 비트맵 렌더
-//	if (auto bmp = obj->GetComponent<BitmapRender3D>())
-//		if (bmp->IsActive())
-//			bmp->Render(renderer);
-//
-//	// 오브젝트 자체 렌더
-//	obj->Render(renderer);
-//
-//}
+void RenderObject(Object* obj, Renderer& renderer)
+{
+	// 디버그용 GeoRender
+	if (MIYABI::Core::GetInstance().IsDebugMode())
+	{
+		if (auto geo = obj->GetComponent<GeoRender>())
+			if (geo->IsActive())
+				geo->Render(renderer);
+	}
+
+	// 일반 비트맵 렌더
+	if (auto bmp = obj->GetComponent<BitmapRender3D>())
+		if (bmp->IsActive())
+			bmp->Render(renderer);
+
+	// 오브젝트 자체 렌더
+	obj->Render(renderer);
+
+}
 
 
 void SceneBase::FixedUpdate(double fixedDeltaTime)

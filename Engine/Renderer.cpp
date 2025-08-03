@@ -55,8 +55,8 @@ void Renderer::Initialize(HWND hwnd)
 
 	//D3D11_RASTERIZER_DESC rsDesc = {};
 	//rsDesc.FillMode = D3D11_FILL_SOLID;
-	//rsDesc.CullMode = D3D11_CULL_NONE; // 컬링 비활성화 (양면 렌더링)
-	//rsDesc.FrontCounterClockwise = FALSE; // Direct3D 기본 (시계 방향 정점 = 앞면)
+	//rsDesc.CullMode = D3D11_CULL_NONE; // 컬링 비활성화 
+	//rsDesc.FrontCounterClockwise = FALSE; // Direct3D 기본
 	//rsDesc.DepthBias = 0;
 	//rsDesc.DepthBiasClamp = 0.0f;
 	//rsDesc.SlopeScaledDepthBias = 0.0f;
@@ -363,7 +363,7 @@ void Renderer::SetShaderMode(const string& mode) {
 		TimeCBuffer timeData{};
 		static float fakeTime = 0.0f;
 		if (fakeTime > 1000.0f) fakeTime = 0.0f;
-		fakeTime += 0.0008f;
+		fakeTime += 0.003f;
 		timeData.time = fakeTime;
 		timeData.deltaTime = 1.0f; // 고정 델타타임
 		timeData.padding[0] = 0.0f;
