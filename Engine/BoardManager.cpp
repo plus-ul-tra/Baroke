@@ -62,7 +62,9 @@ struct JokerFunctionsWrapper
 					if (count >= 8) break;
 					if (pair.second != StoneType::White) continue;
 
-					if (abs(pair.first.x - position.x) <= functionVariable && abs(pair.first.y - position.y) <= functionVariable)
+					if (abs(pair.first.x - position.x) <= functionVariable &&
+						abs(pair.first.y - position.y) <= functionVariable &&
+						(abs(pair.first.x - position.x) > 1 || abs(pair.first.y - position.y) > 1))
 					{
 						while (boardManager.isValidPoint({ position.x + patternX[count], position.y + patternY[count] }))
 						{
@@ -372,7 +374,7 @@ void BoardManager::InitializeJokerInfoMap()
 	m_jokerInfoMap[StoneAbility::JokerEgg] = { "JokerEgg.png", 0, 3, 0, 0, 1 };
 	m_jokerInfoMap[StoneAbility::JokerOstrichEgg] = { "JokerOstrichEgg.png", 0, 2, 0, 0, 1 };
 	m_jokerInfoMap[StoneAbility::JokerBite] = { "JokerBite.png", 30, 15, 0 };
-	m_jokerInfoMap[StoneAbility::JokerPeacock] = { "JokerPeacock.png", 1, 0, 0, 0, 2 };
+	m_jokerInfoMap[StoneAbility::JokerPeacock] = { "JokerPeacock.png", 1, 0, 0, 0, 3 };
 
 	m_jokerInfoMap[StoneAbility::JokerFusion] = { "JokerEgg.png", 0, 0, 0, 0, 2 };
 	m_jokerInfoMap[StoneAbility::JokerTriunion] = { "JokerEgg.png", 0, 0, 0, 0, 3 };
