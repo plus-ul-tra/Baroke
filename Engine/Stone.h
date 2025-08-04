@@ -3,47 +3,48 @@
 #include "Transform.h"
 #include "BitmapRender.h"
 
-enum StoneType // µ¹ Á¾·ù
+enum StoneType // ëŒ ì¢…ë¥˜
 {
 	White,
 	Black,
 	Joker
 };
-enum StoneAbility // ´É·Â È¤Àº ÀÌ¸§
+enum StoneAbility // ëŠ¥ë ¥ í˜¹ì€ ì´ë¦„
 {
-	None, // Èæµ¹, ¹éµ¹
-	//---------------- ÀÏ¹İ (set 1)
+
+	None, // ï¿½æµ¹, ï¿½éµ¹
+	//---------------- ï¿½Ï¹ï¿½ (set 1)
 	jokerDouble,
 	jokerOmok,
 	jokerSamok,
 	jokerSammok,
 
-	//---------------- ¾ß»ı (set 2)
-	jokerEvolution, // ¾ÆÁ÷ ¸®¼Ò½º X
+	//---------------- ï¿½ß»ï¿½ (set 2)
+	jokerEvolution, // ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½Ò½ï¿½ X
 	jokerDansu,
 	jokerEgg,
 	jokerOstrichEgg,
 	jokerPeacock,
 
-	//---------------- ¿ìÁÖ (set 3)
+	//---------------- ï¿½ï¿½ï¿½ï¿½ (set 3)
 	jokerTeleport,
 	jokerExplode,
 	jokerMagnetic,
 	jokerBlackhole,
 
-	//---------------- ´ÜÃ» (set 4)
+	//---------------- ï¿½ï¿½Ã» (set 4)
 	jokerFusion,
 	jokerTriunion,
 	jokerQuadunion,
 
-	//---------------- ÇÒ·ÎÀ© (set 6)
+	//---------------- ï¿½Ò·ï¿½ï¿½ï¿½ (set 6)
 	jokerSplit,
 	jokerWaxseal,
 	jokerFlip,
 	jokerOthello,
 	jokerMrchan,
 
-	//---------------- ÀÚ¿¬ (set 7)
+	//---------------- ï¿½Ú¿ï¿½ (set 7)
 	jokerShadow,
 	jokerLight,
 	jokerTime,
@@ -57,14 +58,23 @@ protected:
 	Transform* m_transform {};
 	BitmapRender3D* m_sprite {};
 
-	POINT m_position = { -1, -1 }; // µ¹ À§Ä¡
+	POINT m_position = { -1, -1 }; // ëŒ ìœ„ì¹˜
+	float m_size = 0; // ëŒ í¬ê¸°
+	float m_offset = 0; // ëŒ ê°„ê²©
+
+	double m_lerpTime = 0.0; // ì´ë™ ë³´ê°„ ì‹œê°„
+	double m_lerpElapsedTime = 0.0; // ê²½ê³¼ ì‹œê°„
+	XMVECTOR m_lerpStartPosition = XMVectorZero(); // ì´ë™ ì‹œì‘ ìœ„ì¹˜
+	XMVECTOR m_lerpEndPosition = XMVectorZero(); // ì´ë™ ë ìœ„ì¹˜
 
 public:
 	Stone() = default;
 
-	void Update(double) override {}
+	void Update(double deltaTime) override; // ëŒ ì—…ë°ì´íŠ¸ í•¨ìˆ˜
+	void Move(POINT position, double duration = 1.0); // ëŒ ì´ë™ í•¨ìˆ˜
 
-	POINT GetPosition() const { return m_position; } // µ¹ À§Ä¡ ¹İÈ¯
+	POINT GetPosition() const { return m_position; } // ëŒ ìœ„ì¹˜ ë°˜í™˜
+	void SetPosition(POINT position) { m_position = position; } // ëŒ ìœ„ì¹˜ ì„¤ì •
 };
 
 class WhiteStone : public Stone
@@ -73,13 +83,15 @@ public:
 	WhiteStone(POINT position, float size, int offset)
 	{
 		m_position = position;
+		m_size = size;
+		m_offset = offset;
 
 		m_transform = AddComponent<Transform>();
 		m_transform->SetPosition(XMVectorSet(static_cast<float>(position.x) + size / 2, static_cast<float>(position.y) + size / 2, 0.0f, 1.0f));
 		m_transform->SetScale(XMVectorSet(1.0f, 1.0f, 1.0f, 1.0f));
 		m_transform->SetRotation(0.0f);
 
-		m_sprite = AddComponent<BitmapRender3D>("White2.png", size- offset, size - offset);
+		m_sprite = AddComponent<BitmapRender3D>("White.png", size - offset, size - offset);
 		m_sprite->SetOrder(1);
 		m_sprite->SetActive(true);
 	}
@@ -91,37 +103,43 @@ public:
 	BlackStone(POINT position, float size, int offset)
 	{
 		m_position = position;
+		m_size = size;
+		m_offset = offset;
 
 		m_transform = AddComponent<Transform>();
 		m_transform->SetPosition(XMVectorSet(static_cast<float>(position.x) + size / 2, static_cast<float>(position.y) + size / 2, 0.0f, 1.0f));
 		m_transform->SetScale(XMVectorSet(1.0f, 1.0f, 1.0f, 1.0f));
 		m_transform->SetRotation(0.0f);
 
-		m_sprite = AddComponent<BitmapRender3D>("Black2.png", size - offset, size - offset);
+		m_sprite = AddComponent<BitmapRender3D>("Black.png", size - offset, size - offset);
 		m_sprite->SetOrder(1);
 		m_sprite->SetActive(true);
 	}
 };
 
-struct JokerInfo // Á¶Ä¿ µ¹ Á¤º¸
+struct JokerInfo // ì¡°ì»¤ ëŒ ì •ë³´
 {
-	string fileName = "JokerStone1.png"; // Á¶Ä¿ µ¹ ÀÌ¹ÌÁö ÆÄÀÏ ÀÌ¸§
+	string fileName = "JokerEgg.png"; // ì¡°ì»¤ ëŒ ì´ë¯¸ì§€ íŒŒì¼ ì´ë¦„
 
-	int cost = 0; // Á¶Ä¿ µ¹ ´É·Â »ç¿ë ºñ¿ë(Èæµ¹)
-	int returnCost = 0; // Á¶Ä¿ µ¹ ´É·Â »ç¿ë ÈÄ ¹İÈ¯ ºñ¿ë(Èæµ¹)
-	int cooldown = 0; // Á¶Ä¿ µ¹ ´É·Â ÄğÅ¸ÀÓ
+	int blackReturn = 0; // ì¡°ì»¤ ëŒ ëŠ¥ë ¥ ì‚¬ìš© í›„ ë°˜í™˜ ë¹„ìš©(í‘ëŒ)
+
+	int coolTime = 0; // ì¡°ì»¤ ëŒ ëŠ¥ë ¥ ì¿¨íƒ€ì„
+	int lifeSpan = 0; // ì¡°ì»¤ ëŒ ëŠ¥ë ¥ ì§€ì† ì‹œê°„
+
+	int functionDuration = 0; // ì¡°ì»¤ ëŒ ëŠ¥ë ¥ í•¨ìˆ˜ ì§€ì† ì‹œê°„ // 0ì´ë©´ í•œë²ˆë§Œ ì‹¤í–‰
+	int functionVariable = 0; // ì¡°ì»¤ ëŒ ëŠ¥ë ¥ í•¨ìˆ˜ì— ì‚¬ìš©ë˜ëŠ” ë³€ìˆ˜ // ëŠ¥ë ¥ì— ë”°ë¼ ë‹¤ë¦„
 };
-extern unordered_map<StoneAbility, JokerInfo> m_jokerInfoMap; // Á¶Ä¿ µ¹ ´É·Â Á¤º¸ ¸Ê // ´É·ÂÀÇ ±âº»°ª ÀúÀå¿ë
+extern unordered_map<StoneAbility, JokerInfo> m_jokerInfoMap; // ì¡°ì»¤ ëŒ ëŠ¥ë ¥ ì •ë³´ ë§µ // ëŠ¥ë ¥ì˜ ê¸°ë³¸ê°’ ì €ì¥ìš©
 
 class JokerStone : public Stone
 {
-	JokerInfo m_jokerInfo; // Á¶Ä¿ µ¹ ´É·Â Á¤º¸
-
 public:
 	JokerStone(POINT position, float size, int offset, StoneAbility ability)
 	{
-		m_jokerInfo = m_jokerInfoMap[ability]; // Á¶Ä¿ µ¹ ´É·Â Á¤º¸ °¡Á®¿À±â(º¹»ç)
+		m_jokerInfo = m_jokerInfoMap[ability]; // ì¡°ì»¤ ëŒ ëŠ¥ë ¥ ì •ë³´ ê°€ì ¸ì˜¤ê¸°(ê°’ ë³µì‚¬)
 		m_position = position;
+		m_size = size;
+		m_offset = offset;
 
 		m_transform = AddComponent<Transform>();
 		m_transform->SetPosition(XMVectorSet(static_cast<float>(position.x) + size / 2, static_cast<float>(position.y) + size / 2, 0.0f, 1.0f));
@@ -132,4 +150,6 @@ public:
 		m_sprite->SetOrder(1);
 		m_sprite->SetActive(true);
 	}
+
+	JokerInfo m_jokerInfo; // ì¡°ì»¤ ëŒ ëŠ¥ë ¥ ì •ë³´
 };

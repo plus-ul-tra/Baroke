@@ -40,7 +40,11 @@ public:
 
 	}
 
-	void Update(double) override {}
+	void Update(double deltaTime) override
+	{
+		for (auto& sp : m_stones)
+			sp->Update(deltaTime);
+	}
 
 	void BoardSync();
 };
@@ -59,7 +63,7 @@ inline void BoardObject::BoardSync()
 		{
 			if (m_board[r][c])
 			{
-				auto stone = m_board[r][c];
+				auto& stone = m_board[r][c];
 				m_stones.emplace_back(stone.get());
 			}
 		}
