@@ -84,6 +84,7 @@
     <ClInclude Include="Stone.h">
       <Filter>Stone</Filter>
     </ClInclude>
+    <ClInclude Include="PlayerInfo.h" />
   </ItemGroup>
   <ItemGroup>
     <Filter Include="ETC">
