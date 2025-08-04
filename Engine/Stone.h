@@ -21,9 +21,9 @@ enum StoneAbility // 능력 혹은 이름
 	//----------------  야생(set 2)
 	jokerEvolution, // 리소스 X
 	jokerDansu,
-	jokerEgg,
-	jokerOstrichEgg,
-	jokerPeacock,
+	jokerEgg, // 함수 구현 완료
+	jokerOstrichEgg, // 함수 구현 완료
+	jokerPeacock, // 함수 구현 완료
 
 	//---------------- 우주 (set 3)
 	jokerTeleport,
@@ -32,9 +32,9 @@ enum StoneAbility // 능력 혹은 이름
 	jokerBlackhole,
 
 	//---------------- 단청 (set 4)
-	jokerFusion,
-	jokerTriunion,
-	jokerQuadunion,
+	jokerFusion, // 함수 구현 완료
+	jokerTriunion, // 함수 구현 완료
+	jokerQuadunion, // 함수 구현 완료
 
 	//---------------- 할로윈 (set 6)
 	jokerSplit,

@@ -51,7 +51,7 @@ public:
 
 	virtual void Reset()
 	{
-		m_objectList.clear(); 
+		// m_objectList.clear(); 
 		// objectList 외에 것도 clear
 	}
 
