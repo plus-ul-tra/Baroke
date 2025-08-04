@@ -62,8 +62,7 @@ private:
 	ComPtr<ID3D11DeviceContext>       m_pd3dContext;
 	ComPtr<IDXGISwapChain1>           m_pswapChain; // IDXGISwapChain1 사용 중
 
-	ComPtr<ID2D1Device7>              m_pd2dDevice;
-	ComPtr<ID2D1DeviceContext7>       m_pd2dContext;
+	
 
 	ComPtr<ID3D11RenderTargetView>    m_pd3dRenderTV; // D3D 백버퍼용 RTV
 
@@ -73,10 +72,14 @@ private:
 	ComPtr<ID3D11ShaderResourceView>  m_renderTargetSRV; // D2D Off-screen 텍스처용 SRV
 	ComPtr<ID2D1Bitmap1>              m_ptargetBitmap;          // D2D Off-screen 텍스처 래핑 비트맵  
 
-	// 2D2 안씀
+	// 2D text 용
+	ComPtr<ID2D1Device7>              m_pd2dDevice;
+	ComPtr<ID2D1DeviceContext7>       m_pd2dContext;
+	ComPtr<ID2D1Factory1>             m_pd2dFactory; // D2D 팩토리
 	ComPtr<ID2D1SolidColorBrush>      m_pbrush;
-	ComPtr<ID2D1SolidColorBrush>      m_ptextBrush;
+	ComPtr<IDWriteFactory>            m_pdwriteFactory; // DWrite 팩토리
 	ComPtr<IDWriteTextFormat>         m_ptextFormat;
+
 	ComPtr<IWICImagingFactory>        m_pwicFactory;
 
 	// 풀스크린 쿼드 관련 (포스트 프로세싱용)

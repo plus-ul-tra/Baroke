@@ -24,7 +24,7 @@ public:
 		m_bitmapRender = AddComponent<BitmapRender3D>("Cyberpunk.png", drawW, drawH);
 		m_bitmapRender->SetOrder(0);
 		m_bitmapRender->SetActive(true);
-		m_bitmapRender->SetShaderType("GrayScale");
+		//m_bitmapRender->SetShaderType("GrayScale");
 
 		m_boardManager.Initialize(offX, offY, drawW, drawH, _cell, m_stoneOffset, padding); // 보드 매니저 초기화
 	}

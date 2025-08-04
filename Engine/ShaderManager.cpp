@@ -88,6 +88,11 @@ void ShaderManager::ReadAllShaders()
 	if (FAILED(hr)) {
 		cout << "NoiseBlend리드 실패" << endl;
 	}
+
+	hr = ReadShaderResource("..\\Shader\\DefaultShader_VS.cso", "..\\Shader\\Holo_PS.cso", "Holo", quadLayout, numQuadElements);
+	if (FAILED(hr)) {
+		cout << "NoiseBlend리드 실패" << endl;
+	}
 }
 
 

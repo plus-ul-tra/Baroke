@@ -116,7 +116,7 @@ void Renderer::Uninitialize()
 	m_pwicFactory.Reset();
 	m_ptargetBitmap.Reset();
 	m_pbrush.Reset();
-	m_ptextBrush.Reset();
+
 	m_ptextFormat.Reset();
 
 	m_InputLayout.Reset();
@@ -377,6 +377,22 @@ void Renderer::SetShaderMode(const string& mode) {
 		ID3D11Buffer* cbuffers[1] = { m_pTimeCBuffer.Get() };
 		m_pd3dContext->PSSetConstantBuffers(0, 1, cbuffers);
 	}
+	if (mode == "OutLine") {
+
+		TimeCBuffer timeData{};
+		static float fakeTime = 0.0f;
+		if (fakeTime > 1000.0f) fakeTime = 0.0f;
+		fakeTime += 0.0003f;
+		timeData.time = fakeTime;
+		timeData.deltaTime = 1.0f; // 고정 델타타임
+		timeData.padding[0] = 0.0f;
+		timeData.padding[1] = 0.0f;
+		m_pd3dContext->UpdateSubresource(m_pTimeCBuffer.Get(), 0, nullptr, &timeData, 0, 0);
+
+		// 4. Pixel Shader에 바인딩 (b1)
+		ID3D11Buffer* cbuffers[1] = { m_pTimeCBuffer.Get() };
+		m_pd3dContext->PSSetConstantBuffers(0, 0, cbuffers);
+	}
 
 }
 
@@ -549,7 +565,6 @@ void Renderer::ReleaseRenderTargets()
 	//m_ptargetBitmap.Reset();
 
 	m_pbrush.Reset();
-	m_ptextBrush.Reset();
 
 	if (m_pd2dContext)
 	{
@@ -719,7 +734,7 @@ void Renderer::CreateWriteResource()
 		DWRITE_FONT_WEIGHT_NORMAL,
 		DWRITE_FONT_STYLE_NORMAL,
 		DWRITE_FONT_STRETCH_NORMAL,
-		15.0f,   // Font Size
+		20.0f,   // Font Size
 		L"", //locale
 		&m_ptextFormat);
 

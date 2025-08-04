@@ -43,6 +43,7 @@ public:
 		m_bitmapRender = AddComponent<BitmapRender3D>(bitmapFile, width, height);
 		m_bitmapRender->SetOrder(order);
 		m_bitmapRender->SetActive(true);
+		
 	}
 
 	void Update(double deltaTime) override { Object::Update(deltaTime); ButtonFunction(); }
