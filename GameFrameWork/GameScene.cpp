@@ -12,32 +12,33 @@
 
 void GameScene::SetUIJokerButton()
 {
+
 	unique_ptr<Button> rightUI = std::make_unique<Button>(700.0f, 50.0f, 400.0f, 800.0f, "T_Right_UI.png", 50);
 	m_buttonList.emplace_back(rightUI.get());
 	m_objectList.emplace_back(std::move(rightUI));
 
-	// 위치에 맞게 조정 필요
-	unique_ptr<JokerButton> jokerButton1 = std::make_unique<JokerButton>(600.0f, 400.0f, 100, 100, "Sample.png", 50);
+
+	unique_ptr<JokerButton> jokerButton1 = std::make_unique<JokerButton>(600.0f, 400.0f, 100, 100, "JokerEgg.png", 50);
 	jokerButton1->SetButtonJoker(Joker, JokerEgg);
 	m_buttonList.emplace_back(jokerButton1.get());
 	m_UIList.emplace_back(std::move(jokerButton1));
 
-	unique_ptr<JokerButton> jokerButton2 = std::make_unique<JokerButton>(600.0f, 200.0f, 100, 100, "Sample.png", 50);
+	unique_ptr<JokerButton> jokerButton2 = std::make_unique<JokerButton>(600.0f, 200.0f, 100, 100, "JokerOstrichEgg.png", 50);
 	jokerButton2->SetButtonJoker(Joker, JokerOstrichEgg);
 	m_buttonList.emplace_back(jokerButton2.get());
 	m_UIList.emplace_back(std::move(jokerButton2));
 
-	unique_ptr<JokerButton> jokerButton3 = std::make_unique<JokerButton>(600.0f, 0.0f, 100, 100, "Sample.png", 50);
+	unique_ptr<JokerButton> jokerButton3 = std::make_unique<JokerButton>(600.0f, 0.0f, 100, 100, "JokerPeacock.png", 50);
 	jokerButton3->SetButtonJoker(Joker, JokerPeacock);
 	m_buttonList.emplace_back(jokerButton3.get());
 	m_UIList.emplace_back(std::move(jokerButton3));
 
-	unique_ptr<JokerButton> jokerButton4 = std::make_unique<JokerButton>(600.0f, -200.0f, 100, 100, "Sample.png", 50);
+	unique_ptr<JokerButton> jokerButton4 = std::make_unique<JokerButton>(600.0f, -200.0f, 100, 100, "JokerCombination.png", 50);
 	jokerButton4->SetButtonJoker(Joker, JokerCombination);
 	m_buttonList.emplace_back(jokerButton4.get());
 	m_UIList.emplace_back(std::move(jokerButton4));
 
-	unique_ptr<JokerButton> jokerButton5 = std::make_unique<JokerButton>(600.0f, -400.0f, 100, 100, "Sample.png", 50);
+	unique_ptr<JokerButton> jokerButton5 = std::make_unique<JokerButton>(600.0f, -400.0f, 100, 100, "JokerBite.png", 50);
 	jokerButton5->SetButtonJoker(Joker, JokerBite);
 	m_buttonList.emplace_back(jokerButton5.get());
 	m_UIList.emplace_back(std::move(jokerButton5));
