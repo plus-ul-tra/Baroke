@@ -130,6 +130,7 @@ struct JokerFunctionsWrapper
 			if (boardManager.CountLiberty(position.x, position.y, grp, vis) == 0)
 			{
 				boardManager.m_playerInfo.m_BlackStone += jokerQuadunion->m_jokerInfo.functionVariable * grp.size();
+				boardManager.RemoveJokerStone(position);
 			}
 
 			std::cout << boardManager.m_playerInfo.m_BlackStone << std::endl;
@@ -160,10 +161,35 @@ struct JokerFunctionsWrapper
 				jokerSplit->m_jokerInfo.coolTime = m_jokerInfoMap.find(StoneAbility::jokerSplit)->second.coolTime;
 			}
 			jokerSplit->m_jokerInfo.coolTime--;
+		}
+		},
 
-			std::cout << boardManager.m_playerInfo.m_BlackStone << std::endl;
+		{ StoneAbility::jokerExplode, [this](shared_ptr<JokerStone> jokerExplode, POINT position)
+		{
+			if (jokerExplode->m_jokerInfo.coolTime < 0) boardManager.RemoveGroup({position});
+
+			int patternX[8] = { -1, 0, 1, 1, -1, -1, 0, 1 };
+			int patternY[8] = { -1, -1, -1, 0, 0, 1, 1, 1 };
+
+			for (int i = 0; i < 8; ++i)
+			{
+				int x = position.x + patternX[i];
+				int y = position.y + patternY[i];
+
+				if (boardManager.isValidPoint({ x, y }) && boardManager.m_board[x][y])
+				{
+					if (boardManager.m_stoneTypeMap.find({ x, y })->second = StoneType::Black)
+					{
+						boardManager.m_playerInfo.m_BlackStone++;
+					}
+					
+					boardManager.RemoveGroup({ { x, y } });
+				}
+			}
+			jokerExplode->m_jokerInfo.coolTime--;
 		}
 		}
+
 	};
 
 };
@@ -419,7 +445,7 @@ void BoardManager::InitializeJokerInfoMap()
 
 	//------------------------------------------------------------------------------------------------ 우주 (set 3)
 	m_jokerInfoMap[StoneAbility::jokerTeleport] = { "jokerTeleport.png", 10, 5, 0 };
-	m_jokerInfoMap[StoneAbility::jokerExplode] = { "jokerExplode.png", 15, 7, 0 };
+	m_jokerInfoMap[StoneAbility::jokerExplode] = { "jokerExplode.png", 0, 0, 1, 0, 1 };
 	m_jokerInfoMap[StoneAbility::jokerMagnetic] = { "jokerMagnetic.png", 20, 10, 0 };
 	m_jokerInfoMap[StoneAbility::jokerBlackhole] = { "jokerBlackhole.png", 25, 12, 0 };
 
@@ -484,10 +510,27 @@ int BoardManager::CountLiberty(
 
 void BoardManager::RemoveGroup(const std::vector<POINT>& g)
 {
-	for (POINT p : g) {
+	for (POINT p : g)
+	{
 		m_board[p.x][p.y] = nullptr;
 		m_stoneTypeMap.erase(p);
+
+		if (IsJokerStone(p)) RemoveJokerStone(p); // 조커 돌 제거
 	}
+}
+
+void BoardManager::RemoveJokerStone(POINT position)
+{
+	m_jokerPositions.erase
+	(
+		remove_if
+		(
+			m_jokerPositions.begin(),
+			m_jokerPositions.end(),
+			[&](const pair<POINT, StoneAbility>& p) { return p.first == position; }
+		),
+		m_jokerPositions.end()
+	);
 }
 
 

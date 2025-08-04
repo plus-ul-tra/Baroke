@@ -27,7 +27,7 @@ enum StoneAbility // 능력 혹은 이름
 
 	//---------------- 우주 (set 3)
 	jokerTeleport,
-	jokerExplode,
+	jokerExplode, // 함수 구현 완료
 	jokerMagnetic,
 	jokerBlackhole,
 

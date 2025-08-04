@@ -48,6 +48,7 @@ class BoardManager : public Singleton<BoardManager>
 		std::array<std::array<bool, SIZE_DEFAULT>, SIZE_DEFAULT>& visited
 	) const;
 	void RemoveGroup(const std::vector<POINT>& group); // 사석 판정된 돌 그룹 제거 함수
+	void RemoveJokerStone(POINT position); // 조커 돌 제거 함수
 
 public:
 	PlayerInfo m_playerInfo; // 플레이어 정보 // 흑돌, 백돌, 돈 등
