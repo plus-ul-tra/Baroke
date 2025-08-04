@@ -37,7 +37,7 @@ enum StoneAbility // 능력 혹은 이름
 	jokerQuadunion, // 함수 구현 완료
 
 	//---------------- 할로윈 (set 6)
-	jokerSplit,
+	jokerSplit, // 함수 구현 완료
 	jokerWaxseal,
 	jokerFlip,
 	jokerOthello,

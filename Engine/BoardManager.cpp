@@ -134,6 +134,35 @@ struct JokerFunctionsWrapper
 
 			std::cout << boardManager.m_playerInfo.m_BlackStone << std::endl;
 		}
+		},
+
+		{ StoneAbility::jokerSplit, [this](shared_ptr<JokerStone> jokerSplit, POINT position)
+		{
+			if (!jokerSplit->m_jokerInfo.coolTime)
+			{
+				std::random_device rd;
+				mt19937 rng(rd());
+				uniform_int_distribution<int> dist(1, 100);
+
+				if (dist(rng) <= jokerSplit->m_jokerInfo.functionVariable)
+				{
+					for (int i = 0; i < 10000; ++i)
+					{
+						uniform_int_distribution<int> distX(0, SIZE_DEFAULT - 1);
+						uniform_int_distribution<int> distY(0, SIZE_DEFAULT - 1);
+						int randomX = distX(rng);
+						int randomY = distY(rng);
+
+						if (boardManager.PlaceStone({ randomX, randomY }, StoneType::Black, StoneAbility::None)) break;
+					}
+				}
+
+				jokerSplit->m_jokerInfo.coolTime = m_jokerInfoMap.find(StoneAbility::jokerSplit)->second.coolTime;
+			}
+			jokerSplit->m_jokerInfo.coolTime--;
+
+			std::cout << boardManager.m_playerInfo.m_BlackStone << std::endl;
+		}
 		}
 	};
 
@@ -180,9 +209,10 @@ void BoardManager::PlaceRandomStones(int amount)
 bool BoardManager::InputBasedGameLoop(POINT mousePos) // 마우스 클릭으로 돌 놓기
 {
 	m_selectedPosition = MouseToBoardPosition(mousePos);
-	//std::cout << m_selectedPosition.x << " " << m_selectedPosition.y << std::endl;
-	// 만약 돌은 놓기가 실패했다면 리턴
+
 	if (!PlaceStone(m_selectedPosition, m_stoneType, m_stoneAbility)) return false;
+	JokerAbilityUpdate(); // 조커 능력 업데이트
+	WhiteStoneCheck(m_selectedPosition); // 흰 돌 체크
 
 	m_selectedPosition = { -1, -1 }; // 마지막으로 선택된 위치 초기화
 	m_stoneType = StoneType::Black; // 돌 타입 초기화
@@ -193,9 +223,9 @@ bool BoardManager::InputBasedGameLoop(POINT mousePos) // 마우스 클릭으로 
 
 bool BoardManager::InputBasedGameLoop(int row, int col) // 바둑판 기준 row , col 입력 받아서 해당 배열에 액세스 해서 넣으면댐
 {
-	//std::cout <<"row , col = " << row << " " << col << std::endl;
-	// 만약 돌은 놓기가 실패했다면 리턴
-	if (!PlaceStone({row,col}, m_stoneType, m_stoneAbility)) return false;
+	if (!PlaceStone({ row,col }, m_stoneType, m_stoneAbility)) return false;
+	JokerAbilityUpdate(); // 조커 능력 업데이트
+	WhiteStoneCheck(m_selectedPosition); // 흰 돌 체크
 
 	m_selectedPosition = { -1, -1 }; // 마지막으로 선택된 위치 초기화
 	m_stoneType = StoneType::Black; // 돌 타입 초기화
@@ -290,11 +320,14 @@ bool BoardManager::PlaceStone(POINT selectedPosition, StoneType stoneType, Stone
 	// 사석 판정용 돌 타입 저장 // JokerStone이라도 StoneType::Black 이라면 흑돌로 저장
 	m_stoneTypeMap[selectedPosition] = stoneType;
 
-	JokerAbilityUpdate(); // 조커 능력 업데이트
+	return true;
+}
 
+void BoardManager::WhiteStoneCheck(POINT selectedPosition)
+{
 	for (int k = 0; k < 4; ++k) {
 		int nr = selectedPosition.x + DR[k], nc = selectedPosition.y + DC[k];
-		if (!isValidPoint({nr, nc})) continue;
+		if (!isValidPoint({ nr, nc })) continue;
 
 		auto it = m_stoneTypeMap.find({ nr, nc });
 		if (it == m_stoneTypeMap.end() || it->second == StoneType::Black || it->second == StoneType::Joker) continue;
@@ -303,8 +336,6 @@ bool BoardManager::PlaceStone(POINT selectedPosition, StoneType stoneType, Stone
 		if (CountLiberty(nr, nc, grp, vis) == 0)
 			RemoveGroup(grp);          // 흰 돌만 제거
 	}
-
-	return true;
 }
 
 void BoardManager::ResetStone()
@@ -398,7 +429,7 @@ void BoardManager::InitializeJokerInfoMap()
 	m_jokerInfoMap[StoneAbility::jokerQuadunion] = { "jokerQuadunion.png", 20, 10, 0 };
 
 	//------------------------------------------------------------------------------------------------ 할로윈 (set 6)
-	m_jokerInfoMap[StoneAbility::jokerSplit] = { "jokerSplit.png", 10, 5, 0 };
+	m_jokerInfoMap[StoneAbility::jokerSplit] = { "jokerSplit.png", 0, 3, 0, 0, 20 };
 	m_jokerInfoMap[StoneAbility::jokerWaxseal] = { "jokerWaxseal.png", 15, 7, 0 };
 	m_jokerInfoMap[StoneAbility::jokerFlip] = { "jokerFlip.png", 20, 10, 0 };
 	m_jokerInfoMap[StoneAbility::jokerOthello] = { "jokerOthello.png", 15, 7, 0 };

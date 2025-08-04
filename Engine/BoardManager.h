@@ -65,6 +65,7 @@ public:
 
 	bool isValidPoint(POINT position) const { return position.x >= 0 && position.x < SIZE_DEFAULT && position.y >= 0 && position.y < SIZE_DEFAULT; }
 	bool PlaceStone(POINT selectedPosition, StoneType stoneType, StoneAbility stoneAbility);
+	void WhiteStoneCheck(POINT selectedPosition);
 	void ResetStone();
 
 	shared_ptr<Stone> GetStone(POINT);
