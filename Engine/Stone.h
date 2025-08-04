@@ -11,7 +11,6 @@ enum StoneType // 돌 종류
 };
 enum StoneAbility // 능력 혹은 이름
 {
-
 	None, // 흑돌 백돌
 	//---------------- 일반 (set 1)
 	jokerDouble,
@@ -49,7 +48,6 @@ enum StoneAbility // 능력 혹은 이름
 	jokerLight,
 	jokerTime,
 	jokerWind,
-
 };
 
 class Stone : public Object
@@ -58,7 +56,6 @@ protected:
 	Transform* m_transform {};
 	BitmapRender3D* m_sprite {};
 
-	POINT m_position = { -1, -1 }; // 돌 위치
 	float m_size = 0; // 돌 크기
 	float m_offset = 0; // 돌 간격
 
@@ -73,8 +70,7 @@ public:
 	void Update(double deltaTime) override; // 돌 업데이트 함수
 	void Move(POINT position, double duration = 1.0); // 돌 이동 함수
 
-	POINT GetPosition() const { return m_position; } // 돌 위치 반환
-	void SetPosition(POINT position) { m_position = position; } // 돌 위치 설정
+	POINT GetPosition() const;
 };
 
 class WhiteStone : public Stone
@@ -82,7 +78,6 @@ class WhiteStone : public Stone
 public:
 	WhiteStone(POINT position, float size, int offset)
 	{
-		m_position = position;
 		m_size = size;
 		m_offset = offset;
 
@@ -102,7 +97,6 @@ class BlackStone : public Stone
 public:
 	BlackStone(POINT position, float size, int offset)
 	{
-		m_position = position;
 		m_size = size;
 		m_offset = offset;
 
@@ -137,7 +131,6 @@ public:
 	JokerStone(POINT position, float size, int offset, StoneAbility ability)
 	{
 		m_jokerInfo = m_jokerInfoMap[ability]; // 조커 돌 능력 정보 가져오기(값 복사)
-		m_position = position;
 		m_size = size;
 		m_offset = offset;
 

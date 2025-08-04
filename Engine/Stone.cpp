@@ -21,9 +21,14 @@ void Stone::Update(double deltaTime)
 
 void Stone::Move(POINT position, double duration)
 {
-	m_position = position;
 	m_lerpTime = duration;
 
 	m_lerpStartPosition = m_transform->GetPosition();
 	m_lerpEndPosition = XMVectorSet(static_cast<float>(position.x) + m_size / 2, static_cast<float>(position.y) + m_size / 2, 0.0f, 1.0f);
+}
+
+POINT Stone::GetPosition() const
+{
+	XMVECTOR pos = m_transform->GetPosition();
+	return { static_cast<int>(XMVectorGetX(pos)), static_cast<int>(XMVectorGetY(pos)) };
 }

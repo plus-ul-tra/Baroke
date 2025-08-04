@@ -17,8 +17,6 @@ void GameScene::SetUIJokerButton()
 	m_buttonList.emplace_back(rightUI.get());
 	m_objectList.emplace_back(std::move(rightUI));
 
-
-
 	unique_ptr<JokerButton> jokerButton1 = std::make_unique<JokerButton>(600.0f, 300.0f, 100, 100, "jokerDouble.png", 50);
 	jokerButton1->SetButtonJoker(Joker, jokerDouble);
 	m_buttonList.emplace_back(jokerButton1.get());
@@ -41,7 +39,7 @@ void GameScene::SetUIJokerButton()
 
 	unique_ptr<JokerButton> jokerButton5 = std::make_unique<JokerButton>(600.0f, -300.0f, 100, 100, "jokerPeacock.png", 50);
 	jokerButton5->SetButtonJoker(Black, jokerPeacock);
-
+  
 	m_buttonList.emplace_back(jokerButton5.get());
 	m_UIList.emplace_back(std::move(jokerButton5));
 }
@@ -236,12 +234,8 @@ void GameScene::OnInput(const MouseEvent& ev)
 	else if (ev.type == MouseType::RDown)
 	{
 		std::cout << ev.pos.x << " " << ev.pos.y << std::endl;
-		m_board.SetStoneType(Joker);
-
-		m_board.SetStoneAbility(jokerEgg);
-
-		//m_board.SetStoneAbility(jokerEvolution);
-
+		m_board.SetStoneType(Black);
+		m_board.SetStoneAbility(JokerPeacock);
 		m_board.InputBasedGameLoop(ev.pos);
 		std::cout << "Joker Stone Count : " << m_board.GetStoneTypeAmount(Joker) << std::endl;
 	}
