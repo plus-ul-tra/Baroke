@@ -80,7 +80,7 @@ public:
 		}
 		else 
 		{
-			if (m_bitmapRender) m_bitmapRender->SetShaderType("DefaultShader");
+			if (m_bitmapRender) m_bitmapRender->SetShaderType("Holo");
 		}
 		ButtonFunction();
 		Object::Update(dt);

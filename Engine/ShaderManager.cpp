@@ -86,12 +86,12 @@ void ShaderManager::ReadAllShaders()
 	// GrayScale
 	hr = ReadShaderResource("..\\Shader\\DefaultShader_VS.cso", "..\\Shader\\GrayScale_PS.cso", "GrayScale", quadLayout, numQuadElements);
 	if (FAILED(hr)) {
-		cout << "NoiseBlend리드 실패" << endl;
+		cout << "GrayScale리드 실패" << endl;
 	}
 
 	hr = ReadShaderResource("..\\Shader\\DefaultShader_VS.cso", "..\\Shader\\Holo_PS.cso", "Holo", quadLayout, numQuadElements);
 	if (FAILED(hr)) {
-		cout << "NoiseBlend리드 실패" << endl;
+		cout << "Holo리드 실패" << endl;
 	}
 }
 
