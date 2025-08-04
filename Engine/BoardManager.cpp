@@ -13,7 +13,7 @@ struct JokerFunctionsWrapper
 
 	unordered_map<StoneAbility, function<void(shared_ptr<JokerStone>, POINT)>> g_abilityFunctions =
 	{
-		{ StoneAbility::JokerEgg, [this](shared_ptr<JokerStone> jokerEgg, POINT position)
+		{ StoneAbility::jokerEgg, [this](shared_ptr<JokerStone> jokerEgg, POINT position)
 		{
 			if (!jokerEgg->m_jokerInfo.coolTime)
 			{
@@ -26,7 +26,7 @@ struct JokerFunctionsWrapper
 		}
 		},
 
-		{ StoneAbility::JokerOstrichEgg, [this](shared_ptr<JokerStone> jokerOstrichEgg, POINT position)
+		{ StoneAbility::jokerOstrichEgg, [this](shared_ptr<JokerStone> jokerOstrichEgg, POINT position)
 		{
 			if (!jokerOstrichEgg->m_jokerInfo.coolTime)
 			{
@@ -39,13 +39,13 @@ struct JokerFunctionsWrapper
 		}
 		},
 
-		{ StoneAbility::JokerBite, [this](shared_ptr<JokerStone> jokerBite, POINT positon)
+		{ StoneAbility::jokerDansu, [this](shared_ptr<JokerStone> jokerBite, POINT positon)
 		{
 			// 이건는 방향을 인풋으로 받아야 함
 		}
 		},
 
-		{ StoneAbility::JokerPeacock, [this](shared_ptr<JokerStone> jokerPeacock, POINT position)
+		{ StoneAbility::jokerPeacock, [this](shared_ptr<JokerStone> jokerPeacock, POINT position)
 		{
 			if (jokerPeacock->m_jokerInfo.coolTime != 0) return;
 			jokerPeacock->m_jokerInfo.coolTime--;
@@ -98,7 +98,7 @@ struct JokerFunctionsWrapper
 		}
 		},
 
-		{ StoneAbility::JokerFusion, [this](shared_ptr<JokerStone> jokerFusion, POINT position)
+		{ StoneAbility::jokerFusion, [this](shared_ptr<JokerStone> jokerFusion, POINT position)
 		{
 			vector<POINT> grp;
 			array<array<bool, SIZE_DEFAULT>, SIZE_DEFAULT> vis{};
@@ -111,7 +111,7 @@ struct JokerFunctionsWrapper
 		}
 		},
 
-		{ StoneAbility::JokerTriunion, [this](shared_ptr<JokerStone> jokerTriunion, POINT position)
+		{ StoneAbility::jokerTriunion, [this](shared_ptr<JokerStone> jokerTriunion, POINT position)
 		{
 			vector<POINT> grp;
 			array<array<bool, SIZE_DEFAULT>, SIZE_DEFAULT> vis{};
@@ -123,7 +123,7 @@ struct JokerFunctionsWrapper
 			std::cout << boardManager.m_playerInfo.m_BlackStone << std::endl;
 		}
 		},
-		{ StoneAbility::JokerQuadunion, [this](shared_ptr<JokerStone> jokerQuadunion, POINT position)
+		{ StoneAbility::jokerQuadunion, [this](shared_ptr<JokerStone> jokerQuadunion, POINT position)
 		{
 			vector<POINT> grp;
 			array<array<bool, SIZE_DEFAULT>, SIZE_DEFAULT> vis{};
