@@ -17,7 +17,6 @@ void SceneBase::Render(Renderer& renderer) {
 
 	for (const auto& obj : m_objectList) {
 
-		//ÀÏ¹Ý ±×¸®±â
 		if (auto bitmapRenderComp = obj->GetComponent<BitmapRender3D>())
 		{
 			if (bitmapRenderComp->IsActive())
@@ -25,8 +24,7 @@ void SceneBase::Render(Renderer& renderer) {
 				bitmapRenderComp->Render(renderer);
 			}
 		}
-
-		// ¾È¾¸
+		obj->Render(renderer);
 		//if (auto textRenderComp = obj->GetComponent<TextRender>())
 		//{
 		//	if (textRenderComp->IsActive())
@@ -34,7 +32,6 @@ void SceneBase::Render(Renderer& renderer) {
 		//		textRenderComp->Render(renderer);
 		//	}
 		//}
-		obj->Render(renderer);
 	}
 
 
@@ -42,7 +39,8 @@ void SceneBase::Render(Renderer& renderer) {
 	// --- UI
 	//for (const auto& ui : m_UIList) {
 
-	//	//ÀÏ¹Ý ±×¸®±â
+
+	//	//ï¿½Ï¹ï¿½ ï¿½×¸ï¿½ï¿½ï¿½
 	//	if (auto bitmapRenderComp = ui->GetComponent<BitmapRender3D>())
 	//	{
 	//		if (bitmapRenderComp->IsActive())
@@ -58,7 +56,7 @@ void SceneBase::Render(Renderer& renderer) {
 //
 void RenderObject(Object* obj, Renderer& renderer)
 {
-	// µð¹ö±×¿ë GeoRender
+	// ï¿½ï¿½ï¿½ï¿½×¿ï¿½ GeoRender
 	if (MIYABI::Core::GetInstance().IsDebugMode())
 	{
 		if (auto geo = obj->GetComponent<GeoRender>())
@@ -66,12 +64,12 @@ void RenderObject(Object* obj, Renderer& renderer)
 				geo->Render(renderer);
 	}
 
-	// ÀÏ¹Ý ºñÆ®¸Ê ·»´õ
+	// ï¿½Ï¹ï¿½ ï¿½ï¿½Æ®ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
 	if (auto bmp = obj->GetComponent<BitmapRender3D>())
 		if (bmp->IsActive())
 			bmp->Render(renderer);
 
-	// ¿ÀºêÁ§Æ® ÀÚÃ¼ ·»´õ
+	// ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Æ® ï¿½ï¿½Ã¼ ï¿½ï¿½ï¿½ï¿½
 	obj->Render(renderer);
 
 }
