@@ -19,7 +19,7 @@ void GameScene::SetUIJokerButton()
 
 	unique_ptr<JokerButton> jokerButton1 = std::make_unique<JokerButton>(600.0f, 300.0f, 100, 100, "jokerDouble.png", 50);
 	jokerButton1->SetButtonJoker(Joker, jokerDouble);
-	//jokerButton1->GetComponent<BitmapRender3D>()->SetShaderType("Holo");
+/*	jokerButton1->GetComponent<BitmapRender3D>()->SetShaderType("Holo");*/
 	m_buttonList.emplace_back(jokerButton1.get());
 	m_UIList.emplace_back(std::move(jokerButton1));
 
