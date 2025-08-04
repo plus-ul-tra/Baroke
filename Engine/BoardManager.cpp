@@ -80,7 +80,7 @@ void BoardManager::PlaceRandomStones(int amount)
 bool BoardManager::InputBasedGameLoop(POINT mousePos) // 마우스 클릭으로 돌 놓기
 {
 	m_selectedPosition = MouseToBoardPosition(mousePos);
-	std::cout << m_selectedPosition.x << " " << m_selectedPosition.y << std::endl;
+	//std::cout << m_selectedPosition.x << " " << m_selectedPosition.y << std::endl;
 	// 만약 돌은 놓기가 실패했다면 리턴
 	if (!PlaceStone(m_selectedPosition, m_stoneType, m_stoneAbility)) return false;
 
@@ -95,7 +95,7 @@ bool BoardManager::InputBasedGameLoop(POINT mousePos) // 마우스 클릭으로 
 
 bool BoardManager::InputBasedGameLoop(int row, int col) // 바둑판 기준 row , col 입력 받아서 해당 배열에 액세스 해서 넣으면댐
 {
-	std::cout <<"row , col = " << row << " " << col << std::endl;
+	//std::cout <<"row , col = " << row << " " << col << std::endl;
 	// 만약 돌은 놓기가 실패했다면 리턴
 	if (!PlaceStone({row,col}, m_stoneType, m_stoneAbility)) return false;
 

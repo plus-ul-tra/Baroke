@@ -72,14 +72,15 @@ public:
 
 		m_isActive = m_isEnabledPredicate();
 
-		if (!m_isActive) 
+		if (!m_isActive)
 		{
-			std::cout << this << "UnDo" << std::endl;
+			//std::cout << this << "UnDo" << std::endl;
+			if (m_bitmapRender) m_bitmapRender->SetShaderType("NoiseBlend");
 		}
-
-		// 비활성 시 시각 효과(예: 회색톤)만 남기고 입력 차단
-		if (m_bitmapRender) m_bitmapRender->SetGrayscale(!m_isActive);
-
+		else 
+		{
+			if (m_bitmapRender) m_bitmapRender->SetShaderType("DefaultShader");
+		}
 		ButtonFunction();
 		Object::Update(dt);
 	}

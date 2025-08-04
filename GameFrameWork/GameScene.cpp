@@ -179,7 +179,7 @@ void GameScene::KeyCommandMapping()
 
 	m_commandMap["F3"] = [this]()
 		{
-			m_board.PlaceRandomStones(3);
+			//m_board.PlaceRandomStones(3);
 		};
 
 	m_commandMap["F4"] = [this]()
