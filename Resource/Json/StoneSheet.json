@@ -1,6 +1,6 @@
 { "stones": [
   {
-    "ID" : "1",
+    "ID": "JokerStone1",
     "stonename": "JokerStone1",
     "description": "Description of JokerStone1",
     "filename": "JokerStone1.png",

@@ -23,6 +23,8 @@ protected:
 
 	virtual void ButtonFunction() {}; // 버튼 기능을 구현하는 함수, 자식 클래스에서 오버라이드
 
+	std::function<bool()> m_isEnabledPredicate = []() { return true; };
+
 public:
 	Button(float posX, float posY, float width, float height)
 		: m_width(width), m_height(height) {
@@ -46,7 +48,6 @@ public:
 		
 	}
 
-	void Update(double deltaTime) override { Object::Update(deltaTime); ButtonFunction(); }
 
 	XMVECTOR GetPosition() const { return m_transform->GetPosition(); }
 	void SetPosition(XMVECTOR pos) { m_transform->SetPosition(pos); }
@@ -61,12 +62,99 @@ public:
 	void SetIsActive(bool active) { m_isActive = active; }
 
 	void CheckInput(const MouseEvent& mouseEvent);
+
+	void BindEnabledPredicate(std::function<bool()> pred)
+	{
+		m_isEnabledPredicate = std::move(pred);
+	}
+
+	void Update(double dt) override
+	{
+
+		m_isActive = m_isEnabledPredicate();
+
+		if (!m_isActive)
+		{
+			//std::cout << this << "UnDo" << std::endl;
+			if (m_bitmapRender) m_bitmapRender->SetShaderType("GrayScale");
+		}
+		else 
+		{
+			if (m_bitmapRender) m_bitmapRender->SetShaderType("DefaultShader");
+		}
+		ButtonFunction();
+		Object::Update(dt);
+	}
 };
 
 class JokerButton : public Button
 {
 	StoneType m_stoneType = StoneType::Joker;
 	StoneAbility m_jokerAbility = StoneAbility::None;
+
+	static std::function<bool()> BuildPredicate(StoneAbility ability)
+	{
+		BoardManager& bm = BoardManager::GetInstance();
+
+		switch (ability)
+		{
+			//-------------------------------- 일반 (set 1)
+		case jokerDouble:   // 흑돌 2개 이상
+			return [&bm]() { return bm.CountStones(Black) >= 2; };
+		case jokerOmok:   // 흑돌 5개 이상
+			return [&bm]() { return bm.HasStraightLine(Black,5); };
+		case jokerSamok:   // 조커돌 4개 이상
+			return [&bm]() { return bm.HasStraightLine(Joker, 4); };
+		case jokerSammok:   // 조커돌 3개 이상
+			return [&bm]() { return bm.HasStraightLine(Joker, 3); };
+
+			//-------------------------------- 야생 (set 2)
+		case jokerEgg:   // 흑돌 5개 이상
+			return [&bm]() { return bm.CountStones(Black) >= 5; };
+
+ 		case jokerOstrichEgg:   // 항상 트루
+			return [&bm]() { return true; };
+
+		case jokerPeacock:   // 흰돌 5개 이상
+			return [&bm]() { return bm.CountStones(White) >= 5; };
+
+		case jokerEvolution:   // 야생 돌2개 이상
+			return [&bm]() { return true; };
+
+		case jokerDansu:   // 자유도가 1인 흰돌이 존재하는 경우
+			return [&bm]() { return bm.WhiteLibOne(); };
+
+			//-------------------------------- 우주 (set 3)
+		case jokerTeleport:   // 
+			return [&bm]() { return  bm.CountStones(Black) >= 1; };
+
+		case jokerExplode:   // 착수 지점을 기준 3*3범위에 흑돌이 5개 이상
+			return [&bm]() { return bm.HasBombReady(5); };
+
+		case jokerMagnetic:   // 착수 지점을 기준 3*3범위에 흑돌 == 백돌
+			return [&bm]() { return bm.IsSamaBlackWhite(); };
+
+		case jokerBlackhole:   // 자유도가 0인 지점이 존재하는 경우
+			return [&bm]() { return bm.IsLibZero(); };
+
+			//-------------------------------- 단청 (set 4)
+		case jokerFusion:   // 
+			return [&bm]() { return  bm.CountStones(Black) >= 1; };
+
+		case jokerTriunion:   // 착수 지점을 기준 3*3범위에 흑돌이 5개 이상
+			return [&bm]() { return bm.HasBombReady(5); };
+
+		case jokerQuadunion:   // 착수 지점을 기준 3*3범위에 흑돌 == 백돌
+			return [&bm]() { return bm.IsSamaBlackWhite(); };
+
+
+		default:
+			return []() { return false; };
+		}
+	}
+
+	// 조커를 눌렀을 때 희생모드? 
+	// 이때 보드판을 클릭을해 >> 클릭 한곳이 블랙이야 >> 이친구 임시 그룹에 넣어두고 색깔 그레이스케일
 
 	void ButtonFunction() override;
 
@@ -75,5 +163,10 @@ public:
 		: Button(posX, posY, width, height, bitmapFile, order) {}
 
 
-	void SetButtonJoker(StoneType stoneType, StoneAbility ability) { m_jokerAbility = ability; m_stoneType = stoneType; }
+	void SetButtonJoker(StoneType stoneType, StoneAbility ability) {
+		m_jokerAbility = ability;
+		m_stoneType = stoneType;        
+		BindEnabledPredicate(BuildPredicate(ability));
+	}
+
 };

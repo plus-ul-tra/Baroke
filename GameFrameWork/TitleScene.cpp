@@ -13,7 +13,7 @@ void TitleScene::Initialize()
 	m_objectList.emplace_back(std::move(backGround));
 
 	//title
-	unique_ptr<Button> title = std::make_unique<Button>(0.0f, 200.0f, 600.0f, 300.0f, "T_Main_Logo.png", 50);
+	unique_ptr<Button> title = std::make_unique<Button>(0.0f, 200.0f, 996.0f, 428.0f, "T_Main_Logo.png", 50);
 	m_objectList.emplace_back(std::move(title));
 	//m_buttonList.emplace_back(button1.get());
 
