@@ -10,16 +10,9 @@ struct JokerFunctionsWrapper
 {
 	BoardManager& boardManager = BoardManager::GetInstance();
 
-	unordered_map<StoneAbility, function<void(shared_ptr<JokerStone>)>> g_abilityFunctions =
+	unordered_map<StoneAbility, function<void(shared_ptr<JokerStone>, POINT)>> g_abilityFunctions =
 	{
-		{ StoneAbility::JokerEvolve, [this](shared_ptr<JokerStone> jokerStone)
-		{
-			// 조커 능력 1
-			cout << "JokerAbility1" << endl;
-		}
-		},
-
-		{ StoneAbility::JokerEgg, [this](shared_ptr<JokerStone> jokerEgg)
+		{ StoneAbility::JokerEgg, [this](shared_ptr<JokerStone> jokerEgg, POINT position)
 		{
 			if (!jokerEgg->m_jokerInfo.coolTime)
 			{
@@ -32,7 +25,7 @@ struct JokerFunctionsWrapper
 		}
 		},
 
-		{ StoneAbility::JokerOstrichEgg, [this](shared_ptr<JokerStone> jokerOstrichEgg)
+		{ StoneAbility::JokerOstrichEgg, [this](shared_ptr<JokerStone> jokerOstrichEgg, POINT position)
 		{
 			if (!jokerOstrichEgg->m_jokerInfo.coolTime)
 			{
@@ -45,13 +38,13 @@ struct JokerFunctionsWrapper
 		}
 		},
 
-		{ StoneAbility::JokerBite, [this](shared_ptr<JokerStone> jokerBite)
+		{ StoneAbility::JokerBite, [this](shared_ptr<JokerStone> jokerBite, POINT positon)
 		{
 			// 이건는 방향을 인풋으로 받아야 함
 		}
 		},
 
-		{ StoneAbility::JokerPeacock, [this](shared_ptr<JokerStone> jokerPeacock)
+		{ StoneAbility::JokerPeacock, [this](shared_ptr<JokerStone> jokerPeacock, POINT position)
 		{
 			if (jokerPeacock->m_jokerInfo.coolTime != 0) return;
 			jokerPeacock->m_jokerInfo.coolTime--;
@@ -62,8 +55,6 @@ struct JokerFunctionsWrapper
 				int patternY[8] = { -1, -1, -1, 0, 0, 1, 1, 1 };
 
 				int functionVariable = jokerPeacock->m_jokerInfo.functionVariable;
-				POINT position = boardManager.MouseToBoardPosition(jokerPeacock->GetPosition());
-				position.y -= 1;
 
 				int count = 0;
 				for (const auto& pair : boardManager.GetStoneTypeMap())
@@ -101,6 +92,44 @@ struct JokerFunctionsWrapper
 					}
 				}
 			}
+		}
+		},
+
+		{ StoneAbility::JokerFusion, [this](shared_ptr<JokerStone> jokerFusion, POINT position)
+		{
+			vector<POINT> grp;
+			array<array<bool, SIZE_DEFAULT>, SIZE_DEFAULT> vis{};
+			if (boardManager.CountLiberty(position.x, position.y, grp, vis) == 0)
+			{
+				boardManager.m_playerInfo.m_BlackStone += jokerFusion->m_jokerInfo.functionVariable * grp.size();
+			}
+
+			std::cout << boardManager.m_playerInfo.m_BlackStone << std::endl;
+		}
+		},
+
+		{ StoneAbility::JokerTriunion, [this](shared_ptr<JokerStone> jokerTriunion, POINT position)
+		{
+			vector<POINT> grp;
+			array<array<bool, SIZE_DEFAULT>, SIZE_DEFAULT> vis{};
+			if (boardManager.CountLiberty(position.x, position.y, grp, vis) == 0)
+			{
+				boardManager.m_playerInfo.m_BlackStone += jokerTriunion->m_jokerInfo.functionVariable * grp.size();
+			}
+
+			std::cout << boardManager.m_playerInfo.m_BlackStone << std::endl;
+		}
+		},
+		{ StoneAbility::JokerQuadunion, [this](shared_ptr<JokerStone> jokerQuadunion, POINT position)
+		{
+			vector<POINT> grp;
+			array<array<bool, SIZE_DEFAULT>, SIZE_DEFAULT> vis{};
+			if (boardManager.CountLiberty(position.x, position.y, grp, vis) == 0)
+			{
+				boardManager.m_playerInfo.m_BlackStone += jokerQuadunion->m_jokerInfo.functionVariable * grp.size();
+			}
+
+			std::cout << boardManager.m_playerInfo.m_BlackStone << std::endl;
 		}
 		}
 	};
@@ -151,8 +180,6 @@ bool BoardManager::InputBasedGameLoop(POINT mousePos) // 마우스 클릭으로 
 	// 만약 돌은 놓기가 실패했다면 리턴
 	if (!PlaceStone(m_selectedPosition, m_stoneType, m_stoneAbility)) return false;
 
-	JokerAbilityUpdate(); // 조커 능력 업데이트
-
 	m_selectedPosition = { -1, -1 }; // 마지막으로 선택된 위치 초기화
 	m_stoneType = StoneType::Black; // 돌 타입 초기화
 	m_stoneAbility = StoneAbility::None; // 돌 능력 초기화
@@ -165,8 +192,6 @@ bool BoardManager::InputBasedGameLoop(int row, int col) // 바둑판 기준 row 
 	std::cout <<"row , col = " << row << " " << col << std::endl;
 	// 만약 돌은 놓기가 실패했다면 리턴
 	if (!PlaceStone({row,col}, m_stoneType, m_stoneAbility)) return false;
-
-	JokerAbilityUpdate(); // 조커 능력 업데이트
 
 	m_selectedPosition = { -1, -1 }; // 마지막으로 선택된 위치 초기화
 	m_stoneType = StoneType::Black; // 돌 타입 초기화
@@ -190,7 +215,7 @@ void BoardManager::JokerAbilityUpdate()
 		auto it = wrapper.g_abilityFunctions.find(ability);
 		if (it != wrapper.g_abilityFunctions.end())
 		{
-			it->second(jokerStone);
+			it->second(jokerStone, position); // 조커 능력 함수 실행
 		}
 	}
 }
@@ -260,6 +285,8 @@ bool BoardManager::PlaceStone(POINT selectedPosition, StoneType stoneType, Stone
 
 	// 사석 판정용 돌 타입 저장 // JokerStone이라도 StoneType::Black 이라면 흑돌로 저장
 	m_stoneTypeMap[selectedPosition] = stoneType;
+
+	JokerAbilityUpdate(); // 조커 능력 업데이트
 
 	for (int k = 0; k < 4; ++k) {
 		int nr = selectedPosition.x + DR[k], nc = selectedPosition.y + DC[k];
@@ -342,11 +369,14 @@ int BoardManager::GetStoneTypeAmount(StoneType type) const
 
 void BoardManager::InitializeJokerInfoMap()
 {
-	m_jokerInfoMap[StoneAbility::JokerEvolve] = { "JokerEvolve.png", 2, 7, 0 };
 	m_jokerInfoMap[StoneAbility::JokerEgg] = { "JokerEgg.png", 0, 3, 0, 0, 1 };
 	m_jokerInfoMap[StoneAbility::JokerOstrichEgg] = { "JokerOstrichEgg.png", 0, 2, 0, 0, 1 };
 	m_jokerInfoMap[StoneAbility::JokerBite] = { "JokerBite.png", 30, 15, 0 };
 	m_jokerInfoMap[StoneAbility::JokerPeacock] = { "JokerPeacock.png", 1, 0, 0, 0, 2 };
+
+	m_jokerInfoMap[StoneAbility::JokerFusion] = { "JokerEgg.png", 0, 0, 0, 0, 2 };
+	m_jokerInfoMap[StoneAbility::JokerTriunion] = { "JokerEgg.png", 0, 0, 0, 0, 3 };
+	m_jokerInfoMap[StoneAbility::JokerQuadunion] = { "JokerEgg.png", 0, 0, 0, 0, 4 };
 }
 
 int BoardManager::CountLiberty(
