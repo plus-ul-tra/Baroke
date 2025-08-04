@@ -2,10 +2,12 @@
 
 #include "Component.h"
 #include "CoreTypes.h"
+#include <string>
 //#include "Renderer.h"
 class Object;
 class Renderer;
 class Transform;
+using namespace std;
 
 // 기본도형(디버그용), sprite용 으로 파생
 class BaseRender :public Component{
@@ -26,7 +28,7 @@ public :
 	virtual void Render(Renderer& renderer) = 0;
 
 	void Update(double deltaTime) override {}
-	void OnEvent(const std::string& ev) override {}
+	void OnEvent(const string& ev) override {}
 
 	void SetOwner(Object* owner) override;
 

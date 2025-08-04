@@ -2,6 +2,7 @@
 #include "BaseRender.h"
 #include "Renderer.h"
 #include "Transform.h"
+#include <string>
 
 class TextRender : public BaseRender
 {

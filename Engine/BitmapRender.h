@@ -2,6 +2,7 @@
 #include "BaseRender.h"
 #include "SpriteManager.h"
 
+#include <string>
 #include <wrl/client.h>
 #include <d3d11.h>
 #include <DirectXMath.h>
@@ -17,7 +18,7 @@ using namespace Microsoft::WRL;
 
 class BitmapRender3D : public BaseRender {
 private:
-
+	string m_shaderType = "DefaultShader"; // 쉐이더 타입
 	float m_width;
 	float m_height;
 
@@ -52,7 +53,8 @@ public:
 
 	void SetSize(float width, float height);
 	float GetWidth() const { return m_width; }
-
 	float GetHeight() const { return m_height; }
 
+	void SetShaderType(const string& type) { m_shaderType = type; } // 쉐이더 타입 설정
+	const string& GetShaderType() const { return m_shaderType; } // 현재 쉐이더 타입 반환
 };

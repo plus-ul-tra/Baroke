@@ -27,13 +27,15 @@ public:
 
 		m_boardManager.Initialize(offX, offY, drawW, drawH, _cell, m_stoneOffset, padding); // 보드 매니저 초기화
 	}
+	// 이건 어디서 호출?
 	void Render(Renderer& r) override
-	{
-		if (m_bitmapRender) m_bitmapRender->Render(r);
+	{	
+		//if (m_bitmapRender) m_bitmapRender->Render(r, "NoiseShader"); // 보드가 자기 그림
 
+	
 		for (auto& sp : m_stones)
 			if (auto* bmp = sp->GetComponent<BitmapRender3D>())
-				if (bmp->IsActive()) bmp->Render(r);
+				if (bmp->IsActive()) bmp->Render(r); // 돌그리기
 
 	}
 

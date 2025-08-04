@@ -1,5 +1,6 @@
 #pragma once
 #include <memory>
+#include <string>
 #include"Component.h"
 #include "Renderer.h"
 
@@ -9,7 +10,7 @@ class Object {
 	
 private:
 	std::vector<std::unique_ptr<Component>> m_Components;
-
+	
 public:
 	template<typename T, typename... Args>
 	T* AddComponent(Args&&... args)
@@ -45,7 +46,9 @@ public:
 	//ÇÊ¼ö´Â ¾Æ´Ô
 	virtual void FixedUpdate(double deltaTime);
 	virtual void LateUpdate(double deltaTime);
+
 	virtual void Render(Renderer& renderer) {};
+
 	void _SendMessage(const mycore::MessageID msg, void* data = nullptr);
 
 	void SendEvent(const std::string& ev);

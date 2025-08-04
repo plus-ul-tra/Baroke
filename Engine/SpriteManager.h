@@ -37,7 +37,10 @@ private:
 public:
 	void Initialize(ID3D11Device* pDevice, ID3D11DeviceContext* pDeviceContextr);
 	void LoadAll();
+
+	// png 읽어서 -> SRV로 변환
 	ComPtr<ID3D11ShaderResourceView> LoadTextureSRV(const filesystem::path& filePath);
+
 	void LoadAnimationClips(const filesystem::path& filePath);
 	ID3D11Device* GetDevice() { return m_pDevice; }
 	const ComPtr<ID3D11ShaderResourceView> GetTextureSRV(const string& key) const;

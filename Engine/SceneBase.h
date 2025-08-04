@@ -30,6 +30,8 @@ public:
 	virtual void Initialize() = 0;
 	virtual void Update(double deltaTime) = 0;
 	virtual void Render(Renderer& renderer);
+
+	// 안씀
 	void RenderObject(Object* obj, Renderer& renderer);
 
 	// Scene에 따라서 구현 필수는 아님

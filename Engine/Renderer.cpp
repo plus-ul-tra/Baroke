@@ -28,7 +28,7 @@ void Renderer::Initialize(HWND hwnd)
 	CreateShaderRenderTargets();
 	CreateFullScrennQuad();
 	CreateWriteResource();
-
+	
 	ComPtr<IWICImagingFactory> wicFactory;
 	HRESULT hr = CoCreateInstance(CLSID_WICImagingFactory,
 		nullptr,
@@ -52,10 +52,11 @@ void Renderer::Initialize(HWND hwnd)
 		std::cerr << "ERROR: Failed to create Post-processing Sampler State! HRESULT: 0x" << std::hex << hr << std::endl;
 		return;
 	}
+
 	//D3D11_RASTERIZER_DESC rsDesc = {};
 	//rsDesc.FillMode = D3D11_FILL_SOLID;
-	//rsDesc.CullMode = D3D11_CULL_NONE; // 컬링 비활성화 (양면 렌더링)
-	//rsDesc.FrontCounterClockwise = FALSE; // Direct3D 기본 (시계 방향 정점 = 앞면)
+	//rsDesc.CullMode = D3D11_CULL_NONE; // 컬링 비활성화 
+	//rsDesc.FrontCounterClockwise = FALSE; // Direct3D 기본
 	//rsDesc.DepthBias = 0;
 	//rsDesc.DepthBiasClamp = 0.0f;
 	//rsDesc.SlopeScaledDepthBias = 0.0f;
@@ -64,6 +65,8 @@ void Renderer::Initialize(HWND hwnd)
 	//rsDesc.MultisampleEnable = FALSE;
 	//rsDesc.AntialiasedLineEnable = FALSE;
 	//HRESULT hr_rs = m_pd3dDevice->CreateRasterizerState(&rsDesc, &m_pRasterizerState);
+
+	CreateTimeCBuffer();
 
 	hr = CreateSpriteConstantBuffers();
 	if (FAILED(hr)) return;
@@ -79,6 +82,22 @@ void Renderer::Initialize(HWND hwnd)
 	SpriteManager::GetInstance().Initialize(m_pd3dDevice.Get(), m_pd3dContext.Get());
 
 	OutputDebugStringA("INFO: Renderer initialized successfully.\n");
+}
+
+void Renderer::CreateTimeCBuffer()
+{
+	D3D11_BUFFER_DESC cbd{};
+	cbd.ByteWidth = sizeof(TimeCBuffer); // 구조체 크기
+	cbd.Usage = D3D11_USAGE_DEFAULT;
+	cbd.BindFlags = D3D11_BIND_CONSTANT_BUFFER;
+	cbd.CPUAccessFlags = 0;
+	cbd.MiscFlags = 0;
+	cbd.StructureByteStride = 0;
+
+	HRESULT hr = m_pd3dDevice->CreateBuffer(&cbd, nullptr, &m_pTimeCBuffer);
+	if (FAILED(hr)) {
+		OutputDebugStringA("Failed to create Time Constant Buffer\n");
+	}
 }
 
 void Renderer::Uninitialize()
@@ -295,24 +314,7 @@ void Renderer::RenderBegin()
 	m_pd3dContext->ClearRenderTargetView(rtv, backgroundColor);
 	// m_pd3dContext->ClearDepthStencilView(m_pDepthStencilView.Get(), D3D11_CLEAR_DEPTH, 1.0f, 0); // 깊이 버퍼 사용 시
 
-	// D3D 렌더링에 필요한 기본 상태 설정
-	const ShaderSet& spriteShaderSet = m_shaderManager->GetShaderSet("SpriteShader"); // 적용 ★★★
-
-
-	if (!spriteShaderSet.vs || !spriteShaderSet.ps || !spriteShaderSet.inputLayout) {
-		//OutputDebugStringA("ERROR: 'SpriteShader' ShaderSet is incomplete or not found in Renderer. Cannot set D3D states.\n");
-		cout << "spreiteShader fail" << endl;
-		return;
-	}
-
-	m_pd3dContext->VSSetShader(spriteShaderSet.vs.Get(), nullptr, 0);
-	m_pd3dContext->PSSetShader(spriteShaderSet.ps.Get(), nullptr, 0);
-	m_pd3dContext->IASetInputLayout(spriteShaderSet.inputLayout.Get());
-	m_pd3dContext->IASetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
-
-	// 스프라이트 전용 샘플러
-	m_pd3dContext->PSSetSamplers(0, 1, m_pSpriteSamplerState.GetAddressOf());
-
+	// ------------------------- shader 모드 설정분리 ------------------------
 	// 뷰포트 설정
 	D3D11_VIEWPORT viewport = {};
 	viewport.TopLeftX = 0.0f;
@@ -328,6 +330,56 @@ void Renderer::RenderBegin()
 	m_pd3dContext->OMSetBlendState(m_blendState.Get(), nullptr, 0xFFFFFFFF);
 }
 
+void Renderer::SetShaderMode(const string& mode) {
+
+	// cso 바인딩
+	// 추가 자원(normal, noise) 있는 경우 if 로 분기하죠
+
+	const ShaderSet& DefaultShaderSet = m_shaderManager->GetOBJShaderSet(mode);
+	//const ShaderSet& DefaultShaderSet = m_shaderManager->GetShaderSet(mode); //적용 ★★★
+
+	if (!DefaultShaderSet.vs || !DefaultShaderSet.ps || !DefaultShaderSet.inputLayout) {
+		//OutputDebugStringA("ERROR: 'DefaultShader' ShaderSet is incomplete or not found in Renderer. Cannot set D3D states.\n");
+		//cout << "spreiteShader fail" << endl;
+		return;
+	}
+
+	m_pd3dContext->VSSetShader(DefaultShaderSet.vs.Get(), nullptr, 0);
+	m_pd3dContext->PSSetShader(DefaultShaderSet.ps.Get(), nullptr, 0);
+	m_pd3dContext->IASetInputLayout(DefaultShaderSet.inputLayout.Get());
+	m_pd3dContext->IASetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
+
+	// 스프라이트 전용 샘플러
+	m_pd3dContext->PSSetSamplers(0, 1, m_pSpriteSamplerState.GetAddressOf());
+
+	if (mode == "NoiseBlend") {
+		// SRV 리턴
+		auto noiseSRV = SpriteManager::GetInstance().GetTextureSRV("Seamless2.png"); // 이거 manager에서 생성해둔거 사용으로 수정
+		auto noiseSRV2 = SpriteManager::GetInstance().GetTextureSRV("PerlinNoise.png");
+		//ID3D11ShaderResourceView* srvs[1] = { noiseSRV.Get() };
+		ID3D11ShaderResourceView* srvs[2] = { noiseSRV.Get(), noiseSRV2.Get() };
+		m_pd3dContext->PSSetShaderResources(1, 2, srvs);
+		
+		// -fakeTime 범용으로 수정 필요 // 실제 deltaTime를 사용해야 함
+		TimeCBuffer timeData{};
+		static float fakeTime = 0.0f;
+		if (fakeTime > 1000.0f) fakeTime = 0.0f;
+		fakeTime += 0.003f;
+		timeData.time = fakeTime;
+		timeData.deltaTime = 1.0f; // 고정 델타타임
+		timeData.padding[0] = 0.0f;
+		timeData.padding[1] = 0.0f;
+
+		//// 3. 상수 버퍼에 쓰기
+		m_pd3dContext->UpdateSubresource(m_pTimeCBuffer.Get(), 0, nullptr, &timeData, 0, 0);
+
+		// 4. Pixel Shader에 바인딩 (b1)
+		ID3D11Buffer* cbuffers[1] = { m_pTimeCBuffer.Get() };
+		m_pd3dContext->PSSetConstantBuffers(0, 1, cbuffers);
+	}
+
+}
+
 
 void Renderer::DrawBitmap3D(
 	ID3D11Buffer* pVertexBuffer,
@@ -335,6 +387,7 @@ void Renderer::DrawBitmap3D(
 	ID3D11ShaderResourceView* pTextureSRV,
 	const DirectX::XMMATRIX& worldMatrix,
 	const RECT* pSourceRect // 텍스처 아틀라스 내의 원본 사각형 (픽셀 단위)
+	// 여기서 시간 받기?
 )
 {
 	if (!m_pd3dContext || !pVertexBuffer || !pIndexBuffer || !pTextureSRV) {
@@ -370,7 +423,7 @@ void Renderer::DrawBitmap3D(
 
 	// pSourceRect는 텍셀 단위 픽셀 좌표 (예: {10, 20, 50, 60})
 	ComPtr<ID3D11Resource> resource;
-	pTextureSRV->GetResource(resource.GetAddressOf());
+	pTextureSRV->GetResource(resource.GetAddressOf()); // texture 자원 넣는곳
 	ComPtr<ID3D11Texture2D> texture2D;
 	resource.As(&texture2D);
 	D3D11_TEXTURE2D_DESC texDesc;
@@ -405,8 +458,11 @@ void Renderer::DrawBitmap3D(
 
 	m_pd3dContext->PSSetConstantBuffers(1, 1, m_pTextureAtlasCBuffer.GetAddressOf()); // 슬롯 1에 바인딩
 
-	// 텍스처 SRV 바인딩
-	m_pd3dContext->PSSetShaderResources(0, 1, &pTextureSRV); // 슬롯 0에 바인딩
+	
+
+	m_pd3dContext->PSSetShaderResources(0, 1, &pTextureSRV);
+		
+
 
 	// 드로우 콜
 	m_pd3dContext->DrawIndexed(6, 0, 0); // 인덱스 6개 (쿼드 2개 삼각형), 시작 인덱스 0, 베이스 버텍스 0
@@ -477,7 +533,7 @@ void Renderer::RenderEnd()
 	ID3D11RenderTargetView* backBufferRTV = m_pd3dRenderTV.Get();
 	m_pd3dContext->OMSetRenderTargets(1, &backBufferRTV, nullptr);
 
-	const ShaderSet& currentPostProcessShader = m_shaderManager->GetShaderSet(m_postProcessShaderName);    //★★ 쉐이더 변경
+	const ShaderSet& currentPostProcessShader = m_shaderManager->GetPostShaderSet(m_postProcessShaderName);    //★★ 쉐이더 변경
 	PostProcessing(currentPostProcessShader);
 
 	Present();
