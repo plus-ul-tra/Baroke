@@ -5,6 +5,11 @@ cbuffer ObjectTransformCBuffer : register(b0)
     row_major matrix Projection;
 };
 
+cbuffer TimeBuffer : register(b1)
+{
+    float deltaTime; // 시간 값 (애니메이션이나 타이밍에 사용될 수 있음)
+};
+
 // 버텍스 쉐이더 입력 (SpriteVertex 구조체와 일치)
 struct VS_INPUT
 {

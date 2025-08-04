@@ -1,5 +1,4 @@
 
-
 cbuffer MouseEffectConstants : register(b1) // 새로운 상수 버퍼 슬롯
 {
     float2 MouseInfluence; // X: -1.0 ~ 1.0, Y: -1.0 ~ 1.0

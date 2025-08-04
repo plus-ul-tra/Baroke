@@ -25,32 +25,6 @@ float2 BarrelDistort(float2 uv, float distortionAmount)
     return (centerUV * distortFactor) + 0.5;
 }
 
-//float4 PSMain(VS_OUTPUT Input) : SV_Target
-//{
-//   // 배럴 왜곡
-//    float distortionStrength = 0.5; //강도
-//    float2 distortedUV = BarrelDistort(Input.Tex, distortionStrength);
-//    distortedUV = saturate(distortedUV);
-//    float4 finalColor = g_Texture.Sample(g_Sampler, distortedUV);
-    
-//    // 스캔라인 효과 적용
-//    float screenHeight = 300.0; // 밀도 
-//    float pixelY = Input.Tex.y * screenHeight;
-//    float scanlineFactor = lerp(0.9, 1.0, fmod(floor(pixelY), 2.0));
-
-//    finalColor.rgb *= scanlineFactor; // RGB 채널에만 적용
-    
-//    // 비네트 (fix)
-//    float2 uv = Input.Tex - 0.5; 
-//    float dist = length(uv);
-//    float vignetteStart = 0.63;
-//    float vignetteEnd = 0.9;
-//    float vignettePower = 10.0;
-//    float vignette = smoothstep(vignetteStart, vignetteEnd, dist);
-//    finalColor.rgb *= (1.0 - vignette * vignettePower);
-    
-//    return finalColor;
-//}
 float4 PSMain(VS_OUTPUT Input) : SV_Target
 {
     // 배럴 왜곡 적용
@@ -73,16 +47,16 @@ float4 PSMain(VS_OUTPUT Input) : SV_Target
 
     // 스캔라인이 홀수일 때 RGB 채널에 색상 섞기
     float4 glitchColor = float4(texR.r, texG.g, texB.b, 1.0);
-    float glitchBlend = scanlineToggle * 0.4; // 글리치 강도 (0~0.2 추천)
+    float glitchBlend = scanlineToggle * 0.2; // 글리치 강도 
     
     
     
-    // 3. 텍스처 샘플링
+    // 텍스처 샘플링
     float4 baseColor = g_Texture.Sample(g_Sampler, distortedUV);
     float4 finalColor = lerp(baseColor, glitchColor, glitchBlend);
     finalColor.rgb *= scanlineFactor;
 
-    // 4. 비네트 효과
+    // 비네트
     float2 uv = distortedUV - 0.5;
     float dist = length(uv);
     float vignetteStart = 0.65;

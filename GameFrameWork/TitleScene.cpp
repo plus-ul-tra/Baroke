@@ -8,6 +8,31 @@ void TitleScene::Initialize()
 
 	std::cout << "titleScene Init" <<std::endl;
 	KeyCommandMapping();
+
+	unique_ptr<BackGround> backGround = std::make_unique<BackGround>(0, 0, 1920, 1080);
+	m_objectList.emplace_back(std::move(backGround));
+
+	//title
+	unique_ptr<Button> title = std::make_unique<Button>(0.0f, 200.0f, 600.0f, 300.0f, "T_Main_Logo.png", 50);
+	m_objectList.emplace_back(std::move(title));
+	//m_buttonList.emplace_back(button1.get());
+
+	unique_ptr<Button> startButton = std::make_unique<Button>(-640.0f, -450.0f, 250.0f, 60.0f, "T_Main_Start.png", 50);
+	//m_buttonList.emplace_back(startButton.get());
+	m_objectList.emplace_back(std::move(startButton));
+
+	unique_ptr<Button> tutoButton = std::make_unique<Button>(-226.6f, -450.0f, 250.0f, 60.0f, "T_Main_Tutorial.png", 50);
+	//m_buttonList.emplace_back(tutoButton.get());
+	m_objectList.emplace_back(std::move(tutoButton));
+
+	unique_ptr<Button> recordButton = std::make_unique<Button>(226.6f, -450.0f, 240.0f, 60.0f, "T_Main_Record_board.png", 50);
+	//m_buttonList.emplace_back(recordButton.get());
+	m_objectList.emplace_back(std::move(recordButton));
+
+	unique_ptr<Button> exitButton = std::make_unique<Button>(640.0f, -450.0f, 250.0f, 60.0f, "T_Main_Exit.png", 50);
+	//m_buttonList.emplace_back(exitButton.get());
+	m_objectList.emplace_back(std::move(exitButton));
+
 }
 
 void TitleScene::Update(double deltaTime)
@@ -18,24 +43,10 @@ void TitleScene::Update(double deltaTime)
 	//test용 씬전환
 
 
-// 	if (m_elsapsedTime > 3.0) {
-// 
-// 
-// 		//SceneManager::GetInstance().LoadScene(std::string("Game1"));
-// 		SceneManager::GetInstance().ChangeScene(std::string("Game1"));
-// 
-// 	}
+
 
 
 }
-
-
-//void TitleScene::Render(Renderer& renderer)
-//{
-//	renderer.RenderBegin();
-//
-//	renderer.RenderEnd();
-//}
 
 
 void TitleScene::OnEnter()
@@ -43,6 +54,8 @@ void TitleScene::OnEnter()
 
 	std::cout << "Title Scene OnEnter" << std::endl;
 	
+	Initialize(); // 필요시 수정
+
 }
 
 void TitleScene::OnLeave()
@@ -81,7 +94,7 @@ void TitleScene::KeyCommandMapping()
 
 	m_commandMap["F2"] = []()
 		{
-			std::cout << "F2 Command Received" << std::endl;
+			SceneManager::GetInstance().ChangePostProcessing("CRTFilter");
 		};
 
 	m_commandMap["F3"] = []()
@@ -92,6 +105,10 @@ void TitleScene::KeyCommandMapping()
 	m_commandMap["F4"] = []()
 		{
 			std::cout << "F4 Command Received" << std::endl;
+		};
+	m_commandMap["F5"] = []()
+		{
+			SceneManager::GetInstance().ChangePostProcessing("PassThrough");
 		};
 }
 

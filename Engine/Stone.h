@@ -3,15 +3,15 @@
 #include "Transform.h"
 #include "BitmapRender.h"
 
-enum StoneType // µ¹ Á¾·ù
+enum StoneType // ëŒ ì¢…ë¥˜
 {
 	White,
 	Black,
 	Joker
 };
-enum StoneAbility // ´É·Â È¤Àº ÀÌ¸§
+enum StoneAbility // ëŠ¥ë ¥ í˜¹ì€ ì´ë¦„
 {
-	None, // Èæµ¹, ¹éµ¹
+	None, // í‘ëŒ, ë°±ëŒ
 
 	JokerEvolve,
 	JokerEgg,
@@ -26,23 +26,23 @@ protected:
 	Transform* m_transform {};
 	BitmapRender3D* m_sprite {};
 
-	POINT m_position = { -1, -1 }; // µ¹ À§Ä¡
-	float m_size = 0; // µ¹ Å©±â
-	float m_offset = 0; // µ¹ °£°İ
+	POINT m_position = { -1, -1 }; // ëŒ ìœ„ì¹˜
+	float m_size = 0; // ëŒ í¬ê¸°
+	float m_offset = 0; // ëŒ ê°„ê²©
 
-	double m_lerpTime = 0.0; // ÀÌµ¿ º¸°£ ½Ã°£
-	double m_lerpElapsedTime = 0.0; // °æ°ú ½Ã°£
-	XMVECTOR m_lerpStartPosition = XMVectorZero(); // ÀÌµ¿ ½ÃÀÛ À§Ä¡
-	XMVECTOR m_lerpEndPosition = XMVectorZero(); // ÀÌµ¿ ³¡ À§Ä¡
+	double m_lerpTime = 0.0; // ì´ë™ ë³´ê°„ ì‹œê°„
+	double m_lerpElapsedTime = 0.0; // ê²½ê³¼ ì‹œê°„
+	XMVECTOR m_lerpStartPosition = XMVectorZero(); // ì´ë™ ì‹œì‘ ìœ„ì¹˜
+	XMVECTOR m_lerpEndPosition = XMVectorZero(); // ì´ë™ ë ìœ„ì¹˜
 
 public:
 	Stone() = default;
 
-	void Update(double deltaTime) override; // µ¹ ¾÷µ¥ÀÌÆ® ÇÔ¼ö
-	void Move(POINT position, double duration = 1.0); // µ¹ ÀÌµ¿ ÇÔ¼ö
+	void Update(double deltaTime) override; // ëŒ ì—…ë°ì´íŠ¸ í•¨ìˆ˜
+	void Move(POINT position, double duration = 1.0); // ëŒ ì´ë™ í•¨ìˆ˜
 
-	POINT GetPosition() const { return m_position; } // µ¹ À§Ä¡ ¹İÈ¯
-	void SetPosition(POINT position) { m_position = position; } // µ¹ À§Ä¡ ¼³Á¤
+	POINT GetPosition() const { return m_position; } // ëŒ ìœ„ì¹˜ ë°˜í™˜
+	void SetPosition(POINT position) { m_position = position; } // ëŒ ìœ„ì¹˜ ì„¤ì •
 };
 
 class WhiteStone : public Stone
@@ -85,26 +85,26 @@ public:
 	}
 };
 
-struct JokerInfo // Á¶Ä¿ µ¹ Á¤º¸
+struct JokerInfo // ì¡°ì»¤ ëŒ ì •ë³´
 {
-	string fileName = "JokerEgg.png"; // Á¶Ä¿ µ¹ ÀÌ¹ÌÁö ÆÄÀÏ ÀÌ¸§
+	string fileName = "JokerEgg.png"; // ì¡°ì»¤ ëŒ ì´ë¯¸ì§€ íŒŒì¼ ì´ë¦„
 
-	int blackReturn = 0; // Á¶Ä¿ µ¹ ´É·Â »ç¿ë ÈÄ ¹İÈ¯ ºñ¿ë(Èæµ¹)
+	int blackReturn = 0; // ì¡°ì»¤ ëŒ ëŠ¥ë ¥ ì‚¬ìš© í›„ ë°˜í™˜ ë¹„ìš©(í‘ëŒ)
 
-	int coolTime = 0; // Á¶Ä¿ µ¹ ´É·Â ÄğÅ¸ÀÓ
-	int lifeSpan = 0; // Á¶Ä¿ µ¹ ´É·Â Áö¼Ó ½Ã°£
+	int coolTime = 0; // ì¡°ì»¤ ëŒ ëŠ¥ë ¥ ì¿¨íƒ€ì„
+	int lifeSpan = 0; // ì¡°ì»¤ ëŒ ëŠ¥ë ¥ ì§€ì† ì‹œê°„
 
-	int functionDuration = 0; // Á¶Ä¿ µ¹ ´É·Â ÇÔ¼ö Áö¼Ó ½Ã°£ // 0ÀÌ¸é ÇÑ¹ø¸¸ ½ÇÇà
-	int functionVariable = 0; // Á¶Ä¿ µ¹ ´É·Â ÇÔ¼ö¿¡ »ç¿ëµÇ´Â º¯¼ö // ´É·Â¿¡ µû¶ó ´Ù¸§
+	int functionDuration = 0; // ì¡°ì»¤ ëŒ ëŠ¥ë ¥ í•¨ìˆ˜ ì§€ì† ì‹œê°„ // 0ì´ë©´ í•œë²ˆë§Œ ì‹¤í–‰
+	int functionVariable = 0; // ì¡°ì»¤ ëŒ ëŠ¥ë ¥ í•¨ìˆ˜ì— ì‚¬ìš©ë˜ëŠ” ë³€ìˆ˜ // ëŠ¥ë ¥ì— ë”°ë¼ ë‹¤ë¦„
 };
-extern unordered_map<StoneAbility, JokerInfo> m_jokerInfoMap; // Á¶Ä¿ µ¹ ´É·Â Á¤º¸ ¸Ê // ´É·ÂÀÇ ±âº»°ª ÀúÀå¿ë
+extern unordered_map<StoneAbility, JokerInfo> m_jokerInfoMap; // ì¡°ì»¤ ëŒ ëŠ¥ë ¥ ì •ë³´ ë§µ // ëŠ¥ë ¥ì˜ ê¸°ë³¸ê°’ ì €ì¥ìš©
 
 class JokerStone : public Stone
 {
 public:
 	JokerStone(POINT position, float size, int offset, StoneAbility ability)
 	{
-		m_jokerInfo = m_jokerInfoMap[ability]; // Á¶Ä¿ µ¹ ´É·Â Á¤º¸ °¡Á®¿À±â(°ª º¹»ç)
+		m_jokerInfo = m_jokerInfoMap[ability]; // ì¡°ì»¤ ëŒ ëŠ¥ë ¥ ì •ë³´ ê°€ì ¸ì˜¤ê¸°(ê°’ ë³µì‚¬)
 		m_position = position;
 		m_size = size;
 		m_offset = offset;
@@ -119,5 +119,5 @@ public:
 		m_sprite->SetActive(true);
 	}
 
-	JokerInfo m_jokerInfo; // Á¶Ä¿ µ¹ ´É·Â Á¤º¸
+	JokerInfo m_jokerInfo; // ì¡°ì»¤ ëŒ ëŠ¥ë ¥ ì •ë³´
 };

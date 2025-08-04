@@ -12,6 +12,11 @@
 
 void GameScene::SetUIJokerButton()
 {
+	unique_ptr<Button> rightUI = std::make_unique<Button>(700.0f, 50.0f, 400.0f, 800.0f, "T_Right_UI.png", 50);
+	m_buttonList.emplace_back(rightUI.get());
+	m_objectList.emplace_back(std::move(rightUI));
+
+	// 위치에 맞게 조정 필요
 	unique_ptr<JokerButton> jokerButton1 = std::make_unique<JokerButton>(600.0f, 400.0f, 100, 100, "Sample.png", 50);
 	jokerButton1->SetButtonJoker(Joker, JokerEvolve);
 	m_buttonList.emplace_back(jokerButton1.get());
@@ -108,7 +113,7 @@ void GameScene::OnEnter()
 
 	std::cout << "Game1 Scene OnEnter" << std::endl;
 
-	unique_ptr<BackGround> backGround = std::make_unique<BackGround>(0, 0, 1920, 1080);
+	unique_ptr<BackGround> backGround = std::make_unique<BackGround>(0.0f, 0.0f, 1920.0f, 1080.0f);
 	m_objectList.emplace_back(std::move(backGround));
 
 
@@ -118,9 +123,9 @@ void GameScene::OnEnter()
 	m_player = playerObject.get();
 	m_objectList.push_back(std::move(playerObject));
 
-	unique_ptr<Button> button1 = std::make_unique<Button>(-820.0f, 0.0f, 200, 700, "Sample.png", 50);
-	m_buttonList.emplace_back(button1.get());
-	m_objectList.emplace_back(std::move(button1));
+	unique_ptr<Button> leftUI = std::make_unique<Button>(-720.0f, 100.0f, 400.0f, 700.0f, "T_Left_Down.png", 50);
+	m_buttonList.emplace_back(leftUI.get());
+	m_objectList.emplace_back(std::move(leftUI));
 
 	unique_ptr<BoardObject> boardObj = std::make_unique<BoardObject>(POSX, POSY, WIDTH, HEIGHT, CELL, STONEOFFSET, PADDING);
 	m_boardObj = boardObj.get();

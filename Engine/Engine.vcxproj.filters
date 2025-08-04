@@ -5,9 +5,10 @@
     <FxCompile Include="Parallax_VS.hlsl" />
     <FxCompile Include="PassThrough_PS.hlsl" />
     <FxCompile Include="PassThrough_VS.hlsl" />
-    <FxCompile Include="SpriteShader_PS.hlsl" />
-    <FxCompile Include="SpriteShader_VS.hlsl" />
     <FxCompile Include="NoiseBlend_PS.hlsl" />
+    <FxCompile Include="DefaultShader_PS.hlsl" />
+    <FxCompile Include="DefaultShader_VS.hlsl" />
+    <FxCompile Include="GrayScale_PS.hlsl" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="AnimationClip.cpp" />

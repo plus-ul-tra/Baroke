@@ -13,7 +13,7 @@ private:
 
 	DirectX::XMVECTOR m_moveDir = DirectX::XMVectorZero();
 
-	std::vector<std::unique_ptr<Button>> m_buttonList;
+	
 
 	int m_stageNo = 0;		// 스테이지 단계
 	int m_BlackStone = 500;	// 착수 가능한 흑돌

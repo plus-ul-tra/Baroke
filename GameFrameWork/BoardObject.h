@@ -20,20 +20,23 @@ public:
 		m_transform->SetPosition(XMVectorSet(offX, offY, 0.0f, 1.0f));
 		m_transform->SetScale(XMVectorSet(1.0f, 1.0f, 1.0f, 1.0f));
 		m_transform->SetRotation(0.0f);
-
+		
 		m_bitmapRender = AddComponent<BitmapRender3D>("Cyberpunk.png", drawW, drawH);
 		m_bitmapRender->SetOrder(0);
 		m_bitmapRender->SetActive(true);
+		m_bitmapRender->SetShaderType("GrayScale");
 
 		m_boardManager.Initialize(offX, offY, drawW, drawH, _cell, m_stoneOffset, padding); // 보드 매니저 초기화
 	}
+	// 이건 어디서 호출?
 	void Render(Renderer& r) override
-	{
-		if (m_bitmapRender) m_bitmapRender->Render(r);
+	{	
+		//if (m_bitmapRender) m_bitmapRender->Render(r, "NoiseShader"); // 보드가 자기 그림
 
+	
 		for (auto& sp : m_stones)
 			if (auto* bmp = sp->GetComponent<BitmapRender3D>())
-				if (bmp->IsActive()) bmp->Render(r);
+				if (bmp->IsActive()) bmp->Render(r); // 돌그리기
 
 	}
 
