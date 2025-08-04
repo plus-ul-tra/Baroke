@@ -68,6 +68,7 @@ public:
 		m_isEnabledPredicate = std::move(pred);
 	}
 
+	// 여기 수정, 모든 button에 적용되버림
 	void Update(double dt) override
 	{
 
