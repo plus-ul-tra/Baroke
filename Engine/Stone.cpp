@@ -2,3 +2,28 @@
 #include "Stone.h"
 
 unordered_map<StoneAbility, JokerInfo> m_jokerInfoMap;
+
+void Stone::Update(double deltaTime)
+{
+	if (m_lerpTime > 0.0)
+	{
+		m_lerpElapsedTime += deltaTime;
+		m_transform->SetPosition(XMVectorLerp(m_lerpStartPosition, m_lerpEndPosition, static_cast<float>(m_lerpElapsedTime / m_lerpTime)));
+
+		if (m_lerpElapsedTime >= m_lerpTime)
+		{
+			m_transform->SetPosition(m_lerpEndPosition);
+			m_lerpTime = 0.0;
+			m_lerpElapsedTime = 0.0;
+		}
+	}
+}
+
+void Stone::Move(POINT position, double duration)
+{
+	m_position = position;
+	m_lerpTime = duration;
+
+	m_lerpStartPosition = m_transform->GetPosition();
+	m_lerpEndPosition = XMVectorSet(static_cast<float>(position.x) + m_size / 2, static_cast<float>(position.y) + m_size / 2, 0.0f, 1.0f);
+}

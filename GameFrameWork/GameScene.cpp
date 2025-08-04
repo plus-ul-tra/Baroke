@@ -13,27 +13,27 @@
 void GameScene::SetUIJokerButton()
 {
 	unique_ptr<JokerButton> jokerButton1 = std::make_unique<JokerButton>(600.0f, 400.0f, 100, 100, "Sample.png", 50);
-	jokerButton1->SetButtonJoker(Joker, JokerAbility1);
+	jokerButton1->SetButtonJoker(Joker, JokerEvolve);
 	m_buttonList.emplace_back(jokerButton1.get());
 	m_UIList.emplace_back(std::move(jokerButton1));
 
 	unique_ptr<JokerButton> jokerButton2 = std::make_unique<JokerButton>(600.0f, 200.0f, 100, 100, "Sample.png", 50);
-	jokerButton2->SetButtonJoker(Joker, JokerAbility2);
+	jokerButton2->SetButtonJoker(Joker, JokerEgg);
 	m_buttonList.emplace_back(jokerButton2.get());
 	m_UIList.emplace_back(std::move(jokerButton2));
 
 	unique_ptr<JokerButton> jokerButton3 = std::make_unique<JokerButton>(600.0f, 0.0f, 100, 100, "Sample.png", 50);
-	jokerButton3->SetButtonJoker(Joker, JokerAbility3);
+	jokerButton3->SetButtonJoker(Joker, JokerOstrichEgg);
 	m_buttonList.emplace_back(jokerButton3.get());
 	m_UIList.emplace_back(std::move(jokerButton3));
 
 	unique_ptr<JokerButton> jokerButton4 = std::make_unique<JokerButton>(600.0f, -200.0f, 100, 100, "Sample.png", 50);
-	jokerButton4->SetButtonJoker(Joker, JokerAbility4);
+	jokerButton4->SetButtonJoker(Joker, JokerBite);
 	m_buttonList.emplace_back(jokerButton4.get());
 	m_UIList.emplace_back(std::move(jokerButton4));
 
 	unique_ptr<JokerButton> jokerButton5 = std::make_unique<JokerButton>(600.0f, -400.0f, 100, 100, "Sample.png", 50);
-	jokerButton5->SetButtonJoker(Joker, JokerAbility5);
+	jokerButton5->SetButtonJoker(Black, JokerPeacock);
 	m_buttonList.emplace_back(jokerButton5.get());
 	m_UIList.emplace_back(std::move(jokerButton5));
 }
@@ -227,7 +227,7 @@ void GameScene::OnInput(const MouseEvent& ev)
 	{
 		std::cout << ev.pos.x << " " << ev.pos.y << std::endl;
 		m_board.SetStoneType(Joker);
-		m_board.SetStoneAbility(JokerAbility1);
+		m_board.SetStoneAbility(JokerEvolve);
 		m_board.InputBasedGameLoop(ev.pos);
 		std::cout << "Joker Stone Count : " << m_board.GetStoneTypeAmount(Joker) << std::endl;
 	}
