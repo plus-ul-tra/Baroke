@@ -77,4 +77,12 @@ public:
 	// 다음 착수 돌 변경 함수
 	void SetStoneType(StoneType type) { m_stoneType = type; }
 	void SetStoneAbility(StoneAbility ability) { m_stoneAbility = ability; }
+
+
+
+
+
+	//---------------------------------------------------------------- 버튼 - 상태 판정용 함수
+	int CountStones(StoneType t) const;
+	bool HasStraightLine(StoneType type, int len) const;
 };

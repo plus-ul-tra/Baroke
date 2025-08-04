@@ -13,11 +13,11 @@ enum StoneAbility // 능력 혹은 이름
 {
 	None, // 흑돌, 백돌
 
-	JokerAbility1,
-	JokerAbility2,
-	JokerAbility3,
-	JokerAbility4,
-	JokerAbility5
+	JokerEgg,
+	JokerOstrichEgg,
+	JokerPeacock,
+	JokerCombination,
+	JokerBite
 };
 
 class Stone : public Object

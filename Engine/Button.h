@@ -23,6 +23,8 @@ protected:
 
 	virtual void ButtonFunction() {}; // 버튼 기능을 구현하는 함수, 자식 클래스에서 오버라이드
 
+	std::function<bool()> m_isEnabledPredicate = []() { return true; };
+
 public:
 	Button(float posX, float posY, float width, float height)
 		: m_width(width), m_height(height) {
@@ -45,7 +47,6 @@ public:
 		m_bitmapRender->SetActive(true);
 	}
 
-	void Update(double deltaTime) override { Object::Update(deltaTime); ButtonFunction(); }
 
 	XMVECTOR GetPosition() const { return m_transform->GetPosition(); }
 	void SetPosition(XMVECTOR pos) { m_transform->SetPosition(pos); }
@@ -60,12 +61,60 @@ public:
 	void SetIsActive(bool active) { m_isActive = active; }
 
 	void CheckInput(const MouseEvent& mouseEvent);
+
+	void BindEnabledPredicate(std::function<bool()> pred)
+	{
+		m_isEnabledPredicate = std::move(pred);
+	}
+
+	void Update(double dt) override
+	{
+
+		m_isActive = m_isEnabledPredicate();
+
+		if (!m_isActive) 
+		{
+			std::cout << this << "UnDo" << std::endl;
+		}
+
+		// 비활성 시 시각 효과(예: 회색톤)만 남기고 입력 차단
+		//if (m_bitmapRender) m_bitmapRender->SetGrayscale(!m_isActive);
+
+		ButtonFunction();
+		Object::Update(dt);
+	}
 };
 
 class JokerButton : public Button
 {
 	StoneType m_stoneType = StoneType::Joker;
 	StoneAbility m_jokerAbility = StoneAbility::None;
+
+	static std::function<bool()> BuildPredicate(StoneAbility ability)
+	{
+		BoardManager& bm = BoardManager::GetInstance();
+
+		switch (ability)
+		{
+		case JokerEgg:   // 흑돌 5개 이상
+			return [&bm]() { return bm.CountStones(Black) >= 5; };
+
+		case JokerOstrichEgg:   // 흑돌 5개 이상 직선
+			return [&bm]() { return bm.HasStraightLine(Black, 5); };
+
+		case JokerPeacock:   // 흑돌 5개 이상
+			return [&bm]() { return bm.CountStones(Black) >= 5; };
+
+		case JokerCombination:   // 흑돌 5개 이상
+			return [&bm]() { return bm.CountStones(Black) >= 5; };
+
+		case JokerBite:   // 흑돌 5개 이상
+			return [&bm]() { return bm.CountStones(Black) >= 5; };
+
+		default:
+			return []() { return false; };
+		}
+	}
 
 	void ButtonFunction() override;
 
@@ -74,5 +123,10 @@ public:
 		: Button(posX, posY, width, height, bitmapFile, order) {}
 
 
-	void SetButtonJoker(StoneType stoneType, StoneAbility ability) { m_jokerAbility = ability; m_stoneType = stoneType; }
+	void SetButtonJoker(StoneType stoneType, StoneAbility ability) {
+		m_jokerAbility = ability;
+		m_stoneType = stoneType;        
+		BindEnabledPredicate(BuildPredicate(ability));
+	}
+
 };

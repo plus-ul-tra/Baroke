@@ -8,34 +8,34 @@ static constexpr int DC[4] = { 0, 0,-1, 1 };
 // 돌 능력에 대한 함수 맵 // 해당하는 조커와 조커의 위치를 받음 // 나중에 다른 위치로 이동할 수도 있음
 static unordered_map<StoneAbility, function<void(shared_ptr<JokerStone>)>> g_abilityFunctions =
 {
-	{ StoneAbility::JokerAbility1, [](shared_ptr<JokerStone> jokerStone)
+	{ StoneAbility::JokerEgg, [](shared_ptr<JokerStone> jokerStone)
 	{
 		// 조커 능력 1
-		cout << "JokerAbility1" << endl;
+		cout << "JokerEgg" << endl;
 	} },
 
-	{ StoneAbility::JokerAbility2, [](shared_ptr<JokerStone> jokerStone)
+	{ StoneAbility::JokerOstrichEgg, [](shared_ptr<JokerStone> jokerStone)
 	{
 		// 조커 능력 2
-		cout << "JokerAbility2" << endl;
+		cout << "JokerOstrichEgg" << endl;
 	} },
 
-	{ StoneAbility::JokerAbility3, [](shared_ptr<JokerStone> jokerStone)
+	{ StoneAbility::JokerPeacock, [](shared_ptr<JokerStone> jokerStone)
 	{
 		// 조커 능력 3
-		cout << "JokerAbility3" << endl;
+		cout << "JokerPeacock" << endl;
 	} },
 
-	{ StoneAbility::JokerAbility4, [](shared_ptr<JokerStone> jokerStone)
+	{ StoneAbility::JokerCombination, [](shared_ptr<JokerStone> jokerStone)
 	{
 		// 조커 능력 4
-		cout << "JokerAbility4" << endl;
+		cout << "JokerCombination" << endl;
 	} },
 
-	{ StoneAbility::JokerAbility5, [](shared_ptr<JokerStone> jokerStone)
+	{ StoneAbility::JokerBite, [](shared_ptr<JokerStone> jokerStone)
 	{
 		// 조커 능력 5
-		cout << "JokerAbility5" << endl;
+		cout << "JokerBite" << endl;
 	} }
 };
 
@@ -270,11 +270,11 @@ int BoardManager::GetStoneTypeAmount(StoneType type) const
 
 void BoardManager::InitializeJokerInfoMap()
 {
-	m_jokerInfoMap[StoneAbility::JokerAbility1] = { "JokerStone1.png", 10, 5, 0 };
-	m_jokerInfoMap[StoneAbility::JokerAbility2] = { "JokerStone2.png", 15, 7, 0 };
-	m_jokerInfoMap[StoneAbility::JokerAbility3] = { "JokerStone3.png", 20, 10, 0 };
-	m_jokerInfoMap[StoneAbility::JokerAbility4] = { "JokerStone4.png", 25, 12, 0 };
-	m_jokerInfoMap[StoneAbility::JokerAbility5] = { "JokerStone5.png", 30, 15, 0 };
+	m_jokerInfoMap[StoneAbility::JokerEgg] = { "JokerStone1.png", 10, 5, 0 };
+	m_jokerInfoMap[StoneAbility::JokerOstrichEgg] = { "JokerStone2.png", 15, 7, 0 };
+	m_jokerInfoMap[StoneAbility::JokerPeacock] = { "JokerStone3.png", 20, 10, 0 };
+	m_jokerInfoMap[StoneAbility::JokerCombination] = { "JokerStone4.png", 25, 12, 0 };
+	m_jokerInfoMap[StoneAbility::JokerBite] = { "JokerStone5.png", 30, 15, 0 };
 }
 
 int BoardManager::CountLiberty(
@@ -315,4 +315,46 @@ void BoardManager::RemoveGroup(const std::vector<POINT>& g)
 		m_board[p.x][p.y] = nullptr;
 		m_stoneTypeMap.erase(p);
 	}
+}
+
+
+
+
+
+
+
+
+
+//---------------------------------------------------------------- 버튼 - 상태 판정용 함수
+int BoardManager::CountStones(StoneType t) const
+{
+	return GetStoneTypeAmount(t);          // 기존 함수 재사용
+}
+
+bool BoardManager::HasStraightLine(StoneType type, int len) const
+{
+	const int N = SIZE_DEFAULT;
+	/* 단순 2 중 for + 4방향 스캔 */
+	for (int r = 0; r < N; ++r)
+		for (int c = 0; c < N; ++c)
+		{
+			auto it = m_stoneTypeMap.find({ r,c });
+			if (it == m_stoneTypeMap.end() || it->second != type) continue;
+
+			static const int dr[4] = { 1,0,1,1 };
+			static const int dc[4] = { 0,1,1,-1 };
+			for (int k = 0; k < 4; ++k)
+			{
+				int cnt = 1;
+				int nr = r + dr[k], nc = c + dc[k];
+				while (isValidPoint({ nr,nc }))
+				{
+					auto it2 = m_stoneTypeMap.find({ nr,nc });
+					if (it2 == m_stoneTypeMap.end() || it2->second != type) break;
+					if (++cnt >= len) return true;
+					nr += dr[k];  nc += dc[k];
+				}
+			}
+		}
+	return false;
 }
