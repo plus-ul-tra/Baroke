@@ -61,6 +61,7 @@ void ShaderManager::ReadAllShaders()
 	UINT numQuadElements = ARRAYSIZE(quadLayout);
 	// 사용할 쉐이더 여기에 추가
 	HRESULT hr;
+
 	hr = ReadShaderResource("..\\Shader\\PassThrough_VS.cso", "..\\Shader\\PassThrough_PS.cso", "PassThrough", quadLayout, numQuadElements);
 	if (FAILED(hr)) {
 		cout << "PassThrough리드 실패" << endl;
@@ -76,7 +77,14 @@ void ShaderManager::ReadAllShaders()
 		cout << "DefaultShader리드 실패" << endl;
 	}
 
+	// noise
 	hr = ReadShaderResource("..\\Shader\\DefaultShader_VS.cso", "..\\Shader\\NoiseBlend_PS.cso", "NoiseBlend", quadLayout, numQuadElements);
+	if (FAILED(hr)) {
+		cout << "NoiseBlend리드 실패" << endl;
+	}
+
+	// GrayScale
+	hr = ReadShaderResource("..\\Shader\\DefaultShader_VS.cso", "..\\Shader\\GrayScale_PS.cso", "GrayScale", quadLayout, numQuadElements);
 	if (FAILED(hr)) {
 		cout << "NoiseBlend리드 실패" << endl;
 	}

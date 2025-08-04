@@ -1,6 +1,8 @@
 #pragma once
 #include "Engine.h"
 #include "Player.h"
+#include "BoardObject.h"
+#include "BackGround.h"
 
 class TitleScene : public SceneBase {
 

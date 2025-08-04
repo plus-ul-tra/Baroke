@@ -40,7 +40,7 @@ void SceneBase::Render(Renderer& renderer) {
 	for (const auto& ui : m_UIList) {
 
 
-		//�Ϲ� �׸���
+		
 		if (auto bitmapRenderComp = ui->GetComponent<BitmapRender3D>())
 		{
 			if (bitmapRenderComp->IsActive())
@@ -56,7 +56,7 @@ void SceneBase::Render(Renderer& renderer) {
 //
 void RenderObject(Object* obj, Renderer& renderer)
 {
-	// ����׿� GeoRender
+
 	if (MIYABI::Core::GetInstance().IsDebugMode())
 	{
 		if (auto geo = obj->GetComponent<GeoRender>())
@@ -64,12 +64,11 @@ void RenderObject(Object* obj, Renderer& renderer)
 				geo->Render(renderer);
 	}
 
-	// �Ϲ� ��Ʈ�� ����
+
 	if (auto bmp = obj->GetComponent<BitmapRender3D>())
 		if (bmp->IsActive())
 			bmp->Render(renderer);
 
-	// ������Ʈ ��ü ����
 	obj->Render(renderer);
 
 }

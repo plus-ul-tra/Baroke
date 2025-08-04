@@ -8,6 +8,7 @@
 #include "StaticObject.h"
 #include "Renderer.h"
 #include "InputEvents.h"
+#include "Button.h"
 //#include "Core.h"
 
 // 구체화는 Client에서
@@ -18,6 +19,7 @@ private:
 	
 protected:
 	std::vector<std::unique_ptr<Object>> m_objectList;
+	std::vector<std::unique_ptr<Button>> m_buttonList;
 	std::vector<std::unique_ptr<Object>> m_UIList;
 	//render 에 대해서 따로 관리 생각
 	std::unordered_map<std::string, std::function<void()>> m_commandMap;
@@ -50,6 +52,7 @@ public:
 	virtual void Reset()
 	{
 		m_objectList.clear(); 
+		// objectList 외에 것도 clear
 	}
 
 	virtual void OnCommand(std::string& cmd)  // 입력처리

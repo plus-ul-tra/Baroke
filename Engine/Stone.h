@@ -48,7 +48,7 @@ public:
 		m_transform->SetScale(XMVectorSet(1.0f, 1.0f, 1.0f, 1.0f));
 		m_transform->SetRotation(0.0f);
 
-		m_sprite = AddComponent<BitmapRender3D>("White.png", size- offset, size - offset);
+		m_sprite = AddComponent<BitmapRender3D>("White2.png", size- offset, size - offset);
 		m_sprite->SetOrder(1);
 		m_sprite->SetActive(true);
 	}
@@ -66,7 +66,7 @@ public:
 		m_transform->SetScale(XMVectorSet(1.0f, 1.0f, 1.0f, 1.0f));
 		m_transform->SetRotation(0.0f);
 
-		m_sprite = AddComponent<BitmapRender3D>("Black.png", size - offset, size - offset);
+		m_sprite = AddComponent<BitmapRender3D>("Black2.png", size - offset, size - offset);
 		m_sprite->SetOrder(1);
 		m_sprite->SetActive(true);
 	}

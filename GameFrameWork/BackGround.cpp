@@ -14,4 +14,5 @@ BackGround::BackGround(float posX, float posY, float width, float height)
 
 	m_bitmapRender->SetActive(true);
 	m_bitmapRender->SetShaderType("NoiseBlend"); // 쉐이더 타입 설정
+	//m_bitmapRender->SetShaderType("GrayScale");
 }
