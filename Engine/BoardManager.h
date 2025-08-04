@@ -79,4 +79,16 @@ public:
 	// 다음 착수 돌 변경 함수
 	void SetStoneType(StoneType type) { m_stoneType = type; }
 	void SetStoneAbility(StoneAbility ability) { m_stoneAbility = ability; }
+
+
+
+
+
+	//---------------------------------------------------------------- 버튼 - 상태 판정용 함수
+	int CountStones(StoneType t) const;					// 보드판위에 특정돌이 몇갠지 체크
+	bool HasStraightLine(StoneType type, int len) const; // 직선 범위 체크
+	bool WhiteLibOne() const;							// 자유도1인 흰돌 체크
+	bool HasBombReady(int need = 5) const;				// 착수했을때 3*3범위에 흑돌5개 있는 위치 체크
+	bool IsSamaBlackWhite() const;						// 착수했을때 3*3범위에 흑돌흰돌 개수 같은지 체크
+	bool IsLibZero() const;								// 
 };

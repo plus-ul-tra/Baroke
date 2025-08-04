@@ -33,9 +33,16 @@ void Button::CheckInput(const MouseEvent& mouseEvent)
 
 void JokerButton::ButtonFunction()
 {
-	if (m_isPressed)
+// 	if (m_isPressed)
+// 	{
+// 		BoardManager::GetInstance().SetStoneType(m_stoneType);
+// 		BoardManager::GetInstance().SetStoneAbility(m_jokerAbility);
+// 	}
+
+	if (m_isPressed && m_isActive)
 	{
-		BoardManager::GetInstance().SetStoneType(m_stoneType);
-		BoardManager::GetInstance().SetStoneAbility(m_jokerAbility);
+		auto& bm = BoardManager::GetInstance();
+		bm.SetStoneType(m_stoneType);
+		bm.SetStoneAbility(m_jokerAbility);
 	}
 }
