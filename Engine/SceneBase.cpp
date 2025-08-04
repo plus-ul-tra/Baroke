@@ -37,19 +37,19 @@ void SceneBase::Render(Renderer& renderer) {
 
 
 	// --- UI
-	//for (const auto& ui : m_UIList) {
+	for (const auto& ui : m_UIList) {
 
 
-	//	//�Ϲ� �׸���
-	//	if (auto bitmapRenderComp = ui->GetComponent<BitmapRender3D>())
-	//	{
-	//		if (bitmapRenderComp->IsActive())
-	//		{
-	//			bitmapRenderComp->Render(renderer, "DefaultShader");
-	//		}
-	//	}
-	//	ui->Render(renderer);
-	//}
+		//�Ϲ� �׸���
+		if (auto bitmapRenderComp = ui->GetComponent<BitmapRender3D>())
+		{
+			if (bitmapRenderComp->IsActive())
+			{
+				bitmapRenderComp->Render(renderer);
+			}
+		}
+		ui->Render(renderer);
+	}
 
 
 }
