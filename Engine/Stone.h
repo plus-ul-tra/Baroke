@@ -12,12 +12,43 @@ enum StoneType // 돌 종류
 enum StoneAbility // 능력 혹은 이름
 {
 	None, // 흑돌, 백돌
+	//---------------- 일반 (set 1)
+	jokerDouble,
+	jokerOmok,
+	jokerSamok,
+	jokerSammok,
 
-	JokerEgg,
-	JokerOstrichEgg,
-	JokerPeacock,
-	JokerCombination,
-	JokerBite
+	//---------------- 야생 (set 2)
+	jokerEvolution, // 아직 리소스 X
+	jokerDansu,
+	jokerEgg,
+	jokerOstrichEgg,
+	jokerPeacock,
+
+	//---------------- 우주 (set 3)
+	jokerTeleport,
+	jokerExplode,
+	jokerMagnetic,
+	jokerBlackhole,
+
+	//---------------- 단청 (set 4)
+	jokerFusion,
+	jokerTriunion,
+	jokerQuadunion,
+
+	//---------------- 할로윈 (set 6)
+	jokerSplit,
+	jokerWaxseal,
+	jokerFlip,
+	jokerOthello,
+	jokerMrchan,
+
+	//---------------- 자연 (set 7)
+	jokerShadow,
+	jokerLight,
+	jokerTime,
+	jokerWind,
+
 };
 
 class Stone : public Object

@@ -28,7 +28,6 @@ void Button::CheckInput(const MouseEvent& mouseEvent)
 	else
 	{
 		m_isHovered = false;
-		m_isPressed = false;
 	}
 }
 
