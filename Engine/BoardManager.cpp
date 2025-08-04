@@ -9,53 +9,23 @@ static constexpr int DC[4] = { 0, 0,-1, 1 };
 struct JokerFunctionsWrapper
 {
 
-// 	{ StoneAbility::jokerEgg, [](shared_ptr<JokerStone> jokerStone)
-// 	{
-// 		// 조커 능력 1
-// 		cout << "jokerEgg" << endl;
-// 	} },
-
-// 	{ StoneAbility::jokerOstrichEgg, [](shared_ptr<JokerStone> jokerStone)
-// 	{
-// 		// 조커 능력 2
-// 		cout << "jokerOstrichEgg" << endl;
-// 	} },
-
-// 	{ StoneAbility::jokerPeacock, [](shared_ptr<JokerStone> jokerStone)
-// 	{
-// 		// 조커 능력 3
-// 		cout << "jokerPeacock" << endl;
-// 	} },
-
-// 	{ StoneAbility::jokerFusion, [](shared_ptr<JokerStone> jokerStone)
-// 	{
-// 		// 조커 능력 4
-// 		cout << "jokerFusion" << endl;
-// 	} },
-
-// 	{ StoneAbility::jokerDansu, [](shared_ptr<JokerStone> jokerStone)
-// 	{
-// 		// 조커 능력 5
-// 		cout << "jokerDansu" << endl;
-// 	} }
-
 	BoardManager& boardManager = BoardManager::GetInstance();
 
 	unordered_map<StoneAbility, function<void(shared_ptr<JokerStone>)>> g_abilityFunctions =
 	{
-		{ StoneAbility::JokerEvolve, [this](shared_ptr<JokerStone> jokerStone)
+		{ StoneAbility::jokerEvolution, [this](shared_ptr<JokerStone> jokerStone)
 		{
 			// 조커 능력 1
-			cout << "JokerAbility1" << endl;
+			cout << "jokerEvolution" << endl;
 		}
 		},
 
-		{ StoneAbility::JokerEgg, [this](shared_ptr<JokerStone> jokerEgg)
+		{ StoneAbility::jokerEgg, [this](shared_ptr<JokerStone> jokerEgg)
 		{
 			if (!jokerEgg->m_jokerInfo.coolTime)
 			{
 				boardManager.m_playerInfo.m_BlackStone += jokerEgg->m_jokerInfo.functionVariable;
-				jokerEgg->m_jokerInfo.coolTime = m_jokerInfoMap.find(StoneAbility::JokerEgg)->second.coolTime; // 쿨타임 초기화
+				jokerEgg->m_jokerInfo.coolTime = m_jokerInfoMap.find(StoneAbility::jokerEgg)->second.coolTime; // 쿨타임 초기화
 			}
 			jokerEgg->m_jokerInfo.coolTime--;
 
@@ -63,12 +33,12 @@ struct JokerFunctionsWrapper
 		}
 		},
 
-		{ StoneAbility::JokerOstrichEgg, [this](shared_ptr<JokerStone> jokerOstrichEgg)
+		{ StoneAbility::jokerOstrichEgg, [this](shared_ptr<JokerStone> jokerOstrichEgg)
 		{
 			if (!jokerOstrichEgg->m_jokerInfo.coolTime)
 			{
 				boardManager.m_playerInfo.m_BlackStone += jokerOstrichEgg->m_jokerInfo.functionVariable;
-				jokerOstrichEgg->m_jokerInfo.coolTime = m_jokerInfoMap.find(StoneAbility::JokerOstrichEgg)->second.coolTime; // 쿨타임 초기화
+				jokerOstrichEgg->m_jokerInfo.coolTime = m_jokerInfoMap.find(StoneAbility::jokerOstrichEgg)->second.coolTime; // 쿨타임 초기화
 			}
 			jokerOstrichEgg->m_jokerInfo.coolTime--;
 
@@ -76,13 +46,13 @@ struct JokerFunctionsWrapper
 		}
 		},
 
-		{ StoneAbility::JokerBite, [this](shared_ptr<JokerStone> jokerBite)
+		{ StoneAbility::jokerDansu, [this](shared_ptr<JokerStone> jokerBite)
 		{
 			// 이건는 방향을 인풋으로 받아야 함
 		}
 		},
 
-		{ StoneAbility::JokerPeacock, [this](shared_ptr<JokerStone> jokerPeacock)
+		{ StoneAbility::jokerPeacock, [this](shared_ptr<JokerStone> jokerPeacock)
 		{
 			if (jokerPeacock->m_jokerInfo.coolTime != 0) return;
 			jokerPeacock->m_jokerInfo.coolTime--;
@@ -386,7 +356,7 @@ void BoardManager::InitializeJokerInfoMap()
 	m_jokerInfoMap[StoneAbility::jokerDansu] = { "jokerDansu.png", 5, 5, 0 };
 	m_jokerInfoMap[StoneAbility::jokerEgg] = { "jokerEgg.png", 0, 5, 0 };
 	m_jokerInfoMap[StoneAbility::jokerOstrichEgg] = { "jokerOstrichEgg.png", 0, 5, 0 };
-	m_jokerInfoMap[StoneAbility::jokerPeacock] = { "jokerPeacock.png", 0, 5, 0 };
+	m_jokerInfoMap[StoneAbility::jokerPeacock] = { "jokerPeacock.png", 1, 0, 0, 0, 3 };
 
 	//------------------------------------------------------------------------------------------------ 우주 (set 3)
 	m_jokerInfoMap[StoneAbility::jokerTeleport] = { "jokerTeleport.png", 10, 5, 0 };
