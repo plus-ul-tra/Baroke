@@ -354,10 +354,11 @@ void Renderer::SetShaderMode(const string& mode) {
 
 	if (mode == "NoiseBlend") {
 		// SRV 리턴
-		auto noiseSRV = SpriteManager::GetInstance().GetTextureSRV("PerlinNoise.png");
-		ID3D11ShaderResourceView* srvs[1] = { noiseSRV.Get() };
-		m_pd3dContext->PSSetShaderResources(1, 1, srvs);
-		//cout << "NoiseBlend shader mode set." << endl;
+		auto noiseSRV = SpriteManager::GetInstance().GetTextureSRV("Seamless2.png"); // 이거 manager에서 생성해둔거 사용으로 수정
+		auto noiseSRV2 = SpriteManager::GetInstance().GetTextureSRV("PerlinNoise.png");
+		//ID3D11ShaderResourceView* srvs[1] = { noiseSRV.Get() };
+		ID3D11ShaderResourceView* srvs[2] = { noiseSRV.Get(), noiseSRV2.Get() };
+		m_pd3dContext->PSSetShaderResources(1, 2, srvs);
 		
 		// -fakeTime 범용으로 수정 필요 // 실제 deltaTime를 사용해야 함
 		TimeCBuffer timeData{};
@@ -369,7 +370,7 @@ void Renderer::SetShaderMode(const string& mode) {
 		timeData.padding[0] = 0.0f;
 		timeData.padding[1] = 0.0f;
 
-		// 3. 상수 버퍼에 쓰기
+		//// 3. 상수 버퍼에 쓰기
 		m_pd3dContext->UpdateSubresource(m_pTimeCBuffer.Get(), 0, nullptr, &timeData, 0, 0);
 
 		// 4. Pixel Shader에 바인딩 (b1)
@@ -684,11 +685,11 @@ void Renderer::CreateDeviceAndSwapChain(HWND hwnd)
 	hr = d2dFactory->CreateDevice(dxgiDevice.Get(), &baseDevice);
 	if (FAILED(hr)) { std::cerr << "HRESULT6 = 0x" << std::hex << hr << std::endl; return; }
 
-	ComPtr<ID2D1Device6> d2dDevice; // ID2D1Device4 -> ID2D1Device7
+	ComPtr<ID2D1Device7> d2dDevice; // ID2D1Device4 -> ID2D1Device7
 	hr = baseDevice.As(&d2dDevice);
 	if (FAILED(hr)) { std::cerr << "HRESULT7 = 0x" << std::hex << hr << std::endl; return; }
 
-	ComPtr<ID2D1DeviceContext6> d2dContext; // ID2D1DeviceContext7 유지
+	ComPtr<ID2D1DeviceContext7> d2dContext; // ID2D1DeviceContext7 유지
 	hr = d2dDevice->CreateDeviceContext(D2D1_DEVICE_CONTEXT_OPTIONS_NONE, &d2dContext);
 	if (FAILED(hr)) { std::cerr << "HRESULT8 = 0x" << std::hex << hr << std::endl; return; }
 
