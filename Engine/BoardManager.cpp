@@ -522,7 +522,7 @@ bool BoardManager::WhiteLibOne() const
 }
 
 
-bool BoardManager::HasBombReady(int need) const
+bool BoardManager::IsColorCount(StoneType type, int need) const
 {
 	static const int DR8[8] = { -1,-1,-1, 0, 0, 1, 1, 1 };
 	static const int DC8[8] = { -1, 0, 1,-1, 1,-1, 0, 1 };
@@ -535,7 +535,7 @@ bool BoardManager::HasBombReady(int need) const
 
 			if (m_board[r][c]) continue;                  
 
-			int blackCnt = 0;
+			int colorcount = 0;
 
 			for (int k = 0; k < 8; ++k)
 			{
@@ -544,9 +544,9 @@ bool BoardManager::HasBombReady(int need) const
 
 				auto it = m_stoneTypeMap.find({ nr,nc });
 				if (it != m_stoneTypeMap.end() &&
-					it->second == StoneType::Black)
+					it->second == type)
 				{
-					if (++blackCnt >= need) return true;   // 조기 탈출
+					if (++colorcount >= need) return true;   // 조기 탈출
 				}
 			}
 		}
@@ -621,3 +621,89 @@ bool BoardManager::IsLibZero() const
 		}
 	return false;
 }
+
+bool BoardManager::IsConnectTwo() const
+{
+	static const int DR[4] = { -1, 1,  0, 0 }; 
+	static const int DC[4] = { 0, 0, -1, 1 };
+
+	for (int r = 0; r < SIZE_DEFAULT; ++r)
+		for (int c = 0; c < SIZE_DEFAULT; ++c)
+		{
+			if (m_board[r][c]) continue;
+
+			int whiteCnt = 0;
+
+			for (int i = 0; i < 4; ++i)
+			{
+				int nr = r + DR[i];
+				int nc = c + DC[i];
+				if (!isValidPoint({ nc, nr })) continue;   
+
+				auto it = m_stoneTypeMap.find({ nr, nc });
+				if (it != m_stoneTypeMap.end() &&
+					it->second == StoneType::White)
+				{
+					++whiteCnt;
+					if (whiteCnt > 2) break;            
+				}
+			}
+
+			if (whiteCnt == 2)
+				return true;
+		}
+
+	return false; 
+}
+
+bool BoardManager::IsOthello() const
+{
+
+	static const int DR[4] = { -1, 1,  0, 0 };
+	static const int DC[4] = { 0, 0, -1, 1 };
+
+	for (const auto& kv : m_stoneTypeMap)         
+	{
+		if (kv.second != StoneType::Black) continue;
+
+		int r0 = kv.first.x;    
+		int c0 = kv.first.y; // 흑돌 찾기
+
+		for (int dir = 0; dir < 4; ++dir) // 방향 설정
+		{
+			int r = r0 + DR[dir];
+			int c = c0 + DC[dir];
+
+
+			auto it = m_stoneTypeMap.find({ r, c });
+			if (it == m_stoneTypeMap.end() || it->second != StoneType::White) // 백돌 찾기
+				continue;             
+
+
+			int cnt = 0;
+			while (true)
+			{
+				if (!isValidPoint({ c, r })) break;     
+
+				auto it2 = m_stoneTypeMap.find({ r, c });
+				if (it2 == m_stoneTypeMap.end() ||
+					it2->second != StoneType::White)
+					break;                                  // 백돌이 끊김
+
+				++cnt;
+				r += DR[dir];
+				c += DC[dir];
+			}
+
+			bool enough = (cnt >= 3);
+			bool nextCellEmpty =
+				isValidPoint({ c, r }) &&    
+				m_stoneTypeMap.find({ r, c }) == m_stoneTypeMap.end();
+
+			if (enough && nextCellEmpty)
+				return true;   
+		}
+	}
+	return false; 
+}
+

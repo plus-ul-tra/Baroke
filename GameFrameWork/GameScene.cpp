@@ -17,29 +17,28 @@ void GameScene::SetUIJokerButton()
 	m_buttonList.emplace_back(rightUI.get());
 	m_objectList.emplace_back(std::move(rightUI));
 
-	unique_ptr<JokerButton> jokerButton1 = std::make_unique<JokerButton>(600.0f, 300.0f, 100, 100, "jokerDouble.png", 50);
-	jokerButton1->SetButtonJoker(Joker, jokerDouble);
-/*	jokerButton1->GetComponent<BitmapRender3D>()->SetShaderType("Holo");*/
+	unique_ptr<JokerButton> jokerButton1 = std::make_unique<JokerButton>(600.0f, 300.0f, 100, 100, "jokerShadow.png", 50);
+	jokerButton1->SetButtonJoker(Joker, jokerShadow);
 	m_buttonList.emplace_back(jokerButton1.get());
 	m_UIList.emplace_back(std::move(jokerButton1));
 
-	unique_ptr<JokerButton> jokerButton2 = std::make_unique<JokerButton>(600.0f, 150.0f, 100, 100, "jokerOmok.png", 50);
-	jokerButton2->SetButtonJoker(Joker, jokerOmok);
+	unique_ptr<JokerButton> jokerButton2 = std::make_unique<JokerButton>(600.0f, 150.0f, 100, 100, "jokerLight.png", 50);
+	jokerButton2->SetButtonJoker(Joker, jokerLight);
 	m_buttonList.emplace_back(jokerButton2.get());
 	m_UIList.emplace_back(std::move(jokerButton2));
 
-	unique_ptr<JokerButton> jokerButton3 = std::make_unique<JokerButton>(600.0f, 0.0f, 100, 100, "jokerSamok.png", 50);
-	jokerButton3->SetButtonJoker(Joker, jokerSamok);
+	unique_ptr<JokerButton> jokerButton3 = std::make_unique<JokerButton>(600.0f, 0.0f, 100, 100, "jokerTime.png", 50);
+	jokerButton3->SetButtonJoker(Joker, jokerTime);
 	m_buttonList.emplace_back(jokerButton3.get());
 	m_UIList.emplace_back(std::move(jokerButton3));
 
-	unique_ptr<JokerButton> jokerButton4 = std::make_unique<JokerButton>(600.0f, -150.0f, 100, 100, "jokerSammok.png", 50);
-	jokerButton4->SetButtonJoker(Joker, jokerSammok);
+	unique_ptr<JokerButton> jokerButton4 = std::make_unique<JokerButton>(600.0f, -150.0f, 100, 100, "jokerWind.png", 50);
+	jokerButton4->SetButtonJoker(Joker, jokerWind);
 	m_buttonList.emplace_back(jokerButton4.get());
 	m_UIList.emplace_back(std::move(jokerButton4));
 
-	unique_ptr<JokerButton> jokerButton5 = std::make_unique<JokerButton>(600.0f, -300.0f, 100, 100, "jokerPeacock.png", 50);
-	jokerButton5->SetButtonJoker(Black, jokerPeacock);
+	unique_ptr<JokerButton> jokerButton5 = std::make_unique<JokerButton>(600.0f, -300.0f, 100, 100, "jokerMrchan.png", 50);
+	jokerButton5->SetButtonJoker(Black, jokerMrchan);
   
 
 	m_buttonList.emplace_back(jokerButton5.get());
