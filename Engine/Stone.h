@@ -2,7 +2,7 @@
 #include "Object.h"
 #include "Transform.h"
 #include "BitmapRender.h"
-
+#include "Mediator.h"
 enum StoneType // 돌 종류
 {
 	White,

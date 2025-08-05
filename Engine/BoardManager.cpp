@@ -122,6 +122,7 @@ struct JokerFunctionsWrapper
 		},
 		{ StoneAbility::jokerBlackhole, [this](shared_ptr<JokerStone> jokerBlackhole, POINT position)
 		{
+			 // Mediator에 위치 설정
 			if (jokerBlackhole->m_jokerInfo.lifeSpan <= 0) boardManager.RemoveGroup({position});
 			if (jokerBlackhole->m_jokerInfo.coolTime != 0) return;
 
@@ -130,7 +131,9 @@ struct JokerFunctionsWrapper
 			{
 				if (abs(pair.first.x - position.x) <= functionVariable && abs(pair.first.y - position.y) <= functionVariable) // && (abs(pair.first.x - position.x) > 0 || abs(pair.first.y - position.y) > 0))
 				{
+					Mediator::GetInstance().SetPosition(boardManager.BoardToScreenPosition({ position.x, position.y }));
 					SceneManager::GetInstance().ChangePostProcessing("BlackHole"); // 필터 적용
+				
 					boardManager.m_board[pair.first.x][pair.first.y]->Move(boardManager.BoardToScreenPosition({ position.x, position.y }), 3);
 					boardManager.m_board[pair.first.x][pair.first.y]->Remove(3);
 
