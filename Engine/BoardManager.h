@@ -26,6 +26,7 @@ class BoardManager : public Singleton<BoardManager>
 {
 	friend class Singleton<BoardManager>;
 	friend struct JokerFunctionsWrapper;
+
 	BoardManager() = default;
 	~BoardManager() = default;
 
@@ -39,6 +40,7 @@ class BoardManager : public Singleton<BoardManager>
 
 	// Initialize 변수들
 	int m_offX = 0, m_offY = 0, m_drawW = 0, m_drawH = 0, m_cell = 0, m_padding = 0, m_stoneOffset = 0;
+
 	void InitializeJokerInfoMap();
 
 	int CountLiberty // 사석 판정용 함수
@@ -47,7 +49,10 @@ class BoardManager : public Singleton<BoardManager>
 		std::vector<POINT>& group,
 		std::array<std::array<bool, SIZE_DEFAULT>, SIZE_DEFAULT>& visited
 	) const;
+
+	size_t WhiteStoneRemoveCheck(POINT selectedPosition);
 	void RemoveGroup(const std::vector<POINT>& group); // 사석 판정된 돌 그룹 제거 함수
+	void CheckRemovedStones();
 	void RemoveJokerStone(POINT position); // 조커 돌 제거 함수
 
 public:
@@ -66,7 +71,6 @@ public:
 
 	bool isValidPoint(POINT position) const { return position.x >= 0 && position.x < SIZE_DEFAULT && position.y >= 0 && position.y < SIZE_DEFAULT; }
 	bool PlaceStone(POINT selectedPosition, StoneType stoneType, StoneAbility stoneAbility);
-	void WhiteStoneCheck(POINT selectedPosition);
 	void ResetStone();
 
 	shared_ptr<Stone> GetStone(POINT);

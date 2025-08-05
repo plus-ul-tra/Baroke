@@ -17,6 +17,15 @@ void Stone::Update(double deltaTime)
 			m_lerpElapsedTime = 0.0;
 		}
 	}
+	if (m_isRemoving)
+	{
+		m_queueRemoveTime -= deltaTime;
+		if (m_queueRemoveTime <= 0.0)
+		{
+			m_sprite->SetActive(false);
+			m_isRemoved = true;
+		}
+	}
 }
 
 void Stone::Move(POINT position, double duration)
