@@ -149,7 +149,7 @@ class JokerButton : public Button
 
 
 		default:
-			return []() { return false; };
+			return []() { return true; };
 		}
 	}
 
