@@ -647,6 +647,8 @@ bool BoardManager::SelectSacrificeStone(POINT mousePos)
 	auto it = m_stoneTypeMap.find({ m_selectedPosition.x,m_selectedPosition.y });
 	std::cout << m_selectedPosition.x << "  " << m_selectedPosition.y << std::endl;
 	if (it == m_stoneTypeMap.end() || it->second != Black) return false; // 흑돌 아니면 패스
+	if(std::find(selectGroup.begin(), selectGroup.end(), m_selectedPosition)!= selectGroup.end()) return false;
+
 	selectGroup.push_back({ m_selectedPosition.x,m_selectedPosition.y });
 	for (auto item : selectGroup) 
 	{

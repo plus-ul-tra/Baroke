@@ -72,6 +72,17 @@ void GameScene::CheckStageClear()
 
 
 
+void GameScene::ModeCheck()
+{
+	m_uiMode = m_board.GetMode();
+
+	if (m_uiMode==UIMode::Sacrifice &&m_board.checkSelectsuccess())
+	{
+		m_board.ExitSacrificeMode(); // 요게 아니라 능력 사용 모드로 전환
+		std::cout << "Sacrifice clear" << std::endl;
+	}
+}
+
 void GameScene::ShopStage()
 {
 	m_board.ResetStone();
@@ -240,11 +251,7 @@ void GameScene::OnInput(const MouseEvent& ev)
 		{
 			std::cout << ev.pos.x << " " << ev.pos.y << std::endl;
 			m_board.SelectSacrificeStone(ev.pos);
-			if (m_board.checkSelectsuccess())
-			{	
-				m_board.ExitSacrificeMode();
-				std::cout << "Sacrifice clear" << std::endl;
-			}
+
 		}
 	}
 	else if(m_uiMode == UIMode::Normal)
