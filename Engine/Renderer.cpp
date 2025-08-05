@@ -375,7 +375,11 @@ void Renderer::SetShaderMode(const string& mode) {
 
 	// 스프라이트 전용 샘플러
 	m_pd3dContext->PSSetSamplers(0, 1, m_pSpriteSamplerState.GetAddressOf());
-
+	TimeCBuffer timeData{};
+	timeData.time = RenderTimer::GetInstance().GetDeltaTime();;
+	timeData.deltaTime = 1.0f; // 고정 델타타임
+	timeData.padding[0] = 0.0f;
+	timeData.padding[1] = 0.0f;
 	if (mode == "NoiseBlend") {
 		// SRV 리턴
 		auto noiseSRV = SpriteManager::GetInstance().GetTextureSRV("Seamless2.png"); // 이거 manager에서 생성해둔거 사용으로 수정
@@ -385,14 +389,11 @@ void Renderer::SetShaderMode(const string& mode) {
 		m_pd3dContext->PSSetShaderResources(1, 2, srvs);
 		
 		// -fakeTime 범용으로 수정 필요 // 실제 deltaTime를 사용해야 함
-		TimeCBuffer timeData{};
-		static float fakeTime = 0.0f;
-		if (fakeTime > 1000.0f) fakeTime = 0.0f;
-		fakeTime += 0.003f;
-		timeData.time = fakeTime;
-		timeData.deltaTime = 1.0f; // 고정 델타타임
-		timeData.padding[0] = 0.0f;
-		timeData.padding[1] = 0.0f;
+		//TimeCBuffer timeData{};
+		//timeData.time = RenderTimer::GetInstance().GetDeltaTime();;
+		//timeData.deltaTime = 1.0f; // 고정 델타타임
+		//timeData.padding[0] = 0.0f;
+		//timeData.padding[1] = 0.0f;
 
 		//// 3. 상수 버퍼에 쓰기
 		m_pd3dContext->UpdateSubresource(m_pTimeCBuffer.Get(), 0, nullptr, &timeData, 0, 0);
@@ -402,15 +403,12 @@ void Renderer::SetShaderMode(const string& mode) {
 		m_pd3dContext->PSSetConstantBuffers(0, 1, cbuffers);
 	}
 	if (mode == "Holo"||mode=="SetRed") {
-
-		TimeCBuffer timeData{};
-		static float fakeTime = 0.0f;
-		if (fakeTime > 1000.0f) fakeTime = 0.0f;
-		fakeTime += 0.0003f;
-		timeData.time = fakeTime;
-		timeData.deltaTime = 1.0f; // 고정 델타타임
-		timeData.padding[0] = 0.0f;
-		timeData.padding[1] = 0.0f;
+		
+		//TimeCBuffer timeData{};
+		//timeData.time = RenderTimer::GetInstance().GetDeltaTime(); // 실제 시간 사용
+		//timeData.deltaTime = 1.0f; // 고정 델타타임
+		//timeData.padding[0] = 0.0f;
+		//timeData.padding[1] = 0.0f;
 		
 		m_pd3dContext->UpdateSubresource(m_pTimeCBuffer.Get(), 0, nullptr, &timeData, 0, 0);
 
@@ -421,11 +419,8 @@ void Renderer::SetShaderMode(const string& mode) {
 	if (mode == "Othello") {
 		// 수정 필요
 		TimeCBuffer timeData{};
-		static float fakeTime = 0.0f;
-		if (fakeTime > 1000.0f) fakeTime = 0.0f;
-		fakeTime += 0.003f;
-		timeData.time = fakeTime;
-		timeData.deltaTime = 1.0f; 
+		timeData.time = RenderTimer::GetInstance().GetDeltaTimeX2();
+		timeData.deltaTime = 1.0f;
 		timeData.padding[0] = 0.0f;
 		timeData.padding[1] = 0.0f;
 
@@ -530,17 +525,17 @@ void Renderer::DrawBitmap3D(
 void Renderer::PostProcessing(const ShaderSet& shaderSet)
 {
 	if (!m_pd3dContext || !m_fullScreenVB || !m_renderTargetSRV) {
-		std::cerr << "ERROR: Essential resources not initialized for DrawFullScreenQuadWithShader." << std::endl;
+		std::cerr << "ERROR" << std::endl;
 		return;
 	}
 
 	// 쉐이더 세트의 유효성 다시 확인
 	if (!shaderSet.vs || !shaderSet.ps || !shaderSet.inputLayout) {
-		std::cerr << "ERROR: Provided ShaderSet is incomplete for DrawFullScreenQuadWithShader." << std::endl;
+		std::cerr << "ERROR" << std::endl;
 		return;
 	}
 
-	// 5. IA 설정
+	// IA 설정
 	UINT stride = sizeof(SpriteVertex);
 	UINT offset = 0;
 	m_pd3dContext->IASetInputLayout(shaderSet.inputLayout.Get()); // ShaderSet에서 InputLayout 사용

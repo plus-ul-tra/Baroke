@@ -13,7 +13,7 @@
 // ShaderManager가 정의된 헤더 포함 (현재 코드에 ShaderManager가 있다고 가정)
 #include "ShaderManager.h" 
 #include "Mediator.h"
-
+#include "RenderTimer.h"
 using namespace DirectX;
 // BitmapRender3D에서 사용하는 SpriteVertex 구조체는 Renderer.h에도 필요
 struct SpriteVertex

@@ -25,6 +25,7 @@ void SceneManager::Update(double deltaTime)
 {
 	//only currentScene
 	DispatchInput();
+	RenderTimer::GetInstance().Update(); // 렌더 타이머 업데이트
 	m_sceneList[m_currentSceneIndex]->Update(deltaTime);
 }
 
