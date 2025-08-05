@@ -123,16 +123,17 @@ struct JokerFunctionsWrapper
 		{ StoneAbility::jokerBlackhole, [this](shared_ptr<JokerStone> jokerBlackhole, POINT position)
 		{
 			if (jokerBlackhole->m_jokerInfo.lifeSpan <= 0) boardManager.RemoveGroup({position});
+			if (jokerBlackhole->m_jokerInfo.coolTime != 0) return;
 
 			int functionVariable = jokerBlackhole->m_jokerInfo.functionVariable;
 			for (const auto& pair : boardManager.GetStoneTypeMap())
 			{
-				if (abs(pair.first.x - position.x) <= functionVariable && abs(pair.first.y - position.y) <= functionVariable)
+				if (abs(pair.first.x - position.x) <= functionVariable && abs(pair.first.y - position.y) <= functionVariable) // && (abs(pair.first.x - position.x) > 0 || abs(pair.first.y - position.y) > 0))
 				{
 					SceneManager::GetInstance().ChangePostProcessing("BlackHole"); // 필터 적용
 					boardManager.m_board[pair.first.x][pair.first.y]->Move(boardManager.BoardToScreenPosition({ position.x, position.y }), 3);
 					boardManager.m_board[pair.first.x][pair.first.y]->Remove(3);
-					//SceneManager::GetInstance().ChangePostProcessing("CRTFilter");
+
 					if (boardManager.m_stoneTypeMap.find(pair.first)->second == StoneType::Black)
 					{
 						boardManager.m_playerInfo.m_BlackStone++;
@@ -145,6 +146,7 @@ struct JokerFunctionsWrapper
 				}
 			}
 			jokerBlackhole->m_jokerInfo.lifeSpan--;
+			jokerBlackhole->m_jokerInfo.coolTime--;
 		}
 		},
 
@@ -232,11 +234,12 @@ struct JokerFunctionsWrapper
 				std::random_device rd;
 				mt19937 rng(rd());
 				uniform_int_distribution<int> dist(0, 3);
+				int randomDirectionIndex = dist(rng);
 
-				POINT randomDirection = { position.x + DR[dist(rng)], position.y + DC[dist(rng)] };
+				POINT randomDirection = { position.x + DR[randomDirectionIndex], position.y + DC[randomDirectionIndex] };
 				if (!boardManager.isValidPoint(randomDirection) || !boardManager.m_board[randomDirection.x][randomDirection.y]) return;
 
-				POINT targetPosition = { position.x + (DR[dist(rng)] * 2), position.y + (DC[dist(rng)] * 2) };
+				POINT targetPosition = { position.x + (DR[randomDirectionIndex] * (1 + jokerWind->m_jokerInfo.functionVariable)), position.y + (DC[randomDirectionIndex] * (1 + jokerWind->m_jokerInfo.functionVariable)) };
 				if (boardManager.isValidPoint(targetPosition) && !boardManager.m_board[targetPosition.x][targetPosition.y])
 				{
 					boardManager.m_board[randomDirection.x][randomDirection.y]->Move(boardManager.BoardToScreenPosition(targetPosition), 1);
@@ -537,7 +540,7 @@ void BoardManager::InitializeJokerInfoMap()
 	m_jokerInfoMap[StoneAbility::jokerShadow] = { "jokerShadow.png", 10, 5, 0 };
 	m_jokerInfoMap[StoneAbility::jokerLight] = { "jokerLight.png", 15, 7, 0 };
 	m_jokerInfoMap[StoneAbility::jokerTime] = { "jokerTime.png", 20, 10, 0 };
-	m_jokerInfoMap[StoneAbility::jokerWind] = { "jokerWind.png", 2, 4, 0, 1 };
+	m_jokerInfoMap[StoneAbility::jokerWind] = { "jokerWind.png", 2, 5, 0, 2 };
 
 
 

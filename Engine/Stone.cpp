@@ -1,6 +1,7 @@
 #include "pch.h"
 #include "Stone.h"
 #include "SceneManager.h"
+
 unordered_map<StoneAbility, JokerInfo> m_jokerInfoMap;
 
 void Stone::Update(double deltaTime)
@@ -22,6 +23,7 @@ void Stone::Update(double deltaTime)
 		m_queueRemoveTime -= deltaTime;
 		if (m_queueRemoveTime <= 0.0)
 		{
+			SceneManager::GetInstance().ChangePostProcessing("CRTFilter");
 			m_sprite->SetActive(false);
 			m_isRemoved = true;
 		}
@@ -34,7 +36,6 @@ void Stone::Move(POINT position, double duration)
 
 	m_lerpStartPosition = m_transform->GetPosition();
 	m_lerpEndPosition = XMVectorSet(static_cast<float>(position.x) + m_size / 2, static_cast<float>(position.y) + m_size / 2, 0.0f, 1.0f);
-	
 }
 
 POINT Stone::GetPosition() const

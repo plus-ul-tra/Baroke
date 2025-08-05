@@ -238,7 +238,7 @@ void GameScene::OnInput(const MouseEvent& ev)
 	{
 		std::cout << ev.pos.x << " " << ev.pos.y << std::endl;
 		m_board.SetStoneType(Black);
-		m_board.SetStoneAbility(jokerBlackhole);
+		m_board.SetStoneAbility(jokerWind);
 		m_board.InputBasedGameLoop(ev.pos);
 		std::cout << "Joker Stone Count : " << m_board.GetStoneTypeAmount(Joker) << std::endl;
 	}
