@@ -42,8 +42,26 @@ public:
 
 	void Update(double deltaTime) override
 	{
-		for (auto& sp : m_stones)
-			sp->Update(deltaTime);
+// 		for (auto& sp : m_stones)
+// 			sp->Update(deltaTime);
+		const auto& sel = m_boardManager.GetSelectGroup();
+
+		// 각 Stone에 대해 Shader 타입 설정
+		for (auto* stone : m_stones)
+		{
+			auto* bmp = stone->GetComponent<BitmapRender3D>();
+			if (!bmp || !bmp->IsActive())
+				continue;
+
+			// 보드 좌표 얻기
+			POINT pos = stone->GetPosition();
+
+			bool isSelected = std::find(sel.begin(), sel.end(), pos) != sel.end();
+			if (isSelected)
+				bmp->SetShaderType("GrayScale");
+			else
+				bmp->SetShaderType("DefaultShader");   // 혹은 기존에 쓰던 기본 Shader 이름
+		}
 	}
 
 	void BoardSync();

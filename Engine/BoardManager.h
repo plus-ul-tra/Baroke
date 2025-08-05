@@ -91,7 +91,7 @@ public:
 
 	//---------------------------------------------------------------- 희생 모드 진입, 탈출
 public:
-	void SetSacrificeMode() { nowMode = UIMode::Sacrifice; }
+	void SetMode(UIMode uimode) { nowMode = uimode; }
 	void ExitSacrificeMode() { 
 		nowMode = UIMode::Normal;
 		m_stoneType = StoneType::Black;
@@ -99,20 +99,22 @@ public:
 		ResetGroup(); 
 		std::cout << "exit" << std::endl; }
 
-	UIMode GetMode() { 
-		return nowMode; }
+	UIMode GetMode() { return nowMode; }
+	const std::vector<POINT>& GetSelectGroup() const { return selectGroup; }
 
-	bool SelectSacrificeStone(POINT mousePos); // 하나씩 선택해서 그룹을 만들어야 됨 >> 이후
+	bool SelectSacrificeStone(POINT mousePos); 
 	bool checkSelectsuccess();
-	void SetPendingAb(StoneAbility ab) { m_pendingAb = ab; };
-	StoneAbility GetPendingab() { return m_pendingAb; };
-	
+
+	StoneAbility GetStoneAbillity() const { return m_stoneAbility; } ;
+	StoneType GetStoneType() const { return m_stoneType; };
+	void printasd() {};
 private:
 	std::vector<POINT> selectGroup; // 희생모드에서 선택한 그룹임
 	void ResetGroup() { selectGroup.clear(); };
 	bool sacrificeMode = false;
 	UIMode nowMode = UIMode::Normal;
-	StoneAbility  m_pendingAb = StoneAbility::None;
+// 	StoneType	  m_pendingType = StoneType::Black;
+// 	StoneAbility  m_pendingAb = StoneAbility::None;
 	//---------------------------------------------------------------- 버튼 - 상태 판정용 함수
 public:
 	int  CountStones(StoneType t) const;					// 보드판위에 특정돌이 몇갠지 체크

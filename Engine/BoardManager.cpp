@@ -659,7 +659,7 @@ bool BoardManager::SelectSacrificeStone(POINT mousePos)
 
 bool BoardManager::checkSelectsuccess()
 {
-	if (selectGroup.size() == m_jokerInfoMap[m_pendingAb].costBlack) 
+	if (selectGroup.size() == m_jokerInfoMap[m_stoneAbility].costBlack) 
 	{
 		RemoveGroup(selectGroup);
 		return true;

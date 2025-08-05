@@ -50,10 +50,9 @@ void JokerButton::ButtonFunction()
     {
 
 		std::cout << "button click" << std::endl;
-		BoardManager::GetInstance().SetSacrificeMode();
+		BoardManager::GetInstance().SetMode(UIMode::Sacrifice);
 		BoardManager::GetInstance().SetStoneType(m_stoneType);
 		BoardManager::GetInstance().SetStoneAbility(m_jokerAbility);
-		BoardManager::GetInstance().SetPendingAb(m_jokerAbility);
 		m_isPressed = false;
         
     }
