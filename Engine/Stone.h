@@ -93,6 +93,7 @@ public:
 		m_transform->SetRotation(0.0f);
 
 		m_sprite = AddComponent<BitmapRender3D>("White.png", size - offset, size - offset);
+		//m_sprite->SetShaderType("Othello"); //선택시 빨간색 표시
 		m_sprite->SetOrder(1);
 		m_sprite->SetActive(true);
 	}
@@ -112,6 +113,7 @@ public:
 		m_transform->SetRotation(0.0f);
 
 		m_sprite = AddComponent<BitmapRender3D>("Black.png", size - offset, size - offset);
+		//m_sprite->SetShaderType("SetRed"); // 선택시 파란색 표시
 		m_sprite->SetOrder(1);
 		m_sprite->SetActive(true);
 	}

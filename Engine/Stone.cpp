@@ -23,7 +23,7 @@ void Stone::Update(double deltaTime)
 		m_queueRemoveTime -= deltaTime;
 		if (m_queueRemoveTime <= 0.0)
 		{
-			SceneManager::GetInstance().ChangePostProcessing("CRTFilter");
+			SceneManager::GetInstance().ChangePostProcessing("CRTFilter"); // 본인 쉐이더X 포스트프로세싱모드 변경임
 			m_sprite->SetActive(false);
 			m_isRemoved = true;
 			m_isRemoving = false;

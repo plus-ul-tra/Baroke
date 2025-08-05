@@ -21,7 +21,7 @@ protected:
 
 	MouseType m_inputType = MouseType::Move;
 
-	virtual void ButtonFunction() {}; // ¹öÆ° ±â´ÉÀ» ±¸ÇöÇÏ´Â ÇÔ¼ö, ÀÚ½Ä Å¬·¡½º¿¡¼­ ¿À¹ö¶óÀÌµå
+	virtual void ButtonFunction() {}; // ë²„íŠ¼ ê¸°ëŠ¥ì„ êµ¬í˜„í•˜ëŠ” í•¨ìˆ˜, ìì‹ í´ë˜ìŠ¤ì—ì„œ ì˜¤ë²„ë¼ì´ë“œ
 
 	std::function<bool()> m_isEnabledPredicate = []() { return true; };
 
@@ -68,12 +68,11 @@ public:
 		m_isEnabledPredicate = std::move(pred);
 	}
 
-	// ¿©±â ¼öÁ¤, ¸ğµç button¿¡ Àû¿ëµÇ¹ö¸²
+	
 	void Update(double dt) override
 	{
 
 // 		m_isActive = m_isEnabledPredicate();
-// 
 // 		if (!m_isActive)
 // 		{
 // 			//std::cout << this << "UnDo" << std::endl;
@@ -99,82 +98,82 @@ class JokerButton : public Button
 
 		switch (ability)
 		{
-			//-------------------------------- ÀÏ¹İ (set 1)
-		case jokerDouble:   // Èæµ¹ 2°³ ÀÌ»ó
+			//-------------------------------- ì¼ë°˜ (set 1)
+		case jokerDouble:   // í‘ëŒ 2ê°œ ì´ìƒ
 			return [&bm]() { return bm.CountStones(Black) >= 2; };
-		case jokerOmok:   // Èæµ¹ 5°³ ÀÌ»ó
+		case jokerOmok:   // í‘ëŒ 5ê°œ ì´ìƒ
 			return [&bm]() { return bm.HasStraightLine(Black,5); };
-		case jokerSamok:   // Á¶Ä¿µ¹ 4°³ ÀÌ»ó
+		case jokerSamok:   // ì¡°ì»¤ëŒ 4ê°œ ì´ìƒ
 			return [&bm]() { return bm.HasStraightLine(Joker, 4); };
-		case jokerSammok:   // Á¶Ä¿µ¹ 3°³ ÀÌ»ó
+		case jokerSammok:   // ì¡°ì»¤ëŒ 3ê°œ ì´ìƒ
 			return [&bm]() { return bm.HasStraightLine(Joker, 3); };
 
-			//-------------------------------- ¾ß»ı (set 2)
-		case jokerEgg:   // Èæµ¹ 5°³ ÀÌ»ó
+			//-------------------------------- ì•¼ìƒ (set 2)
+		case jokerEgg:   // í‘ëŒ 5ê°œ ì´ìƒ
 			return [&bm]() { return bm.CountStones(Black) >= 5; };
 
- 		case jokerOstrichEgg:   // Ç×»ó Æ®·ç
-			return [&bm]() { return true; }; // ÁøÈ­
+ 		case jokerOstrichEgg:   // í•­ìƒ íŠ¸ë£¨
+			return [&bm]() { return true; }; // ì§„í™”
 
-		case jokerPeacock:   // Èòµ¹ 5°³ ÀÌ»ó
+		case jokerPeacock:   // í°ëŒ 5ê°œ ì´ìƒ
 			return [&bm]() { return bm.CountStones(White) >= 5; };
 
-		case jokerEvolution:   // ¾ß»ı µ¹2°³ ÀÌ»ó
+		case jokerEvolution:   // ì•¼ìƒ ëŒ2ê°œ ì´ìƒ
 			return [&bm]() { return true; };
 
-		case jokerDansu:   // ÀÚÀ¯µµ°¡ 1ÀÎ Èòµ¹ÀÌ Á¸ÀçÇÏ´Â °æ¿ì
+		case jokerDansu:   // ììœ ë„ê°€ 1ì¸ í°ëŒì´ ì¡´ì¬í•˜ëŠ” ê²½ìš°
 			return [&bm]() { return bm.WhiteLibOne(); };
 
-			//-------------------------------- ¿ìÁÖ (set 3)
-		case jokerTeleport:   // Èæµ¹ 1°³ ÀÌ»ó
+			//-------------------------------- ìš°ì£¼ (set 3)
+		case jokerTeleport:   // í‘ëŒ 1ê°œ ì´ìƒ
 			return [&bm]() { return  bm.CountStones(Black) >= 1; };
 
-		case jokerExplode:   // Âø¼ö ÁöÁ¡À» ±âÁØ 3*3¹üÀ§¿¡ Èæµ¹ÀÌ 5°³ ÀÌ»ó
+		case jokerExplode:   // ì°©ìˆ˜ ì§€ì ì„ ê¸°ì¤€ 3*3ë²”ìœ„ì— í‘ëŒì´ 5ê°œ ì´ìƒ
 			return [&bm]() { return bm.IsColorCount(StoneType::Black,5); };
 
-		case jokerMagnetic:   // Âø¼ö ÁöÁ¡À» ±âÁØ 3*3¹üÀ§¿¡ Èæµ¹ == ¹éµ¹
+		case jokerMagnetic:   // ì°©ìˆ˜ ì§€ì ì„ ê¸°ì¤€ 3*3ë²”ìœ„ì— í‘ëŒ == ë°±ëŒ
 			return [&bm]() { return bm.IsSamaBlackWhite(); };
 
-		case jokerBlackhole:   // ÀÚÀ¯µµ°¡ 0ÀÎ ÁöÁ¡ÀÌ Á¸ÀçÇÏ´Â °æ¿ì
+		case jokerBlackhole:   // ììœ ë„ê°€ 0ì¸ ì§€ì ì´ ì¡´ì¬í•˜ëŠ” ê²½ìš°
 			return [&bm]() { return bm.IsLibZero(); };
 
-			//-------------------------------- ´ÜÃ» (set 4)
-		case jokerFusion:   // Èò µ¹ 2°³¸¦ ¿¬°áÇÒ ¼ö ÀÖ´Â ÁöÁ¡ÀÌ ÀÖ´Â °æ¿ì
+			//-------------------------------- ë‹¨ì²­ (set 4)
+		case jokerFusion:   // í° ëŒ 2ê°œë¥¼ ì—°ê²°í•  ìˆ˜ ìˆëŠ” ì§€ì ì´ ìˆëŠ” ê²½ìš°
 			return [&bm]() { return  bm.IsConnectTwo(); };
 
-		case jokerTriunion:   // Ç×»ó Æ®·ç
-			return [&bm]() { return true; }; // ÁøÈ­
+		case jokerTriunion:   // í•­ìƒ íŠ¸ë£¨
+			return [&bm]() { return true; }; // ì§„í™”
 
-		case jokerQuadunion:   // Ç×»ó Æ®·ç
-			return [&bm]() { return true; }; // ÁøÈ­
+		case jokerQuadunion:   // í•­ìƒ íŠ¸ë£¨
+			return [&bm]() { return true; }; // ì§„í™”
 
-			//-------------------------------- ÇÒ·ÎÀ© (set 6)
-		case jokerSplit:   // Èæµ¹ 2°³ ÀÌ»ó
+			//-------------------------------- í• ë¡œìœˆ (set 6)
+		case jokerSplit:   // í‘ëŒ 2ê°œ ì´ìƒ
 			return [&bm]() { return bm.CountStones(Black) >= 2; };
 
-		case jokerWaxseal:   // ÀÚÀ¯µµ°¡ 1ÀÎ Èòµ¹ÀÌ Á¸ÀçÇÏ´Â °æ¿ì
+		case jokerWaxseal:   // ììœ ë„ê°€ 1ì¸ í°ëŒì´ ì¡´ì¬í•˜ëŠ” ê²½ìš°
 			return [&bm]() { return bm.WhiteLibOne(); };
 
-		case jokerFlip:   // Âø¼ö ÁöÁ¡À» ±âÁØ 3*3¹üÀ§¿¡ Èòµ¹ÀÌ 3°³ ÀÌ»ó
+		case jokerFlip:   // ì°©ìˆ˜ ì§€ì ì„ ê¸°ì¤€ 3*3ë²”ìœ„ì— í°ëŒì´ 3ê°œ ì´ìƒ
 			return [&bm]() {  return bm.IsColorCount(StoneType::White, 3); };
 
-		case jokerOthello:   // Èæµ¹ ±âÁØ »óÇÏÁÂ¿ì Áß ¹éµ¹3°³ ÀÌ»óÀÎ ÁöÁ¡ÀÌ ÀÖ´Â°¡?
+		case jokerOthello:   // í‘ëŒ ê¸°ì¤€ ìƒí•˜ì¢Œìš° ì¤‘ ë°±ëŒ3ê°œ ì´ìƒì¸ ì§€ì ì´ ìˆëŠ”ê°€?
 			return [&bm]() { return bm.IsOthello(); };
 
-		case jokerMrchan:   // Ç×»ó Æ®·ç
-			return [&bm]() { return true; }; // ÁøÈ­
+		case jokerMrchan:   // í•­ìƒ íŠ¸ë£¨
+			return [&bm]() { return true; }; // ì§„í™”
 
-			//-------------------------------- ÀÚ¿¬ (set 7)
-		case jokerShadow:   // Èòµ¹ 1°³ ÀÌ»ó
+			//-------------------------------- ìì—° (set 7)
+		case jokerShadow:   // í°ëŒ 1ê°œ ì´ìƒ
 			return [&bm]() { return bm.CountStones(White) >= 1; };
 
-		case jokerLight:   // Èæµ¹ 0°³
+		case jokerLight:   // í‘ëŒ 0ê°œ
 			return [&bm]() { return bm.CountStones(Black) == 0; };
 
-		case jokerTime:   // ÇÃ·¹ÀÌ¾î Èæµ¹ °³¼ö°¡ 5°³ ¹Ì¸¸ÀÎ °æ¿ì
-			return [&bm]() {  return true; }; // ÇÃ·¹ÀÌ¾î¿¡ Á¢±ÙÇØ¾ßµÊ;; 
+		case jokerTime:   // í”Œë ˆì´ì–´ í‘ëŒ ê°œìˆ˜ê°€ 5ê°œ ë¯¸ë§Œì¸ ê²½ìš°
+			return [&bm]() {  return true; }; // í”Œë ˆì´ì–´ì— ì ‘ê·¼í•´ì•¼ë¨;; 
 
-		case jokerWind:   // Èæµ¹ 4°³ ÀÌ»ó
+		case jokerWind:   // í‘ëŒ 4ê°œ ì´ìƒ
 			return [&bm]() { return bm.CountStones(Black) >= 4; };
 		default:
 			return []() { return true; };
@@ -208,6 +207,7 @@ public:
 	 	{
 	 		if (m_bitmapRender) m_bitmapRender->SetShaderType("Holo");
 	 	}
+
 		ButtonFunction();
 		Object::Update(dt);
 	}

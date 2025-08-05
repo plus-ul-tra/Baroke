@@ -401,7 +401,7 @@ void Renderer::SetShaderMode(const string& mode) {
 		ID3D11Buffer* cbuffers[1] = { m_pTimeCBuffer.Get() };
 		m_pd3dContext->PSSetConstantBuffers(0, 1, cbuffers);
 	}
-	if (mode == "Holo") {
+	if (mode == "Holo"||mode=="SetRed") {
 
 		TimeCBuffer timeData{};
 		static float fakeTime = 0.0f;
@@ -411,9 +411,27 @@ void Renderer::SetShaderMode(const string& mode) {
 		timeData.deltaTime = 1.0f; // 고정 델타타임
 		timeData.padding[0] = 0.0f;
 		timeData.padding[1] = 0.0f;
+		
 		m_pd3dContext->UpdateSubresource(m_pTimeCBuffer.Get(), 0, nullptr, &timeData, 0, 0);
 
 		// 4. Pixel Shader에 바인딩 (b1)
+		ID3D11Buffer* cbuffers[1] = { m_pTimeCBuffer.Get() };
+		m_pd3dContext->PSSetConstantBuffers(1, 1, cbuffers);
+	}
+	if (mode == "Othello") {
+		// 수정 필요
+		TimeCBuffer timeData{};
+		static float fakeTime = 0.0f;
+		if (fakeTime > 1000.0f) fakeTime = 0.0f;
+		fakeTime += 0.003f;
+		timeData.time = fakeTime;
+		timeData.deltaTime = 1.0f; 
+		timeData.padding[0] = 0.0f;
+		timeData.padding[1] = 0.0f;
+
+		m_pd3dContext->UpdateSubresource(m_pTimeCBuffer.Get(), 0, nullptr, &timeData, 0, 0);
+
+		
 		ID3D11Buffer* cbuffers[1] = { m_pTimeCBuffer.Get() };
 		m_pd3dContext->PSSetConstantBuffers(1, 1, cbuffers);
 	}
@@ -542,8 +560,8 @@ void Renderer::PostProcessing(const ShaderSet& shaderSet)
 	if (m_postProcessShaderName == "BlackHole") {
 		// BlackHole용 상수 버퍼 업데이트
 		TimeCBuffer timeData{};
-		m_blackHoleTime += 0.008f;
-		if (m_blackHoleTime > 4.0f) m_blackHoleTime = 0.0f;
+		m_blackHoleTime += 0.01f;
+		if (m_blackHoleTime > 8.0f) m_blackHoleTime = 0.0f;
 
 		timeData.time = m_blackHoleTime;
 		timeData.deltaTime = 1.0f; // 고정 델타
@@ -555,7 +573,7 @@ void Renderer::PostProcessing(const ShaderSet& shaderSet)
 		PositionCBuffer positionData{};
 		float uvX = (static_cast<float>(Mediator::GetInstance().GetPosition().x) / static_cast<float>(m_screenWidth))+ 0.5f;
 		float uvY = (static_cast<float>( - Mediator::GetInstance().GetPosition().y) / static_cast<float> (m_screenHeight)) + 0.5f;
-		cout << "uvX: " << uvX << ", uvY: " << uvY << endl;
+		//cout << "uvX: " << uvX << ", uvY: " << uvY << endl;
 		positionData.x = uvX;
 		positionData.y = uvY;
 		positionData.padding[0] = 0.0f;

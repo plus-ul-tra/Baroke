@@ -98,6 +98,16 @@ void ShaderManager::ReadAllShaders()
 	if (FAILED(hr)) {
 		cout << "black리드 실패" << endl;
 	}
+
+	hr = ReadShaderResource("..\\Shader\\DefaultShader_VS.cso", "..\\Shader\\Othello_PS.cso", "Othello", quadLayout, numQuadElements);
+	if (FAILED(hr)) {
+		cout << "Othello리드 실패" << endl;
+	}
+
+	hr = ReadShaderResource("..\\Shader\\DefaultShader_VS.cso", "..\\Shader\\SetRed_PS.cso", "SetRed", quadLayout, numQuadElements);
+	if (FAILED(hr)) {
+		cout << "SetRed리드 실패" << endl;
+	}
 }
 
 
