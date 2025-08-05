@@ -26,6 +26,7 @@ void Stone::Update(double deltaTime)
 			SceneManager::GetInstance().ChangePostProcessing("CRTFilter");
 			m_sprite->SetActive(false);
 			m_isRemoved = true;
+			m_isRemoving = false;
 		}
 	}
 }

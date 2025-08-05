@@ -131,7 +131,7 @@ struct JokerFunctionsWrapper
 			{
 				if (abs(pair.first.x - position.x) <= functionVariable && abs(pair.first.y - position.y) <= functionVariable) // && (abs(pair.first.x - position.x) > 0 || abs(pair.first.y - position.y) > 0))
 				{
-					Mediator::GetInstance().SetPosition(boardManager.BoardToScreenPosition({ position.x, position.y }));
+					Mediator::GetInstance().SetPosition(jokerBlackhole->GetPosition());
 					SceneManager::GetInstance().ChangePostProcessing("BlackHole"); // 필터 적용
 				
 					boardManager.m_board[pair.first.x][pair.first.y]->Move(boardManager.BoardToScreenPosition({ position.x, position.y }), 3);
