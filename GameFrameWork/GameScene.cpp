@@ -19,7 +19,7 @@ void GameScene::SetUIJokerButton()
 
 	unique_ptr<JokerButton> jokerButton1 = std::make_unique<JokerButton>(600.0f, 300.0f, 100, 100, "jokerDouble.png", 50);
 	jokerButton1->SetButtonJoker(Joker, jokerDouble);
-	//jokerButton1->GetComponent<BitmapRender3D>()->SetShaderType("Holo");
+/*	jokerButton1->GetComponent<BitmapRender3D>()->SetShaderType("Holo");*/
 	m_buttonList.emplace_back(jokerButton1.get());
 	m_UIList.emplace_back(std::move(jokerButton1));
 
@@ -28,13 +28,13 @@ void GameScene::SetUIJokerButton()
 	m_buttonList.emplace_back(jokerButton2.get());
 	m_UIList.emplace_back(std::move(jokerButton2));
 
-	unique_ptr<JokerButton> jokerButton3 = std::make_unique<JokerButton>(600.0f, 0.0f, 100, 100, "jokerSamok.png", 50);
-	jokerButton3->SetButtonJoker(Joker, jokerSamok);
+	unique_ptr<JokerButton> jokerButton3 = std::make_unique<JokerButton>(600.0f, 0.0f, 100, 100, "jokerExplode.png", 50);
+	jokerButton3->SetButtonJoker(Joker, jokerExplode);
 	m_buttonList.emplace_back(jokerButton3.get());
 	m_UIList.emplace_back(std::move(jokerButton3));
 
-	unique_ptr<JokerButton> jokerButton4 = std::make_unique<JokerButton>(600.0f, -150.0f, 100, 100, "jokerSammok.png", 50);
-	jokerButton4->SetButtonJoker(Joker, jokerSammok);
+	unique_ptr<JokerButton> jokerButton4 = std::make_unique<JokerButton>(600.0f, -150.0f, 100, 100, "jokerSplit.png", 50);
+	jokerButton4->SetButtonJoker(Joker, jokerSplit);
 	m_buttonList.emplace_back(jokerButton4.get());
 	m_UIList.emplace_back(std::move(jokerButton4));
 
@@ -237,7 +237,7 @@ void GameScene::OnInput(const MouseEvent& ev)
 	{
 		std::cout << ev.pos.x << " " << ev.pos.y << std::endl;
 		m_board.SetStoneType(Black);
-		m_board.SetStoneAbility(jokerPeacock);
+		m_board.SetStoneAbility(jokerBlackhole);
 		m_board.InputBasedGameLoop(ev.pos);
 		std::cout << "Joker Stone Count : " << m_board.GetStoneTypeAmount(Joker) << std::endl;
 	}
