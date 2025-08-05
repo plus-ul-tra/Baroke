@@ -64,12 +64,15 @@ void GameScene::CheckStageClear()
 {
 	if (m_board.GetStoneTypeAmount(White) <= 0)  // 스테이지 클리어
 	{
-		std::cout << "stage clear >> move to shop" << std::endl;
-		m_money += 3 + (m_stageNo - 1);
-		std::cout << "money : " <<m_money << std::endl;
+		ShopStage();
 
 		StartStage();
 	}
+}
+
+void GameScene::ShopStage()
+{
+
 }
 
 void GameScene::Initialize()
@@ -238,7 +241,7 @@ void GameScene::OnInput(const MouseEvent& ev)
 	{
 		std::cout << ev.pos.x << " " << ev.pos.y << std::endl;
 		m_board.SetStoneType(Black);
-		m_board.SetStoneAbility(jokerWind);
+		m_board.SetStoneAbility(jokerBlackhole);
 		m_board.InputBasedGameLoop(ev.pos);
 		std::cout << "Joker Stone Count : " << m_board.GetStoneTypeAmount(Joker) << std::endl;
 	}

@@ -2,7 +2,7 @@
 #include "Stone.h"
 #include "SceneManager.h"
 
-unordered_map<StoneAbility, JokerInfo> m_jokerInfoMap;
+unordered_map<StoneAbility, JokerStoneInfo> m_jokerInfoMap;
 
 void Stone::Update(double deltaTime)
 {
