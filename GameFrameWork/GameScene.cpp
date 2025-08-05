@@ -64,15 +64,16 @@ void GameScene::CheckStageClear()
 {
 	if (m_board.GetStoneTypeAmount(White) <= 0)  // 스테이지 클리어
 	{
-		ShopStage();
+		SceneManager::GetInstance().ChangePostProcessing("CRTFilter");
 
+		ShopStage();
 		StartStage();
 	}
 }
 
 void GameScene::ShopStage()
 {
-
+	m_board.ResetStone();
 }
 
 void GameScene::Initialize()
