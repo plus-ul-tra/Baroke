@@ -13,7 +13,8 @@ private:
 
 	DirectX::XMVECTOR m_moveDir = DirectX::XMVectorZero();
 
-	
+ 	UIMode        m_uiMode = UIMode::Normal;
+
 
 	int m_stageNo = 0;		// 스테이지 단계
 	int m_BlackStone = 500;	// 착수 가능한 흑돌
@@ -23,6 +24,7 @@ private:
 	void SetUIJokerButton(); // UI 조커 버튼 설정
  	void  StartStage();				// 스테이지 시작
  	void  CheckStageClear();		// 스테이지 클리어 체크
+	void  ModeCheck();
 
 public:
 	//GameScene() = default;
@@ -45,4 +47,11 @@ public:
 
 	void OnInput(const MouseEvent& ev) override;
 
+// 	void EnterSacrificeMode(StoneAbility ab)
+// 	{
+// 		m_uiMode = UIMode::Sacrifice;
+// 		m_pendingAb = ab;
+// 		//BoardObject::GetInstance().HighlightSelectableStones();
+// 	}
+// 	void ExitSacrificeMode() { m_uiMode = UIMode::Normal; }
 };

@@ -86,6 +86,7 @@
       <Filter>Stone</Filter>
     </ClInclude>
     <ClInclude Include="PlayerInfo.h" />
+    <ClInclude Include="ModeInfo.h" />
   </ItemGroup>
   <ItemGroup>
     <Filter Include="ETC">

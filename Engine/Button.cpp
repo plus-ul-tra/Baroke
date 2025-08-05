@@ -39,10 +39,22 @@ void JokerButton::ButtonFunction()
 // 		BoardManager::GetInstance().SetStoneAbility(m_jokerAbility);
 // 	}
 
+	//if (m_isPressed && m_isActive)
+	//{
+	//	auto& bm = BoardManager::GetInstance();
+	//	bm.SetStoneType(m_stoneType);
+	//	bm.SetStoneAbility(m_jokerAbility);
+	//}
+
 	if (m_isPressed && m_isActive)
-	{
-		auto& bm = BoardManager::GetInstance();
-		bm.SetStoneType(m_stoneType);
-		bm.SetStoneAbility(m_jokerAbility);
-	}
+    {
+
+		std::cout << "button click" << std::endl;
+		BoardManager::GetInstance().SetSacrificeMode();
+		BoardManager::GetInstance().SetStoneType(m_stoneType);
+		BoardManager::GetInstance().SetStoneAbility(m_jokerAbility);
+		BoardManager::GetInstance().SetPendingAb(m_jokerAbility);
+		m_isPressed = false;
+        
+    }
 }
