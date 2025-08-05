@@ -83,10 +83,21 @@ void GameScene::ModeCheck()
 	}
 }
 
+void GameScene::InitShop()
+{
+	for (auto& jokers : m_jokerInfoMap)
+	{
+		if (jokers.second.isStone) m_shopStones.push_back(jokers.first);
+		else m_shopItems.push_back(jokers.first);
+	}
+}
+
 void GameScene::ShopStage()
 {
 	m_board.ResetStone();
-
+	random_device rd;
+	mt19937 rng(rd());
+	uniform_int_distribution<int> dist(0, 100);
 }
 
 void GameScene::Initialize()
@@ -277,7 +288,7 @@ void GameScene::OnInput(const MouseEvent& ev)
 		{
 			std::cout << ev.pos.x << " " << ev.pos.y << std::endl;
 			m_board.SetStoneType(Black);
-			m_board.SetStoneAbility(jokerWind);
+			m_board.SetStoneAbility(jokerBlackhole);
 			m_board.InputBasedGameLoop(ev.pos);
 			std::cout << "Joker Stone Count : " << m_board.GetStoneTypeAmount(Joker) << std::endl;
 		}

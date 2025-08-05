@@ -26,7 +26,11 @@ private:
 
 	void  ModeCheck();
 
-	void ShopStage(); // 사점
+	void InitShop(); // 상점 초기화
+	vector<StoneAbility> m_shopStones; // 돌 조커
+	vector<StoneAbility> m_shopItems; // 돌 아닌 조커
+	int m_shopRng[3] = { 80, 45, 15 }; // 상점 아이템 확률
+	void ShopStage(); // 상점
 
 
 public:

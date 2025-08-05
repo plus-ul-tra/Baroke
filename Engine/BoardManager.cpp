@@ -234,7 +234,7 @@ struct JokerFunctionsWrapper
 
 			if (!jokerWind->m_jokerInfo.coolTime)
 			{
-				std::random_device rd;
+				random_device rd;
 				mt19937 rng(rd());
 				uniform_int_distribution<int> dist(0, 3);
 				int randomDirectionIndex = dist(rng);
@@ -508,34 +508,36 @@ int BoardManager::GetStoneTypeAmount(StoneType type) const
 
 void BoardManager::InitializeJokerInfoMap()
 {
+	m_jokerInfoMap[StoneAbility::None] = {}; // 디폴트 돌
+
 	//------------------------------------------------------------------------------------------------ 일반 (set 1)
-	m_jokerInfoMap[StoneAbility::jokerDouble] = { "jokerDouble.png" };
-	m_jokerInfoMap[StoneAbility::jokerOmok] = { "jokerOmok.png" };
-	m_jokerInfoMap[StoneAbility::jokerSamok] = { "jokerSamok.png" };
-	m_jokerInfoMap[StoneAbility::jokerSammok] = { "jokerSammok.png" };
+	m_jokerInfoMap[StoneAbility::jokerDouble] = { "jokerDouble.png", 0, 0, 0, 0, 0, 1, 2, 1, false };
+	m_jokerInfoMap[StoneAbility::jokerOmok] = { "jokerOmok.png", 0, 0, 0, 0, 0, 2, 4, 2, false };
+	m_jokerInfoMap[StoneAbility::jokerSamok] = { "jokerSamok.png", 0, 0, 0, 0, 0, 5, 3, 2, false };
+	m_jokerInfoMap[StoneAbility::jokerSammok] = { "jokerSammok.png", 0, 0, 0, 0, 0, 2, 2, 1, false };
 
 	//------------------------------------------------------------------------------------------------ 야생 (set 2)
-	m_jokerInfoMap[StoneAbility::jokerEvolution] = { "jokerEvolution.png" };						// cost 0
-	m_jokerInfoMap[StoneAbility::jokerDansu] = { "jokerDansu.png", 5, 5, 0 ,0 , 1};
-	m_jokerInfoMap[StoneAbility::jokerEgg] = { "jokerEgg.png", 3, 0, 0, 2, 2 };
-	m_jokerInfoMap[StoneAbility::jokerOstrichEgg] = { "jokerOstrichEgg.png", 2, 0, 0, 1, 3 };
-	m_jokerInfoMap[StoneAbility::jokerPeacock] = { "jokerPeacock.png", 0, 0, 0, 3, 4 };				// cost 4
+	m_jokerInfoMap[StoneAbility::jokerEvolution] = { "jokerEvolution.png", 0, 0, 0, 0, 0, 0, 7, 3, false };						// cost 0
+	m_jokerInfoMap[StoneAbility::jokerDansu] = { "jokerDansu.png", 0, 1, 0, 0, 0, 1, 2, 1, true };
+	m_jokerInfoMap[StoneAbility::jokerEgg] = { "jokerEgg.png", 3, 0, 0, 2, 5, 0, 2, 1, true };
+	m_jokerInfoMap[StoneAbility::jokerOstrichEgg] = { "jokerOstrichEgg.png", 2, 0, 0, 1, 0, 0, 0, 0, true };
+	m_jokerInfoMap[StoneAbility::jokerPeacock] = { "jokerPeacock.png", 0, 0, 0, 3, 3, 1, 6, 3, true };				// cost 4
 
 	//------------------------------------------------------------------------------------------------ 우주 (set 3)
 	m_jokerInfoMap[StoneAbility::jokerTeleport] = { "jokerTeleport.png", 10, 5, 0 };
-	m_jokerInfoMap[StoneAbility::jokerExplode] = { "jokerExplode.png", 0, 1, 0, 1 };
+	m_jokerInfoMap[StoneAbility::jokerExplode] = { "jokerExplode.png", 0, 1, 0, 1, 3, 1, 6, 3, true };
 	m_jokerInfoMap[StoneAbility::jokerMagnetic] = { "jokerMagnetic.png", 0, 1, 0, 3 };
-	m_jokerInfoMap[StoneAbility::jokerBlackhole] = { "jokerBlackhole.png", 0, 1, 0, 5 };
+	m_jokerInfoMap[StoneAbility::jokerBlackhole] = { "jokerBlackhole.png", 0, 1, 0, 5, 15, 0, 8, 3, true };
 
 	//------------------------------------------------------------------------------------------------ 단청 (set 4)
-	m_jokerInfoMap[StoneAbility::jokerFusion] = { "jokerFusion.png", 0, 0, 0, 2 };
-	m_jokerInfoMap[StoneAbility::jokerTriunion] = { "jokerTriunion.png", 0, 0, 0, 3 };
-	m_jokerInfoMap[StoneAbility::jokerQuadunion] = { "jokerQuadunion.png", 0, 0, 0, 4 };
+	m_jokerInfoMap[StoneAbility::jokerFusion] = { "jokerFusion.png", 0, 0, 0, 2, 2, 2, 5, 2, true };
+	m_jokerInfoMap[StoneAbility::jokerTriunion] = { "jokerTriunion.png", 0, 0, 0, 3, 0, 3, 3, 1, true };
+	m_jokerInfoMap[StoneAbility::jokerQuadunion] = { "jokerQuadunion.png", 0, 0, 0, 4, 0, 4, 4, 3, true };
 
 	//------------------------------------------------------------------------------------------------ 할로윈 (set 6)
-	m_jokerInfoMap[StoneAbility::jokerSplit] = { "jokerSplit.png", 3, 0, 0, 20 };
-	m_jokerInfoMap[StoneAbility::jokerWaxseal] = { "jokerWaxseal.png", 0, 0, 0, 1 };
-	m_jokerInfoMap[StoneAbility::jokerFlip] = { "jokerFlip.png", 20, 10, 0 };
+	m_jokerInfoMap[StoneAbility::jokerSplit] = { "jokerSplit.png", 3, 0, 0, 20, 2, 0, 5, 2, true };
+	m_jokerInfoMap[StoneAbility::jokerWaxseal] = { "jokerWaxseal.png", 0, 0, 0, 1, 0, 0, 3, 2, true };
+	m_jokerInfoMap[StoneAbility::jokerFlip] = { "jokerFlip.png", 20, 10, 0, 3, 1, 6, 2, true };
 	m_jokerInfoMap[StoneAbility::jokerOthello] = { "jokerOthello.png", 15, 7, 0 };
 	m_jokerInfoMap[StoneAbility::jokerMrchan] = { "jokerMrchan.png", 20, 10, 0 };
 
@@ -543,7 +545,7 @@ void BoardManager::InitializeJokerInfoMap()
 	m_jokerInfoMap[StoneAbility::jokerShadow] = { "jokerShadow.png", 10, 5, 0 };
 	m_jokerInfoMap[StoneAbility::jokerLight] = { "jokerLight.png", 15, 7, 0 };
 	m_jokerInfoMap[StoneAbility::jokerTime] = { "jokerTime.png", 20, 10, 0 };
-	m_jokerInfoMap[StoneAbility::jokerWind] = { "jokerWind.png", 2, 5, 0, 2 };
+	m_jokerInfoMap[StoneAbility::jokerWind] = { "jokerWind.png", 2, 5, 0, 2, 4, 1, 4, 2, true };
 
 
 
