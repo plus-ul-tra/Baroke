@@ -117,7 +117,7 @@ public:
 	}
 };
 
-struct JokerInfo // 조커 돌 정보
+struct JokerStoneInfo // 조커 돌 정보
 {
 	string fileName = "JokerEgg.png"; // 조커 돌 이미지 파일 이름
 
@@ -127,7 +127,7 @@ struct JokerInfo // 조커 돌 정보
 	int functionDuration = 0; // 조커 돌 능력 함수 지속 시간 // 0이면 한번만 실행
 	int functionVariable = 0; // 조커 돌 능력 함수에 사용되는 변수 // 능력에 따라 다름
 };
-extern unordered_map<StoneAbility, JokerInfo> m_jokerInfoMap; // 조커 돌 능력 정보 맵 // 능력의 기본값 저장용
+extern unordered_map<StoneAbility, JokerStoneInfo> m_jokerInfoMap; // 조커 돌 능력 정보 맵 // 능력의 기본값 저장용
 
 class JokerStone : public Stone
 {
@@ -148,5 +148,5 @@ public:
 		m_sprite->SetActive(true);
 	}
 
-	JokerInfo m_jokerInfo; // 조커 돌 능력 정보
+	JokerStoneInfo m_jokerInfo; // 조커 돌 능력 정보
 };

@@ -521,7 +521,7 @@ void BoardManager::InitializeJokerInfoMap()
 	//------------------------------------------------------------------------------------------------ 우주 (set 3)
 	m_jokerInfoMap[StoneAbility::jokerTeleport] = { "jokerTeleport.png", 10, 5, 0 };
 	m_jokerInfoMap[StoneAbility::jokerExplode] = { "jokerExplode.png", 0, 1, 0, 1 };
-	m_jokerInfoMap[StoneAbility::jokerMagnetic] = { "jokerMagnetic.png", 20, 10, 0 };
+	m_jokerInfoMap[StoneAbility::jokerMagnetic] = { "jokerMagnetic.png", 0, 1, 0, 3 };
 	m_jokerInfoMap[StoneAbility::jokerBlackhole] = { "jokerBlackhole.png", 0, 1, 0, 5 };
 
 	//------------------------------------------------------------------------------------------------ 단청 (set 4)
