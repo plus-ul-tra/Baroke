@@ -186,6 +186,7 @@ struct JokerFunctionsWrapper
 		}
 		},
 
+
 		{ StoneAbility::jokerSplit, [this](shared_ptr<JokerStone> jokerSplit, POINT position)
 		{
 			if (!jokerSplit->m_jokerInfo.coolTime)
@@ -210,6 +211,7 @@ struct JokerFunctionsWrapper
 				jokerSplit->m_jokerInfo.coolTime = m_jokerInfoMap.find(StoneAbility::jokerSplit)->second.coolTime;
 			}
 			jokerSplit->m_jokerInfo.coolTime--;
+
 		}
 		},
 		{ StoneAbility::jokerWaxseal, [this](shared_ptr<JokerStone> jokerWaxseal, POINT position)

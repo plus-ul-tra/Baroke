@@ -176,7 +176,7 @@ void GameScene::KeyCommandMapping()
 
 	m_commandMap["F2"] = [this]()
 		{
-			SceneManager::GetInstance().ChangePostProcessing("CRTFilter");
+			SceneManager::GetInstance().ChangePostProcessing("BlackHole");
 		};
 
 	m_commandMap["F3"] = [this]()
@@ -191,7 +191,7 @@ void GameScene::KeyCommandMapping()
 
 	m_commandMap["F5"] = [this]()
 		{
-			SceneManager::GetInstance().ChangePostProcessing("PassThrough");
+			SceneManager::GetInstance().ChangePostProcessing("CRTFilter");
 		};
 
 	m_commandMap["Go"] = [this]()
