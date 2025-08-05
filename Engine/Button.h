@@ -114,7 +114,7 @@ class JokerButton : public Button
 			return [&bm]() { return bm.CountStones(Black) >= 5; };
 
  		case jokerOstrichEgg:   // 항상 트루
-			return [&bm]() { return true; };
+			return [&bm]() { return true; }; // 진화
 
 		case jokerPeacock:   // 흰돌 5개 이상
 			return [&bm]() { return bm.CountStones(White) >= 5; };
@@ -126,11 +126,11 @@ class JokerButton : public Button
 			return [&bm]() { return bm.WhiteLibOne(); };
 
 			//-------------------------------- 우주 (set 3)
-		case jokerTeleport:   // 
+		case jokerTeleport:   // 흑돌 1개 이상
 			return [&bm]() { return  bm.CountStones(Black) >= 1; };
 
 		case jokerExplode:   // 착수 지점을 기준 3*3범위에 흑돌이 5개 이상
-			return [&bm]() { return bm.HasBombReady(5); };
+			return [&bm]() { return bm.IsColorCount(StoneType::Black,5); };
 
 		case jokerMagnetic:   // 착수 지점을 기준 3*3범위에 흑돌 == 백돌
 			return [&bm]() { return bm.IsSamaBlackWhite(); };
@@ -139,23 +139,48 @@ class JokerButton : public Button
 			return [&bm]() { return bm.IsLibZero(); };
 
 			//-------------------------------- 단청 (set 4)
-		case jokerFusion:   // 
-			return [&bm]() { return  bm.CountStones(Black) >= 1; };
+		case jokerFusion:   // 흰 돌 2개를 연결할 수 있는 지점이 있는 경우
+			return [&bm]() { return  bm.IsConnectTwo(); };
 
-		case jokerTriunion:   // 착수 지점을 기준 3*3범위에 흑돌이 5개 이상
-			return [&bm]() { return bm.HasBombReady(5); };
+		case jokerTriunion:   // 항상 트루
+			return [&bm]() { return true; }; // 진화
 
-		case jokerQuadunion:   // 착수 지점을 기준 3*3범위에 흑돌 == 백돌
-			return [&bm]() { return bm.IsSamaBlackWhite(); };
+		case jokerQuadunion:   // 항상 트루
+			return [&bm]() { return true; }; // 진화
 
+			//-------------------------------- 할로윈 (set 6)
+		case jokerSplit:   // 흑돌 2개 이상
+			return [&bm]() { return bm.CountStones(Black) >= 2; };
 
+		case jokerWaxseal:   // 자유도가 1인 흰돌이 존재하는 경우
+			return [&bm]() { return bm.WhiteLibOne(); };
+
+		case jokerFlip:   // 착수 지점을 기준 3*3범위에 흰돌이 3개 이상
+			return [&bm]() {  return bm.IsColorCount(StoneType::White, 3); };
+
+		case jokerOthello:   // 흑돌 기준 상하좌우 중 백돌3개 이상인 지점이 있는가?
+			return [&bm]() { return bm.IsOthello(); };
+
+		case jokerMrchan:   // 항상 트루
+			return [&bm]() { return true; }; // 진화
+
+			//-------------------------------- 자연 (set 7)
+		case jokerShadow:   // 흰돌 1개 이상
+			return [&bm]() { return bm.CountStones(White) >= 1; };
+
+		case jokerLight:   // 흑돌 0개
+			return [&bm]() { return bm.CountStones(Black) == 0; };
+
+		case jokerTime:   // 플레이어 흑돌 개수가 5개 미만인 경우
+			return [&bm]() {  return true; }; // 플레이어에 접근해야됨;; 
+
+		case jokerWind:   // 흰돌 1개 이상
+			return [&bm]() { return bm.CountStones(Black) >= 4; };
 		default:
 			return []() { return true; };
 		}
 	}
 
-	// 조커를 눌렀을 때 희생모드? 
-	// 이때 보드판을 클릭을해 >> 클릭 한곳이 블랙이야 >> 이친구 임시 그룹에 넣어두고 색깔 그레이스케일
 
 	void ButtonFunction() override;
 
