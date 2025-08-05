@@ -133,6 +133,8 @@ struct JokerStoneInfo // 조커 돌 정보
 	int costWhite = 0; // 상점 비용
 	int rarity = 0;
 	bool isStone = false; // 돌인지 여부
+
+	StoneType stoneType = StoneType::Joker;
 };
 extern unordered_map<StoneAbility, JokerStoneInfo> m_jokerInfoMap; // 조커 돌 능력 정보 맵 // 능력의 기본값 저장용
 

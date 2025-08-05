@@ -20,6 +20,7 @@ protected:
 	bool m_isPressed = false;
 
 	MouseType m_inputType = MouseType::Move;
+	BoardManager& m_boardManager = BoardManager::GetInstance();
 
 	virtual void ButtonFunction() {}; // 버튼 기능을 구현하는 함수, 자식 클래스에서 오버라이드
 
@@ -211,4 +212,20 @@ public:
 		ButtonFunction();
 		Object::Update(dt);
 	}
+};
+
+class ShopJokerButton : public Button
+{
+	JokerStoneInfo m_jokerInfo;
+	StoneAbility m_jokerAbility = StoneAbility::None;
+	JokerButton* m_jokerButton = nullptr;
+
+public:
+	ShopJokerButton(float posX, float posY, float width, float height, const std::string& bitmapFile, int order = 0)
+		: Button(posX, posY, width, height, bitmapFile, order) {}
+
+	void SetButtonJoker(JokerStoneInfo jokerInfo, StoneAbility ability) { m_jokerInfo = jokerInfo; m_jokerAbility = ability; }
+	void SetButton(JokerButton* jokerButton) { m_jokerButton = jokerButton; }
+
+	void ButtonFunction() override;
 };

@@ -50,11 +50,25 @@ void JokerButton::ButtonFunction()
     {
 
 		std::cout << "button click" << std::endl;
-		BoardManager::GetInstance().SetSacrificeMode();
-		BoardManager::GetInstance().SetStoneType(m_stoneType);
-		BoardManager::GetInstance().SetStoneAbility(m_jokerAbility);
-		BoardManager::GetInstance().SetPendingAb(m_jokerAbility);
+		m_boardManager.SetSacrificeMode();
+		m_boardManager.SetStoneType(m_stoneType);
+		m_boardManager.SetStoneAbility(m_jokerAbility);
+		m_boardManager.SetPendingAb(m_jokerAbility);
 		m_isPressed = false;
         
     }
+}
+
+void ShopJokerButton::ButtonFunction()
+{
+	if (m_isPressed && m_isActive)
+	{
+		if (m_boardManager.m_playerInfo.m_money >= m_jokerInfo.costWhite)
+		{
+			m_boardManager.m_playerInfo.m_money -= m_jokerInfo.costWhite;
+			std::cout << "Money : " << m_boardManager.m_playerInfo.m_money << std::endl;
+		}
+
+		m_isPressed = false;
+	}
 }
