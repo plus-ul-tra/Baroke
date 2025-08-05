@@ -46,6 +46,7 @@
     <ClCompile Include="Stone.cpp">
       <Filter>Stone</Filter>
     </ClCompile>
+    <ClCompile Include="RenderTimer.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Actor.h" />
@@ -90,6 +91,7 @@
     <ClInclude Include="PlayerInfo.h" />
     <ClInclude Include="ModeInfo.h" />
     <ClInclude Include="Mediator.h" />
+    <ClInclude Include="RenderTimer.h" />
   </ItemGroup>
   <ItemGroup>
     <Filter Include="ETC">
