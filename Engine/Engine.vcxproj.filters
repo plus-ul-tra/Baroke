@@ -87,6 +87,7 @@
     </ClInclude>
     <ClInclude Include="PlayerInfo.h" />
     <ClInclude Include="ModeInfo.h" />
+    <ClInclude Include="Mediator.h" />
   </ItemGroup>
   <ItemGroup>
     <Filter Include="ETC">

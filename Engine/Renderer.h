@@ -12,6 +12,7 @@
 #include <unordered_map>
 // ShaderManager가 정의된 헤더 포함 (현재 코드에 ShaderManager가 있다고 가정)
 #include "ShaderManager.h" 
+#include "Mediator.h"
 
 using namespace DirectX;
 // BitmapRender3D에서 사용하는 SpriteVertex 구조체는 Renderer.h에도 필요
@@ -48,6 +49,11 @@ struct alignas(16) TextureAtlasCBuffer
 	float padding[2]; // 16바이트 정렬을 위한 패딩
 };
 
+struct alignas(16) PositionCBuffer {
+	float x;
+	float y;
+	float padding[2];
+};
 
 using namespace Microsoft::WRL;
 
@@ -104,6 +110,7 @@ private:
 	XMMATRIX                          m_viewMatrix;
 	XMMATRIX                          m_projectionMatrix;
 	ComPtr<ID3D11Buffer>			  m_pTimeCBuffer;
+	ComPtr<ID3D11Buffer>			  m_pPositionCBuffer; // 블랙홀 중심 좌표용
 	float 							  m_blackHoleTime = 0.0f; // 블랙홀 효과 시간 / 외 다른 시간 shader 버퍼로 사용
 public:
 	Renderer() = default;
@@ -148,6 +155,7 @@ private:
 	void CreateFullScrennQuad();//
 	void CreateShaderRenderTargets();
 	void CreateTimeCBuffer();
+	void CreaetePositionCBuffer(); //좌표용
 	void ReleaseRenderTargets();
 	void InitializeShader(HWND hwnd); // PassThrough 쉐이더 초기화에 사용
 

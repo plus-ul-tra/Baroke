@@ -63,17 +63,19 @@ void GameScene::CheckStageClear()
 {
 	if (m_board.GetStoneTypeAmount(White) <= 0)  // 스테이지 클리어
 	{
-		std::cout << "stage clear >> move to shop" << std::endl;
-		m_money += 3 + (m_stageNo - 1);
-		std::cout << "money : " <<m_money << std::endl;
+		SceneManager::GetInstance().ChangePostProcessing("CRTFilter");
 
+		ShopStage();
 		StartStage();
 	}
 }
 
-void GameScene::ModeCheck()
+
+
+void GameScene::ShopStage()
 {
-	m_uiMode = m_board.GetMode();
+	m_board.ResetStone();
+
 }
 
 void GameScene::Initialize()
@@ -247,6 +249,7 @@ void GameScene::OnInput(const MouseEvent& ev)
 	}
 	else if(m_uiMode == UIMode::Normal)
 	{
+
 		if (ev.type == MouseType::LDown)
 		{
 			if (m_BlackStone <= m_board.GetStoneTypeAmount(Black)) return;
@@ -254,6 +257,14 @@ void GameScene::OnInput(const MouseEvent& ev)
 			m_board.InputBasedGameLoop(ev.pos);
 			std::cout << "Black Stone Count : " << m_board.GetStoneTypeAmount(Black) << std::endl;
 		}
+
+// 		std::cout << ev.pos.x << " " << ev.pos.y << std::endl;
+// 		m_board.SetStoneType(Black);
+// 		m_board.SetStoneAbility(jokerBlackhole);
+// 		m_board.InputBasedGameLoop(ev.pos);
+// 		std::cout << "Joker Stone Count : " << m_board.GetStoneTypeAmount(Joker) << std::endl;
+// 	}
+
 
 		else if (ev.type == MouseType::RDown)
 		{

@@ -9,12 +9,20 @@ struct VS_OUTPUT
 
 // 중심입력 버퍼 필요
 
-cbuffer TimeBuffer : register(b0)
+cbuffer TimeBuffer : register(b1)
 {
 	float time;
 	float deltaTime;
 	float2 padding;
 }
+
+cbuffer Pos : register(b0)
+{
+	 // 블랙홀 중심 좌표
+    float centerX;
+    float centerY;
+    float2 pad;
+};
 
 // 기본 배럴 왜곡
 float2 BarrelDistort(float2 uv, float distortionAmount)
@@ -64,8 +72,8 @@ float4 PSMain(VS_OUTPUT Input) : SV_Target
 	uv = saturate(uv);
 
     // 2. 블랙홀 왜곡 
-	float2 blackHoleCenter = float2(0.5, 0.5); // 좌표로 지정  변환 필요
-	float blackHoleRadius = 0.1; // 반경
+    float2 blackHoleCenter = float2(centerX, centerY); // 좌표로 지정  변환 필요
+	float blackHoleRadius = 0.15; // 반경
 	float blackHoleStrength = 0.10; // 강도
 	uv = BlackHoleDistort(uv, blackHoleCenter, blackHoleRadius, blackHoleStrength);
 	uv = saturate(uv);

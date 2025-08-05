@@ -67,7 +67,7 @@ void Renderer::Initialize(HWND hwnd)
 	//HRESULT hr_rs = m_pd3dDevice->CreateRasterizerState(&rsDesc, &m_pRasterizerState);
 
 	CreateTimeCBuffer();
-
+	CreaetePositionCBuffer();
 	hr = CreateSpriteConstantBuffers();
 	if (FAILED(hr)) return;
 
@@ -97,6 +97,30 @@ void Renderer::CreateTimeCBuffer()
 	HRESULT hr = m_pd3dDevice->CreateBuffer(&cbd, nullptr, &m_pTimeCBuffer);
 	if (FAILED(hr)) {
 		OutputDebugStringA("Failed to create Time Constant Buffer\n");
+	}
+}
+
+void Renderer::CreaetePositionCBuffer() {
+	D3D11_BUFFER_DESC cbDesc = {};
+	cbDesc.BindFlags = D3D11_BIND_CONSTANT_BUFFER; // 상수 버퍼로 사용
+	cbDesc.Usage = D3D11_USAGE_DEFAULT;            // 매 프레임 업데이트 가능
+	cbDesc.CPUAccessFlags = 0;
+	cbDesc.ByteWidth = sizeof(PositionCBuffer);    
+	//cbDesc.ByteWidth = (cbDesc.ByteWidth + 15) / 16 * 16; 
+
+	// 초기값
+	/*PositionCBuffer initData = {};
+	initData.x = 0.0f;
+	initData.y = 0.0f;
+
+	D3D11_SUBRESOURCE_DATA subData = {};
+	subData.pSysMem = &initData;*/
+
+	HRESULT hr = m_pd3dDevice->CreateBuffer(&cbDesc, nullptr, &m_pPositionCBuffer);
+	if (FAILED(hr))
+	{
+		std::cerr << "Failed to create PositionCBuffer. HRESULT: 0x"
+			<< std::hex << hr << std::endl;
 	}
 }
 
@@ -391,7 +415,7 @@ void Renderer::SetShaderMode(const string& mode) {
 
 		// 4. Pixel Shader에 바인딩 (b1)
 		ID3D11Buffer* cbuffers[1] = { m_pTimeCBuffer.Get() };
-		m_pd3dContext->PSSetConstantBuffers(0, 0, cbuffers);
+		m_pd3dContext->PSSetConstantBuffers(1, 1, cbuffers);
 	}
 
 }
@@ -475,7 +499,6 @@ void Renderer::DrawBitmap3D(
 	m_pd3dContext->PSSetConstantBuffers(1, 1, m_pTextureAtlasCBuffer.GetAddressOf()); // 슬롯 1에 바인딩
 
 	
-
 	m_pd3dContext->PSSetShaderResources(0, 1, &pTextureSRV);
 		
 
@@ -527,12 +550,24 @@ void Renderer::PostProcessing(const ShaderSet& shaderSet)
 		timeData.padding[0] = 0.0f;
 		timeData.padding[1] = 0.0f;
 		m_pd3dContext->UpdateSubresource(m_pTimeCBuffer.Get(), 0, nullptr, &timeData, 0, 0);
-		ID3D11Buffer* cbuffers[] = { m_pTimeCBuffer.Get() };
-		m_pd3dContext->PSSetConstantBuffers(0, 0, cbuffers);
-
+		
 		// blackHole 중심도 버퍼로 넘겨야함..
+		PositionCBuffer positionData{};
+		float uvX = (static_cast<float>(Mediator::GetInstance().GetPosition().x) / static_cast<float>(m_screenWidth))+ 0.5f;
+		float uvY = (static_cast<float>( - Mediator::GetInstance().GetPosition().y) / static_cast<float> (m_screenHeight)) + 0.5f;
+		cout << "uvX: " << uvX << ", uvY: " << uvY << endl;
+		positionData.x = uvX;
+		positionData.y = uvY;
+		positionData.padding[0] = 0.0f;
+		positionData.padding[1] = 0.0f;
+		m_pd3dContext->UpdateSubresource(m_pPositionCBuffer.Get(), 0, nullptr, &positionData, 0, 0);
+		//동시 바인딩으로 변경
+		ID3D11Buffer* cbuffers[] = {m_pPositionCBuffer.Get(),m_pTimeCBuffer.Get()};
+		m_pd3dContext->PSSetConstantBuffers(0, 2, cbuffers);
+		
 
 	}
+	
 
 	// 뷰포트 설정
 	D3D11_VIEWPORT viewport = {};
