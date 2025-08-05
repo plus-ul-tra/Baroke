@@ -129,7 +129,7 @@ struct JokerFunctionsWrapper
 			{
 				if (abs(pair.first.x - position.x) <= functionVariable && abs(pair.first.y - position.y) <= functionVariable)
 				{
-					boardManager.m_board[pair.first.x][pair.first.y]->Move(boardManager.BoardToScreenPosition({ position.x, position.y }), 1);
+					boardManager.m_board[pair.first.x][pair.first.y]->Move(boardManager.BoardToScreenPosition({ position.x, position.y }), 2);
 					boardManager.m_board[pair.first.x][pair.first.y]->Remove(1);
 
 					if (boardManager.m_stoneTypeMap.find(pair.first)->second == StoneType::Black)
@@ -516,7 +516,7 @@ void BoardManager::InitializeJokerInfoMap()
 	m_jokerInfoMap[StoneAbility::jokerTeleport] = { "jokerTeleport.png", 10, 5, 0 };
 	m_jokerInfoMap[StoneAbility::jokerExplode] = { "jokerExplode.png", 0, 1, 0, 1 };
 	m_jokerInfoMap[StoneAbility::jokerMagnetic] = { "jokerMagnetic.png", 20, 10, 0 };
-	m_jokerInfoMap[StoneAbility::jokerBlackhole] = { "jokerBlackhole.png", 0, 0, 0, 5 };
+	m_jokerInfoMap[StoneAbility::jokerBlackhole] = { "jokerBlackhole.png", 0, 1, 0, 5 };
 
 	//------------------------------------------------------------------------------------------------ 단청 (set 4)
 	m_jokerInfoMap[StoneAbility::jokerFusion] = { "jokerFusion.png", 0, 0, 0, 2 };
