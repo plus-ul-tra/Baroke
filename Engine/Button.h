@@ -72,17 +72,17 @@ public:
 	void Update(double dt) override
 	{
 
-		m_isActive = m_isEnabledPredicate();
-
-		if (!m_isActive)
-		{
-			//std::cout << this << "UnDo" << std::endl;
-			if (m_bitmapRender) m_bitmapRender->SetShaderType("GrayScale");
-		}
-		else 
-		{
-			if (m_bitmapRender) m_bitmapRender->SetShaderType("Holo");
-		}
+// 		m_isActive = m_isEnabledPredicate();
+// 
+// 		if (!m_isActive)
+// 		{
+// 			//std::cout << this << "UnDo" << std::endl;
+// 			if (m_bitmapRender) m_bitmapRender->SetShaderType("GrayScale");
+// 		}
+// 		else 
+// 		{
+// 			if (m_bitmapRender) m_bitmapRender->SetShaderType("Holo");
+// 		}
 		ButtonFunction();
 		Object::Update(dt);
 	}
@@ -174,7 +174,7 @@ class JokerButton : public Button
 		case jokerTime:   // 플레이어 흑돌 개수가 5개 미만인 경우
 			return [&bm]() {  return true; }; // 플레이어에 접근해야됨;; 
 
-		case jokerWind:   // 흰돌 1개 이상
+		case jokerWind:   // 흑돌 4개 이상
 			return [&bm]() { return bm.CountStones(Black) >= 4; };
 		default:
 			return []() { return true; };
@@ -194,5 +194,21 @@ public:
 		m_stoneType = stoneType;        
 		BindEnabledPredicate(BuildPredicate(ability));
 	}
+	void Update(double dt) override
+	{
 
+	 	m_isActive = m_isEnabledPredicate();
+	 
+	 	if (!m_isActive)
+	 	{
+	 		//std::cout << this << "UnDo" << std::endl;
+	 		if (m_bitmapRender) m_bitmapRender->SetShaderType("GrayScale");
+	 	} 
+	 	else 
+	 	{
+	 		if (m_bitmapRender) m_bitmapRender->SetShaderType("Holo");
+	 	}
+		ButtonFunction();
+		Object::Update(dt);
+	}
 };

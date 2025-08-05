@@ -31,6 +31,7 @@
 
 
 #include "ItemType.h"
+#include "ModeInfo.h"
 
 
 
