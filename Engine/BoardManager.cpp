@@ -515,11 +515,11 @@ void BoardManager::InitializeJokerInfoMap()
 	m_jokerInfoMap[StoneAbility::jokerSammok] = { "jokerSammok.png" };
 
 	//------------------------------------------------------------------------------------------------ 야생 (set 2)
-	m_jokerInfoMap[StoneAbility::jokerEvolution] = { "jokerEvolution.png" };
-	m_jokerInfoMap[StoneAbility::jokerDansu] = { "jokerDansu.png", 5, 5, 0 };
-	m_jokerInfoMap[StoneAbility::jokerEgg] = { "jokerEgg.png", 3, 0, 0, 1 };
-	m_jokerInfoMap[StoneAbility::jokerOstrichEgg] = { "jokerOstrichEgg.png", 2, 0, 0, 1 };
-	m_jokerInfoMap[StoneAbility::jokerPeacock] = { "jokerPeacock.png", 0, 0, 0, 3 };
+	m_jokerInfoMap[StoneAbility::jokerEvolution] = { "jokerEvolution.png" };						// cost 0
+	m_jokerInfoMap[StoneAbility::jokerDansu] = { "jokerDansu.png", 5, 5, 0 ,0 , 1};
+	m_jokerInfoMap[StoneAbility::jokerEgg] = { "jokerEgg.png", 3, 0, 0, 2, 2 };
+	m_jokerInfoMap[StoneAbility::jokerOstrichEgg] = { "jokerOstrichEgg.png", 2, 0, 0, 1, 3 };
+	m_jokerInfoMap[StoneAbility::jokerPeacock] = { "jokerPeacock.png", 0, 0, 0, 3, 4 };				// cost 4
 
 	//------------------------------------------------------------------------------------------------ 우주 (set 3)
 	m_jokerInfoMap[StoneAbility::jokerTeleport] = { "jokerTeleport.png", 10, 5, 0 };
@@ -629,8 +629,43 @@ void BoardManager::RemoveJokerStone(POINT position)
 
 
 
+//---------------------------------------------------------------- 희생 모드 관련 함수
+bool BoardManager::SelectSacrificeStone(POINT mousePos)
+{
+	m_selectedPosition = MouseToBoardPosition(mousePos); // R,C변환
 
+	if (!isValidPoint(m_selectedPosition))
+	{
+		std::cout << "unvaluable position : (" << m_selectedPosition.x << ", " << m_selectedPosition.y << ")" << std::endl;
+		return false;
+	}
+	if (!m_board[m_selectedPosition.x][m_selectedPosition.y])
+	{
+		std::cout << "stone null : (" << m_selectedPosition.x << ", " << m_selectedPosition.y << ")" << std::endl;
+		return false;
+	}
+	auto it = m_stoneTypeMap.find({ m_selectedPosition.x,m_selectedPosition.y });
+	std::cout << m_selectedPosition.x << "  " << m_selectedPosition.y << std::endl;
+	if (it == m_stoneTypeMap.end() || it->second != Black) return false; // 흑돌 아니면 패스
+	if(std::find(selectGroup.begin(), selectGroup.end(), m_selectedPosition)!= selectGroup.end()) return false;
 
+	selectGroup.push_back({ m_selectedPosition.x,m_selectedPosition.y });
+	for (auto item : selectGroup) 
+	{
+		std::cout << item.x << item.y << std::endl;
+	}
+	
+}
+
+bool BoardManager::checkSelectsuccess()
+{
+	if (selectGroup.size() == m_jokerInfoMap[m_pendingAb].costBlack) 
+	{
+		RemoveGroup(selectGroup);
+		return true;
+	}
+	return false;
+}
 
 
 

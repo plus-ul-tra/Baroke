@@ -123,11 +123,13 @@ struct JokerStoneInfo // 조커 돌 정보
 {
 	string fileName = "JokerEgg.png"; // 조커 돌 이미지 파일 이름
 
+
 	int coolTime = 0; // 조커 돌 능력 쿨타임
 	int lifeSpan = 0; // 조커 돌 능력 지속 시간
 
 	int functionDuration = 0; // 조커 돌 능력 함수 지속 시간 // 0이면 한번만 실행
 	int functionVariable = 0; // 조커 돌 능력 함수에 사용되는 변수 // 능력에 따라 다름
+	int costBlack		 = 0;
 };
 extern unordered_map<StoneAbility, JokerStoneInfo> m_jokerInfoMap; // 조커 돌 능력 정보 맵 // 능력의 기본값 저장용
 

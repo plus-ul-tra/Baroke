@@ -214,6 +214,7 @@
     <ClInclude Include="InputManager.h" />
     <ClInclude Include="ItemType.h" />
     <ClInclude Include="json.hpp" />
+    <ClInclude Include="ModeInfo.h" />
     <ClInclude Include="Mediator.h" />
     <ClInclude Include="Object.h" />
     <ClInclude Include="pch.h" />

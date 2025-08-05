@@ -9,20 +9,25 @@ class GameScene : public SceneBase {
 private:
 	Player* m_player = nullptr;
 	BoardObject* m_boardObj = nullptr;
-	BoardManager& m_board = BoardManager::GetInstance(); // ½Ì±ÛÅæ º¸µå ¸Å´ÏÀú
+	BoardManager& m_board = BoardManager::GetInstance(); // ì‹±ê¸€í†¤ ë³´ë“œ ë§¤ë‹ˆì €
 
 	DirectX::XMVECTOR m_moveDir = DirectX::XMVectorZero();
 
-	
+ 	UIMode        m_uiMode = UIMode::Normal;
 
-	int m_stageNo = 0;		// ½ºÅ×ÀÌÁö ´Ü°è
-	int m_BlackStone = 500;	// Âø¼ö °¡´ÉÇÑ Èæµ¹
-	int m_whiteLeft = 0;	// ³²Àº Èòµ¹ °³¼ö
+
+	int m_stageNo = 0;		// ìŠ¤í…Œì´ì§€ ë‹¨ê³„
+	int m_BlackStone = 500;	// ì°©ìˆ˜ ê°€ëŠ¥í•œ í‘ëŒ
+	int m_whiteLeft = 0;	// ë‚¨ì€ í°ëŒ ê°œìˆ˜
 	
-	void SetUIJokerButton(); // UI Á¶Ä¿ ¹öÆ° ¼³Á¤
- 	void  StartStage();				// ½ºÅ×ÀÌÁö ½ÃÀÛ
- 	void  CheckStageClear();		// ½ºÅ×ÀÌÁö Å¬¸®¾î Ã¼Å©
-	void ShopStage(); // »çÁ¡
+	void SetUIJokerButton(); // UI ì¡°ì»¤ ë²„íŠ¼ ì„¤ì •
+ 	void  StartStage();				// ìŠ¤í…Œì´ì§€ ì‹œì‘
+ 	void  CheckStageClear();		// ìŠ¤í…Œì´ì§€ í´ë¦¬ì–´ ì²´í¬
+
+	void  ModeCheck();
+
+	void ShopStage(); // ì‚¬ì 
+
 
 public:
 	//GameScene() = default;
@@ -45,4 +50,11 @@ public:
 
 	void OnInput(const MouseEvent& ev) override;
 
+// 	void EnterSacrificeMode(StoneAbility ab)
+// 	{
+// 		m_uiMode = UIMode::Sacrifice;
+// 		m_pendingAb = ab;
+// 		//BoardObject::GetInstance().HighlightSelectableStones();
+// 	}
+// 	void ExitSacrificeMode() { m_uiMode = UIMode::Normal; }
 };

@@ -2,6 +2,7 @@
 #include "Singleton.h"
 #include "Stone.h"
 #include "PlayerInfo.h"
+#include "ModeInfo.h"
 
 namespace std
 {
@@ -37,6 +38,7 @@ class BoardManager : public Singleton<BoardManager>
 	POINT m_selectedPosition = { -1, -1 }; // 인풋으로 선택된 바둑판 위치
 	StoneType m_stoneType = StoneType::Black;
 	StoneAbility m_stoneAbility = StoneAbility::None;
+
 
 	// Initialize 변수들
 	int m_offX = 0, m_offY = 0, m_drawW = 0, m_drawH = 0, m_cell = 0, m_padding = 0, m_stoneOffset = 0;
@@ -87,11 +89,33 @@ public:
 	void SetStoneAbility(StoneAbility ability) { m_stoneAbility = ability; }
 
 
+	//---------------------------------------------------------------- 희생 모드 진입, 탈출
+public:
+	void SetSacrificeMode() { nowMode = UIMode::Sacrifice; }
+	void ExitSacrificeMode() { 
+		nowMode = UIMode::Normal;
+		m_stoneType = StoneType::Black;
+		m_stoneAbility = StoneAbility::None;
+		ResetGroup(); 
+		std::cout << "exit" << std::endl; }
 
+	UIMode GetMode() { 
+		return nowMode; }
 
-
+	bool SelectSacrificeStone(POINT mousePos); // 하나씩 선택해서 그룹을 만들어야 됨 >> 이후
+	bool checkSelectsuccess();
+	void SetPendingAb(StoneAbility ab) { m_pendingAb = ab; };
+	StoneAbility GetPendingab() { return m_pendingAb; };
+	
+private:
+	std::vector<POINT> selectGroup; // 희생모드에서 선택한 그룹임
+	void ResetGroup() { selectGroup.clear(); };
+	bool sacrificeMode = false;
+	UIMode nowMode = UIMode::Normal;
+	StoneAbility  m_pendingAb = StoneAbility::None;
 	//---------------------------------------------------------------- 버튼 - 상태 판정용 함수
-	int CountStones(StoneType t) const;					// 보드판위에 특정돌이 몇갠지 체크
+public:
+	int  CountStones(StoneType t) const;					// 보드판위에 특정돌이 몇갠지 체크
 	bool HasStraightLine(StoneType type, int len) const; // 직선 범위 체크
 	bool WhiteLibOne() const;							// 자유도1인 흰돌 체크
 	bool IsColorCount(StoneType type, int need ) const; // 착수했을때 3*3범위에 특정 컬러 돌이 몇개 있는 위치가 있는지 체크

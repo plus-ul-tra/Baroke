@@ -88,6 +88,7 @@
       <Filter>Stone</Filter>
     </ClInclude>
     <ClInclude Include="PlayerInfo.h" />
+    <ClInclude Include="ModeInfo.h" />
     <ClInclude Include="Mediator.h" />
   </ItemGroup>
   <ItemGroup>
