@@ -134,6 +134,20 @@ struct JokerFunctionsWrapper
 
 			std::cout << boardManager.m_playerInfo.m_BlackStone << std::endl;
 		}
+		},
+		// blackhole
+		{
+			StoneAbility::jokerBlackhole, [this](shared_ptr<JokerStone> jokerQuadunion, POINT position)
+				{
+					vector<POINT> grp;
+					array<array<bool, SIZE_DEFAULT>, SIZE_DEFAULT> vis{};
+					if (boardManager.CountLiberty(position.x, position.y, grp, vis) == 0)
+					{
+						boardManager.m_playerInfo.m_BlackStone += jokerQuadunion->m_jokerInfo.functionVariable * grp.size();
+					}
+
+					std::cout << boardManager.m_playerInfo.m_BlackStone << std::endl;
+				}
 		}
 	};
 

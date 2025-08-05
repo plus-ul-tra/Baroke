@@ -31,29 +31,29 @@ float2 BarrelDistort(float2 uv, float distortionAmount)
 // 블랙홀 왜곡
 float2 BlackHoleDistort(float2 uv, float2 holeCenter, float radius, float strength)
 {
-	float2 dir = uv - holeCenter;
-	float dist = length(dir);
+    float2 dir = holeCenter - uv;
+    float dist = length(dir);
 
-	if (dist < radius)
-	{
-		float factor = (radius - dist) / radius; // 중심에 가까울수록 강하게
-		float pull = strength * factor * factor;
+    if (dist < radius)
+    {
+        // 중심에 가까울수록 당김 강도 커짐
+        float pull = strength * (1.0 - dist / radius);
 
-        // 중력 렌즈처럼 휘게
-		float swirl = strength * 0.5;
-		float angle = swirl * factor;
-		float s = sin(angle);
-		float c = cos(angle);
+        float angle = time * (1.0 - dist / radius); //time
 
-		float2 rotatedDir = float2(
+ 
+        float s = sin(angle);
+        float c = cos(angle);
+
+        float2 rotatedDir = float2(
             dir.x * c - dir.y * s,
             dir.x * s + dir.y * c
         );
 
-		return holeCenter + rotatedDir * (1.0 - pull);
-	}
+        uv = holeCenter - rotatedDir * (1.0 - pull);
+    }
 
-	return uv;
+    return uv;
 }
 
 float4 PSMain(VS_OUTPUT Input) : SV_Target
@@ -63,10 +63,10 @@ float4 PSMain(VS_OUTPUT Input) : SV_Target
 	float2 uv = BarrelDistort(Input.Tex, distortionStrength);
 	uv = saturate(uv);
 
-    // 2. 블랙홀 왜곡 (중심 좌표와 반경은 원하는 값으로 설정)
-	float2 blackHoleCenter = float2(0.5, 0.5); // 화면 중앙
-	float blackHoleRadius = 0.25; // 반경
-	float blackHoleStrength = 0.6; // 강도
+    // 2. 블랙홀 왜곡 
+	float2 blackHoleCenter = float2(0.5, 0.5); // 좌표로 지정  변환 필요
+	float blackHoleRadius = 0.1; // 반경
+	float blackHoleStrength = 0.10; // 강도
 	uv = BlackHoleDistort(uv, blackHoleCenter, blackHoleRadius, blackHoleStrength);
 	uv = saturate(uv);
 

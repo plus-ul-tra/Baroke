@@ -1,7 +1,7 @@
 #include "pch.h"
 #include "Renderer.h"
 #include "SpriteManager.h" 
-
+//#include "InputManager.h"
 
 #include <d3dcompiler.h> // 쉐이더 컴파일 
 #include <DirectXMath.h> 
@@ -377,7 +377,7 @@ void Renderer::SetShaderMode(const string& mode) {
 		ID3D11Buffer* cbuffers[1] = { m_pTimeCBuffer.Get() };
 		m_pd3dContext->PSSetConstantBuffers(0, 1, cbuffers);
 	}
-	if (mode == "OutLine") {
+	if (mode == "Holo") {
 
 		TimeCBuffer timeData{};
 		static float fakeTime = 0.0f;
@@ -515,6 +515,25 @@ void Renderer::PostProcessing(const ShaderSet& shaderSet)
 	m_pd3dContext->PSSetShaderResources(0, 1, srvs);
 	m_pd3dContext->PSSetSamplers(0, 1, m_samplerState.GetAddressOf());
 
+	// shaderSet에 따라서 다른 상수버퍼바인딩
+	if (m_postProcessShaderName == "BlackHole") {
+		// BlackHole용 상수 버퍼 업데이트
+		TimeCBuffer timeData{};
+		m_blackHoleTime += 0.008f;
+		if (m_blackHoleTime > 4.0f) m_blackHoleTime = 0.0f;
+
+		timeData.time = m_blackHoleTime;
+		timeData.deltaTime = 1.0f; // 고정 델타
+		timeData.padding[0] = 0.0f;
+		timeData.padding[1] = 0.0f;
+		m_pd3dContext->UpdateSubresource(m_pTimeCBuffer.Get(), 0, nullptr, &timeData, 0, 0);
+		ID3D11Buffer* cbuffers[] = { m_pTimeCBuffer.Get() };
+		m_pd3dContext->PSSetConstantBuffers(0, 0, cbuffers);
+
+		// blackHole 중심도 버퍼로 넘겨야함..
+
+	}
+
 	// 뷰포트 설정
 	D3D11_VIEWPORT viewport = {};
 	viewport.TopLeftX = 0.0f;
@@ -523,7 +542,7 @@ void Renderer::PostProcessing(const ShaderSet& shaderSet)
 	viewport.Height = static_cast<float>(m_screenHeight);
 	viewport.MinDepth = 0.0f;
 	viewport.MaxDepth = 1.0f;
-	m_pd3dContext->RSSetViewports(1, &viewport);
+	//m_pd3dContext->RSSetViewports(1, &viewport);
 	//m_pd3dContext->RSSetState(nullptr); // 기본 래스터라이저 상태
 
 
