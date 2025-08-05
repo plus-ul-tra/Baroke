@@ -47,7 +47,7 @@ enum StoneAbility // 능력 혹은 이름
 	jokerShadow,
 	jokerLight,
 	jokerTime,
-	jokerWind,
+	jokerWind, // 함수 구현 완료
 };
 
 class Stone : public Object
