@@ -176,7 +176,7 @@ void GameScene::KeyCommandMapping()
 
 	m_commandMap["F2"] = [this]()
 		{
-			SceneManager::GetInstance().ChangePostProcessing("BlackHole");
+			SceneManager::GetInstance().ChangePostProcessing("PassThrough");
 		};
 
 	m_commandMap["F3"] = [this]()

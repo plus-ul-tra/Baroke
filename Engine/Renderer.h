@@ -91,7 +91,7 @@ private:
 	ComPtr<ID3D11SamplerState>        m_samplerState; // PostProcessing에 사용
 
 	unique_ptr<ShaderManager>         m_shaderManager;
-	string                            m_postProcessShaderName = "PassThrough"; // 기본 포스트 프로세싱 쉐이더 이름
+	string                            m_postProcessShaderName = "CRTFilter"; // 기본 포스트 프로세싱 쉐이더 이름
 
 
 	ComPtr<ID3D11Buffer>              m_pObjectTransformCBuffer; // 월드-뷰-프로젝션 행렬

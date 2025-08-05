@@ -1,6 +1,6 @@
 #include "pch.h"
 #include "BoardManager.h"
-
+#include "SceneManager.h"
 
 static constexpr int DR[4] = { -1, 1, 0, 0 };
 static constexpr int DC[4] = { 0, 0,-1, 1 };
@@ -129,9 +129,10 @@ struct JokerFunctionsWrapper
 			{
 				if (abs(pair.first.x - position.x) <= functionVariable && abs(pair.first.y - position.y) <= functionVariable)
 				{
-					boardManager.m_board[pair.first.x][pair.first.y]->Move(boardManager.BoardToScreenPosition({ position.x, position.y }), 2);
-					boardManager.m_board[pair.first.x][pair.first.y]->Remove(1);
-
+					SceneManager::GetInstance().ChangePostProcessing("BlackHole"); // 필터 적용
+					boardManager.m_board[pair.first.x][pair.first.y]->Move(boardManager.BoardToScreenPosition({ position.x, position.y }), 3);
+					boardManager.m_board[pair.first.x][pair.first.y]->Remove(3);
+					//SceneManager::GetInstance().ChangePostProcessing("CRTFilter");
 					if (boardManager.m_stoneTypeMap.find(pair.first)->second == StoneType::Black)
 					{
 						boardManager.m_playerInfo.m_BlackStone++;
