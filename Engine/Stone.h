@@ -13,32 +13,32 @@ enum StoneAbility // 능력 혹은 이름
 {
 	None, // 흑돌 백돌
 	//---------------- 일반 (set 1)
-	jokerDouble,
-	jokerOmok,
+	jokerDouble, // 나중에 돌 놓을때 검은돌 갯수 추가하는 거 만들기
+	jokerOmok, // 버튼 쪽에서?
 	jokerSamok,
 	jokerSammok,
 
 	//----------------  야생(set 2)
-	jokerEvolution, // 리소스 X
+	jokerEvolution,
 	jokerDansu,
-	jokerEgg,
-	jokerOstrichEgg,
-	jokerPeacock,
+	jokerEgg, // 함수 구현 완료
+	jokerOstrichEgg, // 함수 구현 완료
+	jokerPeacock, // 함수 구현 완료
 
 	//---------------- 우주 (set 3)
 	jokerTeleport,
-	jokerExplode,
+	jokerExplode, // 함수 구현 완료
 	jokerMagnetic,
-	jokerBlackhole,
+	jokerBlackhole, // 함수 구현 완료
 
 	//---------------- 단청 (set 4)
-	jokerFusion,
-	jokerTriunion,
-	jokerQuadunion,
+	jokerFusion, // 함수 구현 완료
+	jokerTriunion, // 함수 구현 완료
+	jokerQuadunion, // 함수 구현 완료
 
 	//---------------- 할로윈 (set 6)
-	jokerSplit,
-	jokerWaxseal,
+	jokerSplit, // 함수 구현 완료
+	jokerWaxseal, // 함수 구현 완료
 	jokerFlip,
 	jokerOthello,
 	jokerMrchan,
@@ -64,11 +64,17 @@ protected:
 	XMVECTOR m_lerpStartPosition = XMVectorZero(); // 이동 시작 위치
 	XMVECTOR m_lerpEndPosition = XMVectorZero(); // 이동 끝 위치
 
+	bool m_isRemoving = false;
+	double m_queueRemoveTime = 0.0;
+
 public:
 	Stone() = default;
 
 	void Update(double deltaTime) override; // 돌 업데이트 함수
 	void Move(POINT position, double duration = 1.0); // 돌 이동 함수
+
+	bool m_isRemoved = false;
+	void Remove(double duration = 0.0) { m_isRemoving = true; m_queueRemoveTime = duration; }
 
 	POINT GetPosition() const;
 };
@@ -115,8 +121,6 @@ struct JokerInfo // 조커 돌 정보
 {
 	string fileName = "JokerEgg.png"; // 조커 돌 이미지 파일 이름
 
-	int blackReturn = 0; // 조커 돌 능력 사용 후 반환 비용(흑돌)
-
 	int coolTime = 0; // 조커 돌 능력 쿨타임
 	int lifeSpan = 0; // 조커 돌 능력 지속 시간
 
@@ -140,7 +144,7 @@ public:
 		m_transform->SetRotation(0.0f);
 
 		m_sprite = AddComponent<BitmapRender3D>(m_jokerInfo.fileName.c_str(), size - offset, size - offset);
-		m_sprite->SetOrder(1);
+		m_sprite->SetOrder(2);
 		m_sprite->SetActive(true);
 	}
 

@@ -68,6 +68,7 @@ public:
 		m_isEnabledPredicate = std::move(pred);
 	}
 
+	// 여기 수정, 모든 button에 적용되버림
 	void Update(double dt) override
 	{
 
@@ -176,7 +177,7 @@ class JokerButton : public Button
 		case jokerWind:   // 흰돌 1개 이상
 			return [&bm]() { return bm.CountStones(Black) >= 4; };
 		default:
-			return []() { return false; };
+			return []() { return true; };
 		}
 	}
 

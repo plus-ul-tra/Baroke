@@ -10,6 +10,7 @@
     <FxCompile Include="DefaultShader_VS.hlsl" />
     <FxCompile Include="GrayScale_PS.hlsl" />
     <FxCompile Include="Holo_PS.hlsl" />
+    <FxCompile Include="BlackHole_PS.hlsl" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="AnimationClip.cpp" />

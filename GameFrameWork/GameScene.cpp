@@ -27,6 +27,7 @@ void GameScene::SetUIJokerButton()
 	m_buttonList.emplace_back(jokerButton2.get());
 	m_UIList.emplace_back(std::move(jokerButton2));
 
+
 	unique_ptr<JokerButton> jokerButton3 = std::make_unique<JokerButton>(600.0f, 0.0f, 100, 100, "jokerTime.png", 50);
 	jokerButton3->SetButtonJoker(Joker, jokerTime);
 	m_buttonList.emplace_back(jokerButton3.get());
@@ -34,6 +35,7 @@ void GameScene::SetUIJokerButton()
 
 	unique_ptr<JokerButton> jokerButton4 = std::make_unique<JokerButton>(600.0f, -150.0f, 100, 100, "jokerWind.png", 50);
 	jokerButton4->SetButtonJoker(Joker, jokerWind);
+
 	m_buttonList.emplace_back(jokerButton4.get());
 	m_UIList.emplace_back(std::move(jokerButton4));
 
@@ -175,7 +177,7 @@ void GameScene::KeyCommandMapping()
 
 	m_commandMap["F2"] = [this]()
 		{
-			SceneManager::GetInstance().ChangePostProcessing("CRTFilter");
+			SceneManager::GetInstance().ChangePostProcessing("PassThrough");
 		};
 
 	m_commandMap["F3"] = [this]()
@@ -190,7 +192,7 @@ void GameScene::KeyCommandMapping()
 
 	m_commandMap["F5"] = [this]()
 		{
-			SceneManager::GetInstance().ChangePostProcessing("PassThrough");
+			SceneManager::GetInstance().ChangePostProcessing("CRTFilter");
 		};
 
 	m_commandMap["Go"] = [this]()
@@ -236,7 +238,7 @@ void GameScene::OnInput(const MouseEvent& ev)
 	{
 		std::cout << ev.pos.x << " " << ev.pos.y << std::endl;
 		m_board.SetStoneType(Black);
-		m_board.SetStoneAbility(jokerPeacock);
+		m_board.SetStoneAbility(jokerBlackhole);
 		m_board.InputBasedGameLoop(ev.pos);
 		std::cout << "Joker Stone Count : " << m_board.GetStoneTypeAmount(Joker) << std::endl;
 	}

@@ -93,6 +93,11 @@ void ShaderManager::ReadAllShaders()
 	if (FAILED(hr)) {
 		cout << "Holo리드 실패" << endl;
 	}
+
+	hr = ReadShaderResource("..\\Shader\\PassThrough_VS.cso", "..\\Shader\\BlackHole_PS.cso", "BlackHole", quadLayout, numQuadElements);
+	if (FAILED(hr)) {
+		cout << "black리드 실패" << endl;
+	}
 }
 
 

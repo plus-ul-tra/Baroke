@@ -91,7 +91,7 @@ private:
 	ComPtr<ID3D11SamplerState>        m_samplerState; // PostProcessing에 사용
 
 	unique_ptr<ShaderManager>         m_shaderManager;
-	string                            m_postProcessShaderName = "PassThrough"; // 기본 포스트 프로세싱 쉐이더 이름
+	string                            m_postProcessShaderName = "CRTFilter"; // 기본 포스트 프로세싱 쉐이더 이름
 
 
 	ComPtr<ID3D11Buffer>              m_pObjectTransformCBuffer; // 월드-뷰-프로젝션 행렬
@@ -103,7 +103,8 @@ private:
 
 	XMMATRIX                          m_viewMatrix;
 	XMMATRIX                          m_projectionMatrix;
-	ComPtr<ID3D11Buffer>				m_pTimeCBuffer;
+	ComPtr<ID3D11Buffer>			  m_pTimeCBuffer;
+	float 							  m_blackHoleTime = 0.0f; // 블랙홀 효과 시간 / 외 다른 시간 shader 버퍼로 사용
 public:
 	Renderer() = default;
 	~Renderer();
@@ -130,7 +131,15 @@ public:
 		const DirectX::XMMATRIX& worldMatrix,
 		const RECT* pSourceRect
 	);
-	void SetPostProcessingMode(const string& shaderName) { m_postProcessShaderName = shaderName; }
+	void SetPostProcessingMode(const string& shaderName) {
+		if (m_postProcessShaderName != shaderName) {
+			// 모드 변경 감지
+			if (shaderName == "BlackHole") {
+				m_blackHoleTime = 0.0f; // 초기화
+			}
+		}
+		m_postProcessShaderName = shaderName;
+	}
 private:
 
 	void CreateDeviceAndSwapChain(HWND hwnd);
