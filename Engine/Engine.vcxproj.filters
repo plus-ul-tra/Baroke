@@ -11,6 +11,8 @@
     <FxCompile Include="GrayScale_PS.hlsl" />
     <FxCompile Include="Holo_PS.hlsl" />
     <FxCompile Include="BlackHole_PS.hlsl" />
+    <FxCompile Include="Othello_PS.hlsl" />
+    <FxCompile Include="SetRed_PS.hlsl" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="AnimationClip.cpp" />

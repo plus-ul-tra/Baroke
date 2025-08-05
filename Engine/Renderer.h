@@ -111,7 +111,7 @@ private:
 	XMMATRIX                          m_projectionMatrix;
 	ComPtr<ID3D11Buffer>			  m_pTimeCBuffer;
 	ComPtr<ID3D11Buffer>			  m_pPositionCBuffer; // 블랙홀 중심 좌표용
-	float 							  m_blackHoleTime = 0.0f; // 블랙홀 효과 시간 / 외 다른 시간 shader 버퍼로 사용
+	float 							  m_blackHoleTime = 0.0f; // 블랙홀 효과 시간 / 외 다른 시간 shader 버퍼로 사용불가..ㅠ
 public:
 	Renderer() = default;
 	~Renderer();

@@ -68,21 +68,21 @@ public:
 		m_isEnabledPredicate = std::move(pred);
 	}
 
-	// 여기 수정, 모든 button에 적용되버림
+	
 	void Update(double dt) override
 	{
 
-		m_isActive = m_isEnabledPredicate();
-
-		if (!m_isActive)
-		{
-			//std::cout << this << "UnDo" << std::endl;
-			if (m_bitmapRender) m_bitmapRender->SetShaderType("GrayScale");
-		}
-		else 
-		{
-			if (m_bitmapRender) m_bitmapRender->SetShaderType("Holo");
-		}
+// 		m_isActive = m_isEnabledPredicate();
+// 		// 여기 수정, 모든 button에 적용되버림
+// 		if (!m_isActive)
+// 		{
+// 			//std::cout << this << "UnDo" << std::endl;
+// 			if (m_bitmapRender) m_bitmapRender->SetShaderType("GrayScale");
+// 		}
+// 		else 
+// 		{
+// 			if (m_bitmapRender) m_bitmapRender->SetShaderType("Holo");
+// 		}
 		ButtonFunction();
 		Object::Update(dt);
 	}
@@ -194,5 +194,21 @@ public:
 		m_stoneType = stoneType;        
 		BindEnabledPredicate(BuildPredicate(ability));
 	}
+	void Update(double dt) override
+	{
 
+		 		m_isActive = m_isEnabledPredicate();
+		 		// 여기 수정, 모든 button에 적용되버림
+		 		if (!m_isActive)
+		 		{
+		 			//std::cout << this << "UnDo" << std::endl;
+		 			if (m_bitmapRender) m_bitmapRender->SetShaderType("GrayScale");
+		 		}
+		 		else 
+		 		{
+		 			if (m_bitmapRender) m_bitmapRender->SetShaderType("Holo");
+		 		}
+		ButtonFunction();
+		Object::Update(dt);
+	}
 };
