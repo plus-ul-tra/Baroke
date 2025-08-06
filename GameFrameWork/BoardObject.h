@@ -84,7 +84,7 @@ inline void BoardObject::BoardSync()
 			{
 				m_isTextureChanged = true;
 				std::cout << "Changing Board Texture" << std::endl;
-				m_bitmapRender->ChangeTexture("Space.png", 3.0f);
+				m_bitmapRender->ChangeTexture("Forest.png", 3.0f);
 				break;
 			}
 

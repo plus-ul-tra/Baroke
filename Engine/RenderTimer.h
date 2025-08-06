@@ -20,9 +20,6 @@ public:
 		m_deltaTime = static_cast<float>(m_engineTimer.GetRealDeltaTime());
 		m_elapsedTime = static_cast<float>(m_engineTimer.GetRealElapsedTime());
 	}
-	float GetDeltaTime() const { return m_deltaTime *	0.2f; }
-	float GetDeltaTimeX2() const { return m_deltaTime * 0.5f; }
-	//float GetElapsedTime() const { return m_elapsedTime; }
 
 	float GetDeltaTime() const { return m_deltaTime; }
 	float GetDeltaTimeX2() const { return m_deltaTime * 0.5f; }
