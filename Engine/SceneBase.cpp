@@ -9,8 +9,7 @@
 
 void SceneBase::Update(double deltaTime) 
 {
-
-
+	RenderTimer::GetInstance().Update();
 }
 
 void SceneBase::Render(Renderer& renderer) {

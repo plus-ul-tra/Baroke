@@ -24,6 +24,8 @@ private:
 
 	SpriteAnimator m_animator; //
 	bool m_isAnimated = false;
+	float m_shaderTimeElapsed = 0.0f; // 쉐이더 효과 시간
+	float m_shaderEffectDuration = 5.0f; // 쉐이더 효과 지속 시간
 
 	ComPtr<ID3D11Buffer> m_vertexBuffer; // quad vertex
 	ComPtr<ID3D11Buffer> m_indexBuffer;
@@ -57,17 +59,19 @@ public:
 	float GetWidth() const { return m_width; }
 	float GetHeight() const { return m_height; }
 
-	void ChangeTexture(const string& nextTextureKey) {
+	void ChangeTexture(const string& nextTextureKey, float duration = 1.0f) {
+		m_shaderTimeElapsed = 0.0f; // 쉐이더 효과 시간 초기화
+		m_shaderEffectDuration = duration; // 쉐이더 효과 지속 시간 설정
 		std::cout << "Changing Board Texture" << std::endl;
 		SpriteManager& spriteManager = SpriteManager::GetInstance();
 		m_nextTextureSRV = spriteManager.GetTextureSRV(nextTextureKey); //넥스트에 두고
 		// 쉐이더효과 주고
 		SetShaderType("Checker");
-		// 쉐이더 효과 끝나면
-		// 여기서 time wait을 한번해야함
-		// 
-		//m_textureSRV = m_nextTextureSRV; // 현재 텍스처로 변경
-		//SetShaderType("DefaultShader");
+		if (m_shaderTimeElapsed > m_shaderEffectDuration)
+		{
+			m_textureSRV = m_nextTextureSRV; // 현재 텍스처로 변경
+			SetShaderType("DefaultShader");
+		}
 	}
 
 	void SetShaderType(const string& type) { m_shaderType = type; } // 쉐이더 타입 설정
