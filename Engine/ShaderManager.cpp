@@ -96,7 +96,7 @@ void ShaderManager::ReadAllShaders()
 
 	hr = ReadShaderResource("..\\Shader\\PassThrough_VS.cso", "..\\Shader\\BlackHole_PS.cso", "BlackHole", quadLayout, numQuadElements);
 	if (FAILED(hr)) {
-		cout << "black리드 실패" << endl;
+		cout << "BlackHole리드 실패" << endl;
 	}
 
 	hr = ReadShaderResource("..\\Shader\\DefaultShader_VS.cso", "..\\Shader\\Othello_PS.cso", "Othello", quadLayout, numQuadElements);
@@ -107,6 +107,15 @@ void ShaderManager::ReadAllShaders()
 	hr = ReadShaderResource("..\\Shader\\DefaultShader_VS.cso", "..\\Shader\\SetRed_PS.cso", "SetRed", quadLayout, numQuadElements);
 	if (FAILED(hr)) {
 		cout << "SetRed리드 실패" << endl;
+	}
+
+	hr = ReadShaderResource("..\\Shader\\DefaultShader_VS.cso", "..\\Shader\\Checker_PS.cso", "Checker", quadLayout, numQuadElements);
+	if (FAILED(hr)) {
+		cout << "Checker리드 실패" << endl;
+	}
+	hr = ReadShaderResource("..\\Shader\\DefaultShader_VS.cso", "..\\Shader\\SetGreen_PS.cso", "SetGreen", quadLayout, numQuadElements);
+	if (FAILED(hr)) {
+		cout << "SetGreen리드 실패" << endl;
 	}
 }
 

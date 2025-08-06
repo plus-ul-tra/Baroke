@@ -31,9 +31,10 @@ class BoardManager : public Singleton<BoardManager>
 	BoardManager() = default;
 	~BoardManager() = default;
 
-	Board m_board; // 바둑판
+	Board m_board; // 바둑판X 로직용 가상 바둑판
 	unordered_map<POINT, StoneType> m_stoneTypeMap; // 위치별 돌 종류 맵 // 사석 판정용
 	vector<pair<POINT, StoneAbility>> m_jokerPositions; // 조커 돌 위치와 능력 벡터
+
 
 	POINT m_selectedPosition = { -1, -1 }; // 인풋으로 선택된 바둑판 위치
 	StoneType m_stoneType = StoneType::Black;
@@ -67,6 +68,7 @@ public:
 	bool InputBasedGameLoop(int row, int col); // 배열에 접근으로 돌 놓기
 
 	void JokerAbilityUpdate(); // 모든 조커 능력 실행
+	void JokerAbillityUse(StoneAbility ab, POINT position);
 
 	POINT MouseToBoardPosition(POINT mousePos) const; // 마우스 좌표를 바둑판 좌표로 변환
 	POINT BoardToScreenPosition(POINT boardPos) const; // 바둑판 좌표를 스크린 좌표로 변환
@@ -88,31 +90,47 @@ public:
 	void SetStoneType(StoneType type) { m_stoneType = type; }
 	void SetStoneAbility(StoneAbility ability) { m_stoneAbility = ability; }
 
+	//void ChangeBoard();
+
 
 	//---------------------------------------------------------------- 희생 모드 진입, 탈출
 public:
-	void SetSacrificeMode() { nowMode = UIMode::Sacrifice; }
-	void ExitSacrificeMode() { 
+	void SetMode(UIMode uimode) { nowMode = uimode; }
+	void ExitMode() { 
 		nowMode = UIMode::Normal;
 		m_stoneType = StoneType::Black;
 		m_stoneAbility = StoneAbility::None;
 		ResetGroup(); 
 		std::cout << "exit" << std::endl; }
 
-	UIMode GetMode() { 
-		return nowMode; }
+	UIMode GetMode() { return nowMode; }
+	const std::vector<POINT>& GetSacrificeGroup() const { return m_SacrificeGroup; }
 
-	bool SelectSacrificeStone(POINT mousePos); // 하나씩 선택해서 그룹을 만들어야 됨 >> 이후
-	bool checkSelectsuccess();
-	void SetPendingAb(StoneAbility ab) { m_pendingAb = ab; };
-	StoneAbility GetPendingab() { return m_pendingAb; };
-	
+	bool SelectSacrificeStone(POINT mousePos); 
+	bool checkSacrificeSuccess();
+
+	StoneAbility GetStoneAbillity() const { return m_stoneAbility; } ;
+	StoneType GetStoneType() const { return m_stoneType; };
+	void SyncBlackStoneCount(int count) { m_syncBlackStoneCount = count; }
+
+	int GetsyncBlackStoneCount() { return m_syncBlackStoneCount; }
 private:
-	std::vector<POINT> selectGroup; // 희생모드에서 선택한 그룹임
-	void ResetGroup() { selectGroup.clear(); };
-	bool sacrificeMode = false;
+	int m_syncBlackStoneCount = 0;
+	std::vector<POINT> m_SacrificeGroup; // 희생모드에서 선택한 그룹임
+	void ResetGroup() {
+		m_SacrificeGroup.clear(); 
+		m_useCondGroup.clear();
+	};
+	bool m_sacrificeMode = false;
 	UIMode nowMode = UIMode::Normal;
-	StoneAbility  m_pendingAb = StoneAbility::None;
+	//---------------------------------------------------------------- 조건 충족 모드 진입, 탈출
+public:
+	bool checkBeforeAbSuccess();
+	bool SelectUseCond(POINT mousePos);
+	const std::vector<POINT>& GetuseCondGroup() const { return m_useCondGroup; }
+private:
+	std::vector<POINT> m_useCondGroup; // 조건 충족모드에서 선택한 그룹임
+	POINT direction = { 0,0 }; // 상 = 0,1 // 하 = 0,-1 // 좌 = -1,0 // 우 = 1,0
 	//---------------------------------------------------------------- 버튼 - 상태 판정용 함수
 public:
 	int  CountStones(StoneType t) const;					// 보드판위에 특정돌이 몇갠지 체크
