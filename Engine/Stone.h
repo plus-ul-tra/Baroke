@@ -77,6 +77,7 @@ public:
 	void Remove(double duration = 0.0) { m_isRemoving = true; m_queueRemoveTime = duration; }
 
 	POINT GetPosition() const;
+	void ChangeColor(bool isBlack = true);
 };
 
 class WhiteStone : public Stone

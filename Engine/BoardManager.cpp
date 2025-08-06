@@ -251,12 +251,18 @@ struct JokerFunctionsWrapper
 					int ny = y + patternY[i] * j;
 
 					if (!boardManager.isValidPoint({ nx, ny }) || !boardManager.m_board[nx][ny]) { count = 0; break; }
-					if (boardManager.m_stoneTypeMap.find({ nx, ny })->second == StoneType::White) count++;
+					if (boardManager.m_stoneTypeMap.find({ nx, ny })->second == StoneType::White) { count++; group.push_back({ nx, ny }); }
 					if (boardManager.m_stoneTypeMap.find({ nx, ny })->second == StoneType::Black) break;
 				}
 				if (count >= jokerOthello->m_jokerInfo.functionVariable)
 				{
 					boardManager.m_playerInfo.m_money += count;
+
+					for (const auto& pos : group)
+					{
+						boardManager.m_board[pos.x][pos.y]->ChangeColor();
+						boardManager.m_stoneTypeMap[pos] = StoneType::Black;
+					}
 				}
 			}
 		}
