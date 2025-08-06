@@ -506,6 +506,7 @@ int BoardManager::GetStoneTypeAmount(StoneType type) const
 	return count;
 }
 
+
 void BoardManager::InitializeJokerInfoMap()
 {
 	//------------------------------------------------------------------------------------------------ 일반 (set 1)

@@ -108,6 +108,11 @@ void ShaderManager::ReadAllShaders()
 	if (FAILED(hr)) {
 		cout << "SetRed리드 실패" << endl;
 	}
+
+	hr = ReadShaderResource("..\\Shader\\DefaultShader_VS.cso", "..\\Shader\\Checker_PS.cso", "Checker", quadLayout, numQuadElements);
+	if (FAILED(hr)) {
+		cout << "Checker리드 실패" << endl;
+	}
 }
 
 

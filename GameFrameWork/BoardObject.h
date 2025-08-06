@@ -47,6 +47,7 @@ public:
 	}
 
 	void BoardSync();
+	void ChangeTexture();
 };
 
 inline void BoardObject::BoardSync()

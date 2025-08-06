@@ -163,6 +163,13 @@
     </FxCompile>
     <ClCompile Include="BoardManager.cpp" />
     <ClCompile Include="Button.cpp" />
+    <FxCompile Include="Checker_PS.hlsl">
+      <FileType>Document</FileType>
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Pixel</ShaderType>
+      <EntryPointName Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">PSMain</EntryPointName>
+      <EntryPointName Condition="'$(Configuration)|$(Platform)'=='Release|x64'">PSMain</EntryPointName>
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Pixel</ShaderType>
+    </FxCompile>
     <ClCompile Include="Collider2D.cpp" />
     <ClCompile Include="Component.h" />
     <ClCompile Include="Core.cpp" />

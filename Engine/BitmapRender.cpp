@@ -142,7 +142,7 @@ void BitmapRender3D::Render(Renderer& renderer)
 {
 	if (!m_isActive || !m_transform) { return; }
 
-	ID3D11ShaderResourceView* currentSRV = nullptr;
+	ID3D11ShaderResourceView* currentSRV = nullptr; // rawpointer
 	RECT currentSourceRect = {}; // 텍스처 아틀라스 내의 원본 사각형 영역
 
 	if (m_isAnimated)
@@ -176,7 +176,11 @@ void BitmapRender3D::Render(Renderer& renderer)
 
 	XMMATRIX worldMatrix = GetWorldMatrix();
 	// 반드시 전에 ShaderMode전달.
-	renderer.SetShaderMode(m_shaderType); // 쉐이더 모드 설정
+	if (m_shaderType == "Checker") {
+		renderer.SetShaderMode(m_shaderType, m_nextTextureSRV);
+	}
+	else{ renderer.SetShaderMode(m_shaderType); }
+	 // 쉐이더 모드 설정, 외부에서 재료texture 인경우
 	// ㄹㅇ 그리기
 	renderer.DrawBitmap3D(
 		m_vertexBuffer.Get(),   // 버텍스 버퍼
