@@ -349,6 +349,11 @@ struct JokerFunctionsWrapper
 			jokerWind->m_jokerInfo.lifeSpan--;
 		}
 		},
+		{ StoneAbility::jokerSammok, [this](shared_ptr<JokerStone> jokerSammok, POINT position)
+		{
+			std::cout << "jokerSammok use" << std::endl;
+		}
+		},
 	};
 };
 
@@ -438,6 +443,19 @@ void BoardManager::JokerAbilityUpdate()
 			it->second(jokerStone, position); // 조커 능력 함수 실행
 		}
 	}
+}
+
+void BoardManager::JokerAbillityUse(StoneAbility ab, POINT position)
+{
+	JokerFunctionsWrapper wrapper;
+	shared_ptr<Stone> stone = GetStone(position); // 해당 위치의 Stone(Object) 가져오기
+	shared_ptr<JokerStone> jokerStone = dynamic_pointer_cast<JokerStone>(stone); // Stone을 JokerStone으로 캐스팅
+	auto it = wrapper.g_abilityFunctions.find(ab);
+	if (it != wrapper.g_abilityFunctions.end())
+	{
+		it->second(jokerStone, position); // 조커 능력 함수 실행
+	}
+
 }
 
 POINT BoardManager::MouseToBoardPosition(POINT mousePos) const
@@ -602,10 +620,12 @@ void BoardManager::InitializeJokerInfoMap()
 	m_jokerInfoMap[StoneAbility::None] = {}; // 디폴트 돌
 
 	//------------------------------------------------------------------------------------------------ 일반 (set 1)
+
 	m_jokerInfoMap[StoneAbility::jokerDouble] = { "jokerDouble.png", JokerType::Original, 0, 0, 0, 0, 0, 1, 2, 1, false };
 	m_jokerInfoMap[StoneAbility::jokerOmok] = { "jokerOmok.png", JokerType::Original, 0, 0, 0, 0, 0, 2, 4, 2, false };
 	m_jokerInfoMap[StoneAbility::jokerSamok] = { "jokerSamok.png", JokerType::Original,  0, 0, 0, 0, 0, 5, 3, 2, false };
 	m_jokerInfoMap[StoneAbility::jokerSammok] = { "jokerSammok.png", JokerType::Original, 0, 0, 0, 0, 0, 2, 2, 1, false };
+
 
 	//------------------------------------------------------------------------------------------------ 야생 (set 2)
 
@@ -742,27 +762,119 @@ bool BoardManager::SelectSacrificeStone(POINT mousePos)
 	auto it = m_stoneTypeMap.find({ m_selectedPosition.x,m_selectedPosition.y });
 	std::cout << m_selectedPosition.x << "  " << m_selectedPosition.y << std::endl;
 	if (it == m_stoneTypeMap.end() || it->second != Black) return false; // 흑돌 아니면 패스
-	if(std::find(selectGroup.begin(), selectGroup.end(), m_selectedPosition)!= selectGroup.end()) return false;
+	if(std::find(m_SacrificeGroup.begin(), m_SacrificeGroup.end(), m_selectedPosition)!= m_SacrificeGroup.end()) return false;
 
-	selectGroup.push_back({ m_selectedPosition.x,m_selectedPosition.y });
-	for (auto item : selectGroup) 
+	m_SacrificeGroup.push_back({ m_selectedPosition.x,m_selectedPosition.y });
+	for (auto item : m_SacrificeGroup) 
 	{
 		std::cout << item.x << item.y << std::endl;
 	}
 	
 }
 
-bool BoardManager::checkSelectsuccess()
+bool BoardManager::checkSacrificeSuccess()
 {
-	if (selectGroup.size() == m_jokerInfoMap[m_pendingAb].costBlack) 
+	if (m_SacrificeGroup.size() == m_jokerInfoMap[m_stoneAbility].costBlack) 
 	{
-		RemoveGroup(selectGroup);
+		RemoveGroup(m_SacrificeGroup);
 		return true;
 	}
 	return false;
 }
 
 
+//---------------------------------------------------------------- 조건 충족 모드 함수
+bool BoardManager::checkBeforeAbSuccess() 
+{
+	switch (m_stoneAbility)
+	{
+	case jokerOmok:
+		break;
+	case jokerSamok:
+		break;
+	case jokerSammok:
+	{
+
+		if (m_useCondGroup.size() != 3)
+			return false;
+
+
+		bool sameRow = true, sameCol = true;
+		for (int i = 1; i < 3; ++i) {
+			if (m_useCondGroup[i].x != m_useCondGroup[0].x) sameRow = false;
+			if (m_useCondGroup[i].y != m_useCondGroup[0].y) sameCol = false;
+		}
+
+		if (!sameRow && !sameCol) {
+			m_useCondGroup.clear();
+			return false;
+		}
+
+		int coords[3];
+		if (sameRow) {
+			for (int i = 0; i < 3; ++i) coords[i] = m_useCondGroup[i].y;
+		}
+		else {
+			for (int i = 0; i < 3; ++i) coords[i] = m_useCondGroup[i].x;
+		}
+		std::sort(coords, coords + 3);
+		if (coords[2] - coords[0] == 2 && coords[1] - coords[0] == 1) {
+			std::cout << "check success" << std::endl;
+			JokerAbillityUse(m_stoneAbility, { 0,0 });
+
+			ExitMode();
+			return true;
+		}
+		m_useCondGroup.clear();
+		return false;
+	}
+		break;
+	case jokerFlip:
+		break;
+
+	default:
+		return true;
+	}
+	return false;
+}
+
+bool BoardManager::SelectUseCond(POINT mousePos)
+{
+	m_selectedPosition = MouseToBoardPosition(mousePos);
+
+	if (!isValidPoint(m_selectedPosition))
+	{
+		std::cout << "unvaluable position : (" << m_selectedPosition.x << ", " << m_selectedPosition.y << ")" << std::endl;
+		return false;
+	} // 보드 밖인지 체크
+	if (!m_board[m_selectedPosition.x][m_selectedPosition.y])
+	{
+		std::cout << "stone null : (" << m_selectedPosition.x << ", " << m_selectedPosition.y << ")" << std::endl;
+		return false;
+	}
+	
+	switch (m_stoneAbility)
+	{
+	case jokerOmok:
+		return true;
+	case jokerSamok:
+		break;
+	case jokerSammok: 
+	{
+		auto it = m_stoneTypeMap.find({ m_selectedPosition.x,m_selectedPosition.y });
+		if (it == m_stoneTypeMap.end() || it->second != Joker) return false; // 조커돌 아니면 패스
+		if (std::find(m_useCondGroup.begin(), m_useCondGroup.end(), m_selectedPosition) != m_useCondGroup.end()) return false;
+		m_useCondGroup.push_back({ m_selectedPosition.x,m_selectedPosition.y });
+	}
+		break;
+	case jokerFlip:
+		break;
+
+	default:
+		return true;
+	}
+	return false;
+}
 
 //---------------------------------------------------------------- 버튼 - 상태 판정용 함수
 int BoardManager::CountStones(StoneType t) const
@@ -818,7 +930,6 @@ bool BoardManager::WhiteLibOne() const
 	return false;
 }
 
-
 bool BoardManager::IsColorCount(StoneType type, int need) const
 {
 	static const int DR8[8] = { -1,-1,-1, 0, 0, 1, 1, 1 };
@@ -850,7 +961,6 @@ bool BoardManager::IsColorCount(StoneType type, int need) const
 
 	return false;
 }
-
 
 bool BoardManager::IsSamaBlackWhite() const
 {

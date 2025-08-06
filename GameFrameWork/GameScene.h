@@ -17,7 +17,6 @@ private:
 
 
 	int m_stageNo = 0;		// 스테이지 단계
-	int m_BlackStone = 500;	// 착수 가능한 흑돌
 	int m_whiteLeft = 0;	// 남은 흰돌 개수
 	
 	void SetUIJokerButton(); // UI 조커 버튼 설정
