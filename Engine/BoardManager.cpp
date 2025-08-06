@@ -71,18 +71,36 @@ struct JokerFunctionsWrapper
 			if (!jokerBite->m_jokerInfo.coolTime) return;
 			jokerBite->m_jokerInfo.coolTime--;
 
-			random_device rd;
-			mt19937 rng(rd());
-			uniform_int_distribution<int> dist(0, 3); // 일단은 무작위로
-
 			POINT direction[4] = { { -1, 0 }, { 1, 0 }, { 0, -1 }, { 0, 1 } }; // 상하좌우
-			int randomIndex = dist(rng);
+			int directionInt = 0;
+			int maxWhiteStone = 0;
 
 			POINT newPosition = position;
 
+			for (int i = 0; i < 4; ++i)
+			{
+				int tempWhiteStone = 0;
+				for (int j = 1; j < SIZE_DEFAULT; ++j)
+				{
+					newPosition = { position.x + direction[i].x * j, position.y + direction[i].y * j };
+					if (!boardManager.isValidPoint(newPosition)) break;
+
+					if (boardManager.m_board[newPosition.x][newPosition.y])
+					{
+						if (boardManager.IsJokerStone(newPosition)) continue; // 조커 돌은 무시
+
+						if (boardManager.m_stoneTypeMap.find(newPosition)->second == StoneType::White) tempWhiteStone++;
+					}
+				}
+				if (tempWhiteStone > maxWhiteStone)
+				{
+					maxWhiteStone = tempWhiteStone;
+					directionInt = i;
+				}
+			}
 			for (int i = 1; i < SIZE_DEFAULT; ++i)
 			{
-				newPosition = { position.x + direction[randomIndex].x * i, position.y + direction[randomIndex].y * i };
+				newPosition = { position.x + direction[directionInt].x * i, position.y + direction[directionInt].y * i };
 				if (!boardManager.isValidPoint(newPosition)) break;
 
 				if (boardManager.m_board[newPosition.x][newPosition.y])
