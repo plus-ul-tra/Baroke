@@ -11,6 +11,8 @@ class BoardObject : public Object
 	Board m_board;
 	std::vector<Stone*> m_stones;
 
+	bool m_isTextureChanged = false; // 텍스처 변경 여부
+
 public:
 	BoardObject(int offX, int offY, int drawW, int drawH, int _cell, int _stoneOffset = 0,int padding = 0)
 	{
@@ -47,12 +49,14 @@ public:
 	}
 
 	void BoardSync();
-	void ChangeTexture();
+	//void ChangeTexture();
 };
 
 inline void BoardObject::BoardSync()
 {
 	m_stones.clear();
+
+	int stoneTypeAmount[5] = { 0, 0, 0, 0, 0 };
 
 	m_board = m_boardManager.GetBoard();
 
@@ -66,6 +70,22 @@ inline void BoardObject::BoardSync()
 			{
 				auto& stone = m_board[r][c];
 				m_stones.emplace_back(stone.get());
+
+				if (stone->m_jokerType != JokerType::Default) stoneTypeAmount[stone->m_jokerType]++;
+			}
+		}
+	}
+	
+	if (!m_isTextureChanged)
+	{
+		for (int jokerType : stoneTypeAmount)
+		{
+			if (jokerType >= 5)
+			{
+				m_isTextureChanged = true;
+				std::cout << "Changing Board Texture" << std::endl;
+				//m_bitmapRender->ChangeTexture("Sample");
+				break;
 			}
 		}
 	}
