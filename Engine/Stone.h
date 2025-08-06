@@ -39,9 +39,9 @@ enum StoneAbility // 능력 혹은 이름
 	//---------------- 할로윈 (set 6)
 	jokerSplit, // 함수 구현 완료
 	jokerWaxseal, // 함수 구현 완료
-	jokerFlip,
+	jokerFlip, // 함수 구현 완료
 	jokerOthello, // 함수 구현 완료
-	jokerMrchan,
+	jokerMrchan, // 함수 구현 완료
 
 	//---------------- 자연 (set 7)
 	jokerShadow, // 함수 구현 완료

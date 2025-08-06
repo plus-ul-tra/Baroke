@@ -449,6 +449,38 @@ struct JokerFunctionsWrapper
 			}
 		}
 		},
+		{ StoneAbility::jokerMrchan, [this](shared_ptr<JokerStone> jokerMrchan, POINT position)
+		{
+			if (!jokerMrchan->m_jokerInfo.lifeSpan) boardManager.RemoveGroup({position});
+			if (!jokerMrchan->m_jokerInfo.coolTime) return;
+			jokerMrchan->m_jokerInfo.lifeSpan--;
+			jokerMrchan->m_jokerInfo.coolTime--;
+
+			vector<POINT> whiteStones;
+			for (auto& pair : boardManager.m_stoneTypeMap)
+			{
+				if (boardManager.IsJokerStone(pair.first)) continue;
+				if (pair.second == StoneType::White)
+				{
+					whiteStones.push_back(pair.first);
+				}
+			}
+
+			random_device rd;
+			mt19937 rng(rd());
+			shuffle(whiteStones.begin(), whiteStones.end(), rng);
+
+			uniform_int_distribution<int> dist(1, 15);
+			int randomIndex = dist(rng);
+			for (int i = 0; i < randomIndex && i < whiteStones.size(); ++i)
+			{
+				if (boardManager.m_board[whiteStones[i].x][whiteStones[i].y])
+				{
+					boardManager.RemoveGroup({ whiteStones[i] });
+				}
+			}
+		}
+		},
 
 		{ StoneAbility::jokerShadow, [this](shared_ptr<JokerStone> jokerShadow, POINT position)
 		{
@@ -474,6 +506,14 @@ struct JokerFunctionsWrapper
 				}
 			}
 
+		}
+		},
+		{ StoneAbility::jokerShadow, [this](shared_ptr<JokerStone> jokerShadow, POINT position)
+		{
+			if (!jokerShadow->m_jokerInfo.lifeSpan) boardManager.RemoveGroup({position});
+			if (!jokerShadow->m_jokerInfo.coolTime) return;
+			jokerShadow->m_jokerInfo.coolTime--;
+			jokerShadow->m_jokerInfo.lifeSpan--;
 		}
 		},
 		{ StoneAbility::jokerTime, [this](shared_ptr<JokerStone> jokerTime, POINT position)
@@ -528,11 +568,6 @@ struct JokerFunctionsWrapper
 			}
 			jokerWind->m_jokerInfo.coolTime--;
 			jokerWind->m_jokerInfo.lifeSpan--;
-		}
-		},
-		{ StoneAbility::jokerSammok, [this](shared_ptr<JokerStone> jokerSammok, POINT position)
-		{
-			std::cout << "jokerSammok use" << std::endl;
 		}
 		},
 	};
@@ -831,11 +866,11 @@ void BoardManager::InitializeJokerInfoMap()
 	m_jokerInfoMap[StoneAbility::jokerWaxseal] = { "jokerWaxseal.png", JokerType::Halloween, 0, 0, 0, 1, 0, 0, 3, 2, true, StoneType::Black };
 	m_jokerInfoMap[StoneAbility::jokerFlip] = { "jokerFlip.png", JokerType::Halloween, 1, 1, 0, 0, 3, 1, 6, 2, true };
 	m_jokerInfoMap[StoneAbility::jokerOthello] = { "jokerOthello.png", JokerType::Halloween, 1, 0, 0, 3, 2, 4, 5, 1, true };
-	m_jokerInfoMap[StoneAbility::jokerMrchan] = { "jokerMrchan.png", JokerType::Halloween, 20, 10, 0 };
+	m_jokerInfoMap[StoneAbility::jokerMrchan] = { "jokerMrchan.png", JokerType::Halloween, 1, 1, 0, 0, 0, 0, 0, 3, true };
 
 	//------------------------------------------------------------------------------------------------ 자연 (set 7)
 	m_jokerInfoMap[StoneAbility::jokerShadow] = { "jokerShadow.png", JokerType::Natural, 1, 1, 0, 4, 1, 0, 4, 2, true };
-	m_jokerInfoMap[StoneAbility::jokerLight] = { "jokerLight.png", JokerType::Natural, 15, 7, 0 };
+	m_jokerInfoMap[StoneAbility::jokerLight] = { "jokerLight.png", JokerType::Natural, 1, 1, 0, 0, 2, 0, 4, 2, true };
 	m_jokerInfoMap[StoneAbility::jokerTime] = { "jokerTime.png", JokerType::Natural, 3, 0, 0, 2, 0, 2, 7, 3, true };
 	m_jokerInfoMap[StoneAbility::jokerWind] = { "jokerWind.png", JokerType::Natural, 2, 5, 0, 2, 4, 1, 4, 2, true };
 
