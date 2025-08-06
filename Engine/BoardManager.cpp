@@ -872,7 +872,7 @@ void BoardManager::InitializeJokerInfoMap()
 	m_jokerInfoMap[StoneAbility::jokerDansu] = { "jokerDansu.png", JokerType::Wild, 1, 1, 0, 0, 0, 1, 2, 1, true, StoneType::Black };
 	m_jokerInfoMap[StoneAbility::jokerEgg] = { "jokerEgg.png", JokerType::Wild, 3, 0, 0, 2, 5, 0, 2, 1, true };
 	m_jokerInfoMap[StoneAbility::jokerOstrichEgg] = { "jokerOstrichEgg.png", JokerType::Wild, 2, 0, 0, 1, 0, 0, 0, 0, true };
-	m_jokerInfoMap[StoneAbility::jokerPeacock] = { "jokerPeacock.png", JokerType::Wild, 0, 1, 0, 3, 3, 1, 6, 3, true, StoneType::Black };				// cost 4
+	m_jokerInfoMap[StoneAbility::jokerPeacock] = { "jokerPeacock.png", JokerType::Wild, 1, 1, 0, 3, 3, 1, 6, 3, true, StoneType::Black };				// cost 4
 
 	//------------------------------------------------------------------------------------------------ 우주 (set 3)
 	m_jokerInfoMap[StoneAbility::jokerTeleport] = { "jokerTeleport.png", JokerType::Space, 10, 5, 0 };
