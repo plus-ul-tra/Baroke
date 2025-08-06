@@ -42,13 +42,17 @@ float4 PSMain(VS_OUTPUT input) : SV_Target
 	float4 colB = nextTexture.Sample(SamplerTexture, uvB);	
     float2 cell = floor(input.tex * GRID); // (x, y)
     float diag = (GRID - 1 - cell.x) + cell.y; // 0 … 2*GRID-2
+    float diagMax = (GRID - 1) * 2.0;
 
-
-    float thresh = saturate(time/1.5) * ((GRID - 1) * 2);
-
-    // 부드러운 전환
-    float mask = smoothstep(thresh - EDGE, thresh + EDGE, diag);
-
+   // float thresh = saturate(time/1.5) * ((GRID - 1) * 2);
+   //
+   // // 부드러운 전환
+   // float mask = smoothstep(thresh - EDGE, thresh + EDGE, diag);
+    float diagNorm = diag / diagMax; // 0 … 1
+    float edgeNorm = EDGE / diagMax; // 폭 보정
+    float mask = smoothstep(time - edgeNorm,
+                                 time,
+                                 diagNorm);
   
     return lerp(colB, colA, mask);
 }

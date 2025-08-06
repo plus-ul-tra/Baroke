@@ -87,6 +87,22 @@ inline void BoardObject::BoardSync()
 				m_bitmapRender->ChangeTexture("Space.png");
 				break;
 			}
+
+			//if (jokerTypeA >= 5)
+			//{
+			//	m_isTextureChanged = true;
+			//	std::cout << "Changing Board Texture" << std::endl;
+			//	m_bitmapRender->ChangeTexture("Forest.png");
+			//	break;
+			//}
+
+			//if (jokerTypeB >= 5)
+			//{
+			//	m_isTextureChanged = true;
+			//	std::cout << "Changing Board Texture" << std::endl;
+			//	m_bitmapRender->ChangeTexture("Halloween.png");
+			//	break;
+			//}
 		}
 	}
 }

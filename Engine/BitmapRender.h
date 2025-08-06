@@ -58,6 +58,7 @@ public:
 	float GetHeight() const { return m_height; }
 
 	void ChangeTexture(const string& nextTextureKey) {
+
 		std::cout << "Changing Board Texture" << std::endl;
 		SpriteManager& spriteManager = SpriteManager::GetInstance();
 		m_nextTextureSRV = spriteManager.GetTextureSRV(nextTextureKey); //넥스트에 두고
