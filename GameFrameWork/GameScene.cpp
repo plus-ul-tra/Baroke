@@ -17,13 +17,13 @@ void GameScene::SetUIJokerButton()
 	m_buttonList.emplace_back(rightUI.get());
 	m_objectList.emplace_back(std::move(rightUI));
 
-	unique_ptr<JokerButton> jokerButton1 = std::make_unique<JokerButton>(600.0f, 300.0f, 100, 100, "jokerEvolution.png", 50);
-	jokerButton1->SetButtonJoker(Joker, jokerEvolution);
+	unique_ptr<JokerButton> jokerButton1 = std::make_unique<JokerButton>(600.0f, 300.0f, 100, 100, "jokerOmok.png", 50);
+	jokerButton1->SetButtonJoker(Joker, jokerOmok);
 	m_buttonList.emplace_back(jokerButton1.get());
 	m_UIList.emplace_back(std::move(jokerButton1));
 
-	unique_ptr<JokerButton> jokerButton2 = std::make_unique<JokerButton>(600.0f, 150.0f, 100, 100, "jokerDansu.png", 50);
-	jokerButton2->SetButtonJoker(Joker, jokerDansu);
+	unique_ptr<JokerButton> jokerButton2 = std::make_unique<JokerButton>(600.0f, 150.0f, 100, 100, "jokerSammok.png", 50);
+	jokerButton2->SetButtonJoker(Joker, jokerSammok);
 	m_buttonList.emplace_back(jokerButton2.get());
 	m_UIList.emplace_back(std::move(jokerButton2));
 
@@ -76,11 +76,16 @@ void GameScene::ModeCheck()
 {
 	m_uiMode = m_board.GetMode();
 
-	if (m_uiMode==UIMode::Sacrifice &&m_board.checkSelectsuccess())
+	if (m_uiMode==UIMode::Sacrifice &&m_board.checkSacrificeSuccess())
 	{
-		//m_board.ExitSacrificeMode(); // 요게 아니라 능력 사용 모드로 전환
-		m_board.SetMode(UIMode::UseAbillity);
+		m_board.SetMode(UIMode::BeforeUseAbillity);
+		//m_board.ExitMode();
 		std::cout << "Sacrifice clear" << std::endl;
+	}
+	
+	if (m_uiMode == UIMode::BeforeUseAbillity&&m_board.checkBeforeAbSuccess())
+	{
+		m_board.SetMode(UIMode::UseAbillity);
 	}
 }
 
@@ -115,6 +120,7 @@ void GameScene::Update(double deltaTime)
 		UI->Update(deltaTime);
 	}
 	m_boardObj->BoardSync();
+	m_board.SyncBlackStoneCount(m_player->GetBlackStone());
 	ModeCheck();
 	CheckStageClear();
 
@@ -185,7 +191,7 @@ void GameScene::KeyCommandMapping()
 {
 	m_commandMap["Escape"] = [this]()
 		{
-			m_board.ExitSacrificeMode();
+			m_board.ExitMode();
 			// 추후 일시정지/재개 로직 여기에
 		};
 
@@ -253,32 +259,39 @@ void GameScene::OnInput(const MouseEvent& ev)
 			m_board.SetStoneAbility(m_board.GetStoneAbillity());
 			if (m_board.InputBasedGameLoop(ev.pos)) 
 			{
-				m_board.ExitSacrificeMode();		// 능력 사용 후 다시 초기화
+				m_board.ExitMode();		// 능력 사용 후 다시 초기화
 			}
 		}
 	}
 
 	else if (m_uiMode == UIMode::BeforeUseAbillity) //	버튼 종류나 , 방향, 특정 지점을 넘겨줘야 되는 경우 여기 진입
 	{
-		/*		std::cout << "능력 사용중" << std::endl;*/
+		if (ev.type == MouseType::LDown)
+		{
+			m_board.SelectUseCond(ev.pos);
+		}
+
 	}
 
 	else if (m_uiMode == UIMode::Sacrifice)
 	{
 		if (ev.type == MouseType::LDown)
 		{
-//			std::cout << ev.pos.x << " " << ev.pos.y << std::endl;
 			m_board.SelectSacrificeStone(ev.pos);
-
 		}
 	}
 
 	else if(m_uiMode == UIMode::Normal)
 	{
 
+		for (auto& button : m_buttonList)
+		{
+			button->CheckInput(ev);
+		}
+
 		if (ev.type == MouseType::LDown)
 		{
-			if (m_BlackStone <= m_board.GetStoneTypeAmount(Black)) return;
+			if (m_player->GetBlackStone() <= m_board.GetStoneTypeAmount(Black)) return;
 			std::cout << ev.pos.x << " " << ev.pos.y << std::endl;
 			m_board.InputBasedGameLoop(ev.pos);
 //			std::cout << "Black Stone Count : " << m_board.GetStoneTypeAmount(Black) << std::endl;
@@ -289,15 +302,12 @@ void GameScene::OnInput(const MouseEvent& ev)
 		{
 			std::cout << ev.pos.x << " " << ev.pos.y << std::endl;
 			m_board.SetStoneType(Joker);
-			m_board.SetStoneAbility(jokerBlackhole);
+			m_board.SetStoneAbility(jokerEgg);
 			m_board.InputBasedGameLoop(ev.pos);
 //			std::cout << "Joker Stone Count : " << m_board.GetStoneTypeAmount(Joker) << std::endl;
 		}
 
-		for (auto& button : m_buttonList)
-		{
-			button->CheckInput(ev);
-		}
+
 	}
 
 
