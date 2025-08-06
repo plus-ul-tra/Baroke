@@ -11,6 +11,12 @@ cbuffer TimeBuffer : register(b0)
     float2 padding;
 }
 
+cbuffer ColorSet : register(b1)
+{
+    float4 prevColor;
+    float4 targetColor;
+}
+
 struct VS_OUTPUT 
 {
     float4 Pos : SV_POSITION;
@@ -38,12 +44,13 @@ float4 PSMain(VS_OUTPUT Input) : SV_Target
 
     float4 baseColor = g_MainTex.Sample(g_Sampler, distortedUV);
 
-    // 색상 변화 
-    float rShift = (sin(time / 2) + 1.0) * 0.5;
-    float gShift = (sin(time / 2 + 2.0) + 1.0) * 0.5;
-    float bShift = (sin(time / 2 + 4.0) + 1.0) * 0.5;
-  
-    baseColor.rgb *= float3(rShift, gShift, bShift);
-
+    // 색상 변화 분기
+    //float rShift = (sin(time / 2) + 1.0) * 0.5;
+    //float gShift = (sin(time / 2 + 2.0) + 1.0) * 0.5;
+    //float bShift = (sin(time / 2 + 4.0) + 1.0) * 0.5;
+    //float3 lerpColor = lerp(prevColor.rgb, targetColor.rgb, smoothstep(0.0, 1.0, 0.3));
+    //baseColor.rgb *= float3(rShift, gShift, bShift);
+    baseColor.rgb *= prevColor.rgb;
+    baseColor.a = 0;
     return baseColor;
 }

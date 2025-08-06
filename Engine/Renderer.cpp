@@ -68,6 +68,8 @@ void Renderer::Initialize(HWND hwnd)
 
 	CreateTimeCBuffer();
 	CreaetePositionCBuffer();
+	CreateColorCBuffer();
+
 	hr = CreateSpriteConstantBuffers();
 	if (FAILED(hr)) return;
 
@@ -106,16 +108,6 @@ void Renderer::CreaetePositionCBuffer() {
 	cbDesc.Usage = D3D11_USAGE_DEFAULT;            // 매 프레임 업데이트 가능
 	cbDesc.CPUAccessFlags = 0;
 	cbDesc.ByteWidth = sizeof(PositionCBuffer);    
-	//cbDesc.ByteWidth = (cbDesc.ByteWidth + 15) / 16 * 16; 
-
-	// 초기값
-	/*PositionCBuffer initData = {};
-	initData.x = 0.0f;
-	initData.y = 0.0f;
-
-	D3D11_SUBRESOURCE_DATA subData = {};
-	subData.pSysMem = &initData;*/
-
 	HRESULT hr = m_pd3dDevice->CreateBuffer(&cbDesc, nullptr, &m_pPositionCBuffer);
 	if (FAILED(hr))
 	{
@@ -123,7 +115,21 @@ void Renderer::CreaetePositionCBuffer() {
 			<< std::hex << hr << std::endl;
 	}
 }
+void Renderer::CreateColorCBuffer() {
+	D3D11_BUFFER_DESC cbDesc = {};
+	cbDesc.BindFlags = D3D11_BIND_CONSTANT_BUFFER; 
+	cbDesc.Usage = D3D11_USAGE_DEFAULT;            
+	cbDesc.CPUAccessFlags = 0;
+	cbDesc.ByteWidth = sizeof(ColorCBuffer);
 
+	HRESULT hr = m_pd3dDevice->CreateBuffer(&cbDesc, nullptr, &m_pColorCBuffer);
+	if (FAILED(hr))
+	{
+		std::cerr << "Failed to create ColorCBuffer. HRESULT: 0x"
+			<< std::hex << hr << std::endl;
+	}
+
+}
 void Renderer::Uninitialize()
 {
 	// SpriteManager 리소스 먼저 해제 (D3D 리소스를 사용하므로)
@@ -377,7 +383,8 @@ void Renderer::SetShaderMode(const string& mode, float timer) {
 	m_pd3dContext->PSSetSamplers(0, 1, m_pSpriteSamplerState.GetAddressOf());
 	TimeCBuffer timeData{};
 
-	timeData.time = RenderTimer::GetInstance().GetElapsedTime();
+	// 반복시간
+	timeData.time = RenderTimer::GetInstance().GetElapsedTime()/2.0f;
 	timeData.deltaTime = 1.0f; // 고정 델타타임
 	timeData.padding[0] = 0.0f;
 	timeData.padding[1] = 0.0f;
@@ -385,32 +392,30 @@ void Renderer::SetShaderMode(const string& mode, float timer) {
 
 	if (mode == "NoiseBlend") {
 		// SRV 리턴
-		auto noiseSRV = SpriteManager::GetInstance().GetTextureSRV("Seamless2.png"); // 이거 manager에서 생성해둔거 사용으로 수정
+		auto noiseSRV = SpriteManager::GetInstance().GetTextureSRV("Seamless2.png");
 		auto noiseSRV2 = SpriteManager::GetInstance().GetTextureSRV("PerlinNoise.png");
-		//ID3D11ShaderResourceView* srvs[1] = { noiseSRV.Get() };
+
 		ID3D11ShaderResourceView* srvs[2] = { noiseSRV.Get(), noiseSRV2.Get() };
+		m_pd3dContext->UpdateSubresource(m_pTimeCBuffer.Get(), 0, nullptr, &timeData, 0, 0);
 		m_pd3dContext->PSSetShaderResources(1, 2, srvs);
 		
-		// -fakeTime 범용으로 수정 필요 // 실제 deltaTime를 사용해야 함
-		//TimeCBuffer timeData{};
-		//timeData.time = RenderTimer::GetInstance().GetDeltaTime();;
-		//timeData.deltaTime = 1.0f; // 고정 델타타임
-		//timeData.padding[0] = 0.0f;
-		//timeData.padding[1] = 0.0f;
+		
+		//색상 바인딩
+		ColorCBuffer colorData{};
+		colorData.prevColor = DirectX::XMFLOAT4(1.0f, 1.0f, 1.0f, 1.0f); /*Mediator::GetInstance().GetPrevColor();*/
+		colorData.targetColor = DirectX::XMFLOAT4(1.0f, 1.0f, 1.0f, 1.0f); /*Mediator::GetInstance().GetTargetColor();*/
 
-		//// 3. 상수 버퍼에 쓰기
-		m_pd3dContext->UpdateSubresource(m_pTimeCBuffer.Get(), 0, nullptr, &timeData, 0, 0);
-
-		// 4. Pixel Shader에 바인딩 (b1)
-		ID3D11Buffer* cbuffers[1] = { m_pTimeCBuffer.Get() };
-		m_pd3dContext->PSSetConstantBuffers(0, 1, cbuffers);
+		m_pd3dContext->UpdateSubresource(m_pColorCBuffer.Get(), 0, nullptr, &colorData, 0, 0);
+		ID3D11Buffer* cbuffers[2] = { m_pTimeCBuffer.Get(), m_pColorCBuffer.Get() };
+		m_pd3dContext->PSSetConstantBuffers(0, 2, cbuffers);
 	}
+
 
 	else if (mode == "Holo"||mode=="SetRed") {	
 
 		m_pd3dContext->UpdateSubresource(m_pTimeCBuffer.Get(), 0, nullptr, &timeData, 0, 0);
 
-		// 4. Pixel Shader에 바인딩 (b1)
+		
 		ID3D11Buffer* cbuffers[1] = { m_pTimeCBuffer.Get() };
 		m_pd3dContext->PSSetConstantBuffers(1, 1, cbuffers);
 	}
