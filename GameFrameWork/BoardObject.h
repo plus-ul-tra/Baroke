@@ -65,7 +65,7 @@ public:
 			if (isSacrificed)
 				bmp->SetShaderType("SetRed");
   			else if (isSelected)
- 				bmp->SetShaderType("GrayScale");
+ 				bmp->SetShaderType("SetGreen");
 			else
  				bmp->SetShaderType("DefaultShader");   // 혹은 기존에 쓰던 기본 Shader 이름
 		}
@@ -111,21 +111,6 @@ inline void BoardObject::BoardSync()
 				break;
 			}
 
-			//if (jokerTypeA >= 5)
-			//{
-			//	m_isTextureChanged = true;
-			//	std::cout << "Changing Board Texture" << std::endl;
-			//	m_bitmapRender->ChangeTexture("Forest.png");
-			//	break;
-			//}
-
-			//if (jokerTypeB >= 5)
-			//{
-			//	m_isTextureChanged = true;
-			//	std::cout << "Changing Board Texture" << std::endl;
-			//	m_bitmapRender->ChangeTexture("Halloween.png");
-			//	break;
-			//}
 		}
 	}
 }

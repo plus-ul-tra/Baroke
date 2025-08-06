@@ -76,6 +76,7 @@ protected:
 
 	bool m_isRemoving = false;
 	double m_queueRemoveTime = 0.0;
+	StoneAbility ability = StoneAbility::None;
 
 public:
 	Stone() = default;
@@ -90,6 +91,7 @@ public:
 
 	POINT GetPosition() const;
 	void ChangeColor(bool isBlack = true);
+	StoneAbility GetAbility() { return ability; }
 };
 
 class WhiteStone : public Stone
@@ -175,7 +177,9 @@ public:
 		m_sprite->SetActive(true);
 
 		m_jokerType = jokerType; // 조커 타입 설정
+		this->ability = ability;
 	}
 
 	JokerStoneInfo m_jokerInfo; // 조커 돌 능력 정보
+	void UpdateAbility(StoneAbility newAb);
 };

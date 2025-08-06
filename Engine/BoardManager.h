@@ -68,7 +68,7 @@ public:
 	bool InputBasedGameLoop(int row, int col); // 배열에 접근으로 돌 놓기
 
 	void JokerAbilityUpdate(); // 모든 조커 능력 실행
-	void JokerAbillityUse(StoneAbility ab, POINT position);
+	void JokerAbilityUse(StoneAbility ab, POINT position);
 
 	POINT MouseToBoardPosition(POINT mousePos) const; // 마우스 좌표를 바둑판 좌표로 변환
 	POINT BoardToScreenPosition(POINT boardPos) const; // 바둑판 좌표를 스크린 좌표로 변환
@@ -98,8 +98,16 @@ public:
 	void SetMode(UIMode uimode) { nowMode = uimode; }
 	void ExitMode() { 
 		nowMode = UIMode::Normal;
-		m_stoneType = StoneType::Black;
-		m_stoneAbility = StoneAbility::None;
+		if (doubleCheck)  // 쌍수의 돌만
+		{
+			doubleCheck = false;
+			m_stoneType = StoneType::Black; 
+			m_stoneAbility = StoneAbility::jokerDouble; 
+		}
+		else {
+			m_stoneType = StoneType::Black;
+			m_stoneAbility = StoneAbility::None;
+		}
 		ResetGroup(); 
 		std::cout << "exit" << std::endl; }
 
@@ -109,7 +117,7 @@ public:
 	bool SelectSacrificeStone(POINT mousePos); 
 	bool checkSacrificeSuccess();
 
-	StoneAbility GetStoneAbillity() const { return m_stoneAbility; } ;
+	StoneAbility GetStoneAbility() const { return m_stoneAbility; } ;
 	StoneType GetStoneType() const { return m_stoneType; };
 	void SyncBlackStoneCount(int count) { m_syncBlackStoneCount = count; }
 
@@ -128,9 +136,11 @@ public:
 	bool checkBeforeAbSuccess();
 	bool SelectUseCond(POINT mousePos);
 	const std::vector<POINT>& GetuseCondGroup() const { return m_useCondGroup; }
+	bool ChangeJokerAbility(POINT pos, StoneAbility newAb);
 private:
 	std::vector<POINT> m_useCondGroup; // 조건 충족모드에서 선택한 그룹임
 	POINT direction = { 0,0 }; // 상 = 0,1 // 하 = 0,-1 // 좌 = -1,0 // 우 = 1,0
+	bool doubleCheck = false;
 	//---------------------------------------------------------------- 버튼 - 상태 판정용 함수
 public:
 	int  CountStones(StoneType t) const;					// 보드판위에 특정돌이 몇갠지 체크
