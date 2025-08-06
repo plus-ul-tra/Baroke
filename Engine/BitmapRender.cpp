@@ -176,8 +176,10 @@ void BitmapRender3D::Render(Renderer& renderer)
 
 	XMMATRIX worldMatrix = GetWorldMatrix();
 	// 반드시 전에 ShaderMode전달.
-	if (m_shaderType == "Checker") {
-		renderer.SetShaderMode(m_shaderType, m_nextTextureSRV);
+	if (m_shaderType == "Checker")
+	{
+		m_shaderTimeElapsed += RenderTimer::GetInstance().GetDeltaTime();
+		renderer.SetShaderMode(m_shaderType, m_nextTextureSRV, m_shaderTimeElapsed / m_shaderEffectDuration); // 다음 텍스처 SRV와 시간 전달
 	}
 	else{ renderer.SetShaderMode(m_shaderType); }
 	 // 쉐이더 모드 설정, 외부에서 재료texture 인경우

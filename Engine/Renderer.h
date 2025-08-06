@@ -123,7 +123,7 @@ public:
 	// 렌더링 흐름 제어 함수
 	void RenderBegin();
 	void SetShaderMode(const string& mode);
-	void SetShaderMode(const string& mode, ComPtr<ID3D11ShaderResourceView> pTextureSRV); // 외부에서 texture 동적 바인딩을 위한 오버로딩
+	void SetShaderMode(const string& mode, ComPtr<ID3D11ShaderResourceView> pTextureSRV, float timer); // 외부에서 texture 동적 바인딩을 위한 오버로딩
 	void PostProcessing(const ShaderSet& shaderSet); // 기존 유지
 	void RenderEnd();
 	void Present();

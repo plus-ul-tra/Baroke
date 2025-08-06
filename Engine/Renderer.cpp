@@ -376,7 +376,7 @@ void Renderer::SetShaderMode(const string& mode) {
 	// 스프라이트 전용 샘플러
 	m_pd3dContext->PSSetSamplers(0, 1, m_pSpriteSamplerState.GetAddressOf());
 	TimeCBuffer timeData{};
-	timeData.time = RenderTimer::GetInstance().GetDeltaTime();;
+	timeData.time = RenderTimer::GetInstance().GetElapsedTime();
 	timeData.deltaTime = 1.0f; // 고정 델타타임
 	timeData.padding[0] = 0.0f;
 	timeData.padding[1] = 0.0f;
@@ -427,7 +427,7 @@ void Renderer::SetShaderMode(const string& mode) {
 
 }
 
-void Renderer::SetShaderMode(const string& mode, ComPtr<ID3D11ShaderResourceView> pTextureSRV) // 외부에서 재료로 쓸 SRV
+void Renderer::SetShaderMode(const string& mode, ComPtr<ID3D11ShaderResourceView> pTextureSRV, float timer) // 외부에서 재료로 쓸 SRV
 {
 	const ShaderSet& DefaultShaderSet = m_shaderManager->GetOBJShaderSet(mode);
 	if (!DefaultShaderSet.vs || !DefaultShaderSet.ps || !DefaultShaderSet.inputLayout) {
@@ -444,7 +444,7 @@ void Renderer::SetShaderMode(const string& mode, ComPtr<ID3D11ShaderResourceView
 	// 스프라이트 전용 샘플러
 	m_pd3dContext->PSSetSamplers(0, 1, m_pSpriteSamplerState.GetAddressOf());
 	TimeCBuffer timeData{};
-	timeData.time = RenderTimer::GetInstance().GetDeltaTime();;
+	timeData.time += timer;
 	timeData.deltaTime = 1.0f; // 고정 델타타임
 	timeData.padding[0] = 0.0f;
 	timeData.padding[1] = 0.0f;
