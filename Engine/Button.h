@@ -227,5 +227,20 @@ public:
 	void SetButtonJoker(JokerStoneInfo jokerInfo, StoneAbility ability) { m_jokerInfo = jokerInfo; m_jokerAbility = ability; }
 	void SetButton(JokerButton* jokerButton) { m_jokerButton = jokerButton; }
 
+	void SetShowAndActive(bool active);
+	void ButtonFunction() override;
+};
+
+class ShopEndButton : public Button
+{
+	bool m_isEndButtonPressed = false;
+
+	public:
+	ShopEndButton(float posX, float posY, float width, float height, const std::string& bitmapFile, int order = 0)
+		: Button(posX, posY, width, height, bitmapFile, order) {}
+
+	bool IsEndButtonPressed();
+
+	void SetShowAndActive(bool active);
 	void ButtonFunction() override;
 };

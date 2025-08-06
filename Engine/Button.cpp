@@ -59,6 +59,13 @@ void JokerButton::ButtonFunction()
     }
 }
 
+void ShopJokerButton::SetShowAndActive(bool active)
+{
+	if (m_bitmapRender) m_bitmapRender->SetActive(active);
+
+	m_isActive = active;
+}
+
 void ShopJokerButton::ButtonFunction()
 {
 	if (m_isPressed && m_isActive)
@@ -66,8 +73,41 @@ void ShopJokerButton::ButtonFunction()
 		if (m_boardManager.m_playerInfo.m_money >= m_jokerInfo.costWhite)
 		{
 			m_boardManager.m_playerInfo.m_money -= m_jokerInfo.costWhite;
+			m_jokerButton->SetButtonJoker(m_jokerInfo.stoneType, m_jokerAbility);
+
 			std::cout << "Money : " << m_boardManager.m_playerInfo.m_money << std::endl;
 		}
+		else
+		{
+			std::cout << "Not enough money to buy this joker." << std::endl;
+		}
+
+		m_isPressed = false;
+	}
+}
+
+bool ShopEndButton::IsEndButtonPressed()
+{
+	if (!m_isEndButtonPressed) return false;
+
+	m_isEndButtonPressed = false;
+	return true;
+}
+
+void ShopEndButton::SetShowAndActive(bool active)
+{
+	if (m_bitmapRender) m_bitmapRender->SetActive(active);
+
+	m_isActive = active;
+	m_isEndButtonPressed = false;
+}
+
+void ShopEndButton::ButtonFunction()
+{
+	if (m_isPressed && m_isActive)
+	{
+		m_isEndButtonPressed = true;
+		std::cout << "Shop End Button Pressed" << std::endl;
 
 		m_isPressed = false;
 	}

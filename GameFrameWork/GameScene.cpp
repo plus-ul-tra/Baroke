@@ -12,6 +12,25 @@
 
 void GameScene::SetUIJokerButton()
 {
+	m_shopExitButton = std::make_unique<ShopEndButton>(300.0f, -300.0f, 100, 100, "Sample.png");
+	m_shopExitButton->SetShowAndActive(false);
+	m_buttonList.emplace_back(m_shopExitButton.get());
+	m_UIList.emplace_back(m_shopExitButton.get());
+
+	for (int i = 0; i < 3; i++)
+	{
+		jokerButtons[i] = make_unique<ShopJokerButton>(-300.0f + (i * 300.0f), 300.0f, 100, 100, "Sample.png");
+		jokerButtons[i]->SetShowAndActive(false);
+		m_buttonList.emplace_back(jokerButtons[i].get());
+		m_UIList.emplace_back(jokerButtons[i].get());
+	}
+	for (int i = 0; i < 3; i++)
+	{
+		jokerButtons[3 + i] = make_unique<ShopJokerButton>(-300.0f + (i * 300.0f), 0.0f, 100, 100, "Sample.png");
+		jokerButtons[3 + i]->SetShowAndActive(false);
+		m_buttonList.emplace_back(jokerButtons[3 + i].get());
+		m_UIList.emplace_back(jokerButtons[3 + i].get());
+	}
 
 	unique_ptr<Button> rightUI = std::make_unique<Button>(700.0f, 0.0f, 418, 973.0f, "T_Right_UI.png");
 	m_buttonList.emplace_back(rightUI.get());
@@ -67,8 +86,35 @@ void GameScene::CheckStageClear()
 	{
 		SceneManager::GetInstance().ChangePostProcessing("CRTFilter");
 
-		ShopStage();
-		StartStage();
+		if (m_gameState == GameState::Stage)
+		{
+			m_gameState = GameState::ShopEnter;
+		}
+		if (m_gameState == GameState::ShopEnter)
+		{
+			m_gameState = GameState::Shop;
+			ShopStage();
+			m_shopExitButton->SetShowAndActive(true);
+		}
+
+		if (m_gameState == GameState::Shop && m_shopExitButton)
+		{
+			if (m_shopExitButton->IsEndButtonPressed())
+			{
+				m_gameState = GameState::Stage;
+
+				m_shopExitButton->SetShowAndActive(false);
+				for (auto& jokerButton : jokerButtons)
+				{
+					jokerButton->SetShowAndActive(false);
+				}
+			}
+		}
+
+		if (m_gameState == GameState::Stage)
+		{
+			StartStage();
+		}
 	}
 }
 
@@ -78,7 +124,7 @@ void GameScene::ModeCheck()
 {
 	m_uiMode = m_board.GetMode();
 
-	if (m_uiMode==UIMode::Sacrifice &&m_board.checkSelectsuccess())
+	if (m_uiMode==UIMode::Sacrifice && m_board.checkSelectsuccess())
 	{
 		m_board.ExitSacrificeMode(); // 요게 아니라 능력 사용 모드로 전환
 		std::cout << "Sacrifice clear" << std::endl;
@@ -103,6 +149,7 @@ void GameScene::ShopStage()
 
 	for (int i = 0; i < 3; i++)
 	{
+
 		if (dist(rng) < m_shopRng[i])
 		{
 			StoneAbility stone = StoneAbility::None;
@@ -118,14 +165,13 @@ void GameScene::ShopStage()
 				}
 			}
 
-			unique_ptr<ShopJokerButton> jokerButton = make_unique<ShopJokerButton>(-300.0f + (i * 300.0f), 300.0f, 100, 100, info.fileName);
-			jokerButton->SetButtonJoker(info, stone);
-			m_buttonList.emplace_back(jokerButton.get());
-			m_UIList.emplace_back(std::move(jokerButton));
+			jokerButtons[i]->SetShowAndActive(true);
+			jokerButtons[i]->SetButtonJoker(info, stone);
 		}
 	}
 	for (int i = 0; i < 3; i++)
 	{
+
 		if (dist(rng) < m_shopRng[i])
 		{
 			StoneAbility stone = StoneAbility::None;
@@ -141,10 +187,8 @@ void GameScene::ShopStage()
 				}
 			}
 
-			unique_ptr<ShopJokerButton> jokerButton = make_unique<ShopJokerButton>(-300.0f + (i * 300.0f), 0.0f, 100, 100, info.fileName);
-			jokerButton->SetButtonJoker(info, stone);
-			m_buttonList.emplace_back(jokerButton.get());
-			m_UIList.emplace_back(std::move(jokerButton));
+			jokerButtons[3 + i]->SetShowAndActive(true);
+			jokerButtons[3 + i]->SetButtonJoker(info, stone);
 		}
 	}
 }
@@ -176,7 +220,6 @@ void GameScene::Update(double deltaTime)
 	m_boardObj->BoardSync();
 	ModeCheck();
 	CheckStageClear();
-
 }
 
 void GameScene::LateUpdate(double deltaTime)
