@@ -58,12 +58,16 @@ public:
 	float GetHeight() const { return m_height; }
 
 	void ChangeTexture(const string& nextTextureKey) {
+		std::cout << "Changing Board Texture" << std::endl;
 		SpriteManager& spriteManager = SpriteManager::GetInstance();
 		m_nextTextureSRV = spriteManager.GetTextureSRV(nextTextureKey); //넥스트에 두고
 		// 쉐이더효과 주고
 		SetShaderType("Checker");
 		// 쉐이더 효과 끝나면
+		// 여기서 time wait을 한번해야함
+		// 
 		//m_textureSRV = m_nextTextureSRV; // 현재 텍스처로 변경
+		//SetShaderType("DefaultShader");
 	}
 
 	void SetShaderType(const string& type) { m_shaderType = type; } // 쉐이더 타입 설정

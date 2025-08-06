@@ -27,7 +27,7 @@ public:
 		m_bitmapRender->SetOrder(0);
 		m_bitmapRender->SetActive(true);
 		//m_bitmapRender->SetShaderType("GrayScale");
-
+		//m_bitmapRender->SetShaderType("Othello");
 		m_boardManager.Initialize(offX, offY, drawW, drawH, _cell, m_stoneOffset, padding); // 보드 매니저 초기화
 	}
 	// 이건 어디서 호출?
@@ -49,7 +49,7 @@ public:
 	}
 
 	void BoardSync();
-	//void ChangeTexture();
+	
 };
 
 inline void BoardObject::BoardSync()
@@ -84,7 +84,7 @@ inline void BoardObject::BoardSync()
 			{
 				m_isTextureChanged = true;
 				std::cout << "Changing Board Texture" << std::endl;
-				//m_bitmapRender->ChangeTexture("Sample");
+				m_bitmapRender->ChangeTexture("Space.png");
 				break;
 			}
 		}
