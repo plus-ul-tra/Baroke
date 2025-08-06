@@ -354,7 +354,7 @@ void Renderer::RenderBegin()
 	m_pd3dContext->OMSetBlendState(m_blendState.Get(), nullptr, 0xFFFFFFFF);
 }
 
-void Renderer::SetShaderMode(const string& mode) {
+void Renderer::SetShaderMode(const string& mode, float timer) {
 
 	// cso 바인딩
 	// 추가 자원(normal, noise) 있는 경우 if 로 분기하죠
@@ -413,7 +413,7 @@ void Renderer::SetShaderMode(const string& mode) {
 	else if (mode == "Othello") {
 		// 수정 필요
 		TimeCBuffer timeData{};
-		timeData.time = RenderTimer::GetInstance().GetDeltaTimeX2();
+		timeData.time += timer;
 		timeData.deltaTime = 1.0f;
 		timeData.padding[0] = 0.0f;
 		timeData.padding[1] = 0.0f;
