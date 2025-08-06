@@ -40,7 +40,7 @@ enum StoneAbility // 능력 혹은 이름
 	jokerSplit, // 함수 구현 완료
 	jokerWaxseal, // 함수 구현 완료
 	jokerFlip,
-	jokerOthello,
+	jokerOthello, // 함수 구현 완료
 	jokerMrchan,
 
 	//---------------- 자연 (set 7)
