@@ -31,7 +31,7 @@ class BoardManager : public Singleton<BoardManager>
 	BoardManager() = default;
 	~BoardManager() = default;
 
-	Board m_board; // 바둑판
+	Board m_board; // 바둑판X 로직용 가상 바둑판
 	unordered_map<POINT, StoneType> m_stoneTypeMap; // 위치별 돌 종류 맵 // 사석 판정용
 	vector<pair<POINT, StoneAbility>> m_jokerPositions; // 조커 돌 위치와 능력 벡터
 
@@ -87,6 +87,8 @@ public:
 	// 다음 착수 돌 변경 함수
 	void SetStoneType(StoneType type) { m_stoneType = type; }
 	void SetStoneAbility(StoneAbility ability) { m_stoneAbility = ability; }
+
+	//void ChangeBoard();
 
 
 	//---------------------------------------------------------------- 희생 모드 진입, 탈출

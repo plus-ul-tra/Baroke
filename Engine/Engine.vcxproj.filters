@@ -13,6 +13,8 @@
     <FxCompile Include="BlackHole_PS.hlsl" />
     <FxCompile Include="Othello_PS.hlsl" />
     <FxCompile Include="SetRed_PS.hlsl" />
+    <FxCompile Include="Checker_PS.hlsl" />
+    <FxCompile Include="SetGreen_PS.hlsl" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="AnimationClip.cpp" />

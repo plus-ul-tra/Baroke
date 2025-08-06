@@ -354,7 +354,7 @@ void Renderer::RenderBegin()
 	m_pd3dContext->OMSetBlendState(m_blendState.Get(), nullptr, 0xFFFFFFFF);
 }
 
-void Renderer::SetShaderMode(const string& mode) {
+void Renderer::SetShaderMode(const string& mode, float timer) {
 
 	// cso 바인딩
 	// 추가 자원(normal, noise) 있는 경우 if 로 분기하죠
@@ -376,10 +376,13 @@ void Renderer::SetShaderMode(const string& mode) {
 	// 스프라이트 전용 샘플러
 	m_pd3dContext->PSSetSamplers(0, 1, m_pSpriteSamplerState.GetAddressOf());
 	TimeCBuffer timeData{};
-	timeData.time = RenderTimer::GetInstance().GetDeltaTime();;
+
+	timeData.time = RenderTimer::GetInstance().GetElapsedTime();
 	timeData.deltaTime = 1.0f; // 고정 델타타임
 	timeData.padding[0] = 0.0f;
 	timeData.padding[1] = 0.0f;
+
+
 	if (mode == "NoiseBlend") {
 		// SRV 리턴
 		auto noiseSRV = SpriteManager::GetInstance().GetTextureSRV("Seamless2.png"); // 이거 manager에서 생성해둔거 사용으로 수정
@@ -402,24 +405,21 @@ void Renderer::SetShaderMode(const string& mode) {
 		ID3D11Buffer* cbuffers[1] = { m_pTimeCBuffer.Get() };
 		m_pd3dContext->PSSetConstantBuffers(0, 1, cbuffers);
 	}
-	if (mode == "Holo"||mode=="SetRed") {
-		
-		//TimeCBuffer timeData{};
-		//timeData.time = RenderTimer::GetInstance().GetDeltaTime(); // 실제 시간 사용
-		//timeData.deltaTime = 1.0f; // 고정 델타타임
-		//timeData.padding[0] = 0.0f;
-		//timeData.padding[1] = 0.0f;
-		
+
+	else if (mode == "Holo"||mode=="SetRed") {	
+
 		m_pd3dContext->UpdateSubresource(m_pTimeCBuffer.Get(), 0, nullptr, &timeData, 0, 0);
 
 		// 4. Pixel Shader에 바인딩 (b1)
 		ID3D11Buffer* cbuffers[1] = { m_pTimeCBuffer.Get() };
 		m_pd3dContext->PSSetConstantBuffers(1, 1, cbuffers);
 	}
-	if (mode == "Othello") {
+	else if (mode == "Othello") {
 		// 수정 필요
 		TimeCBuffer timeData{};
-		timeData.time = RenderTimer::GetInstance().GetDeltaTimeX2();
+
+		timeData.time += timer;
+
 		timeData.deltaTime = 1.0f;
 		timeData.padding[0] = 0.0f;
 		timeData.padding[1] = 0.0f;
@@ -433,11 +433,41 @@ void Renderer::SetShaderMode(const string& mode) {
 
 }
 
+void Renderer::SetShaderMode(const string& mode, ComPtr<ID3D11ShaderResourceView> pTextureSRV, float timer) // 외부에서 재료로 쓸 SRV
+{
+	const ShaderSet& DefaultShaderSet = m_shaderManager->GetOBJShaderSet(mode);
+	if (!DefaultShaderSet.vs || !DefaultShaderSet.ps || !DefaultShaderSet.inputLayout) {
+		//OutputDebugStringA("ERROR: 'DefaultShader' ShaderSet is incomplete or not found in Renderer. Cannot set D3D states.\n");
+		//cout << "spreiteShader fail" << endl;
+		return;
+	}
+
+	m_pd3dContext->VSSetShader(DefaultShaderSet.vs.Get(), nullptr, 0);
+	m_pd3dContext->PSSetShader(DefaultShaderSet.ps.Get(), nullptr, 0);
+	m_pd3dContext->IASetInputLayout(DefaultShaderSet.inputLayout.Get());
+	m_pd3dContext->IASetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
+
+	// 스프라이트 전용 샘플러
+	m_pd3dContext->PSSetSamplers(0, 1, m_pSpriteSamplerState.GetAddressOf());
+	TimeCBuffer timeData{};
+	timeData.time += timer;
+	timeData.deltaTime = 1.0f; // 고정 델타타임
+	timeData.padding[0] = 0.0f;
+	timeData.padding[1] = 0.0f;
+
+	ID3D11ShaderResourceView* srvs[1] = { pTextureSRV.Get()};
+	m_pd3dContext->PSSetShaderResources(1, 1, srvs); // register 1번 바인딩, (원본은 밑에서 0번 바인딩)
+
+	m_pd3dContext->UpdateSubresource(m_pTimeCBuffer.Get(), 0, nullptr, &timeData, 0, 0);
+
+	ID3D11Buffer* cbuffers[1] = { m_pTimeCBuffer.Get() };
+	m_pd3dContext->PSSetConstantBuffers(0, 1, cbuffers);
+}
 
 void Renderer::DrawBitmap3D(
 	ID3D11Buffer* pVertexBuffer,
 	ID3D11Buffer* pIndexBuffer,
-	ID3D11ShaderResourceView* pTextureSRV,
+	ID3D11ShaderResourceView* pTextureSRV, // object에서 넘겨받은 texture
 	const DirectX::XMMATRIX& worldMatrix,
 	const RECT* pSourceRect // 텍스처 아틀라스 내의 원본 사각형 (픽셀 단위)
 	// 여기서 시간 받기?
