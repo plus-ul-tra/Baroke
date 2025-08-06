@@ -376,10 +376,12 @@ void Renderer::SetShaderMode(const string& mode, float timer) {
 	// 스프라이트 전용 샘플러
 	m_pd3dContext->PSSetSamplers(0, 1, m_pSpriteSamplerState.GetAddressOf());
 	TimeCBuffer timeData{};
+
 	timeData.time = RenderTimer::GetInstance().GetElapsedTime();
 	timeData.deltaTime = 1.0f; // 고정 델타타임
 	timeData.padding[0] = 0.0f;
 	timeData.padding[1] = 0.0f;
+
 
 	if (mode == "NoiseBlend") {
 		// SRV 리턴
@@ -403,7 +405,9 @@ void Renderer::SetShaderMode(const string& mode, float timer) {
 		ID3D11Buffer* cbuffers[1] = { m_pTimeCBuffer.Get() };
 		m_pd3dContext->PSSetConstantBuffers(0, 1, cbuffers);
 	}
+
 	else if (mode == "Holo"||mode=="SetRed") {	
+
 		m_pd3dContext->UpdateSubresource(m_pTimeCBuffer.Get(), 0, nullptr, &timeData, 0, 0);
 
 		// 4. Pixel Shader에 바인딩 (b1)
@@ -413,7 +417,9 @@ void Renderer::SetShaderMode(const string& mode, float timer) {
 	else if (mode == "Othello") {
 		// 수정 필요
 		TimeCBuffer timeData{};
+
 		timeData.time += timer;
+
 		timeData.deltaTime = 1.0f;
 		timeData.padding[0] = 0.0f;
 		timeData.padding[1] = 0.0f;

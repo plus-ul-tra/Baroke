@@ -44,9 +44,9 @@ enum StoneAbility // 능력 혹은 이름
 	jokerMrchan,
 
 	//---------------- 자연 (set 7)
-	jokerShadow,
+	jokerShadow, // 함수 구현 완료
 	jokerLight,
-	jokerTime,
+	jokerTime, // 함수 구현 완료
 	jokerWind, // 함수 구현 완료
 };
 enum JokerType
@@ -89,6 +89,7 @@ public:
 	void Remove(double duration = 0.0) { m_isRemoving = true; m_queueRemoveTime = duration; }
 
 	POINT GetPosition() const;
+	void ChangeColor(bool isBlack = true);
 };
 
 class WhiteStone : public Stone
@@ -134,14 +135,24 @@ public:
 struct JokerStoneInfo // 조커 돌 정보
 {
 	string fileName = "JokerEgg.png"; // 조커 돌 이미지 파일 이름
+
 	JokerType jokerType = JokerType::Default;
+
 
 	int coolTime = 0; // 조커 돌 능력 쿨타임
 	int lifeSpan = 0; // 조커 돌 능력 지속 시간
 
 	int functionDuration = 0; // 조커 돌 능력 함수 지속 시간 // 0이면 한번만 실행
 	int functionVariable = 0; // 조커 돌 능력 함수에 사용되는 변수 // 능력에 따라 다름
+
 	int costBlack		 = 0;
+	int returnBlack = 0;
+
+	int costWhite = 0; // 상점 비용
+	int rarity = 0;
+	bool isStone = false; // 돌인지 여부
+
+	StoneType stoneType = StoneType::Joker;
 };
 extern unordered_map<StoneAbility, JokerStoneInfo> m_jokerInfoMap; // 조커 돌 능력 정보 맵 // 능력의 기본값 저장용
 

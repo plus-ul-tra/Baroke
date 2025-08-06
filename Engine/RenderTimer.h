@@ -15,6 +15,7 @@ private:
 	float m_elapsedTime = 0.0; 
 
 public:
+
 	void Update()
 	{
 		m_deltaTime = static_cast<float>(m_engineTimer.GetRealDeltaTime());
@@ -24,4 +25,5 @@ public:
 	float GetDeltaTime() const { return m_deltaTime; }
 	float GetDeltaTimeX2() const { return m_deltaTime * 0.5f; }
 	float GetElapsedTime() const { return m_elapsedTime; }
+
 };
