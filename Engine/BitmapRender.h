@@ -59,7 +59,9 @@ public:
 	float GetWidth() const { return m_width; }
 	float GetHeight() const { return m_height; }
 
-	void ChangeTexture(const string& nextTextureKey) {
+	void ChangeTexture(const string& nextTextureKey, float duration = 1.0f) {
+		m_shaderTimeElapsed = 0.0f; // 쉐이더 효과 시간 초기화
+		m_shaderEffectDuration = duration; // 쉐이더 효과 지속 시간 설정
 		std::cout << "Changing Board Texture" << std::endl;
 		SpriteManager& spriteManager = SpriteManager::GetInstance();
 		m_nextTextureSRV = spriteManager.GetTextureSRV(nextTextureKey); //넥스트에 두고
