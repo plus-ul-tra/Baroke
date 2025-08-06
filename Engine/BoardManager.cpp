@@ -44,7 +44,7 @@ struct JokerFunctionsWrapper
 		},
 		{ StoneAbility::jokerPeacock, [this](shared_ptr<JokerStone> jokerPeacock, POINT position)
 		{
-			if (jokerPeacock->m_jokerInfo.coolTime != 0) return;
+			if (!jokerPeacock->m_jokerInfo.coolTime) return;
 			jokerPeacock->m_jokerInfo.coolTime--;
 
 			if (boardManager.GetStoneTypeAmount(White) >= 5)
@@ -122,8 +122,8 @@ struct JokerFunctionsWrapper
 		},
 		{ StoneAbility::jokerBlackhole, [this](shared_ptr<JokerStone> jokerBlackhole, POINT position)
 		{
-			 // Mediator에 위치 설정
-			if (jokerBlackhole->m_jokerInfo.lifeSpan <= 0) boardManager.RemoveGroup({position});
+			// Mediator에 위치 설정
+		   if (!jokerBlackhole->m_jokerInfo.lifeSpan) boardManager.RemoveGroup({position});
 			if (jokerBlackhole->m_jokerInfo.coolTime != 0) return;
 
 			int functionVariable = jokerBlackhole->m_jokerInfo.functionVariable;
@@ -228,9 +228,56 @@ struct JokerFunctionsWrapper
 		}
 		},
 
+		{ StoneAbility::jokerShadow, [this](shared_ptr<JokerStone> jokerShadow, POINT position)
+		{
+			if (!jokerShadow->m_jokerInfo.lifeSpan) boardManager.RemoveGroup({position});
+			if (!jokerShadow->m_jokerInfo.coolTime) return;
+			jokerShadow->m_jokerInfo.coolTime--;
+			jokerShadow->m_jokerInfo.lifeSpan--;
+
+			int patternXY[2] = { -1, 1 };
+			for (int i = 0; i < 2; ++i)
+			{
+				for (int j = 0; j < 2; ++j)
+				{
+					if (boardManager.isValidPoint({ position.x + patternXY[i], position.y + patternXY[j] }) && boardManager.m_board[position.x + patternXY[i]][position.y + patternXY[j]])
+					{
+						if (boardManager.m_stoneTypeMap.find({ position.x + patternXY[i], position.y + patternXY[j] })->second == StoneType::White)
+						{
+							boardManager.m_playerInfo.m_BlackStone += jokerShadow->m_jokerInfo.functionVariable;
+							std::cout << "Black Stone : " << boardManager.m_playerInfo.m_BlackStone << std::endl;
+
+							return;
+						}
+					}
+				}
+			}
+
+		}
+		},
+		{ StoneAbility::jokerTime, [this](shared_ptr<JokerStone> jokerTime, POINT position)
+		{
+			if (!jokerTime->m_jokerInfo.coolTime)
+			{
+				std::random_device rd;
+				mt19937 rng(rd());
+				uniform_int_distribution<int> distC(jokerTime->m_jokerInfo.functionVariable, 15);
+				uniform_int_distribution<int> distR(m_jokerInfoMap.find(StoneAbility::jokerTime)->second.coolTime, 5);
+
+				int tempR = distR(rng);
+				boardManager.m_playerInfo.m_BlackStone += tempR;
+
+				int tempC = distC(rng);
+				jokerTime->m_jokerInfo.coolTime = tempC;
+			}
+			jokerTime->m_jokerInfo.coolTime--;
+
+			std::cout << boardManager.m_playerInfo.m_BlackStone << std::endl;
+		}
+		},
 		{ StoneAbility::jokerWind, [this](shared_ptr<JokerStone> jokerWind, POINT position)
 		{
-			if (jokerWind->m_jokerInfo.lifeSpan <= 0) boardManager.RemoveGroup({position});
+			if (!jokerWind->m_jokerInfo.lifeSpan) boardManager.RemoveGroup({position});
 
 			if (!jokerWind->m_jokerInfo.coolTime)
 			{
@@ -525,7 +572,7 @@ void BoardManager::InitializeJokerInfoMap()
 	m_jokerInfoMap[StoneAbility::jokerDansu] = { "jokerDansu.png", 0, 1, 0, 0, 0, 1, 2, 1, true, StoneType::Black };
 	m_jokerInfoMap[StoneAbility::jokerEgg] = { "jokerEgg.png", 3, 0, 0, 2, 5, 0, 2, 1, true };
 	m_jokerInfoMap[StoneAbility::jokerOstrichEgg] = { "jokerOstrichEgg.png", 2, 0, 0, 1, 0, 0, 0, 0, true };
-	m_jokerInfoMap[StoneAbility::jokerPeacock] = { "jokerPeacock.png", 0, 0, 0, 3, 3, 1, 6, 3, true, StoneType::Black };				// cost 4
+	m_jokerInfoMap[StoneAbility::jokerPeacock] = { "jokerPeacock.png", 0, 1, 0, 3, 3, 1, 6, 3, true, StoneType::Black };				// cost 4
 
 	//------------------------------------------------------------------------------------------------ 우주 (set 3)
 	m_jokerInfoMap[StoneAbility::jokerTeleport] = { "jokerTeleport.png", 10, 5, 0 };
@@ -546,9 +593,9 @@ void BoardManager::InitializeJokerInfoMap()
 	m_jokerInfoMap[StoneAbility::jokerMrchan] = { "jokerMrchan.png", 20, 10, 0 };
 
 	//------------------------------------------------------------------------------------------------ 자연 (set 7)
-	m_jokerInfoMap[StoneAbility::jokerShadow] = { "jokerShadow.png", 10, 5, 0 };
+	m_jokerInfoMap[StoneAbility::jokerShadow] = { "jokerShadow.png", 1, 1, 0, 4, 1, 0, 4, 2, true };
 	m_jokerInfoMap[StoneAbility::jokerLight] = { "jokerLight.png", 15, 7, 0 };
-	m_jokerInfoMap[StoneAbility::jokerTime] = { "jokerTime.png", 20, 10, 0 };
+	m_jokerInfoMap[StoneAbility::jokerTime] = { "jokerTime.png", 3, 0, 0, 2, 0, 2, 7, 3, true };
 	m_jokerInfoMap[StoneAbility::jokerWind] = { "jokerWind.png", 2, 5, 0, 2, 4, 1, 4, 2, true };
 
 
