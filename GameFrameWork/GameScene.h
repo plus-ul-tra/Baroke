@@ -26,7 +26,16 @@ private:
 
 	void  ModeCheck();
 
-	void ShopStage(); // 사점
+	void InitShop(); // 상점 초기화
+	JokerButton* m_jokerButtons[5]; // 조커 버튼들
+	vector<pair<StoneAbility, JokerStoneInfo>> m_shopStones; // 돌 조커
+	vector<pair<StoneAbility, JokerStoneInfo>> m_shopItems; // 아이템 조커
+	unique_ptr<ShopJokerButton> jokerButtons[6] = {};
+	unique_ptr<ShopEndButton> m_shopExitButton;
+	int m_shopRng[3] = { 80, 45, 15 }; // 상점 아이템 확률
+	void ShopStage(); // 상점
+	enum class GameState { Stage, ShopEnter, Shop };
+	GameState m_gameState = GameState::Stage;
 
 
 public:
