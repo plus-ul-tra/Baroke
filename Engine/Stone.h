@@ -44,9 +44,9 @@ enum StoneAbility // 능력 혹은 이름
 	jokerMrchan,
 
 	//---------------- 자연 (set 7)
-	jokerShadow,
+	jokerShadow, // 함수 구현 완료
 	jokerLight,
-	jokerTime,
+	jokerTime, // 함수 구현 완료
 	jokerWind, // 함수 구현 완료
 };
 
@@ -77,6 +77,7 @@ public:
 	void Remove(double duration = 0.0) { m_isRemoving = true; m_queueRemoveTime = duration; }
 
 	POINT GetPosition() const;
+	void ChangeColor(bool isBlack = true);
 };
 
 class WhiteStone : public Stone

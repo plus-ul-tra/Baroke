@@ -44,3 +44,8 @@ POINT Stone::GetPosition() const
 	XMVECTOR pos = m_transform->GetPosition();
 	return { static_cast<int>(XMVectorGetX(pos)), static_cast<int>(XMVectorGetY(pos)) };
 }
+
+void Stone::ChangeColor(bool isBlack)
+{
+	if (isBlack) m_sprite->SetShaderType("Othello");
+}

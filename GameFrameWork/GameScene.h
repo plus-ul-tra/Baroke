@@ -27,7 +27,7 @@ private:
 	void  ModeCheck();
 
 	void InitShop(); // 상점 초기화
-	JokerButton* m_jokerButtons[5]; // 조커 버튼들
+	JokerButton* m_jokerButtons[5]; // 조커 버튼들 // 나중에 다른 방식으로?
 	vector<pair<StoneAbility, JokerStoneInfo>> m_shopStones; // 돌 조커
 	vector<pair<StoneAbility, JokerStoneInfo>> m_shopItems; // 아이템 조커
 	unique_ptr<ShopJokerButton> jokerButtons[6] = {};
