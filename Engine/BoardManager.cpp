@@ -508,12 +508,36 @@ struct JokerFunctionsWrapper
 
 		}
 		},
-		{ StoneAbility::jokerShadow, [this](shared_ptr<JokerStone> jokerShadow, POINT position)
+		{ StoneAbility::jokerLight, [this](shared_ptr<JokerStone> jokerLight, POINT position)
 		{
-			if (!jokerShadow->m_jokerInfo.lifeSpan) boardManager.RemoveGroup({position});
-			if (!jokerShadow->m_jokerInfo.coolTime) return;
-			jokerShadow->m_jokerInfo.coolTime--;
-			jokerShadow->m_jokerInfo.lifeSpan--;
+			if (!jokerLight->m_jokerInfo.lifeSpan) boardManager.RemoveGroup({position});
+			if (!jokerLight->m_jokerInfo.coolTime) return;
+			jokerLight->m_jokerInfo.coolTime--;
+			jokerLight->m_jokerInfo.lifeSpan--;
+
+			int patternX[8] = { -1, 0, 1, 1, -1, -1, 0, 1 };
+			int patternY[8] = { -1, -1, -1, 0, 0, 1, 1, 1 };
+
+			for (int i = 0; i < SIZE_DEFAULT; ++i)
+			{
+				for (int j = 0; j < 8; ++j)
+				{
+					int newX = position.x + patternX[j] * i;
+					int newY = position.y + patternY[j] * i;
+					if (!boardManager.isValidPoint({ newX, newY })) continue;
+					if (boardManager.m_board[newX][newY])
+					{
+						if (boardManager.IsJokerStone({ newX, newY })) continue;
+						if (boardManager.m_stoneTypeMap.find({ newX, newY })->second == StoneType::White)
+						{
+							if (boardManager.isValidPoint({ newX + patternX[j], newY + patternY[j] }) && !boardManager.m_board[newX + patternX[j]][newY + patternY[j]])
+							{
+								boardManager.PlaceStone({ newX + patternX[j], newY + patternY[j] }, StoneType::Black, StoneAbility::None);
+							}
+						}
+					}
+				}
+			}
 		}
 		},
 		{ StoneAbility::jokerTime, [this](shared_ptr<JokerStone> jokerTime, POINT position)

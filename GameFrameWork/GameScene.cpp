@@ -278,13 +278,13 @@ void GameScene::OnEnter()
 	m_boardObj = boardObj.get();
 	m_objectList.emplace_back(std::move(boardObj));
 
-	unique_ptr<Button> xx = std::make_unique<Button>(0.0f, 200.0f, 461.0f, 141.0f, "tool1.png", 50);
-	m_buttonList.emplace_back(xx.get());
-	m_objectList.emplace_back(std::move(xx));
+	//unique_ptr<Button> xx = std::make_unique<Button>(0.0f, 200.0f, 461.0f, 141.0f, "tool1.png", 50);
+	//m_buttonList.emplace_back(xx.get());
+	//m_objectList.emplace_back(std::move(xx));
 
-	unique_ptr<Button> yy = std::make_unique<Button>(0.0f, -200.0f, 461.0f, 141.0f, "tool2.png", 50);
-	m_buttonList.emplace_back(yy.get());
-	m_objectList.emplace_back(std::move(yy));
+	//unique_ptr<Button> yy = std::make_unique<Button>(0.0f, -200.0f, 461.0f, 141.0f, "tool2.png", 50);
+	//m_buttonList.emplace_back(yy.get());
+	//m_objectList.emplace_back(std::move(yy));
 	SetUIJokerButton();
 
 	StartStage();
@@ -426,7 +426,7 @@ void GameScene::OnInput(const MouseEvent& ev)
 			std::cout << ev.pos.x << " " << ev.pos.y << std::endl;
 
 			m_board.SetStoneType(Joker);
-			m_board.SetStoneAbility(jokerMrchan);
+			m_board.SetStoneAbility(jokerLight);
 
 			m_board.InputBasedGameLoop(ev.pos);
 //			std::cout << "Joker Stone Count : " << m_board.GetStoneTypeAmount(Joker) << std::endl;
