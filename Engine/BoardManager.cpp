@@ -13,6 +13,33 @@ struct JokerFunctionsWrapper
 
 	unordered_map<StoneAbility, function<void(shared_ptr<JokerStone>, POINT)>> g_abilityFunctions =
 	{
+		{ StoneAbility::jokerSamok, [this](shared_ptr<JokerStone> jokerSamok, POINT position)
+		{
+			POINT direction[4] = { { -1, 0 }, { 1, 0 }, { 0, -1 }, { 0, 1 } }; // 상하좌우
+
+			POINT newPosition = position;
+
+			for (POINT i : direction)
+			{
+				for (int j = 1; j < SIZE_DEFAULT; ++j)
+				{
+					newPosition = { position.x + i.x * j, position.y + i.y * j };
+					if (!boardManager.isValidPoint(newPosition)) break;
+
+					if (boardManager.m_board[newPosition.x][newPosition.y])
+					{
+						if (boardManager.IsJokerStone(newPosition)) continue; // 조커 돌은 무시
+
+						if (boardManager.m_stoneTypeMap.find(newPosition)->second == StoneType::White)
+						{
+							boardManager.m_playerInfo.m_money++;
+							boardManager.RemoveGroup({ newPosition });
+						}
+					}
+				}
+			}
+		}
+		},
 		{ StoneAbility::jokerEgg, [this](shared_ptr<JokerStone> jokerEgg, POINT position)
 		{
 			if (!jokerEgg->m_jokerInfo.coolTime)
@@ -260,6 +287,7 @@ struct JokerFunctionsWrapper
 		{ StoneAbility::jokerWaxseal, [this](shared_ptr<JokerStone> jokerWaxseal, POINT position)
 		{
 			boardManager.m_playerInfo.m_waxMoney += (boardManager.WhiteStoneRemoveCheck(position) * jokerWaxseal->m_jokerInfo.functionVariable);
+			// 일단은 흰돌도 줌
 
 			std::cout << "Wax Money : " << boardManager.m_playerInfo.m_waxMoney << std::endl;
 		}
