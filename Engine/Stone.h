@@ -20,7 +20,7 @@ enum StoneAbility // 능력 혹은 이름
 
 	//----------------  야생(set 2)
 	jokerEvolution,
-	jokerDansu,
+	jokerDansu, // 함수 구현 완료
 	jokerEgg, // 함수 구현 완료
 	jokerOstrichEgg, // 함수 구현 완료
 	jokerPeacock, // 함수 구현 완료
@@ -56,7 +56,6 @@ enum JokerType
 	Dancheong = 2,
 	Halloween = 3,
 	Natural = 4,
-	Original = 5,
 
 	Default
 };

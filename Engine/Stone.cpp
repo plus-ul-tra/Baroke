@@ -47,5 +47,6 @@ POINT Stone::GetPosition() const
 
 void Stone::ChangeColor(bool isBlack)
 {
-	if (isBlack) m_sprite->SetShaderType("Othello");
+	if (isBlack) m_sprite->ChangeStoneTexture("Black.png");
+	else m_sprite->ChangeStoneTexture("White.png");
 }

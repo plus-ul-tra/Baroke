@@ -68,13 +68,20 @@ public:
 		m_nextTextureSRV = spriteManager.GetTextureSRV(nextTextureKey); //넥스트에 두고
 		// 쉐이더효과 주고
 		SetShaderType("Checker");
-		if (m_shaderTimeElapsed > m_shaderEffectDuration) //여기서 시간 지정
+		if (m_shaderTimeElapsed > m_shaderEffectDuration) // 여기서 시간 확인
 		{
 			m_textureSRV = m_nextTextureSRV; // 현재 텍스처로 변경
 			SetShaderType("DefaultShader");
 		}
 	}
 
-	void SetShaderType(const string& type) { m_shaderType = type; } // 쉐이더 타입 설정
+	void ChangeStoneTexture(const string& nextTextureKey)
+	{
+		SpriteManager& spriteManager = SpriteManager::GetInstance();
+		m_nextTextureSRV = spriteManager.GetTextureSRV(nextTextureKey);
+		m_textureSRV = m_nextTextureSRV;
+	}
+
+	void SetShaderType(const string& type, float duration = 1.0f) { m_shaderType = type; m_shaderTimeElapsed = 0.0f; m_shaderEffectDuration = duration; }
 	const string& GetShaderType() const { return m_shaderType; } // 현재 쉐이더 타입 반환
 };
