@@ -12,10 +12,30 @@
 
 void GameScene::SetUIJokerButton()
 {
+	m_shopExitButton = std::make_unique<ShopEndButton>(300.0f, -300.0f, 100, 100, "Sample.png");
+	m_shopExitButton->SetShowAndActive(false);
+	m_buttonList.emplace_back(m_shopExitButton.get());
+	m_UIList.emplace_back(m_shopExitButton.get());
 
-	unique_ptr<Button> rightUI = std::make_unique<Button>(700.0f, 0.0f, 418, 973.0f, "T_Right_UI.png", 50);
+	for (int i = 0; i < 3; i++)
+	{
+		jokerButtons[i] = make_unique<ShopJokerButton>(-300.0f + (i * 300.0f), 300.0f, 100, 100, "Sample.png");
+		jokerButtons[i]->SetShowAndActive(false);
+		m_buttonList.emplace_back(jokerButtons[i].get());
+		m_UIList.emplace_back(jokerButtons[i].get());
+	}
+	for (int i = 0; i < 3; i++)
+	{
+		jokerButtons[3 + i] = make_unique<ShopJokerButton>(-300.0f + (i * 300.0f), 0.0f, 100, 100, "Sample.png");
+		jokerButtons[3 + i]->SetShowAndActive(false);
+		m_buttonList.emplace_back(jokerButtons[3 + i].get());
+		m_UIList.emplace_back(jokerButtons[3 + i].get());
+	}
+
+	unique_ptr<Button> rightUI = std::make_unique<Button>(700.0f, 0.0f, 418, 973.0f, "T_Right_UI.png");
 	m_buttonList.emplace_back(rightUI.get());
 	m_objectList.emplace_back(std::move(rightUI));
+
 
 	unique_ptr<JokerButton> jokerButton1 = std::make_unique<JokerButton>(600.0f, 300.0f, 100, 100, "jokerOmok.png", 50);
 	jokerButton1->SetButtonJoker(Joker, jokerOmok);
@@ -24,24 +44,35 @@ void GameScene::SetUIJokerButton()
 
 	unique_ptr<JokerButton> jokerButton2 = std::make_unique<JokerButton>(600.0f, 150.0f, 100, 100, "jokerSammok.png", 50);
 	jokerButton2->SetButtonJoker(Joker, jokerSammok);
+
+// 	unique_ptr<JokerButton> jokerButton1 = std::make_unique<JokerButton>(600.0f, 300.0f, 100, 100, "jokerEvolution.png");
+// 	jokerButton1->SetButtonJoker(Joker, jokerEvolution);
+// 	m_jokerButtons[0] = jokerButton1.get();
+// 	m_buttonList.emplace_back(jokerButton1.get());
+// 	m_UIList.emplace_back(std::move(jokerButton1));
+
+// 	unique_ptr<JokerButton> jokerButton2 = std::make_unique<JokerButton>(600.0f, 150.0f, 100, 100, "jokerDansu.png");
+// 	jokerButton2->SetButtonJoker(Joker, jokerDansu);
+// 	m_jokerButtons[1] = jokerButton2.get();
+
 	m_buttonList.emplace_back(jokerButton2.get());
 	m_UIList.emplace_back(std::move(jokerButton2));
 
-
-	unique_ptr<JokerButton> jokerButton3 = std::make_unique<JokerButton>(600.0f, 0.0f, 100, 100, "jokerEgg.png", 50);
+	unique_ptr<JokerButton> jokerButton3 = std::make_unique<JokerButton>(600.0f, 0.0f, 100, 100, "jokerEgg.png");
 	jokerButton3->SetButtonJoker(Joker, jokerEgg);
+	m_jokerButtons[2] = jokerButton3.get();
 	m_buttonList.emplace_back(jokerButton3.get());
 	m_UIList.emplace_back(std::move(jokerButton3));
 
-	unique_ptr<JokerButton> jokerButton4 = std::make_unique<JokerButton>(600.0f, -150.0f, 100, 100, "jokerOstrichEgg.png", 50);
+	unique_ptr<JokerButton> jokerButton4 = std::make_unique<JokerButton>(600.0f, -150.0f, 100, 100, "jokerOstrichEgg.png");
 	jokerButton4->SetButtonJoker(Joker, jokerOstrichEgg);
+	m_jokerButtons[3] = jokerButton4.get();
 	m_buttonList.emplace_back(jokerButton4.get());
 	m_UIList.emplace_back(std::move(jokerButton4));
 
-	unique_ptr<JokerButton> jokerButton5 = std::make_unique<JokerButton>(600.0f, -300.0f, 100, 100, "jokerPeacock.png", 50);
+	unique_ptr<JokerButton> jokerButton5 = std::make_unique<JokerButton>(600.0f, -300.0f, 100, 100, "jokerPeacock.png");
 	jokerButton5->SetButtonJoker(Black, jokerPeacock);
-  
-
+	m_jokerButtons[4] = jokerButton5.get();
 	m_buttonList.emplace_back(jokerButton5.get());
 	m_UIList.emplace_back(std::move(jokerButton5));
 }
@@ -65,8 +96,35 @@ void GameScene::CheckStageClear()
 	{
 		SceneManager::GetInstance().ChangePostProcessing("CRTFilter");
 
-		ShopStage();
-		StartStage();
+		if (m_gameState == GameState::Stage)
+		{
+			m_gameState = GameState::ShopEnter;
+		}
+		if (m_gameState == GameState::ShopEnter)
+		{
+			m_gameState = GameState::Shop;
+			ShopStage();
+			m_shopExitButton->SetShowAndActive(true);
+		}
+
+		if (m_gameState == GameState::Shop && m_shopExitButton)
+		{
+			if (m_shopExitButton->IsEndButtonPressed())
+			{
+				m_gameState = GameState::Stage;
+
+				m_shopExitButton->SetShowAndActive(false);
+				for (auto& jokerButton : jokerButtons)
+				{
+					jokerButton->SetShowAndActive(false);
+				}
+			}
+		}
+
+		if (m_gameState == GameState::Stage)
+		{
+			StartStage();
+		}
 	}
 }
 
@@ -76,7 +134,9 @@ void GameScene::ModeCheck()
 {
 	m_uiMode = m_board.GetMode();
 
+
 	if (m_uiMode==UIMode::Sacrifice &&m_board.checkSacrificeSuccess())
+
 	{
 		m_board.SetMode(UIMode::BeforeUseAbillity);
 		//m_board.ExitMode();
@@ -89,10 +149,66 @@ void GameScene::ModeCheck()
 	}
 }
 
+void GameScene::InitShop()
+{
+	for (auto& jokers : m_jokerInfoMap)
+	{
+		if (jokers.second.isStone) m_shopStones.push_back({ jokers.first, jokers.second });
+		else m_shopItems.push_back({ jokers.first, jokers.second });
+	}
+}
+
 void GameScene::ShopStage()
 {
 	m_board.ResetStone();
+	random_device rd;
+	mt19937 rng(rd());
+	uniform_int_distribution<int> dist(0, 100);
 
+	for (int i = 0; i < 3; i++)
+	{
+
+		if (dist(rng) < m_shopRng[i])
+		{
+			StoneAbility stone = StoneAbility::None;
+			JokerStoneInfo info = JokerStoneInfo();
+			shuffle(m_shopStones.begin(), m_shopStones.end(), rng);
+			for (auto& joker : m_shopStones)
+			{
+				if (joker.second.rarity <= m_stageNo)
+				{
+					stone = joker.first;
+					info = joker.second;
+					break;
+				}
+			}
+
+			jokerButtons[i]->SetShowAndActive(true);
+			jokerButtons[i]->SetButtonJoker(info, stone);
+		}
+	}
+	for (int i = 0; i < 3; i++)
+	{
+
+		if (dist(rng) < m_shopRng[i])
+		{
+			StoneAbility stone = StoneAbility::None;
+			JokerStoneInfo info = JokerStoneInfo();
+			shuffle(m_shopItems.begin(), m_shopItems.end(), rng);
+			for (auto& joker : m_shopItems)
+			{
+				if (joker.second.rarity <= m_stageNo)
+				{
+					stone = joker.first;
+					info = joker.second;
+					break;
+				}
+			}
+
+			jokerButtons[3 + i]->SetShowAndActive(true);
+			jokerButtons[3 + i]->SetButtonJoker(info, stone);
+		}
+	}
 }
 
 void GameScene::Initialize()
@@ -123,7 +239,6 @@ void GameScene::Update(double deltaTime)
 	m_board.SyncBlackStoneCount(m_player->GetBlackStone());
 	ModeCheck();
 	CheckStageClear();
-
 }
 
 void GameScene::LateUpdate(double deltaTime)
@@ -163,9 +278,17 @@ void GameScene::OnEnter()
 	m_boardObj = boardObj.get();
 	m_objectList.emplace_back(std::move(boardObj));
 
+	unique_ptr<Button> xx = std::make_unique<Button>(0.0f, 200.0f, 461.0f, 141.0f, "tool1.png", 50);
+	m_buttonList.emplace_back(xx.get());
+	m_objectList.emplace_back(std::move(xx));
+
+	unique_ptr<Button> yy = std::make_unique<Button>(0.0f, -200.0f, 461.0f, 141.0f, "tool2.png", 50);
+	m_buttonList.emplace_back(yy.get());
+	m_objectList.emplace_back(std::move(yy));
 	SetUIJokerButton();
 
 	StartStage();
+	InitShop();
 }
 
 void GameScene::OnLeave()
@@ -301,8 +424,10 @@ void GameScene::OnInput(const MouseEvent& ev)
 		else if (ev.type == MouseType::RDown)
 		{
 			std::cout << ev.pos.x << " " << ev.pos.y << std::endl;
+
 			m_board.SetStoneType(Joker);
 			m_board.SetStoneAbility(jokerEgg);
+
 			m_board.InputBasedGameLoop(ev.pos);
 //			std::cout << "Joker Stone Count : " << m_board.GetStoneTypeAmount(Joker) << std::endl;
 		}

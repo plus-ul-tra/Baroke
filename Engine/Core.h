@@ -3,6 +3,7 @@
 #include "Window.h"
 #include "Timer.h"
 #include "GameTimer.h"
+//#include "RenderTimer.h"
 #include "SceneManager.h"
 #include "InputManager.h"
 #include "SoundManager.h"
@@ -24,8 +25,8 @@ namespace MIYABI {
 
 		
 		//Time °ü·Ã
-		Timer m_engineTimer; // Á¶ÀÛX
-		GameTimer m_gameTimer; // Á¶ÀÛ interface 
+		Timer m_engineTimer;
+		GameTimer m_gameTimer; // interface 
 		
 		const double m_fixedDeltaTime = 0.02; // 50Fps
 		double m_fixedUpdateAccumulator;
@@ -63,13 +64,14 @@ namespace MIYABI {
 
 
 	public:
+		Timer& GetEngineTimer() { return m_engineTimer; }
 		void Initialize();
 		void StartGameLoop();
 		void MainGame();
 
 		void SetbugMode() { m_debugMode = true; }
 		bool IsDebugMode()const { return m_debugMode; }
-		//loop Á¶ÀÛ
+		//loop
 
 		void Pause() { m_isPause = true; }
 		void Resume() { m_isPause = false; }

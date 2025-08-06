@@ -44,10 +44,21 @@ enum StoneAbility // 능력 혹은 이름
 	jokerMrchan,
 
 	//---------------- 자연 (set 7)
-	jokerShadow,
+	jokerShadow, // 함수 구현 완료
 	jokerLight,
-	jokerTime,
+	jokerTime, // 함수 구현 완료
 	jokerWind, // 함수 구현 완료
+};
+enum JokerType
+{
+	Wild = 0,
+	Space = 1,
+	Dancheong = 2,
+	Halloween = 3,
+	Natural = 4,
+	Original = 5,
+
+	Default
 };
 
 class Stone : public Object
@@ -70,6 +81,8 @@ protected:
 public:
 	Stone() = default;
 
+	JokerType m_jokerType = JokerType::Default;
+
 	void Update(double deltaTime) override; // 돌 업데이트 함수
 	void Move(POINT position, double duration = 1.0); // 돌 이동 함수
 
@@ -77,6 +90,7 @@ public:
 	void Remove(double duration = 0.0) { m_isRemoving = true; m_queueRemoveTime = duration; }
 
 	POINT GetPosition() const;
+	void ChangeColor(bool isBlack = true);
 };
 
 class WhiteStone : public Stone
@@ -93,7 +107,7 @@ public:
 		m_transform->SetRotation(0.0f);
 
 		m_sprite = AddComponent<BitmapRender3D>("White.png", size - offset, size - offset);
-		//m_sprite->SetShaderType("Othello"); //선택시 빨간색 표시
+		//m_sprite->SetShaderType("SetRed"); 
 		m_sprite->SetOrder(1);
 		m_sprite->SetActive(true);
 	}
@@ -113,7 +127,7 @@ public:
 		m_transform->SetRotation(0.0f);
 
 		m_sprite = AddComponent<BitmapRender3D>("Black.png", size - offset, size - offset);
-		//m_sprite->SetShaderType("SetRed"); // 선택시 파란색 표시
+		//m_sprite->SetShaderType("SetRed"); 
 		m_sprite->SetOrder(1);
 		m_sprite->SetActive(true);
 	}
@@ -123,20 +137,30 @@ struct JokerStoneInfo // 조커 돌 정보
 {
 	string fileName = "JokerEgg.png"; // 조커 돌 이미지 파일 이름
 
+	JokerType jokerType = JokerType::Default;
+
 
 	int coolTime = 0; // 조커 돌 능력 쿨타임
 	int lifeSpan = 0; // 조커 돌 능력 지속 시간
 
 	int functionDuration = 0; // 조커 돌 능력 함수 지속 시간 // 0이면 한번만 실행
 	int functionVariable = 0; // 조커 돌 능력 함수에 사용되는 변수 // 능력에 따라 다름
+
 	int costBlack		 = 0;
+	int returnBlack = 0;
+
+	int costWhite = 0; // 상점 비용
+	int rarity = 0;
+	bool isStone = false; // 돌인지 여부
+
+	StoneType stoneType = StoneType::Joker;
 };
 extern unordered_map<StoneAbility, JokerStoneInfo> m_jokerInfoMap; // 조커 돌 능력 정보 맵 // 능력의 기본값 저장용
 
 class JokerStone : public Stone
 {
 public:
-	JokerStone(POINT position, float size, int offset, StoneAbility ability)
+	JokerStone(POINT position, float size, int offset, StoneAbility ability, JokerType jokerType = JokerType::Default)
 	{
 		m_jokerInfo = m_jokerInfoMap[ability]; // 조커 돌 능력 정보 가져오기(값 복사)
 		m_size = size;
@@ -150,6 +174,8 @@ public:
 		m_sprite = AddComponent<BitmapRender3D>(m_jokerInfo.fileName.c_str(), size - offset, size - offset);
 		m_sprite->SetOrder(2);
 		m_sprite->SetActive(true);
+
+		m_jokerType = jokerType; // 조커 타입 설정
 	}
 
 	JokerStoneInfo m_jokerInfo; // 조커 돌 능력 정보

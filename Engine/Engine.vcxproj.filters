@@ -13,6 +13,8 @@
     <FxCompile Include="BlackHole_PS.hlsl" />
     <FxCompile Include="Othello_PS.hlsl" />
     <FxCompile Include="SetRed_PS.hlsl" />
+    <FxCompile Include="Checker_PS.hlsl" />
+    <FxCompile Include="SetGreen_PS.hlsl" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="AnimationClip.cpp" />
@@ -46,6 +48,7 @@
     <ClCompile Include="Stone.cpp">
       <Filter>Stone</Filter>
     </ClCompile>
+    <ClCompile Include="RenderTimer.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Actor.h" />
@@ -90,6 +93,7 @@
     <ClInclude Include="PlayerInfo.h" />
     <ClInclude Include="ModeInfo.h" />
     <ClInclude Include="Mediator.h" />
+    <ClInclude Include="RenderTimer.h" />
   </ItemGroup>
   <ItemGroup>
     <Filter Include="ETC">
