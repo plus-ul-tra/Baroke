@@ -602,10 +602,10 @@ void BoardManager::InitializeJokerInfoMap()
 	m_jokerInfoMap[StoneAbility::None] = {}; // 디폴트 돌
 
 	//------------------------------------------------------------------------------------------------ 일반 (set 1)
-	m_jokerInfoMap[StoneAbility::jokerDouble] = { "jokerDouble.png", 0, 0, 0, 0, 0, 1, 2, 1, false };
-	m_jokerInfoMap[StoneAbility::jokerOmok] = { "jokerOmok.png", 0, 0, 0, 0, 0, 2, 4, 2, false };
-	m_jokerInfoMap[StoneAbility::jokerSamok] = { "jokerSamok.png", 0, 0, 0, 0, 0, 5, 3, 2, false };
-	m_jokerInfoMap[StoneAbility::jokerSammok] = { "jokerSammok.png", 0, 0, 0, 0, 0, 2, 2, 1, false };
+	m_jokerInfoMap[StoneAbility::jokerDouble] = { "jokerDouble.png", JokerType::Original, 0, 0, 0, 0, 0, 1, 2, 1, false };
+	m_jokerInfoMap[StoneAbility::jokerOmok] = { "jokerOmok.png", JokerType::Original, 0, 0, 0, 0, 0, 2, 4, 2, false };
+	m_jokerInfoMap[StoneAbility::jokerSamok] = { "jokerSamok.png", JokerType::Original,  0, 0, 0, 0, 0, 5, 3, 2, false };
+	m_jokerInfoMap[StoneAbility::jokerSammok] = { "jokerSammok.png", JokerType::Original, 0, 0, 0, 0, 0, 2, 2, 1, false };
 
 	//------------------------------------------------------------------------------------------------ 야생 (set 2)
 

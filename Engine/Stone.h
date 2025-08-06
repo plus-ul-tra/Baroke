@@ -56,6 +56,7 @@ enum JokerType
 	Dancheong = 2,
 	Halloween = 3,
 	Natural = 4,
+	Original = 5,
 
 	Default
 };
