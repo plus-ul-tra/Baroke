@@ -775,6 +775,7 @@ bool BoardManager::InputBasedGameLoop(POINT mousePos) // 마우스 클릭으로 
 
 	CheckRemovedStones();
 	if (!PlaceStone(m_selectedPosition, m_stoneType, m_stoneAbility)) return false;
+	RemoveGroup(m_SacrificeGroup);
 	JokerAbilityUpdate(); // 조커 능력 업데이트
 	WhiteStoneRemoveCheck(m_selectedPosition); // 흰 돌 체크
 
@@ -1002,8 +1003,9 @@ void BoardManager::InitializeJokerInfoMap()
 	//------------------------------------------------------------------------------------------------ 일반 (set 1)
 
 
-	m_jokerInfoMap[StoneAbility::jokerDouble] = { "jokerDouble.png",JokerType::Default,  0, 0, 0, 0, 2, 1, 2, 1, false };
-	m_jokerInfoMap[StoneAbility::jokerOmok] = { "jokerOmok.png",	JokerType::Default,  1, 0, 0, 0, 5, 2, 4, 2, true, StoneType::Black };
+
+	m_jokerInfoMap[StoneAbility::jokerDouble] = { "jokerDouble.png",JokerType::Default,  0, 0, 0, 0, 2, 1, 2, 1, true, StoneType::Black };
+	m_jokerInfoMap[StoneAbility::jokerOmok] = { "jokerOmok.png",	JokerType::Default,  0, 0, 0, 0, 5, 2, 4, 2, true, StoneType::Black };
 	m_jokerInfoMap[StoneAbility::jokerSamok] = { "jokerSamok.png", JokerType::Default, 0, 0, 0, 0, 4, 5, 3, 2, false };
 	m_jokerInfoMap[StoneAbility::jokerSammok] = { "jokerSammok.png",JokerType::Default,  0, 0, 0, 0, 3, 2, 2, 1, false };
 
@@ -1032,7 +1034,7 @@ void BoardManager::InitializeJokerInfoMap()
 	m_jokerInfoMap[StoneAbility::jokerSplit] = { "jokerSplit.png", JokerType::Halloween, 3, 0, 0, 20, 2, 0, 5, 2, true };
 	m_jokerInfoMap[StoneAbility::jokerWaxseal] = { "jokerWaxseal.png", JokerType::Halloween, 0, 0, 0, 1, 0, 0, 3, 2, true, StoneType::Black };
 	m_jokerInfoMap[StoneAbility::jokerFlip] = { "jokerFlip.png", JokerType::Halloween, 1, 1, 0, 0, 3, 1, 6, 2, true };
-	m_jokerInfoMap[StoneAbility::jokerOthello] = { "jokerOthello.png", JokerType::Halloween, 1, 0, 0, 3, 2, 4, 5, 1, true };
+	m_jokerInfoMap[StoneAbility::jokerOthello] = { "jokerOthello.png", JokerType::Halloween, 1, 0, 0, 3, 2, 4, 5, 1, true, StoneType::Black };
 	m_jokerInfoMap[StoneAbility::jokerMrchan] = { "jokerMrchan.png", JokerType::Halloween, 1, 1, 0, 0, 0, 0, 0, 3, true };
 
 	//------------------------------------------------------------------------------------------------ 자연 (set 7)
@@ -1180,7 +1182,7 @@ bool BoardManager::checkSacrificeSuccess()
 {
 	if (m_SacrificeGroup.size() == m_jokerInfoMap[m_stoneAbility].costBlack) 
 	{
-		RemoveGroup(m_SacrificeGroup);
+		//RemoveGroup(m_SacrificeGroup);
 		return true;
 	}
 	return false;

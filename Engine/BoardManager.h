@@ -97,17 +97,18 @@ public:
 public:
 	void SetMode(UIMode uimode) { nowMode = uimode; }
 	void ExitMode() { 
-		nowMode = UIMode::Normal;
+
 		if (m_doubleCheck)  // 쌍수의 돌만
 		{
 			m_doubleCheck = false;
 			m_stoneType = StoneType::Black; 
 			m_stoneAbility = StoneAbility::jokerDouble; 
 		}
-		else {
-			m_stoneType = StoneType::Black;
-			m_stoneAbility = StoneAbility::None;
-		}
+ 		
+ 			m_stoneType = StoneType::Black;
+ 			m_stoneAbility = StoneAbility::None;
+ 		
+		nowMode = UIMode::Normal;
 		ResetGroup(); 
 		std::cout << "exit" << std::endl; }
 
