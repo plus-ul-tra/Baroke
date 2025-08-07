@@ -67,7 +67,7 @@ public:
 		m_isShaderEffectActive = true; // 쉐이더 효과 활성화
 		m_shaderTimeElapsed = 0.0f; // 쉐이더 효과 시간 초기화
 		m_shaderEffectDuration = duration; // 쉐이더 효과 지속 시간 설정
-		std::cout << "Changing Board Texture" << std::endl;
+		//std::cout << "Changing Board Texture" << std::endl;
 		SpriteManager& spriteManager = SpriteManager::GetInstance();
 		m_nextTextureSRV = spriteManager.GetTextureSRV(nextTextureKey); //넥스트에 두고
 		// 쉐이더효과 주고
