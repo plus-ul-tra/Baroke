@@ -78,11 +78,11 @@ struct BoardType
 
 inline unordered_map<int, BoardType> boardTypes =
 {
-	{0, {"Forest.png",		4.0f, XMFLOAT4(0.2f, 0.9f, 0.2f, 1.0f), [](BoardObject& boardObj) { std::cout << "Forest board setup" << std::endl; }}},
-	{1, {"Space.png",		4.0f, XMFLOAT4(0.2f, 0.9f, 0.2f, 1.0f), [](BoardObject& boardObj) {}}},
-	{2, {"Korea.png",		4.0f, XMFLOAT4(0.9f, 0.8f, 0.6f, 1.0f), [](BoardObject& boardObj) {}}},
-	{3, {"Halloween.png",	4.0f, XMFLOAT4(0.2f, 0.5f, 0.8f, 1.0f), [](BoardObject& boardObj) {}}},
-	{4, {"Cyberpunk.png",	4.0f, XMFLOAT4(0.8f, 0.2f, 0.2f, 1.0f), [](BoardObject& boardObj) {}}}
+	{0, {"Forest.png",		3.0f, XMFLOAT4(0.2f, 0.9f, 0.2f, 1.0f), [](BoardObject& boardObj) { std::cout << "Forest board setup" << std::endl; }}},
+	{1, {"Space.png",		3.0f, XMFLOAT4(0.2f, 0.9f, 0.2f, 1.0f), [](BoardObject& boardObj) {}}},
+	{2, {"Korea.png",		3.0f, XMFLOAT4(0.9f, 0.8f, 0.6f, 1.0f), [](BoardObject& boardObj) {}}},
+	{3, {"Halloween.png",	3.0f, XMFLOAT4(0.2f, 0.5f, 0.8f, 1.0f), [](BoardObject& boardObj) {}}},
+	{4, {"Cyberpunk.png",	3.0f, XMFLOAT4(0.8f, 0.2f, 0.2f, 1.0f), [](BoardObject& boardObj) {}}}
 };
 
 inline void BoardObject::BoardSync()
