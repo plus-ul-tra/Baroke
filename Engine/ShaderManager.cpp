@@ -113,7 +113,13 @@ void ShaderManager::ReadAllShaders()
 	if (FAILED(hr)) {
 		cout << "Checker리드 실패" << endl;
 	}
+
 	hr = ReadShaderResource("..\\Shader\\DefaultShader_VS.cso", "..\\Shader\\SetGreen_PS.cso", "SetGreen", quadLayout, numQuadElements);
+	if (FAILED(hr)) {
+		cout << "SetGreen리드 실패" << endl;
+	}
+
+	hr = ReadShaderResource("..\\Shader\\DefaultShader_VS.cso", "..\\Shader\\UIColor_PS.cso", "UIColor", quadLayout, numQuadElements);
 	if (FAILED(hr)) {
 		cout << "SetGreen리드 실패" << endl;
 	}

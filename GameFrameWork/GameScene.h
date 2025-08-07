@@ -19,7 +19,7 @@ private:
 	int m_stageNo = 0;		// 스테이지 단계
 	int m_whiteLeft = 0;	// 남은 흰돌 개수
 	
-	void SetUIJokerButton(); // UI 조커 버튼 설정
+	void SetUIButton(); // UI 조커 버튼 설정
  	void  StartStage();				// 스테이지 시작
  	void  CheckStageClear();		// 스테이지 클리어 체크
 
@@ -27,6 +27,9 @@ private:
 
 	void InitShop(); // 상점 초기화
 	vector<unique_ptr<JokerButton>> m_jokerButtons; // 조커 버튼들 // 나중에 다른 방식으로?
+	vector <unique_ptr<Button>>   m_normalUI;  // scene 전환시 texture 바꿀 얘들임
+
+
 	vector<pair<StoneAbility, JokerStoneInfo>> m_shopStones; // 돌 조커
 	vector<pair<StoneAbility, JokerStoneInfo>> m_shopItems; // 아이템 조커
 	unique_ptr<ShopJokerButton> m_shopJokerButtons[6] = {};
@@ -57,12 +60,5 @@ public:
 	void KeyCommandMapping() override;
 
 	void OnInput(const MouseEvent& ev) override;
-
-// 	void EnterSacrificeMode(StoneAbility ab)
-// 	{
-// 		m_uiMode = UIMode::Sacrifice;
-// 		m_pendingAb = ab;
-// 		//BoardObject::GetInstance().HighlightSelectableStones();
-// 	}
-// 	void ExitSacrificeMode() { m_uiMode = UIMode::Normal; }
+	void ChangeThema();
 };

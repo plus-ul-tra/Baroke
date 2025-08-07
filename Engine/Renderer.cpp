@@ -122,12 +122,8 @@ void Renderer::CreateColorCBuffer() {
 	cbDesc.CPUAccessFlags = 0;
 	cbDesc.ByteWidth = sizeof(ColorCBuffer);
 
-	HRESULT hr = m_pd3dDevice->CreateBuffer(&cbDesc, nullptr, &m_pColorCBuffer);
-	if (FAILED(hr))
-	{
-		std::cerr << "Failed to create ColorCBuffer. HRESULT: 0x"
-			<< std::hex << hr << std::endl;
-	}
+	m_pd3dDevice->CreateBuffer(&cbDesc, nullptr, &m_pColorCBuffer);
+	m_pd3dDevice->CreateBuffer(&cbDesc, nullptr, &m_pUIColorCBuffer);
 
 }
 void Renderer::Uninitialize()
@@ -388,7 +384,7 @@ void Renderer::SetShaderMode(const string& mode, float timer) {
 	timeData.deltaTime = 1.0f; // 고정 델타타임
 	timeData.padding[0] = 0.0f;
 	timeData.padding[1] = 0.0f;
-
+	//cout << timeData.time << endl;
 
 	if (mode == "NoiseBlend") {
 		// SRV 리턴
@@ -409,29 +405,37 @@ void Renderer::SetShaderMode(const string& mode, float timer) {
 		
 		//색상 바인딩
 		ColorCBuffer colorData{};
-		colorData.prevColor = Mediator::GetInstance().GetPrevColor();
-		colorData.targetColor = Mediator::GetInstance().GetTargetColor();
+		colorData.prevColor = Mediator::GetInstance().GetBackPrevColor();
+		colorData.targetColor = Mediator::GetInstance().GetBackTargetColor();
 	
 		m_pd3dContext->UpdateSubresource(m_pColorCBuffer.Get(), 0, nullptr, &colorData, 0, 0);
 		ID3D11Buffer* cbuffers1[1] = {m_pColorCBuffer.Get() };
 		m_pd3dContext->PSSetConstantBuffers(2, 1, cbuffers1);
 	}
 
-
-	else if (mode == "Holo"||mode=="SetRed") {	
-
-		m_pd3dContext->UpdateSubresource(m_pTimeCBuffer.Get(), 0, nullptr, &timeData, 0, 0);
-
-		
+	if (mode == "Holo"||mode=="SetRed") {	
 		ID3D11Buffer* cbuffers[1] = { m_pTimeCBuffer.Get() };
-		m_pd3dContext->PSSetConstantBuffers(1, 1, cbuffers);
+		m_pd3dContext->UpdateSubresource(m_pTimeCBuffer.Get(), 0, nullptr, &timeData, 0, 0);
+		
+		m_pd3dContext->PSSetConstantBuffers(0, 1, cbuffers);
+
+	}
+	if (mode == "UIColor") {
+		ColorCBuffer colorData{};
+		colorData.prevColor = Mediator::GetInstance().GetUIColor();
+		colorData.targetColor = XMFLOAT4{ 0.0f,0.0f, 0.0f, 0.0f }; // dummy color
+		m_pd3dContext->UpdateSubresource(m_pUIColorCBuffer.Get(), 0, nullptr, &colorData, 0, 0);
+		m_pd3dContext->UpdateSubresource(m_pTimeCBuffer.Get(), 0, nullptr, &timeData, 0, 0);
+		ID3D11Buffer* cbuffers1[1] = { m_pUIColorCBuffer.Get() };
+		ID3D11Buffer* timebuffer[1] = { m_pTimeCBuffer.Get() };
+		m_pd3dContext->PSSetConstantBuffers(0, 1, cbuffers1);
+		m_pd3dContext->PSSetConstantBuffers(2, 1, timebuffer);
 	}
 	if (mode == "Othello") {
 		// 수정 필요
 		TimeCBuffer timeData{};
 
 		timeData.time += timer;
-
 		timeData.deltaTime = 1.0f;
 		timeData.padding[0] = 0.0f;
 		timeData.padding[1] = 0.0f;

@@ -73,16 +73,6 @@ public:
 	void Update(double dt) override
 	{
 
-// 		m_isActive = m_isEnabledPredicate();
-// 		if (!m_isActive)
-// 		{
-// 			//std::cout << this << "UnDo" << std::endl;
-// 			if (m_bitmapRender) m_bitmapRender->SetShaderType("GrayScale");
-// 		}
-// 		else 
-// 		{
-// 			if (m_bitmapRender) m_bitmapRender->SetShaderType("Holo");
-// 		}
 		ButtonFunction();
 		Object::Update(dt);
 	}
@@ -100,8 +90,8 @@ class JokerButton : public Button
 		switch (ability)
 		{
 			//-------------------------------- 일반 (set 1)
-		case jokerDouble:   // 흑돌 2개 이상
-			return [&bm]() { return bm.CountStones(Black) >= 2; };
+// 		case jokerDouble:   // 흑돌 2개 이상
+// 			return [&bm]() { return bm.CountStones(Black) >= 2; };
 		case jokerOmok:   // 흑돌 5개 이상
 			return [&bm]() { return bm.HasStraightLine(Black,5); };
 		case jokerSamok:   // 조커돌 4개 이상
@@ -192,7 +182,7 @@ public:
 	void SetButtonJoker(StoneType stoneType, StoneAbility ability) {
 		m_jokerAbility = ability;
 		m_stoneType = stoneType;
-		m_bitmapRender->ChangeStoneTexture(m_jokerInfoMap[ability].fileName);
+		m_bitmapRender->ChangeTexture(m_jokerInfoMap[ability].fileName);
 		BindEnabledPredicate(BuildPredicate(ability));
 	}
 	StoneAbility GetJokerAbility() const { return m_jokerAbility; }
@@ -226,7 +216,7 @@ public:
 	ShopJokerButton(float posX, float posY, float width, float height, const std::string& bitmapFile, int order = 0)
 		: Button(posX, posY, width, height, bitmapFile, order) {}
 
-	void SetButtonJoker(JokerStoneInfo jokerInfo, StoneAbility ability) { m_jokerInfo = jokerInfo; m_jokerAbility = ability; m_bitmapRender->ChangeStoneTexture(jokerInfo.fileName); }
+	void SetButtonJoker(JokerStoneInfo jokerInfo, StoneAbility ability) { m_jokerInfo = jokerInfo; m_jokerAbility = ability; m_bitmapRender->ChangeTexture(jokerInfo.fileName); }
 	void SetButton(vector<unique_ptr<JokerButton>>* jokerButton) { m_jokerButton = jokerButton; }
 
 	void SetShowAndActive(bool active);
