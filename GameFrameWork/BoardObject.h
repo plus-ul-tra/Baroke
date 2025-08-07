@@ -101,7 +101,7 @@ inline void BoardObject::BoardSync()
 				m_isTextureChanged = true;
 				
 				//ChangeThema 같은 함수로 묶을 것임
-				m_bitmapRender->ChangeTexture("Forest.png", 3.0f);
+				m_bitmapRender->ChangeTexture("Forest.png", 4.0f);
 				m_bitmapRender->ChangeBackGroundColor(XMFLOAT4(0.2f, 0.9f, 0.2f, 1.0f));
 				// 오브젝트 등장
 

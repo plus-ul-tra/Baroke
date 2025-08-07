@@ -37,6 +37,8 @@ private:
 
 	ID3D11Device* m_pDevice = nullptr;  // 일반 포인터
 
+	Mediator& m_mediator = Mediator::GetInstance(); // Mediator 인스턴스
+
 	bool Extension(const string& bitmapKey, const string& ext = ".json") const;
 
 	//shader Manager에서 위임 받을 수 있을 듯
@@ -80,10 +82,7 @@ public:
 
 
 	void ChangeBackGroundColor(XMFLOAT4 target) {
-		Mediator::GetInstance().SetTargetColor(target);
-		if (m_shaderTimeElapsed > 4.0f) {
-			Mediator::GetInstance().SetPrevColor(target);
-		}
+		m_mediator.SetTargetColor(target);
 	}
 
 	void SetShaderType(const string& type) { m_shaderType = type; } // 쉐이더 타입 설정
