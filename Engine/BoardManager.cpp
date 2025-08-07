@@ -58,6 +58,7 @@ struct JokerFunctionsWrapper
 					if (boardManager.m_board[newPosition.x][newPosition.y]) continue;
 
 					boardManager.PlaceStone(newPosition, StoneType::Black, StoneAbility::None); // 검은 돌 놓기
+					boardManager.m_playerInfo.incBlackCount(1);
 				}
 			}
 			else
@@ -68,6 +69,7 @@ struct JokerFunctionsWrapper
 					if (!boardManager.isValidPoint(newPosition)) continue;
 					if (boardManager.m_board[newPosition.x][newPosition.y]) continue;
 					boardManager.PlaceStone(newPosition, StoneType::Black, StoneAbility::None); // 검은 돌 놓기
+					boardManager.m_playerInfo.incBlackCount(1);
 				}
 			}
 		}
@@ -76,19 +78,18 @@ struct JokerFunctionsWrapper
 		{
 			if (!jokerEgg->m_jokerInfo.coolTime)
 			{
-				boardManager.m_playerInfo.m_BlackStone += jokerEgg->m_jokerInfo.functionVariable;
+				boardManager.m_playerInfo.incBlackCount(jokerEgg->m_jokerInfo.functionVariable);
 				jokerEgg->m_jokerInfo.coolTime = m_jokerInfoMap.find(StoneAbility::jokerEgg)->second.coolTime; // 쿨타임 초기화
 			}
 			jokerEgg->m_jokerInfo.coolTime--;
 
-			std::cout << boardManager.m_playerInfo.m_BlackStone << std::endl;
 		}
 		},
 		{ StoneAbility::jokerOstrichEgg, [this](shared_ptr<JokerStone> jokerOstrichEgg, POINT position)
 		{
 			if (!jokerOstrichEgg->m_jokerInfo.coolTime)
 			{
-				boardManager.m_playerInfo.m_BlackStone += jokerOstrichEgg->m_jokerInfo.functionVariable;
+				boardManager.m_playerInfo.incBlackCount(jokerOstrichEgg->m_jokerInfo.functionVariable);
 				jokerOstrichEgg->m_jokerInfo.coolTime = m_jokerInfoMap.find(StoneAbility::jokerOstrichEgg)->second.coolTime; // 쿨타임 초기화
 			}
 			jokerOstrichEgg->m_jokerInfo.coolTime--;
@@ -141,7 +142,7 @@ struct JokerFunctionsWrapper
 
 					if (boardManager.m_stoneTypeMap.find(newPosition)->second == StoneType::Black)
 					{
-						boardManager.m_playerInfo.m_BlackStone++;
+						//boardManager.m_playerInfo.m_BlackStone++; // 증가 안시켜도됨
 					}
 					else if (boardManager.m_stoneTypeMap.find(newPosition)->second == StoneType::White)
 					{
@@ -247,7 +248,7 @@ struct JokerFunctionsWrapper
 				{
 					if (boardManager.m_stoneTypeMap.find({ x, y })->second = StoneType::Black)
 					{
-						boardManager.m_playerInfo.m_BlackStone++;
+						//boardManager.m_playerInfo.m_BlackStone++; //없어도됨
 					}
 
 					boardManager.RemoveGroup({ { x, y } });
@@ -343,7 +344,7 @@ struct JokerFunctionsWrapper
 
 					if (boardManager.m_stoneTypeMap.find(pair.first)->second == StoneType::Black)
 					{
-						boardManager.m_playerInfo.m_BlackStone++;
+						//boardManager.m_playerInfo.m_BlackStone++;
 					}
 					else if (boardManager.m_stoneTypeMap.find(pair.first)->second == StoneType::White)
 					{
@@ -1174,7 +1175,8 @@ bool BoardManager::checkSacrificeSuccess()
 {
 	if (m_SacrificeGroup.size() == m_jokerInfoMap[m_stoneAbility].costBlack) 
 	{
-		//RemoveGroup(m_SacrificeGroup);
+		m_playerInfo.decBlackCount(m_SacrificeGroup.size());
+		m_playerInfo.incBlackCount()
 		return true;
 	}
 	return false;
@@ -1188,41 +1190,128 @@ bool BoardManager::checkBeforeAbSuccess()
 	{
 	case jokerOmok:
 	{
+// 		if (m_useCondGroup.size() != 5)
+// 			return false;
+// 
+// 		bool sameRow = std::all_of(m_useCondGroup.begin(), m_useCondGroup.end(),
+// 			[&](auto& p) { return p.y == m_useCondGroup[0].y; });
+// 
+// 		bool sameCol = std::all_of(m_useCondGroup.begin(), m_useCondGroup.end(),
+// 			[&](auto& p) { return p.x == m_useCondGroup[0].x; });
+// 
+// 		if (sameRow == sameCol)
+// 			return false;
+// 
+// 		if (sameRow)
+// 		{
+// 			std::sort(m_useCondGroup.begin(), m_useCondGroup.end(),
+// 				[](auto& a, auto& b) { return a.x < b.x; });
+// 
+// 			for (size_t i = 1; i < 5; ++i)
+// 				if (m_useCondGroup[i].x != m_useCondGroup[i - 1].x + 1)
+// 					return false;
+// 
+// 			m_isVertical = false;
+// 		}
+// 		else
+// 		{
+// 			std::sort(m_useCondGroup.begin(), m_useCondGroup.end(),
+// 				[](auto& a, auto& b) { return a.y < b.y; });
+// 
+// 			for (size_t i = 1; i < 5; ++i)
+// 				if (m_useCondGroup[i].y != m_useCondGroup[i - 1].y + 1)
+// 					return false;
+// 
+// 			m_isVertical = true;
+// 		}
+// 		return true;
 		if (m_useCondGroup.size() != 5)
 			return false;
 
-		bool sameRow = std::all_of(m_useCondGroup.begin(), m_useCondGroup.end(),
-			[&](auto& p) { return p.y == m_useCondGroup[0].y; });
-
-		bool sameCol = std::all_of(m_useCondGroup.begin(), m_useCondGroup.end(),
-			[&](auto& p) { return p.x == m_useCondGroup[0].x; });
-
-		if (sameRow == sameCol)
+		bool sameRow = true, sameCol = true;
+		for (int i = 1; i < 5; ++i) {
+			if (m_useCondGroup[i].x != m_useCondGroup[0].x) sameRow = false;
+			if (m_useCondGroup[i].y != m_useCondGroup[0].y) sameCol = false;
+		}
+		if (!sameRow && !sameCol) {
+			m_useCondGroup.clear();
 			return false;
-
-		if (sameRow)
-		{
-			std::sort(m_useCondGroup.begin(), m_useCondGroup.end(),
-				[](auto& a, auto& b) { return a.x < b.x; });
-
-			for (size_t i = 1; i < 5; ++i)
-				if (m_useCondGroup[i].x != m_useCondGroup[i - 1].x + 1)
-					return false;
-
-			m_isVertical = false;
 		}
-		else
-		{
-			std::sort(m_useCondGroup.begin(), m_useCondGroup.end(),
-				[](auto& a, auto& b) { return a.y < b.y; });
 
-			for (size_t i = 1; i < 5; ++i)
-				if (m_useCondGroup[i].y != m_useCondGroup[i - 1].y + 1)
-					return false;
-
-			m_isVertical = true;
+		int coords[5];
+		if (sameRow) {
+			for (int i = 0; i < 5; ++i)
+				coords[i] = m_useCondGroup[i].y;
 		}
-		return true;
+		else {
+			for (int i = 0; i < 5; ++i)
+				coords[i] = m_useCondGroup[i].x;
+		}
+		std::sort(coords, coords + 5);
+
+
+// 		if (coords[4] - coords[0] == 4 &&
+// 			coords[3] - coords[0] == 3 &&
+// 			coords[2] - coords[0] == 2 &&
+// 			coords[1] - coords[0] == 1)
+// 		{
+// 
+// 			if (sameRow)
+// 			{
+// 				std::sort(m_useCondGroup.begin(), m_useCondGroup.end(),
+// 					[](auto& a, auto& b) { return a.x < b.x; });
+// 
+// 				for (size_t i = 1; i < 5; ++i)
+// 					if (m_useCondGroup[i].x != m_useCondGroup[i - 1].x + 1)
+// 						return false;
+// 
+// 				m_isVertical = false;
+// 			}
+// 			else
+// 			{
+// 				std::sort(m_useCondGroup.begin(), m_useCondGroup.end(),
+// 					[](auto& a, auto& b) { return a.y < b.y; });
+// 
+// 				for (size_t i = 1; i < 5; ++i)
+// 					if (m_useCondGroup[i].y != m_useCondGroup[i - 1].y + 1)
+// 						return false;
+// 
+// 				m_isVertical = true;
+// 			}
+// 			std::cout << m_isVertical;
+// 			return true;
+		if (coords[4] - coords[0] == 4 &&
+			coords[3] - coords[0] == 3 &&
+			coords[2] - coords[0] == 2 &&
+			coords[1] - coords[0] == 1)
+		{
+			if (sameRow)                        
+			{
+				std::sort(m_useCondGroup.begin(), m_useCondGroup.end(),
+					[](auto& a, auto& b) { return a.y < b.y; }); 
+
+				for (size_t i = 1; i < 5; ++i)
+					if (m_useCondGroup[i].y != m_useCondGroup[i - 1].y + 1) 
+						return false;
+
+				m_isVertical = true;
+			}
+			else  
+			{
+				std::sort(m_useCondGroup.begin(), m_useCondGroup.end(),
+					[](auto& a, auto& b) { return a.x < b.x; });
+
+				for (size_t i = 1; i < 5; ++i)
+					if (m_useCondGroup[i].x != m_useCondGroup[i - 1].x + 1) 
+						return false;
+
+				m_isVertical = false;       
+			}
+			return true;
+		}
+		m_useCondGroup.clear();
+		return false;
+
 	}
 	case jokerSamok:       
 	{
