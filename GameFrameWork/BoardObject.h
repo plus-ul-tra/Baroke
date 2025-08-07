@@ -11,7 +11,7 @@ class BoardObject : public Object
 	Board m_board;
 	std::vector<Stone*> m_stones;
 
-	bool m_isTextureChanged = false; // 텍스처 변경 여부
+	bool currentBoardType = -1;
 
 public:
 	BoardObject(int offX, int offY, int drawW, int drawH, int _cell, int _stoneOffset = 0,int padding = 0)
@@ -108,24 +108,22 @@ inline void BoardObject::BoardSync()
 			}
 		}
 	}
-	
-	if (!m_isTextureChanged)
+
+	for (int i = 0; i < 5; ++i)
 	{
-		for (int jokerType : stoneTypeAmount)
+		if (currentBoardType == i) continue;
+
+		if (stoneTypeAmount[i] >= 5)
 		{
-			if (jokerType >= 5)
-			{
-				m_isTextureChanged = true;
-				
-				//ChangeThema 같은 함수로 묶을 것임
-				m_bitmapRender->ChangeTexture("Forest.png", 4.0f);
-				m_bitmapRender->ChangeBackGroundColor(XMFLOAT4(0.2f, 0.9f, 0.2f, 1.0f));
-				// 오브젝트 등장
+			currentBoardType = i;
+			BoardType boardType = boardTypes[i];
 
-				//해줘 나뭇잎
-				break;
-			}
+			m_bitmapRender->ChangeTexture(boardType.textureKey, boardType.changeDuration);
+			m_bitmapRender->ChangeBackGroundColor(boardType.backgroundColor);
 
+			boardType.setupFunction(*this); // 보드 타입에 따른 설정 함수 호출
+
+			break;
 		}
 	}
 }
