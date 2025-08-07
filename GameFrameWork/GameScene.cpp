@@ -300,13 +300,6 @@ void GameScene::OnEnter()
 	m_boardObj = boardObj.get();
 	m_objectList.emplace_back(std::move(boardObj));
 
-	//unique_ptr<Button> xx = std::make_unique<Button>(0.0f, 200.0f, 461.0f, 141.0f, "tool1.png", 50);
-	//m_buttonList.emplace_back(xx.get());
-	//m_objectList.emplace_back(std::move(xx));
-
-	//unique_ptr<Button> yy = std::make_unique<Button>(0.0f, -200.0f, 461.0f, 141.0f, "tool2.png", 50);
-	//m_buttonList.emplace_back(yy.get());
-	//m_objectList.emplace_back(std::move(yy));
 	SetUIJokerButton();
 
 	StartStage();

@@ -34,8 +34,8 @@ float4 PSMain(VS_OUTPUT input) : SV_Target
     if (baseColor.a < 0.01)
         return baseColor;
 
-// ±âº» ºÓÀº»ö ±â¿î (ÃÖ¼ÒÄ¡)
-    float3 redGlow = float3(1.0, 0.2, 0.2); // ÁÖÈ²ºû »¡°­
+    
+    float3 redGlow = float3(0.0, 1.0, 0.2); 
     float minGlowStrength = 0.3; 
 
 

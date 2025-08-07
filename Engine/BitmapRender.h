@@ -12,34 +12,34 @@ using namespace Microsoft::WRL;
 
 //struct SpriteVertex
 //{
-//	DirectX::XMFLOAT3 position; // 3D À§Ä¡ (x, y, z)
-//	DirectX::XMFLOAT2 texcoord; // ÅØ½ºÃ³ ÁÂÇ¥ (u, v)
+//	DirectX::XMFLOAT3 position; // 3D ìœ„ì¹˜ (x, y, z)
+//	DirectX::XMFLOAT2 texcoord; // í…ìŠ¤ì²˜ ì¢Œí‘œ (u, v)
 //};
 
 class BitmapRender3D : public BaseRender {
 private:
-	string m_shaderType = "DefaultShader"; // ½¦ÀÌ´õ Å¸ÀÔ
+	string m_shaderType = "DefaultShader"; // ì‰ì´ë” íƒ€ì…
 	float m_width;
 	float m_height;
 
 	SpriteAnimator m_animator; //
 	bool m_isAnimated = false;
-	float m_shaderTimeElapsed = 0.0f; // ½¦ÀÌ´õ È¿°ú ½Ã°£
-	float m_shaderEffectDuration = 5.0f; // ½¦ÀÌ´õ È¿°ú Áö¼Ó ½Ã°£
+	float m_shaderTimeElapsed = 0.0f; // ì‰ì´ë” íš¨ê³¼ ì‹œê°„
+	float m_shaderEffectDuration = 5.0f; // ì‰ì´ë” íš¨ê³¼ ì§€ì† ì‹œê°„
 
 	ComPtr<ID3D11Buffer> m_vertexBuffer; // quad vertex
 	ComPtr<ID3D11Buffer> m_indexBuffer;
-	// m_textureSRV´Â ´ÜÀÏ ÀÌ¹ÌÁö ½ºÇÁ¶óÀÌÆ®¿ë.
-   // ¾Ö´Ï¸ŞÀÌ¼Ç ½ºÇÁ¶óÀÌÆ®ÀÇ °æ¿ì, m_animator°¡ ÇÁ·¹ÀÓº° SRV¸¦ Á¦°øÇØ¾ß...
+	// m_textureSRVëŠ” ë‹¨ì¼ ì´ë¯¸ì§€ ìŠ¤í”„ë¼ì´íŠ¸ìš©.
+   // ì• ë‹ˆë©”ì´ì…˜ ìŠ¤í”„ë¼ì´íŠ¸ì˜ ê²½ìš°, m_animatorê°€ í”„ë ˆì„ë³„ SRVë¥¼ ì œê³µí•´ì•¼...
 
-	ComPtr<ID3D11ShaderResourceView> m_textureSRV; // ÇöÀç
-	ComPtr<ID3D11ShaderResourceView> m_nextTextureSRV; // ´ÙÀ½ ÅØ½ºÃ³ SRV (¾Ö´Ï¸ŞÀÌ¼Ç¿ë)
+	ComPtr<ID3D11ShaderResourceView> m_textureSRV; // í˜„ì¬
+	ComPtr<ID3D11ShaderResourceView> m_nextTextureSRV; // ë‹¤ìŒ í…ìŠ¤ì²˜ SRV (ì• ë‹ˆë©”ì´ì…˜ìš©)
 
-	ID3D11Device* m_pDevice = nullptr;  // ÀÏ¹İ Æ÷ÀÎÅÍ
+	ID3D11Device* m_pDevice = nullptr;  // ì¼ë°˜ í¬ì¸í„°
 
 	bool Extension(const string& bitmapKey, const string& ext = ".json") const;
 
-	//shader Manager¿¡¼­ À§ÀÓ ¹ŞÀ» ¼ö ÀÖÀ» µí
+	//shader Managerì—ì„œ ìœ„ì„ ë°›ì„ ìˆ˜ ìˆì„ ë“¯
 	//void Initialize3DResource(ID3D11Device* pDevice, const std::string& bitmapkey,float width, float height);
 	void CreateQuadBuffers();
 
@@ -61,19 +61,32 @@ public:
 
 
 	void ChangeTexture(const string& nextTextureKey, float duration = 1.0f) {
-		m_shaderTimeElapsed = 0.0f; // ½¦ÀÌ´õ È¿°ú ½Ã°£ ÃÊ±âÈ­
-		m_shaderEffectDuration = duration; // ½¦ÀÌ´õ È¿°ú Áö¼Ó ½Ã°£ ¼³Á¤
+		m_shaderTimeElapsed = 0.0f; // ì‰ì´ë” íš¨ê³¼ ì‹œê°„ ì´ˆê¸°í™”
+		m_shaderEffectDuration = duration; // ì‰ì´ë” íš¨ê³¼ ì§€ì† ì‹œê°„ ì„¤ì •
 		std::cout << "Changing Board Texture" << std::endl;
 		SpriteManager& spriteManager = SpriteManager::GetInstance();
-		m_nextTextureSRV = spriteManager.GetTextureSRV(nextTextureKey); //³Ø½ºÆ®¿¡ µÎ°í
-		// ½¦ÀÌ´õÈ¿°ú ÁÖ°í
+		m_nextTextureSRV = spriteManager.GetTextureSRV(nextTextureKey); //ë„¥ìŠ¤íŠ¸ì— ë‘ê³ 
+		// ì‰ì´ë”íš¨ê³¼ ì£¼ê³ 
 		SetShaderType("Checker");
-		if (m_shaderTimeElapsed > m_shaderEffectDuration) // ¿©±â¼­ ½Ã°£ È®ÀÎ
+
+		if (m_shaderTimeElapsed > m_shaderEffectDuration) // ì—¬ê¸°ì„œ ì‹œê°„ í™•ì¸
+
 		{
-			m_textureSRV = m_nextTextureSRV; // ÇöÀç ÅØ½ºÃ³·Î º¯°æ
+			std::cout << "Changing  DefaultShader" << std::endl;
+			m_textureSRV = m_nextTextureSRV; // í˜„ì¬ í…ìŠ¤ì²˜ë¡œ ë³€ê²½
 			SetShaderType("DefaultShader");
 		}
 	}
+
+
+	void ChangeBackGroundColor(XMFLOAT4 target) {
+		Mediator::GetInstance().SetTargetColor(target);
+		if (m_shaderTimeElapsed > 4.0f) {
+			Mediator::GetInstance().SetPrevColor(target);
+		}
+	}
+
+	void SetShaderType(const string& type) { m_shaderType = type; } // ì‰ì´ë” íƒ€ì… ì„¤ì •
 
 	void ChangeStoneTexture(const string& nextTextureKey)
 	{
@@ -83,5 +96,6 @@ public:
 	}
 
 	void SetShaderType(const string& type, float duration = 1.0f) { m_shaderType = type; m_shaderTimeElapsed = 0.0f; m_shaderEffectDuration = duration; }
-	const string& GetShaderType() const { return m_shaderType; } // ÇöÀç ½¦ÀÌ´õ Å¸ÀÔ ¹İÈ¯
+
+	const string& GetShaderType() const { return m_shaderType; } // í˜„ì¬ ì‰ì´ë” íƒ€ì… ë°˜í™˜
 };
