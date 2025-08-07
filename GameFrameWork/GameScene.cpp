@@ -368,8 +368,9 @@ void GameScene::OnEnter()
 	m_boardObj = boardObj.get();
 	m_objectList.emplace_back(std::move(boardObj));
 
-	SetUIJokerButton();
+	CreateObject::CreateObjectsOutOfScreen(m_objectList, "Leaf6.png", 1920.0f, 1080.0f, 200.0f, 100, 50.0f);
 
+	SetUIJokerButton();
 	StartStage();
 	InitShop();
 }
