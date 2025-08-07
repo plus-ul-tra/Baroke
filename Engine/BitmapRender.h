@@ -88,6 +88,7 @@ public:
 	void SetShaderType(const string& type) { m_shaderType = type; } // 쉐이더 타입 설정
 	//void SetShaderType(const string& type, float duration = 1.0f) { m_shaderType = type; m_shaderTimeElapsed = 0.0f; m_shaderEffectDuration = duration; }
 
+	//일반 텍스쳐 변경으로 사용가능
 	void ChangeStoneTexture(const string& nextTextureKey)
 	{
 		SpriteManager& spriteManager = SpriteManager::GetInstance();
