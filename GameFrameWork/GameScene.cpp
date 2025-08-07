@@ -34,14 +34,14 @@ void GameScene::SetUIButton()
 
 	unique_ptr<Button> rightUI = std::make_unique<Button>(700.0f, 0.0f, 427, 969, "T_Standard_Right_Base_Glow.png");
 	//m_buttonList.emplace_back(rightUI.get());
-	m_normalUI.emplace_back(rightUI.get());
-	m_UIList.emplace_back(std::move(rightUI));
+	m_notUniqueObjectList.emplace_back(rightUI.get());
+	m_normalUI.emplace_back(move(rightUI));
 	
 
 	unique_ptr<Button> rightUI_Text = std::make_unique<Button>(700.0f, 0.0f, 386, 734, "T_Standard_Right_Slot_Description.png");
 	//m_buttonList.emplace_back(rightUI.get());
-	m_normalUI.emplace_back(rightUI_Text.get());
-	m_UIList.emplace_back(std::move(rightUI_Text));
+	m_notUniqueObjectList.emplace_back(rightUI_Text.get());
+	m_normalUI.emplace_back(move(rightUI_Text));
 	
 
 	//slot간격 170정도
@@ -52,77 +52,77 @@ void GameScene::SetUIButton()
 	//-----------------------------------------------joker slot------------------------------------
 	unique_ptr<Button> jokerSlot1 = std::make_unique<Button>(617.0f, 341.0f, 177, 175, "T_Standard_Right_Slot_Jocker_Glow.png");
 	m_buttonList.emplace_back(jokerSlot1.get());
-	m_normalUI.emplace_back(jokerSlot1.get());
-	m_UIList.emplace_back(std::move(jokerSlot1));
+	m_notUniqueObjectList.emplace_back(jokerSlot1.get());
+	m_normalUI.emplace_back(move(jokerSlot1));
 	
 
 	unique_ptr<Button> jokerSlot2 = std::make_unique<Button>(617.0f, 171.0f, 177, 175, "T_Standard_Right_Slot_Jocker.png");
 	m_buttonList.emplace_back(jokerSlot2.get());
-	m_normalUI.emplace_back(jokerSlot2.get());
-	m_UIList.emplace_back(std::move(jokerSlot2));
+	m_notUniqueObjectList.emplace_back(jokerSlot2.get());
+	m_normalUI.emplace_back(move(jokerSlot2));
 	
 
 	unique_ptr<Button> jokerSlot3 = std::make_unique<Button>(617.0f, 1.0f, 177, 175, "T_Standard_Right_Slot_Jocker.png");
 	m_buttonList.emplace_back(jokerSlot3.get());
-	m_normalUI.emplace_back(jokerSlot3.get());
-	m_UIList.emplace_back(std::move(jokerSlot3));
+	m_notUniqueObjectList.emplace_back(jokerSlot3.get());
+	m_normalUI.emplace_back(move(jokerSlot3));
 	
 
 	unique_ptr<Button> jokerSlot4 = std::make_unique<Button>(617.0f, -172.0f, 177, 175, "T_Standard_Right_Slot_Jocker.png");
 	m_buttonList.emplace_back(jokerSlot4.get());
-	m_normalUI.emplace_back(jokerSlot4.get());
-	m_UIList.emplace_back(std::move(jokerSlot4));
+	m_notUniqueObjectList.emplace_back(jokerSlot4.get());
+	m_normalUI.emplace_back(move(jokerSlot4));
 	
 
 	unique_ptr<Button> jokerSlot5 = std::make_unique<Button>(617.0f, -342.0f, 177, 175, "T_Standard_Right_Slot_Jocker.png");
 	m_buttonList.emplace_back(jokerSlot5.get());
-	m_normalUI.emplace_back(jokerSlot5.get());
-	m_UIList.emplace_back(std::move(jokerSlot5));
+	m_notUniqueObjectList.emplace_back(jokerSlot5.get());
+	m_normalUI.emplace_back(move(jokerSlot5));
 	
 
 	//-----------------------------Item slot---------------------------------------------------
 	unique_ptr<Button> itemSlot1 = std::make_unique<Button>(782.5f, 342.0f, 177, 175, "T_Standard_Right_Slot_Item_Glow.png");
 	m_buttonList.emplace_back(itemSlot1.get());
-	m_normalUI.emplace_back(itemSlot1.get());
-	m_UIList.emplace_back(std::move(itemSlot1));
+	m_notUniqueObjectList.emplace_back(itemSlot1.get());
+	m_normalUI.emplace_back(move(itemSlot1));
 	
 
 	unique_ptr<Button> itemSlot2 = std::make_unique<Button>(782.5f, 171.0f, 177, 175, "T_Standard_Right_Slot_Item.png");
 	m_buttonList.emplace_back(itemSlot2.get());
-	m_normalUI.emplace_back(itemSlot2.get());
-	m_UIList.emplace_back(std::move(itemSlot2));
+	m_notUniqueObjectList.emplace_back(itemSlot2.get());
+	m_normalUI.emplace_back(move(itemSlot2));
 	
 
 	//-----------------------------Passive slot---------------------------------------------------
 	unique_ptr<Button> passiveSlot1 = std::make_unique<Button>(782.5f, 1.0f, 177, 175, "T_Standard_Right_Slot_Passive_Glow.png");
 	m_buttonList.emplace_back(passiveSlot1.get());
-	m_normalUI.emplace_back(passiveSlot1.get());
-	m_UIList.emplace_back(std::move(passiveSlot1));
+	m_notUniqueObjectList.emplace_back(passiveSlot1.get());
+	m_normalUI.emplace_back(move(passiveSlot1));
 	
 
 	unique_ptr<Button> passiveSlot2 = std::make_unique<Button>(782.5f, -172.0f, 177, 175, "T_Standard_Right_Slot_Passive.png");
 	m_buttonList.emplace_back(passiveSlot2.get());
-	m_normalUI.emplace_back(passiveSlot2.get());
-	m_UIList.emplace_back(std::move(passiveSlot2));
+	m_notUniqueObjectList.emplace_back(passiveSlot2.get());
+	m_normalUI.emplace_back(move(passiveSlot2));
 	
 
 	unique_ptr<Button> passiveSlot3 = std::make_unique<Button>(782.5f, -342.0f, 177, 175, "T_Standard_Right_Slot_Passive.png");
 	m_buttonList.emplace_back(passiveSlot3.get());
-	m_normalUI.emplace_back(passiveSlot3.get());
-	m_UIList.emplace_back(std::move(passiveSlot3));
+	m_notUniqueObjectList.emplace_back(passiveSlot3.get());
+	m_normalUI.emplace_back(move(passiveSlot3));
 	
 
 
 
 
 	unique_ptr<Button> leftUpUI = std::make_unique<Button>(-720.0f, 388.0f, 427, 199, "T_Standard_Left_Base_Glow.png", 50);
-	m_normalUI.emplace_back(leftUpUI.get());
-	m_UIList.emplace_back(std::move(leftUpUI));
+	m_notUniqueObjectList.emplace_back(leftUpUI.get());
+	m_normalUI.emplace_back(move(leftUpUI));
 	
 
 	unique_ptr<Button> leftUI = std::make_unique<Button>(-720.0f, -100.0f, 427, 769, "T_Standard_Left_Down_Base_Glow.png", 50);
-	m_normalUI.emplace_back(leftUI.get());
-	m_UIList.emplace_back(std::move(leftUI));
+	m_notUniqueObjectList.emplace_back(leftUI.get());
+	m_normalUI.emplace_back(move(leftUI));
 	
 
 
@@ -416,6 +416,7 @@ void GameScene::OnLeave()
 	std::cout << "Game1 Scene Left" << std::endl;
 	Reset();
 	m_jokerButtons.clear();
+	m_normalUI.clear();
 }
 
 void GameScene::OnCommand(std::string& cmd)
