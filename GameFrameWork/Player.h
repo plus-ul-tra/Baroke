@@ -19,7 +19,8 @@ private:
 
 	float m_speedPerSec = 500.f;
 
-	int blackStone = 300;
+	int blackStone = 30;
+	int tempBlackStone = 0;
 	
 
 
@@ -40,6 +41,6 @@ public:
 	Transform* GetTransform() { return m_transform; }
 	BitmapRender3D* GetBitmapRender() { return m_bitmapRender; }
 
-	int GetBlackStone() { return blackStone; }
+	int GetBlackStone() { return blackStone + tempBlackStone; }
 
 };

@@ -330,7 +330,7 @@ void GameScene::Update(double deltaTime)
 		UI->Update(deltaTime);
 	}
 	m_boardObj->BoardSync();
-	m_board.SyncBlackStoneCount(m_player->GetBlackStone());
+	//m_board.SyncBlackStoneCount(m_player->GetBlackStone());
 	ModeCheck();
 	CheckStageClear();
 }
@@ -469,32 +469,31 @@ void GameScene::OnInput(const MouseEvent& ev)
 
 			if (ev.type == MouseType::LDown)
 			{
-				if (m_player->GetBlackStone() <= m_board.GetStoneTypeAmount(Black)) return;
-				std::cout << ev.pos.x << " " << ev.pos.y << std::endl;
+				if (m_board.GetPlayer().GetBlackCount() <= m_board.GetStoneTypeAmount(Black)) return;
+				//std::cout << ev.pos.x << " " << ev.pos.y << std::endl;
 				m_board.InputBasedGameLoop(ev.pos);
-				//			std::cout << "Black Stone Count : " << m_board.GetStoneTypeAmount(Black) << std::endl;
+
+				std::cout << "Place Black Stone : " << m_board.GetStoneTypeAmount(Black) << " / " << m_board.GetPlayer().GetBlackCount() << std::endl;
 			}
 
 			else if (ev.type == MouseType::RDown)
 			{
 				std::cout << ev.pos.x << " " << ev.pos.y << std::endl;
 				m_board.SetStoneType(Joker);
-				m_board.SetStoneAbility(jokerEgg);
+				m_board.SetStoneAbility(jokerBlackhole);
 
 
 				m_board.InputBasedGameLoop(ev.pos);
+				std::cout << "Place Black Stone : " << m_board.GetStoneTypeAmount(Black) << " / " << m_board.GetPlayer().GetBlackCount() << std::endl;
 				//			std::cout << "Joker Stone Count : " << m_board.GetStoneTypeAmount(Joker) << std::endl;
 			}
 	}
-	else if (m_uiMode ==UIMode::UseAbility)  //능력 사용 모드
+
+	else if (m_uiMode == UIMode::Sacrifice)
 	{
-		if (ev.type == MouseType::LDown) {
-			m_board.SetStoneType(m_board.GetStoneType());
-			m_board.SetStoneAbility(m_board.GetStoneAbility());
-			if (m_board.InputBasedGameLoop(ev.pos)) 
-			{
-				m_board.ExitMode();		// 능력 사용 후 다시 초기화
-			}
+		if (ev.type == MouseType::LDown)
+		{
+			m_board.SelectSacrificeStone(ev.pos);
 		}
 	}
 
@@ -507,13 +506,23 @@ void GameScene::OnInput(const MouseEvent& ev)
 
 	}
 
-	else if (m_uiMode == UIMode::Sacrifice)
+	else if (m_uiMode ==UIMode::UseAbility)  //능력 사용 모드
+	{
+		if (ev.type == MouseType::LDown) {
+			m_board.SetStoneType(m_board.GetStoneType());
+			m_board.SetStoneAbility(m_board.GetStoneAbility());
+			if (m_board.InputBasedGameLoop(ev.pos)) 
 			{
-				if (ev.type == MouseType::LDown)
-				{
-					m_board.SelectSacrificeStone(ev.pos);
-				}
+				m_board.ExitMode();		// 능력 사용 후 다시 초기화
 			}
+			std::cout << "Place Black Stone : " << m_board.GetStoneTypeAmount(Black) << " / " << m_board.GetPlayer().GetBlackCount() << std::endl;
+		}
+
+	}
+
+
+
+
 
 
 	

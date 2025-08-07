@@ -59,7 +59,7 @@ class BoardManager : public Singleton<BoardManager>
 	void RemoveJokerStone(POINT position); // 조커 돌 제거 함수
 
 public:
-	PlayerInfo m_playerInfo; // 플레이어 정보 // 흑돌, 백돌, 돈 등
+
 
 	void Initialize(int offX, int offY, int drawW, int drawH, int _cell, int _stoneOffset, int padding = 0);
 	void PlaceRandomStones(int amount); // 게임 시작 시 랜덤으로 돌을 놓기 위한 함수
@@ -92,6 +92,11 @@ public:
 
 	//void ChangeBoard();
 
+	//---------------------------------------------------------------- 플레이어
+public:
+	PlayerInfo GetPlayer() { return m_playerInfo; }
+private:
+	PlayerInfo m_playerInfo; // 플레이어 정보 // 흑돌, 백돌, 돈 등
 
 	//---------------------------------------------------------------- 희생 모드 진입, 탈출
 public:
