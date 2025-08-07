@@ -148,11 +148,12 @@ void BitmapRender3D::Render(Renderer& renderer)
 
 	m_shaderTimeElapsed += RenderTimer::GetInstance().GetDeltaTime();
 
-	if (m_shaderTimeElapsed > m_shaderEffectDuration && m_nextTextureSRV) // 여기서 시간 확인
+	if (m_isShaderEffectActive && m_shaderTimeElapsed > m_shaderEffectDuration && m_nextTextureSRV) // 여기서 시간 확인
 	{
 		m_textureSRV = m_nextTextureSRV; // 현재 텍스처로 변경
 		SetShaderType("DefaultShader");
 		m_mediator.SetPrevColor(m_mediator.GetTargetColor());
+		m_isShaderEffectActive = false; // 쉐이더 효과 비활성화
 	}
 
 	if (m_isAnimated)
@@ -188,7 +189,7 @@ void BitmapRender3D::Render(Renderer& renderer)
 	// 반드시 전에 ShaderMode전달.
 
 	if (m_shaderType == "Checker") { renderer.SetShaderMode(m_shaderType, m_nextTextureSRV, m_shaderTimeElapsed / m_shaderEffectDuration); } // 다음 텍스처 SRV와 시간 전달
-	else { renderer.SetShaderMode(m_shaderType, m_shaderTimeElapsed); }
+	else { renderer.SetShaderMode(m_shaderType, m_shaderTimeElapsed / m_shaderEffectDuration); }
 
 	 // 쉐이더 모드 설정, 외부에서 재료texture 인경우
 	// ㄹㅇ 그리기
