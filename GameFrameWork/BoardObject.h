@@ -23,7 +23,7 @@ public:
 		m_transform->SetScale(XMVectorSet(1.0f, 1.0f, 1.0f, 1.0f));
 		m_transform->SetRotation(0.0f);
 		
-		m_bitmapRender = AddComponent<BitmapRender3D>("Cyberpunk.png", drawW, drawH);
+		m_bitmapRender = AddComponent<BitmapRender3D>("Normal.png", drawW, drawH);
 		m_bitmapRender->SetOrder(0);
 		m_bitmapRender->SetActive(true);
 		m_boardManager.Initialize(offX, offY, drawW, drawH, _cell, m_stoneOffset, padding); // 보드 매니저 초기화
