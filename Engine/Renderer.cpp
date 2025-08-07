@@ -392,6 +392,10 @@ void Renderer::SetShaderMode(const string& mode, float timer) {
 
 	if (mode == "NoiseBlend") {
 		// SRV 리턴
+		/*timeData.time += timer;
+		timeData.deltaTime = 1.0f;
+		timeData.padding[0] = 0.0f;
+		timeData.padding[1] = 0.0f;*/
 		auto noiseSRV = SpriteManager::GetInstance().GetTextureSRV("Seamless2.png");
 		auto noiseSRV2 = SpriteManager::GetInstance().GetTextureSRV("PerlinNoise.png");
 

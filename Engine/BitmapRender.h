@@ -70,14 +70,6 @@ public:
 		m_nextTextureSRV = spriteManager.GetTextureSRV(nextTextureKey); //넥스트에 두고
 		// 쉐이더효과 주고
 		SetShaderType("Checker");
-
-		if (m_shaderTimeElapsed > m_shaderEffectDuration) // 여기서 시간 확인
-
-		{
-			std::cout << "Changing  DefaultShader" << std::endl;
-			m_textureSRV = m_nextTextureSRV; // 현재 텍스처로 변경
-			SetShaderType("DefaultShader");
-		}
 	}
 
 

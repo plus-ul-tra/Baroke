@@ -44,7 +44,7 @@ float4 PSMain(VS_OUTPUT Input) : SV_Target
 
     float4 baseColor = g_MainTex.Sample(g_Sampler, distortedUV);
     //색상변경 보간
-    float t = smoothstep(0.0, 5.0, fmod(time, 4.0));
+    float t = smoothstep(0.0, 4.0, fmod(time, 4.0));
     float3 lerpColor = lerp(prevColor.rgb, targetColor.rgb, t);
 
     baseColor.rgb *= lerpColor;
