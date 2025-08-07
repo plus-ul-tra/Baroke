@@ -576,7 +576,7 @@ struct JokerFunctionsWrapper
 			if(jokerDouble->m_jokerInfo.functionDuration >=0)
 			{
 				jokerDouble->m_jokerInfo.functionDuration--;
-				boardManager.doubleCheck = true;
+				boardManager.m_doubleCheck = true;
 			}
 
 		}
@@ -1046,7 +1046,43 @@ bool BoardManager::checkBeforeAbSuccess()
 	switch (m_stoneAbility)
 	{
 	case jokerOmok:
-		break;
+	{
+		if (m_useCondGroup.size() != 5)
+			return false;
+
+		bool sameRow = std::all_of(m_useCondGroup.begin(), m_useCondGroup.end(),
+			[&](auto& p) { return p.y == m_useCondGroup[0].y; });
+
+		bool sameCol = std::all_of(m_useCondGroup.begin(), m_useCondGroup.end(),
+			[&](auto& p) { return p.x == m_useCondGroup[0].x; });
+
+		if (sameRow == sameCol)         
+			return false;
+
+		if (sameRow)                   
+		{
+			std::sort(m_useCondGroup.begin(), m_useCondGroup.end(),
+				[](auto& a, auto& b) { return a.x < b.x; });
+
+			for (size_t i = 1; i < 5; ++i)
+				if (m_useCondGroup[i].x != m_useCondGroup[i - 1].x + 1)
+					return false;  
+
+			m_isVertical = false;       
+		}
+		else                
+		{
+			std::sort(m_useCondGroup.begin(), m_useCondGroup.end(),
+				[](auto& a, auto& b) { return a.y < b.y; });
+
+			for (size_t i = 1; i < 5; ++i)
+				if (m_useCondGroup[i].y != m_useCondGroup[i - 1].y + 1)
+					return false;
+
+			m_isVertical = true;  
+		}
+		return true;        
+	}
 	case jokerSamok:       
 	{
 		if (m_useCondGroup.size() != 4)       
@@ -1140,6 +1176,12 @@ bool BoardManager::checkBeforeAbSuccess()
 		m_useCondGroup.clear();
 		return false;
 	}
+	case jokerTeleport: 
+	{
+		if (m_useCondGroup.size() != 1) return false;
+		return true;
+
+	}
 	default:
 		return true;
 	}
@@ -1164,7 +1206,23 @@ bool BoardManager::SelectUseCond(POINT mousePos)
 	switch (m_stoneAbility)
 	{
 	case jokerOmok:
-		return true;
+	{
+		auto itType = m_stoneTypeMap.find(m_selectedPosition);
+		if (itType == m_stoneTypeMap.end() || itType->second != StoneType::Black)
+			return false;
+
+		auto& cell = m_board[m_selectedPosition.x][m_selectedPosition.y];
+		if (cell->GetAbility() != StoneAbility::None )
+		{
+			std::cout << cell->GetAbility() << "  there is no target \n";
+			return false;
+		}
+
+		if (std::find(m_useCondGroup.begin(), m_useCondGroup.end(), m_selectedPosition) != m_useCondGroup.end()) return false;
+		m_useCondGroup.push_back({ m_selectedPosition.x,m_selectedPosition.y });
+
+		break;
+	}
 	case jokerSamok:
 	case jokerSammok:
 	{
@@ -1193,6 +1251,17 @@ bool BoardManager::SelectUseCond(POINT mousePos)
 			std::cout << cell->GetAbility()<< "  there is no target \n";
 			return false;
 		}
+		if (std::find(m_useCondGroup.begin(), m_useCondGroup.end(), m_selectedPosition) != m_useCondGroup.end()) return false;
+		m_useCondGroup.push_back({ m_selectedPosition.x,m_selectedPosition.y });
+
+		break;
+	}
+	case jokerTeleport:
+	{
+		auto itType = m_stoneTypeMap.find(m_selectedPosition);
+		if (itType == m_stoneTypeMap.end() || itType->second != StoneType::White)
+			return false;
+
 		if (std::find(m_useCondGroup.begin(), m_useCondGroup.end(), m_selectedPosition) != m_useCondGroup.end()) return false;
 		m_useCondGroup.push_back({ m_selectedPosition.x,m_selectedPosition.y });
 

@@ -98,9 +98,9 @@ public:
 	void SetMode(UIMode uimode) { nowMode = uimode; }
 	void ExitMode() { 
 		nowMode = UIMode::Normal;
-		if (doubleCheck)  // 쌍수의 돌만
+		if (m_doubleCheck)  // 쌍수의 돌만
 		{
-			doubleCheck = false;
+			m_doubleCheck = false;
 			m_stoneType = StoneType::Black; 
 			m_stoneAbility = StoneAbility::jokerDouble; 
 		}
@@ -140,7 +140,8 @@ public:
 private:
 	std::vector<POINT> m_useCondGroup; // 조건 충족모드에서 선택한 그룹임
 	POINT direction = { 0,0 }; // 상 = 0,1 // 하 = 0,-1 // 좌 = -1,0 // 우 = 1,0
-	bool doubleCheck = false;
+	bool m_doubleCheck = false;
+	bool m_isVertical = false;
 	//---------------------------------------------------------------- 버튼 - 상태 판정용 함수
 public:
 	int  CountStones(StoneType t) const;					// 보드판위에 특정돌이 몇갠지 체크

@@ -37,8 +37,8 @@ void GameScene::SetUIJokerButton()
 	m_objectList.emplace_back(std::move(rightUI));
 
 
-	unique_ptr<JokerButton> jokerButton1 = std::make_unique<JokerButton>(600.0f, 300.0f, 100, 100, "jokerEgg.png", 50);
-	jokerButton1->SetButtonJoker(Joker, jokerEgg);
+	unique_ptr<JokerButton> jokerButton1 = std::make_unique<JokerButton>(600.0f, 300.0f, 100, 100, "jokerOmok.png", 50);
+	jokerButton1->SetButtonJoker(Joker, jokerOmok);
 	m_buttonList.emplace_back(jokerButton1.get());
 	m_UIList.emplace_back(std::move(jokerButton1));
 
@@ -59,8 +59,8 @@ void GameScene::SetUIJokerButton()
 	m_buttonList.emplace_back(jokerButton4.get());
 	m_UIList.emplace_back(std::move(jokerButton4));
 
-	unique_ptr<JokerButton> jokerButton5 = std::make_unique<JokerButton>(600.0f, -300.0f, 100, 100, "jokerDouble.png");
-	jokerButton5->SetButtonJoker(Black, jokerDouble);
+	unique_ptr<JokerButton> jokerButton5 = std::make_unique<JokerButton>(600.0f, -300.0f, 100, 100, "jokerTeleport.png");
+	jokerButton5->SetButtonJoker(Joker, jokerTeleport);
 	m_jokerButtons[4] = jokerButton5.get();
 	m_buttonList.emplace_back(jokerButton5.get());
 	m_UIList.emplace_back(std::move(jokerButton5));
