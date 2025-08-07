@@ -49,13 +49,13 @@ struct alignas(16) TextureAtlasCBuffer
 	float padding[2]; // 16바이트 정렬을 위한 패딩
 };
 
-struct alignas(16) PositionCBuffer {
+struct  PositionCBuffer {
 	float x;
 	float y;
 	float padding[2];
 };
 
-struct alignas(32) ColorCBuffer {
+__declspec(align(16)) struct ColorCBuffer {
 	XMFLOAT4 prevColor;     // r,g,b,(pad)
 	XMFLOAT4 targetColor;
 };

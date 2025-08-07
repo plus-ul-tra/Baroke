@@ -13,15 +13,17 @@ private:
    ~Mediator() = default;  
 
    POINT m_position; // POINT는 windows.h에 정의되어 있음
-   XMFLOAT3 m_prevColor =	{ 0.5f,0.5f,0.5f };
-   XMFLOAT3 m_targetColor = { 0.5f,0.5f,0.5f };
+   XMFLOAT4 m_prevColor =	{ 0.0f,1.0f,1.0f,1.0f};
+   XMFLOAT4 m_targetColor = { 0.0f,1.0f,1.0f,1.0f }; //default gray
 
 public:  
 	void Initialize() {};
 	void SetPosition(POINT pos) { m_position = pos; }
 	POINT GetPosition() const { return m_position;  }
 	void Reset() { m_position = { 0, 0 }; } // 위치 초기화
-	void SetBackGroundColor(XMFLOAT3 prev, XMFLOAT3 target) { m_prevColor = prev, m_targetColor = target; }
-	XMFLOAT3 GetPrevColor() const { return m_prevColor; }
-	XMFLOAT3 GetTargetColor() const { return m_targetColor; }
+	void SetBackGroundColor(XMFLOAT4 prev, XMFLOAT4 target) { m_prevColor = prev, m_targetColor = target; }
+	void SetPrevColor(XMFLOAT4 prev) { m_prevColor = prev; }
+	void SetTargetColor(XMFLOAT4 target) { m_targetColor = target; }
+	XMFLOAT4 GetPrevColor() const { return m_prevColor; }
+	XMFLOAT4 GetTargetColor() const { return m_targetColor; }
 };

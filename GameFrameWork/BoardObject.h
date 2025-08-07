@@ -99,8 +99,12 @@ inline void BoardObject::BoardSync()
 			if (jokerType >= 5)
 			{
 				m_isTextureChanged = true;
-				std::cout << "Changing Board Texture" << std::endl;
+				
+				//ChangeThema 같은 함수로 묶을 것임
 				m_bitmapRender->ChangeTexture("Forest.png", 3.0f);
+				m_bitmapRender->ChangeBackGroundColor(XMFLOAT4(0.2f, 0.9f, 0.2f, 1.0f));
+				// 오브젝트 등장
+
 				//해줘 나뭇잎
 				break;
 			}

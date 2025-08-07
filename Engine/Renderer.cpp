@@ -396,18 +396,21 @@ void Renderer::SetShaderMode(const string& mode, float timer) {
 		auto noiseSRV2 = SpriteManager::GetInstance().GetTextureSRV("PerlinNoise.png");
 
 		ID3D11ShaderResourceView* srvs[2] = { noiseSRV.Get(), noiseSRV2.Get() };
+		ID3D11Buffer* cbuffers[1] = { m_pTimeCBuffer.Get() };
+		
 		m_pd3dContext->UpdateSubresource(m_pTimeCBuffer.Get(), 0, nullptr, &timeData, 0, 0);
+		m_pd3dContext->PSSetConstantBuffers(0, 1, cbuffers);
 		m_pd3dContext->PSSetShaderResources(1, 2, srvs);
 		
 		
 		//색상 바인딩
 		ColorCBuffer colorData{};
-		colorData.prevColor = DirectX::XMFLOAT4(1.0f, 1.0f, 1.0f, 1.0f); /*Mediator::GetInstance().GetPrevColor();*/
-		colorData.targetColor = DirectX::XMFLOAT4(1.0f, 1.0f, 1.0f, 1.0f); /*Mediator::GetInstance().GetTargetColor();*/
-
+		colorData.prevColor = Mediator::GetInstance().GetPrevColor();
+		colorData.targetColor = Mediator::GetInstance().GetTargetColor();
+	
 		m_pd3dContext->UpdateSubresource(m_pColorCBuffer.Get(), 0, nullptr, &colorData, 0, 0);
-		ID3D11Buffer* cbuffers[2] = { m_pTimeCBuffer.Get(), m_pColorCBuffer.Get() };
-		m_pd3dContext->PSSetConstantBuffers(0, 2, cbuffers);
+		ID3D11Buffer* cbuffers1[1] = {m_pColorCBuffer.Get() };
+		m_pd3dContext->PSSetConstantBuffers(2, 1, cbuffers1);
 	}
 
 
