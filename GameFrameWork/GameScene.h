@@ -39,6 +39,7 @@ private:
 	enum class GameState { Stage, ShopEnter, Shop };
 	GameState m_gameState = GameState::Stage;
 
+	vector<unique_ptr<Object>> m_screenEffectObjects; // 화면에 그려질 오브젝트들
 
 public:
 	//GameScene() = default;
@@ -60,5 +61,5 @@ public:
 	void KeyCommandMapping() override;
 
 	void OnInput(const MouseEvent& ev) override;
-	void ChangeThema();
+	void ChangeThema(int thema = -1);
 };
