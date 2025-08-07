@@ -414,6 +414,7 @@ void GameScene::OnLeave()
 {
 	std::cout << "Game1 Scene Left" << std::endl;
 	Reset();
+	m_jokerButtons.clear();
 }
 
 void GameScene::OnCommand(std::string& cmd)
