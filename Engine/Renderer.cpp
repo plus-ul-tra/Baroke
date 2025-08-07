@@ -417,7 +417,7 @@ void Renderer::SetShaderMode(const string& mode, float timer) {
 		ID3D11Buffer* cbuffers[1] = { m_pTimeCBuffer.Get() };
 		m_pd3dContext->UpdateSubresource(m_pTimeCBuffer.Get(), 0, nullptr, &timeData, 0, 0);
 		
-		m_pd3dContext->PSSetConstantBuffers(1, 1, cbuffers);
+		m_pd3dContext->PSSetConstantBuffers(0, 1, cbuffers);
 
 	}
 	if (mode == "UIColor") {
