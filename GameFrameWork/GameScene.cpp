@@ -454,6 +454,15 @@ void GameScene::KeyCommandMapping()
 
 void GameScene::OnInput(const MouseEvent& ev)
 {
+	if (m_gameState == GameState::Shop)
+	{
+		for (auto& button : m_buttonList)
+		{
+			button->CheckInput(ev);
+		}
+		return;
+	}
+
 	if (m_uiMode ==UIMode::UseAbility)  //능력 사용 모드
 	{
 		if (ev.type == MouseType::LDown) {
@@ -489,7 +498,6 @@ void GameScene::OnInput(const MouseEvent& ev)
 		{
 			button->CheckInput(ev);
 		}
-		if (m_gameState == GameState::Shop) return; // 상점 모드
 
 		if (ev.type == MouseType::LDown)
 		{
