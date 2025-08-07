@@ -68,6 +68,23 @@ public:
 	
 };
 
+struct BoardType
+{
+	string textureKey = "Original.png";
+	float changeDuration = 0.0f;
+	XMFLOAT4 backgroundColor = XMFLOAT4(0.2f, 0.9f, 0.2f, 1.0f);
+	function<void(BoardObject&)> setupFunction = [](BoardObject& boardObj) { std::cout << "Default board setup" << std::endl; };
+};
+
+inline unordered_map<int, BoardType> boardTypes =
+{
+	{0, {"Forest.png",		4.0f, XMFLOAT4(0.2f, 0.9f, 0.2f, 1.0f), [](BoardObject& boardObj) { std::cout << "Forest board setup" << std::endl; }}},
+	{1, {"Space.png",		4.0f, XMFLOAT4(0.2f, 0.9f, 0.2f, 1.0f), [](BoardObject& boardObj) {}}},
+	{2, {"Korea.png",		4.0f, XMFLOAT4(0.9f, 0.8f, 0.6f, 1.0f), [](BoardObject& boardObj) {}}},
+	{3, {"Halloween.png",	4.0f, XMFLOAT4(0.2f, 0.5f, 0.8f, 1.0f), [](BoardObject& boardObj) {}}},
+	{4, {"Cyberpunk.png",	4.0f, XMFLOAT4(0.8f, 0.2f, 0.2f, 1.0f), [](BoardObject& boardObj) {}}}
+};
+
 inline void BoardObject::BoardSync()
 {
 	m_stones.clear();
