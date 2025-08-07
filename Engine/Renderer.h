@@ -117,6 +117,7 @@ private:
 	ComPtr<ID3D11Buffer>			  m_pTimeCBuffer;
 	ComPtr<ID3D11Buffer>			  m_pPositionCBuffer; // 블랙홀 중심 좌표용
 	ComPtr<ID3D11Buffer>			  m_pColorCBuffer;
+	ComPtr<ID3D11Buffer>              m_pUIColorCBuffer;
 
 	float 							  m_blackHoleTime = 0.0f; // 블랙홀 효과 시간
 public:

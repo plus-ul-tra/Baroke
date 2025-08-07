@@ -57,6 +57,10 @@ void JokerButton::ButtonFunction()
 		m_isPressed = false;
         
     }
+	if (m_isHovered && m_isActive)
+	{
+
+	}
 }
 
 void ShopJokerButton::SetShowAndActive(bool active)

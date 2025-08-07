@@ -118,9 +118,9 @@ inline void BoardObject::BoardSync()
 			currentBoardType = i;
 			BoardType boardType = boardTypes[i];
 
-			m_bitmapRender->ChangeTexture(boardType.textureKey, boardType.changeDuration);
+			m_bitmapRender->ChangeBoardTexture(boardType.textureKey, boardType.changeDuration);
 			m_bitmapRender->ChangeBackGroundColor(boardType.backgroundColor);
-
+			//
 			boardType.setupFunction(*this); // 보드 타입에 따른 설정 함수 호출
 
 			break;

@@ -63,7 +63,7 @@ public:
 	float GetHeight() const { return m_height; }
 
 
-	void ChangeTexture(const string& nextTextureKey, float duration = 1.0f) {
+	void ChangeBoardTexture(const string& nextTextureKey, float duration = 1.0f) {
 		m_isShaderEffectActive = true; // 쉐이더 효과 활성화
 		m_shaderTimeElapsed = 0.0f; // 쉐이더 효과 시간 초기화
 		m_shaderEffectDuration = duration; // 쉐이더 효과 지속 시간 설정
@@ -83,7 +83,7 @@ public:
 	//void SetShaderType(const string& type, float duration = 1.0f) { m_shaderType = type; m_shaderTimeElapsed = 0.0f; m_shaderEffectDuration = duration; }
 
 	//일반 텍스쳐 변경으로 사용가능
-	void ChangeStoneTexture(const string& nextTextureKey)
+	void ChangeTexture(const string& nextTextureKey)
 	{
 		SpriteManager& spriteManager = SpriteManager::GetInstance();
 		m_nextTextureSRV = spriteManager.GetTextureSRV(nextTextureKey);

@@ -14,7 +14,8 @@ private:
 
    POINT m_position; // POINT는 windows.h에 정의되어 있음
    XMFLOAT4 m_prevColor =	{ 0.0f,1.0f,1.0f,1.0f};
-   XMFLOAT4 m_targetColor = { 0.5f,1.0f,1.0f,1.0f }; //default gray
+   XMFLOAT4 m_targetColor = { 0.0f,1.0f,1.0f,1.0f }; //default gray
+   XMFLOAT4 m_UIColor = {0.0f,0.0f,0.0f,0.0f};
 
 public:  
 	void Initialize() {};
@@ -24,6 +25,9 @@ public:
 	void SetBackGroundColor(XMFLOAT4 prev, XMFLOAT4 target) { m_prevColor = prev, m_targetColor = target; }
 	void SetPrevColor(XMFLOAT4 prev) { m_prevColor = prev; }
 	void SetTargetColor(XMFLOAT4 target) { m_targetColor = target; }
-	XMFLOAT4 GetPrevColor() const { return m_prevColor; }
-	XMFLOAT4 GetTargetColor() const { return m_targetColor; }
+	XMFLOAT4 GetBackPrevColor() const { return m_prevColor; }
+	XMFLOAT4 GetBackTargetColor() const { return m_targetColor; }
+
+	void SetUIColor(XMFLOAT4 color) { m_UIColor = color; }
+	XMFLOAT4 GetUIColor() const { return m_UIColor; }
 };

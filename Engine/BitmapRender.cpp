@@ -152,7 +152,7 @@ void BitmapRender3D::Render(Renderer& renderer)
 	{
 		m_textureSRV = m_nextTextureSRV; // 현재 텍스처로 변경
 		SetShaderType("DefaultShader");
-		m_mediator.SetPrevColor(m_mediator.GetTargetColor());
+		m_mediator.SetPrevColor(m_mediator.GetBackTargetColor());
 		m_isShaderEffectActive = false; // 쉐이더 효과 비활성화
 	}
 

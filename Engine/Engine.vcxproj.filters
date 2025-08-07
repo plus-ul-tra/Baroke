@@ -15,6 +15,7 @@
     <FxCompile Include="SetRed_PS.hlsl" />
     <FxCompile Include="Checker_PS.hlsl" />
     <FxCompile Include="SetGreen_PS.hlsl" />
+    <FxCompile Include="UIColor_PS.hlsl" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="AnimationClip.cpp" />
