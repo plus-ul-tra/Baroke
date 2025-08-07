@@ -13,7 +13,7 @@ class BoardObject : public Object
 
 	int currentBoardType = -1;
 	bool m_isBoardChanged = false; // 보드 타입이 변경되었는지 여부
-
+  
 	vector<unique_ptr<Object>> m_screenEffectObjects; // 화면에 그려질 오브젝트들
 
 public:
@@ -137,7 +137,6 @@ inline void BoardObject::BoardSync()
 
 			m_screenEffectObjects.clear();
 			CreateObject::CreateObjectsOutOfScreen(m_screenEffectObjects, boardType.effectKey, 1920.0f, 1080.0f, 200.0f, 50, 100.0f);
-
 			m_isBoardChanged = true;
 
 			break;
