@@ -13,8 +13,8 @@ enum StoneAbility // 능력 혹은 이름
 {
 	None, // 흑돌 백돌 // 빈 조커 슬롯
 	//---------------- 일반 (set 1)
-	jokerDouble, // 나중에 돌 놓을때 검은돌 갯수 추가하는 거 만들기
-	jokerOmok, // 버튼 쪽에서?
+	//jokerDouble, 
+	jokerOmok, 
 	jokerSamok,
 	jokerSammok,
 

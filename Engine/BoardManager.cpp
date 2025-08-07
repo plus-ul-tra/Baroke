@@ -49,13 +49,13 @@ struct JokerFunctionsWrapper
 			POINT directionX[4] = { { -1, 0 }, { 1, 0 }, { -2, 0 }, { 2, 0 } }; // 좌우
 			POINT directionY[4] = { { 0, -1 }, { 0, 1 }, { 0, -2 }, { 0, 2 } }; // 상하
 
-			if (boardManager.m_isVertical)
+			if (!boardManager.m_isVertical)
 			{
 				for (POINT i : directionX)
 				{
 					POINT newPosition = { position.x + i.x, position.y + i.y };
-					if (!boardManager.isValidPoint(newPosition)) break;
-					if (boardManager.m_board[newPosition.x][newPosition.y]) break;
+					if (!boardManager.isValidPoint(newPosition)) continue;
+					if (boardManager.m_board[newPosition.x][newPosition.y]) continue;
 
 					boardManager.PlaceStone(newPosition, StoneType::Black, StoneAbility::None); // 검은 돌 놓기
 				}
@@ -65,8 +65,8 @@ struct JokerFunctionsWrapper
 				for (POINT i : directionY)
 				{
 					POINT newPosition = { position.x + i.x, position.y + i.y };
-					if (!boardManager.isValidPoint(newPosition)) break;
-					if (boardManager.m_board[newPosition.x][newPosition.y]) break;
+					if (!boardManager.isValidPoint(newPosition)) continue;
+					if (boardManager.m_board[newPosition.x][newPosition.y]) continue;
 					boardManager.PlaceStone(newPosition, StoneType::Black, StoneAbility::None); // 검은 돌 놓기
 				}
 			}
@@ -717,16 +717,7 @@ struct JokerFunctionsWrapper
 			jokerWind->m_jokerInfo.lifeSpan--;
 		}
 		},
-		{ StoneAbility::jokerDouble, [this](shared_ptr<JokerStone> jokerDouble, POINT position)
-		{
-			if(jokerDouble->m_jokerInfo.functionDuration >=0)
-			{
-				jokerDouble->m_jokerInfo.functionDuration--;
-				boardManager.m_doubleCheck = true;
-			}
 
-		}
-		},
 
 	};
 };
@@ -775,12 +766,14 @@ bool BoardManager::InputBasedGameLoop(POINT mousePos) // 마우스 클릭으로 
 
 	CheckRemovedStones();
 	if (!PlaceStone(m_selectedPosition, m_stoneType, m_stoneAbility)) return false;
+	RemoveGroup(m_SacrificeGroup);
 	JokerAbilityUpdate(); // 조커 능력 업데이트
 	WhiteStoneRemoveCheck(m_selectedPosition); // 흰 돌 체크
 
 	m_selectedPosition = { -1, -1 }; // 마지막으로 선택된 위치 초기화
 
 	m_stoneType = StoneType::Black; // 돌 타입 초기화
+
 	m_stoneAbility = StoneAbility::None; // 돌 능력 초기화
 	
 
@@ -1002,7 +995,8 @@ void BoardManager::InitializeJokerInfoMap()
 	//------------------------------------------------------------------------------------------------ 일반 (set 1)
 
 
-	m_jokerInfoMap[StoneAbility::jokerDouble] = { "jokerDouble.png",JokerType::Default,  0, 0, 0, 0, 2, 1, 2, 1, false };
+
+	//m_jokerInfoMap[StoneAbility::jokerDouble] = { "jokerDouble.png",JokerType::Default,  0, 0, 0, 0, 2, 1, 2, 1, true, StoneType::Black };
 	m_jokerInfoMap[StoneAbility::jokerOmok] = { "jokerOmok.png",	JokerType::Default,  1, 0, 0, 0, 5, 2, 4, 2, true, StoneType::Black };
 	m_jokerInfoMap[StoneAbility::jokerSamok] = { "jokerSamok.png", JokerType::Default, 0, 0, 0, 0, 4, 5, 3, 2, false };
 	m_jokerInfoMap[StoneAbility::jokerSammok] = { "jokerSammok.png",JokerType::Default,  0, 0, 0, 0, 3, 2, 2, 1, false };
@@ -1032,7 +1026,7 @@ void BoardManager::InitializeJokerInfoMap()
 	m_jokerInfoMap[StoneAbility::jokerSplit] = { "jokerSplit.png", JokerType::Halloween, 3, 0, 0, 20, 2, 0, 5, 2, true };
 	m_jokerInfoMap[StoneAbility::jokerWaxseal] = { "jokerWaxseal.png", JokerType::Halloween, 0, 0, 0, 1, 0, 0, 3, 2, true, StoneType::Black };
 	m_jokerInfoMap[StoneAbility::jokerFlip] = { "jokerFlip.png", JokerType::Halloween, 1, 1, 0, 0, 3, 1, 6, 2, true };
-	m_jokerInfoMap[StoneAbility::jokerOthello] = { "jokerOthello.png", JokerType::Halloween, 1, 0, 0, 3, 2, 4, 5, 1, true };
+	m_jokerInfoMap[StoneAbility::jokerOthello] = { "jokerOthello.png", JokerType::Halloween, 1, 0, 0, 3, 2, 4, 5, 1, true, StoneType::Black };
 	m_jokerInfoMap[StoneAbility::jokerMrchan] = { "jokerMrchan.png", JokerType::Halloween, 1, 1, 0, 0, 0, 0, 0, 3, true };
 
 	//------------------------------------------------------------------------------------------------ 자연 (set 7)
@@ -1180,7 +1174,7 @@ bool BoardManager::checkSacrificeSuccess()
 {
 	if (m_SacrificeGroup.size() == m_jokerInfoMap[m_stoneAbility].costBlack) 
 	{
-		RemoveGroup(m_SacrificeGroup);
+		//RemoveGroup(m_SacrificeGroup);
 		return true;
 	}
 	return false;
@@ -1203,21 +1197,21 @@ bool BoardManager::checkBeforeAbSuccess()
 		bool sameCol = std::all_of(m_useCondGroup.begin(), m_useCondGroup.end(),
 			[&](auto& p) { return p.x == m_useCondGroup[0].x; });
 
-		if (sameRow == sameCol)         
+		if (sameRow == sameCol)
 			return false;
 
-		if (sameRow)                   
+		if (sameRow)
 		{
 			std::sort(m_useCondGroup.begin(), m_useCondGroup.end(),
 				[](auto& a, auto& b) { return a.x < b.x; });
 
 			for (size_t i = 1; i < 5; ++i)
 				if (m_useCondGroup[i].x != m_useCondGroup[i - 1].x + 1)
-					return false;  
+					return false;
 
-			m_isVertical = false;       
+			m_isVertical = false;
 		}
-		else                
+		else
 		{
 			std::sort(m_useCondGroup.begin(), m_useCondGroup.end(),
 				[](auto& a, auto& b) { return a.y < b.y; });
@@ -1226,9 +1220,9 @@ bool BoardManager::checkBeforeAbSuccess()
 				if (m_useCondGroup[i].y != m_useCondGroup[i - 1].y + 1)
 					return false;
 
-			m_isVertical = true;  
+			m_isVertical = true;
 		}
-		return true;        
+		return true;
 	}
 	case jokerSamok:       
 	{
@@ -1296,7 +1290,7 @@ bool BoardManager::checkBeforeAbSuccess()
 			for (const auto& pt : m_useCondGroup) {
 				JokerAbilityUse(m_stoneAbility, pt);
 			}
-			ExitMode();
+			RemoveGroup(m_SacrificeGroup);
 			return true;
 		}
 		m_useCondGroup.clear();

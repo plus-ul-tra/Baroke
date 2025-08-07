@@ -1,2 +1,2 @@
 #pragma once
-enum class UIMode { Normal, Sacrifice, BeforeUseAbility, UseAbility };
+enum UIMode { Normal=0, Sacrifice=1, BeforeUseAbility=2, UseAbility=3 };

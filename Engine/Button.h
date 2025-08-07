@@ -90,8 +90,8 @@ class JokerButton : public Button
 		switch (ability)
 		{
 			//-------------------------------- 일반 (set 1)
-		case jokerDouble:   // 흑돌 2개 이상
-			return [&bm]() { return bm.CountStones(Black) >= 2; };
+// 		case jokerDouble:   // 흑돌 2개 이상
+// 			return [&bm]() { return bm.CountStones(Black) >= 2; };
 		case jokerOmok:   // 흑돌 5개 이상
 			return [&bm]() { return bm.HasStraightLine(Black,5); };
 		case jokerSamok:   // 조커돌 4개 이상
