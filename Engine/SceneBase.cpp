@@ -42,6 +42,18 @@ void SceneBase::Render(Renderer& renderer) {
 	}
 
 
+	for (const auto& button : m_notUniqueObjectList)
+	{
+		if (auto bitmapRenderComp = button->GetComponent<BitmapRender3D>())
+		{
+			if (bitmapRenderComp->IsActive())
+			{
+				bitmapRenderComp->Render(renderer);
+			}
+		}
+		button->Render(renderer);
+	}
+
 }
 //
 void RenderObject(Object* obj, Renderer& renderer)
