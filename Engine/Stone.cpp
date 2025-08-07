@@ -47,6 +47,17 @@ POINT Stone::GetPosition() const
 
 void Stone::ChangeColor(bool isBlack)
 {
+
 	if (isBlack) m_sprite->ChangeStoneTexture("Black.png");
 	else m_sprite->ChangeStoneTexture("White.png");
 }
+
+void JokerStone::UpdateAbility(StoneAbility newAb)
+{
+	if (ability == newAb) return;        
+
+	ability = newAb;                  
+	m_jokerInfo = m_jokerInfoMap[newAb];  
+	m_sprite->ChangeStoneTexture(m_jokerInfo.fileName.c_str());
+}
+

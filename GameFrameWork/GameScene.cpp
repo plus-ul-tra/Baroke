@@ -39,14 +39,14 @@ void GameScene::SetUIJokerButton()
 	unique_ptr<JokerButton> jokerButton1 = std::make_unique<JokerButton>(600.0f, 300.0f, 100, 100, "Black.png", 50);
 	jokerButton1->SetButtonJoker(Black, None);
 	m_buttonList.emplace_back(jokerButton1.get());
-	m_UIList.emplace_back(jokerButton1.get());
-	m_jokerButtons.emplace_back(move(jokerButton1));
+	m_UIList.emplace_back(std::move(jokerButton1));
 
-	unique_ptr<JokerButton> jokerButton2 = std::make_unique<JokerButton>(600.0f, 150.0f, 100, 100, "Black.png", 50);
-	jokerButton2->SetButtonJoker(Black, None);
+	unique_ptr<JokerButton> jokerButton2 = std::make_unique<JokerButton>(600.0f, 150.0f, 100, 100, "jokerFusion.png", 50);
+	jokerButton2->SetButtonJoker(Joker, jokerFusion);
 	m_buttonList.emplace_back(jokerButton2.get());
 	m_UIList.emplace_back(jokerButton2.get());
 	m_jokerButtons.emplace_back(move(jokerButton2));
+
 
 	unique_ptr<JokerButton> jokerButton3 = std::make_unique<JokerButton>(600.0f, 0.0f, 100, 100, "Black.png");
 	jokerButton3->SetButtonJoker(Black, None);
@@ -54,11 +54,13 @@ void GameScene::SetUIJokerButton()
 	m_UIList.emplace_back(jokerButton3.get());
 	m_jokerButtons.emplace_back(move(jokerButton3));
 
+
 	unique_ptr<JokerButton> jokerButton4 = std::make_unique<JokerButton>(600.0f, -150.0f, 100, 100, "Black.png");
 	jokerButton4->SetButtonJoker(Black, None);
 	m_buttonList.emplace_back(jokerButton4.get());
 	m_UIList.emplace_back(jokerButton4.get());
 	m_jokerButtons.emplace_back(move(jokerButton4));
+
 
 	unique_ptr<JokerButton> jokerButton5 = std::make_unique<JokerButton>(600.0f, -300.0f, 100, 100, "Black.png");
 	jokerButton5->SetButtonJoker(Black, None);
@@ -128,14 +130,14 @@ void GameScene::ModeCheck()
 	if (m_uiMode==UIMode::Sacrifice &&m_board.checkSacrificeSuccess())
 
 	{
-		m_board.SetMode(UIMode::BeforeUseAbillity);
+		m_board.SetMode(UIMode::BeforeUseAbility);
 		//m_board.ExitMode();
 		std::cout << "Sacrifice clear" << std::endl;
 	}
 	
-	if (m_uiMode == UIMode::BeforeUseAbillity&&m_board.checkBeforeAbSuccess())
+	if (m_uiMode == UIMode::BeforeUseAbility&&m_board.checkBeforeAbSuccess())
 	{
-		m_board.SetMode(UIMode::UseAbillity);
+		m_board.SetMode(UIMode::UseAbility);
 	}
 }
 
@@ -390,11 +392,11 @@ void GameScene::KeyCommandMapping()
 
 void GameScene::OnInput(const MouseEvent& ev)
 {
-	if (m_uiMode ==UIMode::UseAbillity)  //능력 사용 모드
+	if (m_uiMode ==UIMode::UseAbility)  //능력 사용 모드
 	{
 		if (ev.type == MouseType::LDown) {
 			m_board.SetStoneType(m_board.GetStoneType());
-			m_board.SetStoneAbility(m_board.GetStoneAbillity());
+			m_board.SetStoneAbility(m_board.GetStoneAbility());
 			if (m_board.InputBasedGameLoop(ev.pos)) 
 			{
 				m_board.ExitMode();		// 능력 사용 후 다시 초기화
@@ -402,7 +404,7 @@ void GameScene::OnInput(const MouseEvent& ev)
 		}
 	}
 
-	else if (m_uiMode == UIMode::BeforeUseAbillity) //	버튼 종류나 , 방향, 특정 지점을 넘겨줘야 되는 경우 여기 진입
+	else if (m_uiMode == UIMode::BeforeUseAbility) //	버튼 종류나 , 방향, 특정 지점을 넘겨줘야 되는 경우 여기 진입
 	{
 		if (ev.type == MouseType::LDown)
 		{
@@ -441,6 +443,7 @@ void GameScene::OnInput(const MouseEvent& ev)
 
 			m_board.SetStoneType(Joker);
 			m_board.SetStoneAbility(jokerMagnetic);
+
 
 			m_board.InputBasedGameLoop(ev.pos);
 //			std::cout << "Joker Stone Count : " << m_board.GetStoneTypeAmount(Joker) << std::endl;

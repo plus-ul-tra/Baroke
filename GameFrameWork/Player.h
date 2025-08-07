@@ -19,7 +19,7 @@ private:
 
 	float m_speedPerSec = 500.f;
 
-	int blackStone = 30;
+	int blackStone = 300;
 	
 
 
