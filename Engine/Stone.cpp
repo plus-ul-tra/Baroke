@@ -52,15 +52,12 @@ void Stone::ChangeColor(bool isBlack)
 	else m_sprite->ChangeStoneTexture("White.png");
 }
 
-// 	if (isBlack) m_sprite->SetShaderType("Othello");
-// }
-
 void JokerStone::UpdateAbility(StoneAbility newAb)
 {
 	if (ability == newAb) return;        
 
 	ability = newAb;                  
 	m_jokerInfo = m_jokerInfoMap[newAb];  
-	m_sprite->ChangeTexture(m_jokerInfo.fileName.c_str());
+	m_sprite->ChangeStoneTexture(m_jokerInfo.fileName.c_str());
 }
 
