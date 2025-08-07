@@ -25,9 +25,6 @@ void SceneBase::Render(Renderer& renderer) {
 		}
 		obj->Render(renderer);
 	}
-
-
-
 	// --- UI
 	for (const auto& ui : m_UIList) {
 

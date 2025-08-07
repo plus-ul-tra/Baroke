@@ -13,6 +13,8 @@ class BoardObject : public Object
 
 	int currentBoardType = -1;
 	bool m_isBoardChanged = false; // 보드 타입이 변경되었는지 여부
+  
+	vector<unique_ptr<Object>> m_screenEffectObjects; // 화면에 그려질 오브젝트들
 
 public:
 	BoardObject(int offX, int offY, int drawW, int drawH, int _cell, int _stoneOffset = 0,int padding = 0)
@@ -35,6 +37,10 @@ public:
 		for (auto& sp : m_stones)
 			if (auto* bmp = sp->GetComponent<BitmapRender3D>())
 				if (bmp->IsActive()) bmp->Render(r); // 돌그리기
+
+		for (auto& obj : m_screenEffectObjects)
+			if (auto* bmp = obj->GetComponent<BitmapRender3D>())
+				if (bmp->IsActive()) bmp->Render(r); // 화면 효과 오브젝트 그리기
 
 	}
 
@@ -63,6 +69,13 @@ public:
 			else
  				bmp->SetShaderType("DefaultShader");   // 혹은 기존에 쓰던 기본 Shader 이름
 		}
+
+		for (auto& obj : m_screenEffectObjects)
+		{
+			obj->Update(deltaTime);
+			auto* bmp = obj->GetComponent<BitmapRender3D>();
+			if (bmp && bmp->IsActive()) bmp->Update(deltaTime);
+		}
 	}
 
 	void BoardSync();
@@ -74,6 +87,7 @@ struct BoardType
 	string textureKey = "Original.png";
 	float changeDuration = 0.0f;
 	XMFLOAT4 backgroundColor = XMFLOAT4(0.2f, 0.9f, 0.2f, 1.0f);
+	string effectKey = "Leaf6.png"; // 화면 효과 이미지 키
 };
 
 inline unordered_map<int, BoardType> boardTypes =
@@ -121,6 +135,8 @@ inline void BoardObject::BoardSync()
 			m_bitmapRender->ChangeBoardTexture(boardType.textureKey, boardType.changeDuration);
 			m_bitmapRender->ChangeBackGroundColor(boardType.backgroundColor);
 
+			m_screenEffectObjects.clear();
+			CreateObject::CreateObjectsOutOfScreen(m_screenEffectObjects, boardType.effectKey, 1920.0f, 1080.0f, 200.0f, 50, 100.0f);
 			m_isBoardChanged = true;
 
 			break;

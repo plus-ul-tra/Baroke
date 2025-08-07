@@ -417,7 +417,6 @@ void GameScene::OnLeave()
 	Reset();
 	m_jokerButtons.clear();
 	m_normalUI.clear();
-	m_screenEffectObjects.clear();
 }
 
 void GameScene::OnCommand(std::string& cmd)
@@ -572,8 +571,6 @@ void GameScene::ChangeThema(int thema)
 {
 	switch (thema)
 	{
-		m_screenEffectObjects.clear();
-
 	case 0: // Forest
 		Mediator::GetInstance().SetUIColor(XMFLOAT4(1.0f, 1.0f, 1.0f, 1.0f));
 
@@ -582,7 +579,6 @@ void GameScene::ChangeThema(int thema)
 			auto rend = bt->GetComponent<BitmapRender3D>();
 			rend->SetShaderType("UIColor");
 		}
-		CreateObject::CreateObjectsOutOfScreen(m_screenEffectObjects, "Leaf6.png", 1920.0f, 1080.0f, 200.0f, 50, 1.0f);
 		break;
 
 	case 1: // Space
@@ -593,7 +589,6 @@ void GameScene::ChangeThema(int thema)
 			auto rend = bt->GetComponent<BitmapRender3D>();
 			rend->SetShaderType("UIColor");
 		}
-		CreateObject::CreateObjectsOutOfScreen(m_screenEffectObjects, "Leaf6.png", 1920.0f, 1080.0f, 200.0f, 50, 1.0f);
 		break;
 
 	case 2: // Korea
@@ -604,7 +599,6 @@ void GameScene::ChangeThema(int thema)
 			auto rend = bt->GetComponent<BitmapRender3D>();
 			rend->SetShaderType("UIColor");
 		}
-		CreateObject::CreateObjectsOutOfScreen(m_screenEffectObjects, "Leaf6.png", 1920.0f, 1080.0f, 200.0f, 50, 1.0f);
 		break;
 
 	case 3: // Halloween
@@ -615,7 +609,6 @@ void GameScene::ChangeThema(int thema)
 			auto rend = bt->GetComponent<BitmapRender3D>();
 			rend->SetShaderType("UIColor");
 		}
-		CreateObject::CreateObjectsOutOfScreen(m_screenEffectObjects, "Leaf6.png", 1920.0f, 1080.0f, 200.0f, 50, 1.0f);
 		break;
 
 	case 4: // Cyber
@@ -626,16 +619,10 @@ void GameScene::ChangeThema(int thema)
 			auto rend = bt->GetComponent<BitmapRender3D>();
 			rend->SetShaderType("UIColor");
 		}
-		CreateObject::CreateObjectsOutOfScreen(m_screenEffectObjects, "Leaf6.png", 1920.0f, 1080.0f, 200.0f, 50, 1.0f);
 		break;
 
 	default: // 기본 테마
 		break;
-	}
-
-	for (auto& effect : m_screenEffectObjects)
-	{
-		m_notUniqueObjectList.emplace_back(effect.get());
 	}
 }
 
