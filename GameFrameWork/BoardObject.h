@@ -87,15 +87,15 @@ struct BoardType
 	string textureKey = "Original.png";
 	float changeDuration = 0.0f;
 	XMFLOAT4 backgroundColor = XMFLOAT4(0.2f, 0.9f, 0.2f, 1.0f);
-	string effectKey = "Leaf6.png"; // 화면 효과 이미지 키
+	string effectKey = "Leaf9.png"; // 화면 효과 이미지 키
 };
 
 inline unordered_map<int, BoardType> boardTypes =
 {
 	{0, {"Forest.png",		3.0f, XMFLOAT4(0.2f, 0.9f, 0.2f, 1.0f)}},
 	{1, {"Space.png",		3.0f, XMFLOAT4(0.2f, 0.9f, 0.2f, 1.0f)}},
-	{2, {"Korea.png",		3.0f, XMFLOAT4(0.9f, 0.8f, 0.6f, 1.0f)}},
-	{3, {"Halloween.png",	3.0f, XMFLOAT4(0.2f, 0.5f, 0.8f, 1.0f)}},
+	{2, {"T_Dancheong_Main_Glow.png",		3.0f, XMFLOAT4(0.9f, 0.8f, 0.6f, 1.0f)}},
+	{3, {"T_Halloween_Main_Glow.png",	3.0f, XMFLOAT4(0.2f, 0.5f, 0.8f, 1.0f)}},
 	{4, {"Cyberpunk.png",	3.0f, XMFLOAT4(0.8f, 0.2f, 0.2f, 1.0f)}}
 };
 
