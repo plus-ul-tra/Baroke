@@ -22,6 +22,7 @@ public:
 	void FixedUpdate(double deltaTime) override { Object::FixedUpdate(deltaTime); }
 	void Update(double deltaTime) override;
 	void LateUpdate(double deltaTime) override { Object::LateUpdate(deltaTime); }
+	void Render(Renderer& renderer) override { Object::Render(renderer); }
 
 	virtual ~NewObject() = default;
 };
