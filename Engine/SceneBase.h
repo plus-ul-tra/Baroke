@@ -19,8 +19,9 @@ private:
 	
 protected:
 	std::vector<std::unique_ptr<Object>> m_objectList;
-	std::vector<std::unique_ptr<Button>> m_buttonList;
 	std::vector<std::unique_ptr<Object>> m_UIList;
+	vector<Button*> m_buttonList;
+	vector<Object*> m_notUniqueObjectList; // Object*로 관리하는 경우
 	//render 에 대해서 따로 관리 생각
 	std::unordered_map<std::string, std::function<void()>> m_commandMap;
 	
@@ -53,6 +54,7 @@ public:
 	{
 		// m_objectList.clear(); 
 		// objectList 외에 것도 clear
+
 	}
 
 	virtual void OnCommand(std::string& cmd)  // 입력처리
