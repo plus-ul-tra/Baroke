@@ -15,21 +15,21 @@ void GameScene::SetUIButton()
 	m_shopExitButton = std::make_unique<ShopEndButton>(300.0f, -300.0f, 100, 100, "Sample.png");
 	m_shopExitButton->SetShowAndActive(false);
 	m_buttonList.emplace_back(m_shopExitButton.get());
-	m_UIList.emplace_back(m_shopExitButton.get());
+	m_notUniqueObjectList.emplace_back(m_shopExitButton.get());
 
 	for (int i = 0; i < 3; i++)
 	{
 		m_shopJokerButtons[i] = make_unique<ShopJokerButton>(-300.0f + (i * 300.0f), 300.0f, 100, 100, "Sample.png");
 		m_shopJokerButtons[i]->SetShowAndActive(false);
 		m_buttonList.emplace_back(m_shopJokerButtons[i].get());
-		m_UIList.emplace_back(m_shopJokerButtons[i].get());
+		m_notUniqueObjectList.emplace_back(m_shopJokerButtons[i].get());
 	}
 	for (int i = 0; i < 3; i++)
 	{
 		m_shopJokerButtons[3 + i] = make_unique<ShopJokerButton>(-300.0f + (i * 300.0f), 0.0f, 100, 100, "Sample.png");
 		m_shopJokerButtons[3 + i]->SetShowAndActive(false);
 		m_buttonList.emplace_back(m_shopJokerButtons[3 + i].get());
-		m_UIList.emplace_back(m_shopJokerButtons[3 + i].get());
+		m_notUniqueObjectList.emplace_back(m_shopJokerButtons[3 + i].get());
 	}
 
 	unique_ptr<Button> rightUI = std::make_unique<Button>(700.0f, 0.0f, 427, 969, "T_Standard_Right_Base_Glow.png");
@@ -130,37 +130,37 @@ void GameScene::SetUIButton()
 
 	// ------------------------------------joker button-------------------------------------------
 	unique_ptr<JokerButton> jokerButton1 = std::make_unique<JokerButton>(617.0f, 341.0f, 100, 100, "Black.png", 50);
-	jokerButton1->SetButtonJoker(Black, jokerOmok);
+	jokerButton1->SetButtonJoker(Black, None);
 	m_buttonList.emplace_back(jokerButton1.get());
-	m_UIList.emplace_back(jokerButton1.get());
+	m_notUniqueObjectList.emplace_back(jokerButton1.get());
 	m_jokerButtons.emplace_back(move(jokerButton1));
 
 
 	unique_ptr<JokerButton> jokerButton2 = std::make_unique<JokerButton>(617.0f, 171.0f, 100, 100, "Black.png", 50);
-	jokerButton2->SetButtonJoker(Black, jokerSamok);
+	jokerButton2->SetButtonJoker(Black, None);
 	m_buttonList.emplace_back(jokerButton2.get());
-	m_UIList.emplace_back(jokerButton2.get());
+	m_notUniqueObjectList.emplace_back(jokerButton2.get());
 	m_jokerButtons.emplace_back(move(jokerButton2));
 
 
 	unique_ptr<JokerButton> jokerButton3 = std::make_unique<JokerButton>(617.0f, 1.0f, 100, 100, "Black.png");
-	jokerButton3->SetButtonJoker(Joker, jokerSammok);
+	jokerButton3->SetButtonJoker(Joker, None);
 	m_buttonList.emplace_back(jokerButton3.get());
-	m_UIList.emplace_back(jokerButton3.get());
+	m_notUniqueObjectList.emplace_back(jokerButton3.get());
 	m_jokerButtons.emplace_back(move(jokerButton3));
 
 
 	unique_ptr<JokerButton> jokerButton4 = std::make_unique<JokerButton>(617.0f, -172.0f, 100, 100, "Black.png");
-	jokerButton4->SetButtonJoker(Black, jokerDansu);
+	jokerButton4->SetButtonJoker(Black, None);
 	m_buttonList.emplace_back(jokerButton4.get());
-	m_UIList.emplace_back(jokerButton4.get());
+	m_notUniqueObjectList.emplace_back(jokerButton4.get());
 	m_jokerButtons.emplace_back(move(jokerButton4));
 
 
 	unique_ptr<JokerButton> jokerButton5 = std::make_unique<JokerButton>(617.0f, -342.0f, 100, 100, "Black.png");
-	jokerButton5->SetButtonJoker(Black, jokerEgg);
+	jokerButton5->SetButtonJoker(Black, None);
 	m_buttonList.emplace_back(jokerButton5.get());
-	m_UIList.emplace_back(jokerButton5.get());
+	m_notUniqueObjectList.emplace_back(jokerButton5.get());
 	m_jokerButtons.emplace_back(move(jokerButton5));
 }
 
@@ -241,6 +241,7 @@ void GameScene::ModeCheck()
 
 void GameScene::InitShop()
 {
+	m_gameState = GameState::Stage;
 	for (auto& jokers : m_jokerInfoMap)
 	{
 		if (jokers.second.isStone) m_shopStones.push_back({ jokers.first, jokers.second });
@@ -358,12 +359,15 @@ void GameScene::Update(double deltaTime)
 	{
 		UI->Update(deltaTime);
 	}
+	for (auto& notUniqueObject : m_notUniqueObjectList)
+	{
+		notUniqueObject->Update(deltaTime);
+	}
 	m_boardObj->BoardSync();
 	//m_board.SyncBlackStoneCount(m_player->GetBlackStone());
 	ModeCheck();
 	CheckStageClear();
 	ChangeThema();
-	
 }
 
 void GameScene::LateUpdate(double deltaTime)
@@ -400,10 +404,9 @@ void GameScene::OnEnter()
 	m_objectList.emplace_back(std::move(boardObj));
 
 
+	//CreateObject::CreateObjectsOutOfScreen(m_objectList, "Leaf6.png", 1920.0f, 1080.0f, 200.0f, 100, 50.0f);
+
 	SetUIButton();
-
-	CreateObject::CreateObjectsOutOfScreen(m_objectList, "Leaf6.png", 1920.0f, 1080.0f, 200.0f, 100, 50.0f);
-
 	StartStage();
 	InitShop();
 }
@@ -412,6 +415,7 @@ void GameScene::OnLeave()
 {
 	std::cout << "Game1 Scene Left" << std::endl;
 	Reset();
+	m_jokerButtons.clear();
 }
 
 void GameScene::OnCommand(std::string& cmd)
