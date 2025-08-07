@@ -933,7 +933,6 @@ void BoardManager::InitializeJokerInfoMap()
 	m_jokerInfoMap[StoneAbility::jokerSamok] = { "jokerSamok.png", JokerType::Default,  0, 0, 0, 0, 0, 5, 3, 2, false };
 	m_jokerInfoMap[StoneAbility::jokerSammok] = { "jokerSammok.png", JokerType::Default, 0, 0, 0, 0, 0, 2, 2, 1, false };
 
-
 	//------------------------------------------------------------------------------------------------ 야생 (set 2)
 	m_jokerInfoMap[StoneAbility::jokerEvolution] = { "jokerEvolution.png", JokerType::Wild, 0, 0, 0, 0, 0, 0, 7, 3, false };						// cost 0
 	m_jokerInfoMap[StoneAbility::jokerDansu] = { "jokerDansu.png", JokerType::Wild, 1, 1, 0, 0, 0, 1, 2, 1, true, StoneType::Black };

@@ -191,9 +191,11 @@ public:
 
 	void SetButtonJoker(StoneType stoneType, StoneAbility ability) {
 		m_jokerAbility = ability;
-		m_stoneType = stoneType;        
+		m_stoneType = stoneType;
+		m_bitmapRender->ChangeStoneTexture(m_jokerInfoMap[ability].fileName);
 		BindEnabledPredicate(BuildPredicate(ability));
 	}
+	StoneAbility GetJokerAbility() const { return m_jokerAbility; }
 	void Update(double dt) override
 	{
 
@@ -218,16 +220,17 @@ class ShopJokerButton : public Button
 {
 	JokerStoneInfo m_jokerInfo;
 	StoneAbility m_jokerAbility = StoneAbility::None;
-	JokerButton* m_jokerButton = nullptr;
+	vector<unique_ptr<JokerButton>>* m_jokerButton = nullptr; // 상점 조커 버튼들
 
 public:
 	ShopJokerButton(float posX, float posY, float width, float height, const std::string& bitmapFile, int order = 0)
 		: Button(posX, posY, width, height, bitmapFile, order) {}
 
-	void SetButtonJoker(JokerStoneInfo jokerInfo, StoneAbility ability) { m_jokerInfo = jokerInfo; m_jokerAbility = ability; }
-	void SetButton(JokerButton* jokerButton) { m_jokerButton = jokerButton; }
+	void SetButtonJoker(JokerStoneInfo jokerInfo, StoneAbility ability) { m_jokerInfo = jokerInfo; m_jokerAbility = ability; m_bitmapRender->ChangeStoneTexture(jokerInfo.fileName); }
+	void SetButton(vector<unique_ptr<JokerButton>>* jokerButton) { m_jokerButton = jokerButton; }
 
 	void SetShowAndActive(bool active);
+	StoneAbility GetJokerAbility() const { return m_jokerAbility; }
 	void ButtonFunction() override;
 };
 

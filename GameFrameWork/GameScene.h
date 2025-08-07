@@ -26,10 +26,10 @@ private:
 	void  ModeCheck();
 
 	void InitShop(); // 상점 초기화
-	JokerButton* m_jokerButtons[5]; // 조커 버튼들 // 나중에 다른 방식으로?
+	vector<unique_ptr<JokerButton>> m_jokerButtons; // 조커 버튼들 // 나중에 다른 방식으로?
 	vector<pair<StoneAbility, JokerStoneInfo>> m_shopStones; // 돌 조커
 	vector<pair<StoneAbility, JokerStoneInfo>> m_shopItems; // 아이템 조커
-	unique_ptr<ShopJokerButton> jokerButtons[6] = {};
+	unique_ptr<ShopJokerButton> m_shopJokerButtons[6] = {};
 	unique_ptr<ShopEndButton> m_shopExitButton;
 	int m_shopRng[3] = { 80, 45, 15 }; // 상점 아이템 확률
 	void ShopStage(); // 상점
