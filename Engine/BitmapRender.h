@@ -24,8 +24,9 @@ private:
 
 	SpriteAnimator m_animator; //
 	bool m_isAnimated = false;
-	float m_shaderTimeElapsed = 0.0f; // 쉐이더 효과 시간
-	float m_shaderEffectDuration = 5.0f; // 쉐이더 효과 지속 시간
+	float m_shaderTimeElapsed = 1.0f; // 쉐이더 효과 시간
+	float m_shaderEffectDuration = 1.0f; // 쉐이더 효과 지속 시간
+	bool m_isShaderEffectActive = false; // 쉐이더 효과 활성화 여부
 
 	ComPtr<ID3D11Buffer> m_vertexBuffer; // quad vertex
 	ComPtr<ID3D11Buffer> m_indexBuffer;
@@ -63,6 +64,7 @@ public:
 
 
 	void ChangeTexture(const string& nextTextureKey, float duration = 1.0f) {
+		m_isShaderEffectActive = true; // 쉐이더 효과 활성화
 		m_shaderTimeElapsed = 0.0f; // 쉐이더 효과 시간 초기화
 		m_shaderEffectDuration = duration; // 쉐이더 효과 지속 시간 설정
 		std::cout << "Changing Board Texture" << std::endl;
