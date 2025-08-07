@@ -97,16 +97,11 @@ public:
 public:
 	void SetMode(UIMode uimode) { nowMode = uimode; }
 	void ExitMode() { 
+		std::cout <<"now ab : " << m_stoneAbility << std::endl;
 
-		if (m_doubleCheck)  // 쌍수의 돌만
-		{
-			m_doubleCheck = false;
-			m_stoneType = StoneType::Black; 
-			m_stoneAbility = StoneAbility::jokerDouble; 
-		}
- 		
- 			m_stoneType = StoneType::Black;
- 			m_stoneAbility = StoneAbility::None;
+			m_stoneType = StoneType::Black;
+			m_stoneAbility = StoneAbility::None;
+
  		
 		nowMode = UIMode::Normal;
 		ResetGroup(); 
@@ -141,7 +136,6 @@ public:
 private:
 	std::vector<POINT> m_useCondGroup; // 조건 충족모드에서 선택한 그룹임
 	POINT direction = { 0,0 }; // 상 = 0,1 // 하 = 0,-1 // 좌 = -1,0 // 우 = 1,0
-	bool m_doubleCheck = false;
 	bool m_isVertical = false;
 	//---------------------------------------------------------------- 버튼 - 상태 판정용 함수
 public:

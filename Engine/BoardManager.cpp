@@ -717,16 +717,7 @@ struct JokerFunctionsWrapper
 			jokerWind->m_jokerInfo.lifeSpan--;
 		}
 		},
-		{ StoneAbility::jokerDouble, [this](shared_ptr<JokerStone> jokerDouble, POINT position)
-		{
-			if(jokerDouble->m_jokerInfo.functionDuration >=0)
-			{
-				jokerDouble->m_jokerInfo.functionDuration--;
-				boardManager.m_doubleCheck = true;
-			}
 
-		}
-		},
 
 	};
 };
@@ -782,6 +773,7 @@ bool BoardManager::InputBasedGameLoop(POINT mousePos) // 마우스 클릭으로 
 	m_selectedPosition = { -1, -1 }; // 마지막으로 선택된 위치 초기화
 
 	m_stoneType = StoneType::Black; // 돌 타입 초기화
+
 	m_stoneAbility = StoneAbility::None; // 돌 능력 초기화
 	
 
@@ -1004,8 +996,8 @@ void BoardManager::InitializeJokerInfoMap()
 
 
 
-	m_jokerInfoMap[StoneAbility::jokerDouble] = { "jokerDouble.png",JokerType::Default,  0, 0, 0, 0, 2, 1, 2, 1, true, StoneType::Black };
-	m_jokerInfoMap[StoneAbility::jokerOmok] = { "jokerOmok.png",	JokerType::Default,  0, 0, 0, 0, 5, 2, 4, 2, true, StoneType::Black };
+	//m_jokerInfoMap[StoneAbility::jokerDouble] = { "jokerDouble.png",JokerType::Default,  0, 0, 0, 0, 2, 1, 2, 1, true, StoneType::Black };
+	m_jokerInfoMap[StoneAbility::jokerOmok] = { "jokerOmok.png",	JokerType::Default,  1, 0, 0, 0, 5, 2, 4, 2, true, StoneType::Black };
 	m_jokerInfoMap[StoneAbility::jokerSamok] = { "jokerSamok.png", JokerType::Default, 0, 0, 0, 0, 4, 5, 3, 2, false };
 	m_jokerInfoMap[StoneAbility::jokerSammok] = { "jokerSammok.png",JokerType::Default,  0, 0, 0, 0, 3, 2, 2, 1, false };
 
@@ -1205,21 +1197,21 @@ bool BoardManager::checkBeforeAbSuccess()
 		bool sameCol = std::all_of(m_useCondGroup.begin(), m_useCondGroup.end(),
 			[&](auto& p) { return p.x == m_useCondGroup[0].x; });
 
-		if (sameRow == sameCol)         
+		if (sameRow == sameCol)
 			return false;
 
-		if (sameRow)                   
+		if (sameRow)
 		{
 			std::sort(m_useCondGroup.begin(), m_useCondGroup.end(),
 				[](auto& a, auto& b) { return a.x < b.x; });
 
 			for (size_t i = 1; i < 5; ++i)
 				if (m_useCondGroup[i].x != m_useCondGroup[i - 1].x + 1)
-					return false;  
+					return false;
 
-			m_isVertical = false;       
+			m_isVertical = false;
 		}
-		else                
+		else
 		{
 			std::sort(m_useCondGroup.begin(), m_useCondGroup.end(),
 				[](auto& a, auto& b) { return a.y < b.y; });
@@ -1228,9 +1220,9 @@ bool BoardManager::checkBeforeAbSuccess()
 				if (m_useCondGroup[i].y != m_useCondGroup[i - 1].y + 1)
 					return false;
 
-			m_isVertical = true;  
+			m_isVertical = true;
 		}
-		return true;        
+		return true;
 	}
 	case jokerSamok:       
 	{
@@ -1298,7 +1290,7 @@ bool BoardManager::checkBeforeAbSuccess()
 			for (const auto& pt : m_useCondGroup) {
 				JokerAbilityUse(m_stoneAbility, pt);
 			}
-			ExitMode();
+			RemoveGroup(m_SacrificeGroup);
 			return true;
 		}
 		m_useCondGroup.clear();
