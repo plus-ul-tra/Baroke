@@ -11,7 +11,7 @@ enum StoneType // 돌 종류
 };
 enum StoneAbility // 능력 혹은 이름
 {
-	None, // 흑돌 백돌
+	None, // 흑돌 백돌 // 빈 조커 슬롯
 	//---------------- 일반 (set 1)
 	jokerDouble, // 나중에 돌 놓을때 검은돌 갯수 추가하는 거 만들기
 	jokerOmok, // 버튼 쪽에서?
@@ -20,7 +20,7 @@ enum StoneAbility // 능력 혹은 이름
 
 	//----------------  야생(set 2)
 	jokerEvolution,
-	jokerDansu,
+	jokerDansu, // 함수 구현 완료
 	jokerEgg, // 함수 구현 완료
 	jokerOstrichEgg, // 함수 구현 완료
 	jokerPeacock, // 함수 구현 완료
@@ -39,9 +39,9 @@ enum StoneAbility // 능력 혹은 이름
 	//---------------- 할로윈 (set 6)
 	jokerSplit, // 함수 구현 완료
 	jokerWaxseal, // 함수 구현 완료
-	jokerFlip,
+	jokerFlip, // 함수 구현 완료
 	jokerOthello, // 함수 구현 완료
-	jokerMrchan,
+	jokerMrchan, // 함수 구현 완료
 
 	//---------------- 자연 (set 7)
 	jokerShadow, // 함수 구현 완료
@@ -56,7 +56,6 @@ enum JokerType
 	Dancheong = 2,
 	Halloween = 3,
 	Natural = 4,
-	Original = 5,
 
 	Default
 };
@@ -135,7 +134,7 @@ public:
 
 struct JokerStoneInfo // 조커 돌 정보
 {
-	string fileName = "JokerEgg.png"; // 조커 돌 이미지 파일 이름
+	string fileName = "jokerEgg.png"; // 조커 돌 이미지 파일 이름
 
 	JokerType jokerType = JokerType::Default;
 

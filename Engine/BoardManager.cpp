@@ -71,18 +71,36 @@ struct JokerFunctionsWrapper
 			if (!jokerBite->m_jokerInfo.coolTime) return;
 			jokerBite->m_jokerInfo.coolTime--;
 
-			random_device rd;
-			mt19937 rng(rd());
-			uniform_int_distribution<int> dist(0, 3); // 일단은 무작위로
-
 			POINT direction[4] = { { -1, 0 }, { 1, 0 }, { 0, -1 }, { 0, 1 } }; // 상하좌우
-			int randomIndex = dist(rng);
+			int directionInt = 0;
+			int maxWhiteStone = 0;
 
 			POINT newPosition = position;
 
+			for (int i = 0; i < 4; ++i)
+			{
+				int tempWhiteStone = 0;
+				for (int j = 1; j < SIZE_DEFAULT; ++j)
+				{
+					newPosition = { position.x + direction[i].x * j, position.y + direction[i].y * j };
+					if (!boardManager.isValidPoint(newPosition)) break;
+
+					if (boardManager.m_board[newPosition.x][newPosition.y])
+					{
+						if (boardManager.IsJokerStone(newPosition)) continue; // 조커 돌은 무시
+
+						if (boardManager.m_stoneTypeMap.find(newPosition)->second == StoneType::White) tempWhiteStone++;
+					}
+				}
+				if (tempWhiteStone > maxWhiteStone)
+				{
+					maxWhiteStone = tempWhiteStone;
+					directionInt = i;
+				}
+			}
 			for (int i = 1; i < SIZE_DEFAULT; ++i)
 			{
-				newPosition = { position.x + direction[randomIndex].x * i, position.y + direction[randomIndex].y * i };
+				newPosition = { position.x + direction[directionInt].x * i, position.y + direction[directionInt].y * i };
 				if (!boardManager.isValidPoint(newPosition)) break;
 
 				if (boardManager.m_board[newPosition.x][newPosition.y])
@@ -184,10 +202,77 @@ struct JokerFunctionsWrapper
 			jokerExplode->m_jokerInfo.coolTime--;
 		}
 		},
+		{ StoneAbility::jokerMagnetic, [this](shared_ptr<JokerStone> jokerMagnetic, POINT position)
+		{
+			if (!jokerMagnetic->m_jokerInfo.lifeSpan) boardManager.RemoveGroup({position});
+			if (!jokerMagnetic->m_jokerInfo.coolTime) return;
+			jokerMagnetic->m_jokerInfo.coolTime--;
+			jokerMagnetic->m_jokerInfo.lifeSpan--;
+
+			int patternX[8] = { -1, 0, 1, 1, -1, -1, 0, 1 };
+			int patternY[8] = { -1, -1, -1, 0, 0, 1, 1, 1 };
+
+			for (int j = 0; j < 8; ++j)
+			{
+				for (int i = 1; i < jokerMagnetic->m_jokerInfo.functionVariable; ++i)
+				{
+					int newX = position.x + patternX[j] * i;
+					int newY = position.y + patternY[j] * i;
+
+					if (!boardManager.isValidPoint({ newX, newY })) continue;
+					if (!boardManager.m_board[newX][newY]) continue;
+
+					random_device rd;
+					mt19937 rng(rd());
+					uniform_int_distribution<int> dist(0, 1);
+					int randomValue = dist(rng);
+
+					if (randomValue)
+					{
+						if (boardManager.isValidPoint({ newX + patternX[j], newY + patternY[j] }) && !boardManager.m_board[newX + patternX[j]][newY + patternY[j]])
+						{
+							boardManager.m_board[newX][newY]->Move(boardManager.BoardToScreenPosition({ newX + patternX[j], newY + patternY[j] }), 1);
+							boardManager.m_board[newX + patternX[j]][newY + patternY[j]] = boardManager.m_board[newX][newY];
+							boardManager.m_board[newX][newY] = nullptr;
+							boardManager.m_stoneTypeMap[{ newX + patternX[j], newY + patternY[j] }] = boardManager.m_stoneTypeMap[{ newX, newY }];
+							boardManager.m_stoneTypeMap.erase({ newX, newY });
+							if (boardManager.IsJokerStone({ newX, newY }))
+							{
+								for (auto& pair : boardManager.m_jokerPositions)
+								{
+									if (pair.first == POINT{ newX, newY }) pair.first = { newX + patternX[j], newY + patternY[j] };
+								}
+							}
+							break;
+						}
+					}
+					else
+					{
+						if (boardManager.isValidPoint({ newX - patternX[j], newY - patternY[j] }) && !boardManager.m_board[newX - patternX[j]][newY - patternY[j]])
+						{
+							boardManager.m_board[newX][newY]->Move(boardManager.BoardToScreenPosition({ newX - patternX[j], newY - patternY[j] }), 1);
+							boardManager.m_board[newX - patternX[j]][newY - patternY[j]] = boardManager.m_board[newX][newY];
+							boardManager.m_board[newX][newY] = nullptr;
+							boardManager.m_stoneTypeMap[{ newX - patternX[j], newY - patternY[j] }] = boardManager.m_stoneTypeMap[{ newX, newY }];
+							boardManager.m_stoneTypeMap.erase({ newX, newY });
+							if (boardManager.IsJokerStone({ newX, newY }))
+							{
+								for (auto& pair : boardManager.m_jokerPositions)
+								{
+									if (pair.first == POINT{ newX, newY }) pair.first = { newX - patternX[j], newY - patternY[j] };
+								}
+							}
+							break;
+						}
+					}
+				}
+			}
+		}
+		},
 		{ StoneAbility::jokerBlackhole, [this](shared_ptr<JokerStone> jokerBlackhole, POINT position)
 		{
 			// Mediator에 위치 설정
-		  if (!jokerBlackhole->m_jokerInfo.lifeSpan) boardManager.RemoveGroup({position});
+			if (!jokerBlackhole->m_jokerInfo.lifeSpan) boardManager.RemoveGroup({position});
 			if (!jokerBlackhole->m_jokerInfo.coolTime) return;
 
 			int functionVariable = jokerBlackhole->m_jokerInfo.functionVariable;
@@ -292,6 +377,107 @@ struct JokerFunctionsWrapper
 			std::cout << "Wax Money : " << boardManager.m_playerInfo.m_waxMoney << std::endl;
 		}
 		},
+		{ StoneAbility::jokerFlip, [this](shared_ptr<JokerStone> jokerFlip, POINT position)
+		{
+			if (!jokerFlip->m_jokerInfo.lifeSpan) boardManager.RemoveGroup({position});
+			if (!jokerFlip->m_jokerInfo.coolTime) return;
+			jokerFlip->m_jokerInfo.lifeSpan--;
+			jokerFlip->m_jokerInfo.coolTime--;
+
+			POINT patternX[9] = { { -1, 0 }, { -2, 0 }, { -2, -1 }, { -2, 1 }, { -3, 0 }, { -3, -1 }, { -3, 1 }, { -3, -2 }, { -3, 2 } };
+			POINT patternY[9] = { { 0, -1 }, { 0, -2 }, { -1, -2 }, { 1, -2 }, { 0, -3 }, { -1, -3 }, { 1, -3 }, { -2, -3 }, { 2, -3 } };
+			int inverse[2] = { 1, -1 };
+
+			bool isX = true;
+			int directionInt = 0;
+			int maxWhiteStone = 0;
+
+			POINT newPosition = position;
+
+			for (int dir : inverse)
+			{
+				int tempStone = 0;
+				for (POINT pattern : patternX)
+				{
+					newPosition = { position.x + pattern.x * dir, position.y + pattern.y * dir };
+					if (!boardManager.isValidPoint(newPosition)) continue;
+
+					if (boardManager.m_board[newPosition.x][newPosition.y])
+					{
+						if (!boardManager.IsJokerStone(newPosition)) tempStone++;
+					}
+				}
+				if (tempStone > maxWhiteStone)
+				{
+					maxWhiteStone = tempStone;
+					isX = true;
+					directionInt = dir;
+				}
+			}
+			for (int dir : inverse)
+			{
+				int tempStone = 0;
+				for (POINT pattern : patternY)
+				{
+					newPosition = { position.x + pattern.x * dir, position.y + pattern.y * dir };
+					if (!boardManager.isValidPoint(newPosition)) continue;
+
+					if (boardManager.m_board[newPosition.x][newPosition.y])
+					{
+						if (!boardManager.IsJokerStone(newPosition)) tempStone++;
+					}
+				}
+				if (tempStone > maxWhiteStone)
+				{
+					maxWhiteStone = tempStone;
+					isX = false;
+					directionInt = dir;
+				}
+			}
+			if (isX)
+			{
+				for (POINT pattern : patternX)
+				{
+					newPosition = { position.x + pattern.x * directionInt, position.y + pattern.y * directionInt };
+					if (!boardManager.isValidPoint(newPosition)) continue;
+
+					if (boardManager.m_board[newPosition.x][newPosition.y])
+					{
+						if (boardManager.IsJokerStone(newPosition)) continue;
+						if (boardManager.m_stoneTypeMap.find(newPosition)->second == StoneType::White)
+						{
+							boardManager.m_board[newPosition.x][newPosition.y]->ChangeColor();
+						}
+						else if (boardManager.m_stoneTypeMap.find(newPosition)->second == StoneType::Black)
+						{
+							boardManager.m_board[newPosition.x][newPosition.y]->ChangeColor(false);
+						}
+					}
+				}
+			}
+			else
+			{
+				for (POINT pattern : patternY)
+				{
+					newPosition = { position.x + pattern.x * directionInt, position.y + pattern.y * directionInt };
+					if (!boardManager.isValidPoint(newPosition)) continue;
+
+					if (boardManager.m_board[newPosition.x][newPosition.y])
+					{
+						if (boardManager.IsJokerStone(newPosition)) continue;
+						if (boardManager.m_stoneTypeMap.find(newPosition)->second == StoneType::White)
+						{
+							boardManager.m_board[newPosition.x][newPosition.y]->ChangeColor();
+						}
+						else if (boardManager.m_stoneTypeMap.find(newPosition)->second == StoneType::Black)
+						{
+							boardManager.m_board[newPosition.x][newPosition.y]->ChangeColor(false);
+						}
+					}
+				}
+			}
+		}
+		},
 		{ StoneAbility::jokerOthello, [this](shared_ptr<JokerStone> jokerOthello, POINT position)
 		{
 			if (!jokerOthello->m_jokerInfo.coolTime) return;
@@ -330,6 +516,38 @@ struct JokerFunctionsWrapper
 			}
 		}
 		},
+		{ StoneAbility::jokerMrchan, [this](shared_ptr<JokerStone> jokerMrchan, POINT position)
+		{
+			if (!jokerMrchan->m_jokerInfo.lifeSpan) boardManager.RemoveGroup({position});
+			if (!jokerMrchan->m_jokerInfo.coolTime) return;
+			jokerMrchan->m_jokerInfo.lifeSpan--;
+			jokerMrchan->m_jokerInfo.coolTime--;
+
+			vector<POINT> whiteStones;
+			for (auto& pair : boardManager.m_stoneTypeMap)
+			{
+				if (boardManager.IsJokerStone(pair.first)) continue;
+				if (pair.second == StoneType::White)
+				{
+					whiteStones.push_back(pair.first);
+				}
+			}
+
+			random_device rd;
+			mt19937 rng(rd());
+			shuffle(whiteStones.begin(), whiteStones.end(), rng);
+
+			uniform_int_distribution<int> dist(1, 15);
+			int randomIndex = dist(rng);
+			for (int i = 0; i < randomIndex && i < whiteStones.size(); ++i)
+			{
+				if (boardManager.m_board[whiteStones[i].x][whiteStones[i].y])
+				{
+					boardManager.RemoveGroup({ whiteStones[i] });
+				}
+			}
+		}
+		},
 
 		{ StoneAbility::jokerShadow, [this](shared_ptr<JokerStone> jokerShadow, POINT position)
 		{
@@ -355,6 +573,38 @@ struct JokerFunctionsWrapper
 				}
 			}
 
+		}
+		},
+		{ StoneAbility::jokerLight, [this](shared_ptr<JokerStone> jokerLight, POINT position)
+		{
+			if (!jokerLight->m_jokerInfo.lifeSpan) boardManager.RemoveGroup({position});
+			if (!jokerLight->m_jokerInfo.coolTime) return;
+			jokerLight->m_jokerInfo.coolTime--;
+			jokerLight->m_jokerInfo.lifeSpan--;
+
+			int patternX[8] = { -1, 0, 1, 1, -1, -1, 0, 1 };
+			int patternY[8] = { -1, -1, -1, 0, 0, 1, 1, 1 };
+
+			for (int i = 0; i < SIZE_DEFAULT; ++i)
+			{
+				for (int j = 0; j < 8; ++j)
+				{
+					int newX = position.x + patternX[j] * i;
+					int newY = position.y + patternY[j] * i;
+					if (!boardManager.isValidPoint({ newX, newY })) continue;
+					if (boardManager.m_board[newX][newY])
+					{
+						if (boardManager.IsJokerStone({ newX, newY })) continue;
+						if (boardManager.m_stoneTypeMap.find({ newX, newY })->second == StoneType::White)
+						{
+							if (boardManager.isValidPoint({ newX + patternX[j], newY + patternY[j] }) && !boardManager.m_board[newX + patternX[j]][newY + patternY[j]])
+							{
+								boardManager.PlaceStone({ newX + patternX[j], newY + patternY[j] }, StoneType::Black, StoneAbility::None);
+							}
+						}
+					}
+				}
+			}
 		}
 		},
 		{ StoneAbility::jokerTime, [this](shared_ptr<JokerStone> jokerTime, POINT position)
@@ -409,11 +659,6 @@ struct JokerFunctionsWrapper
 			}
 			jokerWind->m_jokerInfo.coolTime--;
 			jokerWind->m_jokerInfo.lifeSpan--;
-		}
-		},
-		{ StoneAbility::jokerSammok, [this](shared_ptr<JokerStone> jokerSammok, POINT position)
-		{
-			std::cout << "jokerSammok use" << std::endl;
 		}
 		},
 	};
@@ -683,40 +928,39 @@ void BoardManager::InitializeJokerInfoMap()
 
 	//------------------------------------------------------------------------------------------------ 일반 (set 1)
 
-	m_jokerInfoMap[StoneAbility::jokerDouble] = { "jokerDouble.png", JokerType::Original, 0, 0, 0, 0, 0, 1, 2, 1, false };
-	m_jokerInfoMap[StoneAbility::jokerOmok] = { "jokerOmok.png", JokerType::Original, 0, 0, 0, 0, 0, 2, 4, 2, false };
-	m_jokerInfoMap[StoneAbility::jokerSamok] = { "jokerSamok.png", JokerType::Original,  0, 0, 0, 0, 0, 5, 3, 2, false };
-	m_jokerInfoMap[StoneAbility::jokerSammok] = { "jokerSammok.png", JokerType::Original, 0, 0, 0, 0, 0, 2, 2, 1, false };
-
+	m_jokerInfoMap[StoneAbility::jokerDouble] = { "jokerDouble.png", JokerType::Default, 0, 0, 0, 0, 0, 1, 2, 1, false };
+	m_jokerInfoMap[StoneAbility::jokerOmok] = { "jokerOmok.png", JokerType::Default, 0, 0, 0, 0, 0, 2, 4, 2, false };
+	m_jokerInfoMap[StoneAbility::jokerSamok] = { "jokerSamok.png", JokerType::Default,  0, 0, 0, 0, 0, 5, 3, 2, false };
+	m_jokerInfoMap[StoneAbility::jokerSammok] = { "jokerSammok.png", JokerType::Default, 0, 0, 0, 0, 0, 2, 2, 1, false };
 
 	//------------------------------------------------------------------------------------------------ 야생 (set 2)
 	m_jokerInfoMap[StoneAbility::jokerEvolution] = { "jokerEvolution.png", JokerType::Wild, 0, 0, 0, 0, 0, 0, 7, 3, false };						// cost 0
 	m_jokerInfoMap[StoneAbility::jokerDansu] = { "jokerDansu.png", JokerType::Wild, 1, 1, 0, 0, 0, 1, 2, 1, true, StoneType::Black };
 	m_jokerInfoMap[StoneAbility::jokerEgg] = { "jokerEgg.png", JokerType::Wild, 3, 0, 0, 2, 5, 0, 2, 1, true };
 	m_jokerInfoMap[StoneAbility::jokerOstrichEgg] = { "jokerOstrichEgg.png", JokerType::Wild, 2, 0, 0, 1, 0, 0, 0, 0, true };
-	m_jokerInfoMap[StoneAbility::jokerPeacock] = { "jokerPeacock.png", JokerType::Wild, 0, 1, 0, 3, 3, 1, 6, 3, true, StoneType::Black };				// cost 4
+	m_jokerInfoMap[StoneAbility::jokerPeacock] = { "jokerPeacock.png", JokerType::Wild, 1, 1, 0, 3, 3, 1, 6, 3, true, StoneType::Black };				// cost 4
 
 	//------------------------------------------------------------------------------------------------ 우주 (set 3)
 	m_jokerInfoMap[StoneAbility::jokerTeleport] = { "jokerTeleport.png", JokerType::Space, 10, 5, 0 };
 	m_jokerInfoMap[StoneAbility::jokerExplode] = { "jokerExplode.png", JokerType::Space, 1, 1, 0, 1, 3, 1, 6, 3, true };
-	m_jokerInfoMap[StoneAbility::jokerMagnetic] = { "jokerMagnetic.png", JokerType::Space, 0, 1, 0, 3 };
+	m_jokerInfoMap[StoneAbility::jokerMagnetic] = { "jokerMagnetic.png", JokerType::Space, 1, 1, 0, 3, 4, 2, 5, 2, true };
 	m_jokerInfoMap[StoneAbility::jokerBlackhole] = { "jokerBlackhole.png", JokerType::Space, 1, 1, 0, 5, 15, 0, 8, 3, true };
 
 	//------------------------------------------------------------------------------------------------ 단청 (set 4)
-	m_jokerInfoMap[StoneAbility::jokerFusion] = { "jokerFusion.png", JokerType::Dancheong, 0, 0, 0, 2 };
-	m_jokerInfoMap[StoneAbility::jokerTriunion] = { "jokerTriunion.png", JokerType::Dancheong, 0, 0, 0, 3 };
-	m_jokerInfoMap[StoneAbility::jokerQuadunion] = { "jokerQuadunion.png", JokerType::Dancheong, 0, 0, 0, 4 };
+	m_jokerInfoMap[StoneAbility::jokerFusion] = { "jokerFusion.png", JokerType::Dancheong, 0, 0, 0, 2, 2, 2, 5, 2, true, StoneType::White };
+	m_jokerInfoMap[StoneAbility::jokerTriunion] = { "jokerTriunion.png", JokerType::Dancheong, 0, 0, 0, 3, 0, 3, 3, true, StoneType::White };
+	m_jokerInfoMap[StoneAbility::jokerQuadunion] = { "jokerQuadunion.png", JokerType::Dancheong, 0, 0, 0, 4, 0, 4, 4, 3, true, StoneType::White };
 
 	//------------------------------------------------------------------------------------------------ 할로윈 (set 6)
 	m_jokerInfoMap[StoneAbility::jokerSplit] = { "jokerSplit.png", JokerType::Halloween, 3, 0, 0, 20, 2, 0, 5, 2, true };
 	m_jokerInfoMap[StoneAbility::jokerWaxseal] = { "jokerWaxseal.png", JokerType::Halloween, 0, 0, 0, 1, 0, 0, 3, 2, true, StoneType::Black };
-	m_jokerInfoMap[StoneAbility::jokerFlip] = { "jokerFlip.png", JokerType::Halloween, 20, 10, 0, 3, 1, 6, 2, true };
+	m_jokerInfoMap[StoneAbility::jokerFlip] = { "jokerFlip.png", JokerType::Halloween, 1, 1, 0, 0, 3, 1, 6, 2, true };
 	m_jokerInfoMap[StoneAbility::jokerOthello] = { "jokerOthello.png", JokerType::Halloween, 1, 0, 0, 3, 2, 4, 5, 1, true };
-	m_jokerInfoMap[StoneAbility::jokerMrchan] = { "jokerMrchan.png", JokerType::Halloween, 20, 10, 0 };
+	m_jokerInfoMap[StoneAbility::jokerMrchan] = { "jokerMrchan.png", JokerType::Halloween, 1, 1, 0, 0, 0, 0, 0, 3, true };
 
 	//------------------------------------------------------------------------------------------------ 자연 (set 7)
 	m_jokerInfoMap[StoneAbility::jokerShadow] = { "jokerShadow.png", JokerType::Natural, 1, 1, 0, 4, 1, 0, 4, 2, true };
-	m_jokerInfoMap[StoneAbility::jokerLight] = { "jokerLight.png", JokerType::Natural, 15, 7, 0 };
+	m_jokerInfoMap[StoneAbility::jokerLight] = { "jokerLight.png", JokerType::Natural, 1, 1, 0, 0, 2, 0, 4, 2, true };
 	m_jokerInfoMap[StoneAbility::jokerTime] = { "jokerTime.png", JokerType::Natural, 3, 0, 0, 2, 0, 2, 7, 3, true };
 	m_jokerInfoMap[StoneAbility::jokerWind] = { "jokerWind.png", JokerType::Natural, 2, 5, 0, 2, 4, 1, 4, 2, true };
 

@@ -72,8 +72,17 @@ void ShopJokerButton::ButtonFunction()
 	{
 		if (m_boardManager.m_playerInfo.m_money >= m_jokerInfo.costWhite)
 		{
-			m_boardManager.m_playerInfo.m_money -= m_jokerInfo.costWhite;
-			m_jokerButton->SetButtonJoker(m_jokerInfo.stoneType, m_jokerAbility);
+			for (auto& jokerButton : *m_jokerButton)
+			{
+				if (!jokerButton) continue;
+				if (jokerButton->GetJokerAbility() != StoneAbility::None) continue; // 이미 능력이 있는 조커 버튼은 건너뜀
+
+				jokerButton->SetButtonJoker(m_jokerInfo.stoneType, m_jokerAbility);
+				m_boardManager.m_playerInfo.m_money -= m_jokerInfo.costWhite;
+
+				break;
+			}
+			SetShowAndActive(false); // 상점 조커 버튼 숨김
 
 			std::cout << "Money : " << m_boardManager.m_playerInfo.m_money << std::endl;
 		}

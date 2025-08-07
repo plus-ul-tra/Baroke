@@ -422,7 +422,7 @@ void Renderer::SetShaderMode(const string& mode, float timer) {
 		ID3D11Buffer* cbuffers[1] = { m_pTimeCBuffer.Get() };
 		m_pd3dContext->PSSetConstantBuffers(1, 1, cbuffers);
 	}
-	else if (mode == "Othello") {
+	if (mode == "Othello") {
 		// 수정 필요
 		TimeCBuffer timeData{};
 
