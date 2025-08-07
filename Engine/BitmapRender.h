@@ -87,6 +87,7 @@ public:
 	}
 
 	void SetShaderType(const string& type) { m_shaderType = type; } // 쉐이더 타입 설정
+	//void SetShaderType(const string& type, float duration = 1.0f) { m_shaderType = type; m_shaderTimeElapsed = 0.0f; m_shaderEffectDuration = duration; }
 
 	void ChangeStoneTexture(const string& nextTextureKey)
 	{
@@ -95,7 +96,7 @@ public:
 		m_textureSRV = m_nextTextureSRV;
 	}
 
-	void SetShaderType(const string& type, float duration = 1.0f) { m_shaderType = type; m_shaderTimeElapsed = 0.0f; m_shaderEffectDuration = duration; }
+	
 
 	const string& GetShaderType() const { return m_shaderType; } // 현재 쉐이더 타입 반환
 };
