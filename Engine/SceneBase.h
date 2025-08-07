@@ -54,7 +54,8 @@ public:
 	{
 		// m_objectList.clear(); 
 		// objectList 외에 것도 clear
-
+		m_buttonList.clear();
+		m_notUniqueObjectList.clear();
 	}
 
 	virtual void OnCommand(std::string& cmd)  // 입력처리
@@ -71,5 +72,4 @@ public:
 	}
 
 	virtual void OnInput(const MouseEvent& ev) = 0;
-
 };

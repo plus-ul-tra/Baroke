@@ -358,12 +358,15 @@ void GameScene::Update(double deltaTime)
 	{
 		UI->Update(deltaTime);
 	}
+	for (auto& notUniqueObject : m_notUniqueObjectList)
+	{
+		notUniqueObject->Update(deltaTime);
+	}
 	m_boardObj->BoardSync();
 	//m_board.SyncBlackStoneCount(m_player->GetBlackStone());
 	ModeCheck();
 	CheckStageClear();
 	ChangeThema();
-	
 }
 
 void GameScene::LateUpdate(double deltaTime)
@@ -400,10 +403,9 @@ void GameScene::OnEnter()
 	m_objectList.emplace_back(std::move(boardObj));
 
 
+	//CreateObject::CreateObjectsOutOfScreen(m_objectList, "Leaf6.png", 1920.0f, 1080.0f, 200.0f, 100, 50.0f);
+
 	SetUIButton();
-
-	CreateObject::CreateObjectsOutOfScreen(m_objectList, "Leaf6.png", 1920.0f, 1080.0f, 200.0f, 100, 50.0f);
-
 	StartStage();
 	InitShop();
 }

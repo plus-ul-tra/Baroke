@@ -40,8 +40,17 @@ void SceneBase::Render(Renderer& renderer) {
 		}
 		ui->Render(renderer);
 	}
-
-
+	for (const auto& notUniqueObject : m_notUniqueObjectList)
+	{
+		if (auto bitmapRenderComp = notUniqueObject->GetComponent<BitmapRender3D>())
+		{
+			if (bitmapRenderComp->IsActive())
+			{
+				bitmapRenderComp->Render(renderer);
+			}
+		}
+		notUniqueObject->Render(renderer);
+	}
 }
 //
 void RenderObject(Object* obj, Renderer& renderer)
