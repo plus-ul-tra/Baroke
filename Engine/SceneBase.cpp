@@ -24,13 +24,6 @@ void SceneBase::Render(Renderer& renderer) {
 			}
 		}
 		obj->Render(renderer);
-		//if (auto textRenderComp = obj->GetComponent<TextRender>())
-		//{
-		//	if (textRenderComp->IsActive())
-		//	{
-		//		textRenderComp->Render(renderer);
-		//	}
-		//}
 	}
 
 
@@ -38,8 +31,6 @@ void SceneBase::Render(Renderer& renderer) {
 	// --- UI
 	for (const auto& ui : m_UIList) {
 
-
-		
 		if (auto bitmapRenderComp = ui->GetComponent<BitmapRender3D>())
 		{
 			if (bitmapRenderComp->IsActive())

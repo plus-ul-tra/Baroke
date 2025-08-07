@@ -26,16 +26,11 @@ public:
 		m_bitmapRender = AddComponent<BitmapRender3D>("Cyberpunk.png", drawW, drawH);
 		m_bitmapRender->SetOrder(0);
 		m_bitmapRender->SetActive(true);
-		//m_bitmapRender->SetShaderType("GrayScale");
-		//m_bitmapRender->SetShaderType("Othello");
 		m_boardManager.Initialize(offX, offY, drawW, drawH, _cell, m_stoneOffset, padding); // 보드 매니저 초기화
 	}
-	// 이건 어디서 호출?
+	//바둑돌 그리기
 	void Render(Renderer& r) override
 	{	
-		//if (m_bitmapRender) m_bitmapRender->Render(r, "NoiseShader"); // 보드가 자기 그림
-
-	
 		for (auto& sp : m_stones)
 			if (auto* bmp = sp->GetComponent<BitmapRender3D>())
 				if (bmp->IsActive()) bmp->Render(r); // 돌그리기
@@ -44,8 +39,6 @@ public:
 
 	void Update(double deltaTime) override
 	{
-// 		for (auto& sp : m_stones)
-// 			sp->Update(deltaTime);
 		const auto& sel = m_boardManager.GetSacrificeGroup();
 		const auto& sel2 = m_boardManager.GetuseCondGroup();
 
@@ -106,8 +99,13 @@ inline void BoardObject::BoardSync()
 			if (jokerType >= 5)
 			{
 				m_isTextureChanged = true;
-				std::cout << "Changing Board Texture" << std::endl;
+				
+				//ChangeThema 같은 함수로 묶을 것임
 				m_bitmapRender->ChangeTexture("Forest.png", 3.0f);
+				m_bitmapRender->ChangeBackGroundColor(XMFLOAT4(0.2f, 0.9f, 0.2f, 1.0f));
+				// 오브젝트 등장
+
+				//해줘 나뭇잎
 				break;
 			}
 

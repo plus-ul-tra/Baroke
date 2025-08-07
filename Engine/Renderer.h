@@ -49,10 +49,15 @@ struct alignas(16) TextureAtlasCBuffer
 	float padding[2]; // 16바이트 정렬을 위한 패딩
 };
 
-struct alignas(16) PositionCBuffer {
+struct  PositionCBuffer {
 	float x;
 	float y;
 	float padding[2];
+};
+
+__declspec(align(16)) struct ColorCBuffer {
+	XMFLOAT4 prevColor;     // r,g,b,(pad)
+	XMFLOAT4 targetColor;
 };
 
 using namespace Microsoft::WRL;
@@ -111,7 +116,9 @@ private:
 	XMMATRIX                          m_projectionMatrix;
 	ComPtr<ID3D11Buffer>			  m_pTimeCBuffer;
 	ComPtr<ID3D11Buffer>			  m_pPositionCBuffer; // 블랙홀 중심 좌표용
-	float 							  m_blackHoleTime = 0.0f; // 블랙홀 효과 시간 / 외 다른 시간 shader 버퍼로 사용불가..ㅠ
+	ComPtr<ID3D11Buffer>			  m_pColorCBuffer;
+
+	float 							  m_blackHoleTime = 0.0f; // 블랙홀 효과 시간
 public:
 	Renderer() = default;
 	~Renderer();
@@ -157,6 +164,8 @@ private:
 	void CreateShaderRenderTargets();
 	void CreateTimeCBuffer();
 	void CreaetePositionCBuffer(); //좌표용
+	void CreateColorCBuffer();     //색상 변형
+
 	void ReleaseRenderTargets();
 	void InitializeShader(HWND hwnd); // PassThrough 쉐이더 초기화에 사용
 
