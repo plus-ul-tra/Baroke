@@ -367,7 +367,7 @@ void GameScene::Update(double deltaTime)
 	//m_board.SyncBlackStoneCount(m_player->GetBlackStone());
 	ModeCheck();
 	CheckStageClear();
-	ChangeThema();
+	ChangeThema(m_boardObj->IsBoardChanged());
 }
 
 void GameScene::LateUpdate(double deltaTime)
@@ -417,6 +417,7 @@ void GameScene::OnLeave()
 	Reset();
 	m_jokerButtons.clear();
 	m_normalUI.clear();
+	m_screenEffectObjects.clear();
 }
 
 void GameScene::OnCommand(std::string& cmd)
@@ -453,7 +454,7 @@ void GameScene::KeyCommandMapping()
 
 	m_commandMap["F3"] = [this]()
 		{
-			//m_board.PlaceRandomStones(3);
+
 		};
 
 	m_commandMap["F4"] = [this]()
@@ -519,7 +520,7 @@ void GameScene::OnInput(const MouseEvent& ev)
 			{
 				std::cout << ev.pos.x << " " << ev.pos.y << std::endl;
 				m_board.SetStoneType(Joker);
-				m_board.SetStoneAbility(jokerBlackhole);
+				m_board.SetStoneAbility(jokerEgg);
 
 
 				m_board.InputBasedGameLoop(ev.pos);
@@ -567,26 +568,74 @@ void GameScene::OnInput(const MouseEvent& ev)
 	
 }
 
-void GameScene::ChangeThema() 
-{	
-	// 테마마다 색상값 등장 오브젝트 미리 설정
-	// 보드 메니져나 보드의 조건 check 필요
-	//if( 멤버 보드의 상태읽어서 분기)
-	//일반
-	Mediator::GetInstance().SetUIColor(XMFLOAT4(1.0f, 1.0f, 1.0f, 1.0f));
+void GameScene::ChangeThema(int thema)
+{
+	switch (thema)
+	{
+		m_screenEffectObjects.clear();
 
-	for (auto& bt : m_normalUI) {
-		auto rend = bt->GetComponent<BitmapRender3D>();	
-		rend->SetShaderType("UIColor");
+	case 0: // Forest
+		Mediator::GetInstance().SetUIColor(XMFLOAT4(1.0f, 1.0f, 1.0f, 1.0f));
+
+		for (auto& bt : m_normalUI)
+		{
+			auto rend = bt->GetComponent<BitmapRender3D>();
+			rend->SetShaderType("UIColor");
+		}
+		CreateObject::CreateObjectsOutOfScreen(m_screenEffectObjects, "Leaf6.png", 1920.0f, 1080.0f, 200.0f, 50, 1.0f);
+		break;
+
+	case 1: // Space
+		Mediator::GetInstance().SetUIColor(XMFLOAT4(1.0f, 1.0f, 1.0f, 1.0f));
+
+		for (auto& bt : m_normalUI)
+		{
+			auto rend = bt->GetComponent<BitmapRender3D>();
+			rend->SetShaderType("UIColor");
+		}
+		CreateObject::CreateObjectsOutOfScreen(m_screenEffectObjects, "Leaf6.png", 1920.0f, 1080.0f, 200.0f, 50, 1.0f);
+		break;
+
+	case 2: // Korea
+		Mediator::GetInstance().SetUIColor(XMFLOAT4(1.0f, 1.0f, 1.0f, 1.0f));
+
+		for (auto& bt : m_normalUI)
+		{
+			auto rend = bt->GetComponent<BitmapRender3D>();
+			rend->SetShaderType("UIColor");
+		}
+		CreateObject::CreateObjectsOutOfScreen(m_screenEffectObjects, "Leaf6.png", 1920.0f, 1080.0f, 200.0f, 50, 1.0f);
+		break;
+
+	case 3: // Halloween
+		Mediator::GetInstance().SetUIColor(XMFLOAT4(1.0f, 1.0f, 1.0f, 1.0f));
+
+		for (auto& bt : m_normalUI)
+		{
+			auto rend = bt->GetComponent<BitmapRender3D>();
+			rend->SetShaderType("UIColor");
+		}
+		CreateObject::CreateObjectsOutOfScreen(m_screenEffectObjects, "Leaf6.png", 1920.0f, 1080.0f, 200.0f, 50, 1.0f);
+		break;
+
+	case 4: // Cyber
+		Mediator::GetInstance().SetUIColor(XMFLOAT4(1.0f, 1.0f, 1.0f, 1.0f));
+
+		for (auto& bt : m_normalUI)
+		{
+			auto rend = bt->GetComponent<BitmapRender3D>();
+			rend->SetShaderType("UIColor");
+		}
+		CreateObject::CreateObjectsOutOfScreen(m_screenEffectObjects, "Leaf6.png", 1920.0f, 1080.0f, 200.0f, 50, 1.0f);
+		break;
+
+	default: // 기본 테마
+		break;
 	}
-	// forest
-	
-	// cyber
-	
-	// korea
-	
-	// space
-	
-	// halloween
+
+	for (auto& effect : m_screenEffectObjects)
+	{
+		m_notUniqueObjectList.emplace_back(effect.get());
+	}
 }
 

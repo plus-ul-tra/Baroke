@@ -11,7 +11,8 @@ class BoardObject : public Object
 	Board m_board;
 	std::vector<Stone*> m_stones;
 
-	bool currentBoardType = -1;
+	int currentBoardType = -1;
+	bool m_isBoardChanged = false; // 보드 타입이 변경되었는지 여부
 
 public:
 	BoardObject(int offX, int offY, int drawW, int drawH, int _cell, int _stoneOffset = 0,int padding = 0)
@@ -65,7 +66,7 @@ public:
 	}
 
 	void BoardSync();
-	
+	int IsBoardChanged();
 };
 
 struct BoardType
@@ -73,16 +74,15 @@ struct BoardType
 	string textureKey = "Original.png";
 	float changeDuration = 0.0f;
 	XMFLOAT4 backgroundColor = XMFLOAT4(0.2f, 0.9f, 0.2f, 1.0f);
-	function<void(BoardObject&)> setupFunction = [](BoardObject& boardObj) { std::cout << "Default board setup" << std::endl; };
 };
 
 inline unordered_map<int, BoardType> boardTypes =
 {
-	{0, {"Forest.png",		3.0f, XMFLOAT4(0.2f, 0.9f, 0.2f, 1.0f), [](BoardObject& boardObj) { std::cout << "Forest board setup" << std::endl; }}},
-	{1, {"Space.png",		3.0f, XMFLOAT4(0.2f, 0.9f, 0.2f, 1.0f), [](BoardObject& boardObj) {}}},
-	{2, {"Korea.png",		3.0f, XMFLOAT4(0.9f, 0.8f, 0.6f, 1.0f), [](BoardObject& boardObj) {}}},
-	{3, {"Halloween.png",	3.0f, XMFLOAT4(0.2f, 0.5f, 0.8f, 1.0f), [](BoardObject& boardObj) {}}},
-	{4, {"Cyberpunk.png",	3.0f, XMFLOAT4(0.8f, 0.2f, 0.2f, 1.0f), [](BoardObject& boardObj) {}}}
+	{0, {"Forest.png",		3.0f, XMFLOAT4(0.2f, 0.9f, 0.2f, 1.0f)}},
+	{1, {"Space.png",		3.0f, XMFLOAT4(0.2f, 0.9f, 0.2f, 1.0f)}},
+	{2, {"Korea.png",		3.0f, XMFLOAT4(0.9f, 0.8f, 0.6f, 1.0f)}},
+	{3, {"Halloween.png",	3.0f, XMFLOAT4(0.2f, 0.5f, 0.8f, 1.0f)}},
+	{4, {"Cyberpunk.png",	3.0f, XMFLOAT4(0.8f, 0.2f, 0.2f, 1.0f)}}
 };
 
 inline void BoardObject::BoardSync()
@@ -120,15 +120,20 @@ inline void BoardObject::BoardSync()
 
 			m_bitmapRender->ChangeBoardTexture(boardType.textureKey, boardType.changeDuration);
 			m_bitmapRender->ChangeBackGroundColor(boardType.backgroundColor);
-			//
-			boardType.setupFunction(*this); // 보드 타입에 따른 설정 함수 호출
+
+			m_isBoardChanged = true;
 
 			break;
 		}
 	}
 }
 
-
-
-
-
+inline int BoardObject::IsBoardChanged()
+{
+	if (m_isBoardChanged)
+	{
+		m_isBoardChanged = false;
+		return currentBoardType;
+	}
+	return -1;
+}
