@@ -101,7 +101,7 @@ void GameScene::SetUIJokerButton()
 
 
 	unique_ptr<JokerButton> jokerButton1 = std::make_unique<JokerButton>(617.0f, 341.0f, 100, 100, "Black.png", 50);
-	jokerButton1->SetButtonJoker(Black, None);
+	jokerButton1->SetButtonJoker(Black, jokerOmok);
 	m_buttonList.emplace_back(jokerButton1.get());
 	m_UIList.emplace_back(jokerButton1.get());
 	m_jokerButtons.emplace_back(move(jokerButton1));

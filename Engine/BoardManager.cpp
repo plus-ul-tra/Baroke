@@ -49,13 +49,13 @@ struct JokerFunctionsWrapper
 			POINT directionX[4] = { { -1, 0 }, { 1, 0 }, { -2, 0 }, { 2, 0 } }; // 좌우
 			POINT directionY[4] = { { 0, -1 }, { 0, 1 }, { 0, -2 }, { 0, 2 } }; // 상하
 
-			if (boardManager.m_isVertical)
+			if (!boardManager.m_isVertical)
 			{
 				for (POINT i : directionX)
 				{
 					POINT newPosition = { position.x + i.x, position.y + i.y };
-					if (!boardManager.isValidPoint(newPosition)) break;
-					if (boardManager.m_board[newPosition.x][newPosition.y]) break;
+					if (!boardManager.isValidPoint(newPosition)) continue;
+					if (boardManager.m_board[newPosition.x][newPosition.y]) continue;
 
 					boardManager.PlaceStone(newPosition, StoneType::Black, StoneAbility::None); // 검은 돌 놓기
 				}
@@ -65,8 +65,8 @@ struct JokerFunctionsWrapper
 				for (POINT i : directionY)
 				{
 					POINT newPosition = { position.x + i.x, position.y + i.y };
-					if (!boardManager.isValidPoint(newPosition)) break;
-					if (boardManager.m_board[newPosition.x][newPosition.y]) break;
+					if (!boardManager.isValidPoint(newPosition)) continue;
+					if (boardManager.m_board[newPosition.x][newPosition.y]) continue;
 					boardManager.PlaceStone(newPosition, StoneType::Black, StoneAbility::None); // 검은 돌 놓기
 				}
 			}
