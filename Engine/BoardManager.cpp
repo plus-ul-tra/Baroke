@@ -1176,7 +1176,7 @@ bool BoardManager::checkSacrificeSuccess()
 	if (m_SacrificeGroup.size() == m_jokerInfoMap[m_stoneAbility].costBlack) 
 	{
 		m_playerInfo.decBlackCount(m_SacrificeGroup.size());
-		m_playerInfo.incBlackCount()
+		//m_playerInfo.incBlackCount();
 		return true;
 	}
 	return false;

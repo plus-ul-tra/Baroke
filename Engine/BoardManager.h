@@ -95,8 +95,9 @@ public:
 	//---------------------------------------------------------------- 플레이어
 public:
 	PlayerInfo GetPlayer() { return m_playerInfo; }
-private:
 	PlayerInfo m_playerInfo; // 플레이어 정보 // 흑돌, 백돌, 돈 등
+private:
+
 
 	//---------------------------------------------------------------- 희생 모드 진입, 탈출
 public:
