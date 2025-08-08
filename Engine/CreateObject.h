@@ -25,7 +25,6 @@ public:
 		float speed = 1.0f,
 		direction exclusiveDirection = direction::all
 	);
-
 };
 
 class NewObject : public Object
@@ -44,4 +43,28 @@ public:
 	void Render(Renderer& renderer) override { Object::Render(renderer); }
 
 	virtual ~NewObject() = default;
+};
+
+class OneTimeEffect : public Object
+{
+	Transform* m_transform = nullptr;
+	BitmapRender3D* m_bitmapRender = nullptr;
+
+public:
+	OneTimeEffect(float posX, float posY, float width, float height, const std::string& bitmapKey = "Sample.png", int order = 0)
+	{
+		m_transform = AddComponent<Transform>();
+		m_bitmapRender = AddComponent<BitmapRender3D>(bitmapKey, width, height);
+		m_bitmapRender->SetOrder(order);
+		m_bitmapRender->SetActive(true);
+		m_transform->SetPosition(DirectX::XMVectorSet(posX, posY, 0.0f, 1.0f));
+		m_transform->SetScale(DirectX::XMVectorSet(1.0f, 1.0f, 1.0f, 1.0f));
+	}
+
+	bool m_isDead = false; // 효과가 끝났는지 여부
+
+	void Update(double deltaTime) override { m_bitmapRender->Update(deltaTime);	m_isDead = m_bitmapRender->IsEnded(); }
+	void Render(Renderer& renderer) override { m_bitmapRender->Render(renderer); }
+
+	virtual ~OneTimeEffect() = default;
 };

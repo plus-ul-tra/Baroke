@@ -838,8 +838,7 @@ POINT BoardManager::MouseToBoardPosition(POINT mousePos) const
 	{
 		(mousePos.x + m_drawW + m_cell / 2) / m_cell,
 		-(mousePos.y - m_drawH - m_cell / 2) / m_cell
-//  		(mousePos.x - m_offX - m_padding + m_cell / 2) / m_cell,
-//  		(mousePos.y - m_offY - m_padding + m_cell / 2) / m_cell
+
 	};
 }
 
@@ -850,8 +849,7 @@ POINT BoardManager::BoardToScreenPosition(POINT boardPos) const
 	{
 		boardPos.x * m_cell- m_drawW - m_cell / 2,
 		-boardPos.y * m_cell + m_drawH - m_cell / 2
-//  		m_offX + m_padding + boardPos.x * m_cell,
-//  		m_offY + m_padding + boardPos.y * m_cell
+
 	};
 }
 
@@ -989,6 +987,8 @@ int BoardManager::GetStoneTypeAmount(StoneType type) const
 }
 
 
+
+
 void BoardManager::InitializeJokerInfoMap()
 {
 	m_jokerInfoMap[StoneAbility::None] = {}; // 디폴트 돌
@@ -1104,8 +1104,59 @@ void BoardManager::RemoveJokerStone(POINT position)
 
 
 
+//---------------------------------------------------------------- 착수 영역 표시 및 제한
+void BoardManager::ComputePlacementHints(StoneAbility ability)
+{
+	m_hintCells.clear();
+	m_mask.clear();
 
-//---------------------------------------------------------------- 희생 모드 관련 함수
+	for (int x = 0; x < SIZE_DEFAULT; ++x)
+		for (int y = 0; y < SIZE_DEFAULT; ++y)
+			if (IsEmpty(x, y)) {
+				bool ok = true;
+				switch (ability) {
+				case StoneAbility::jokerOmok:
+// 					if (x == 0 ){ok = true;}
+// 					else {ok = false;}
+					ok = true;
+					break;
+				case StoneAbility::jokerFusion:
+					break;
+				case StoneAbility::jokerExplode:
+					break;
+ 				case StoneAbility::jokerMagnetic:
+ 					break;
+				case StoneAbility::jokerBlackhole:
+					break;
+				case StoneAbility::jokerShadow:
+					break;
+				case StoneAbility::jokerWaxseal:
+					break;
+				case StoneAbility::jokerOthello:
+					break;
+				default:
+					ok = true;
+					break;
+				}
+				if (ok) {
+					m_hintCells.push_back({ x,y });
+					m_mask.insert(Key(x, y));
+				}
+			}
+}
+
+
+bool BoardManager::IsPlacementAllowed(int gx, int gy) const
+{
+	return m_mask.count(Key(gx, gy)) > 0;
+}
+
+bool BoardManager::IsEmpty(int x, int y)
+{
+	if (m_board[x][y]) return false;
+	return true;
+}
+
 bool BoardManager::SelectSacrificeStone(POINT mousePos)
 {
 
@@ -1166,7 +1217,7 @@ bool BoardManager::checkSacrificeSuccess()
 	if (m_SacrificeGroup.size() == m_jokerInfoMap[m_stoneAbility].costBlack) 
 	{
 		m_playerInfo.decBlackCount(m_SacrificeGroup.size());
-		//m_playerInfo.incBlackCount();
+		m_playerInfo.incBlackCount(m_jokerInfoMap[m_stoneAbility].returnBlack);
 		return true;
 	}
 	return false;

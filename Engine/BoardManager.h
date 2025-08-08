@@ -92,6 +92,22 @@ public:
 
 	//void ChangeBoard();
 
+	//---------------------------------------------------------------- 착수 영역 표시 및 제한
+public:
+	void ComputePlacementHints(StoneAbility ability); // 능력별 가능 칸 계산
+	bool IsPlacementAllowed(int gx, int gy) const;
+	const std::vector<POINT>& GetHints() const { return m_hintCells; }
+	void ClearHints() { m_hintCells.clear(); m_mask.clear(); }
+
+
+private:
+	std::vector<POINT> m_hintCells; 
+	std::unordered_set<uint32_t> m_mask;
+	static uint32_t Key(int gx, int gy) { return (uint32_t(gx) << 16) ^ uint16_t(gy); }
+	bool IsEmpty(int x, int y);
+
+
+
 	//---------------------------------------------------------------- 플레이어
 public:
 	PlayerInfo GetPlayer() { return m_playerInfo; }

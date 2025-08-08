@@ -39,11 +39,9 @@ void SpriteAnimator::SetCurrentClip(const string& name)
 	m_isLoop = m_currentClip.IsLoop();
 }
 
-void SpriteAnimator::Update(float deltaTime)
+bool SpriteAnimator::Update(float deltaTime)
 {
-	if (!m_clipsMap || m_currentClip.GetFrames().empty()) {
-		return;
-	}
+	if (!m_clipsMap || m_currentClip.GetFrames().empty()) return false;
 
 	m_elapsedTime += deltaTime;
 
@@ -65,9 +63,11 @@ void SpriteAnimator::Update(float deltaTime)
 			{
 				m_currentFrameIndex = static_cast<unsigned int>(frames.size() - 1); // 마지막 프레임에 멈춤
 				m_elapsedTime = frames[m_currentFrameIndex].duration; // 애니메이션 종료 후 경과 시간을 마지막 프레임 지속 시간으로 고정
+				return false;
 			}
 		}
 	}
+	return true; // 애니메이션 진행 중
 }
 
 const Frame& SpriteAnimator::GetCurrentFrame() const
