@@ -36,21 +36,25 @@ void GameScene::SetUIButton()
 	unique_ptr<Button> rightUI = std::make_unique<Button>(700.0f, 0.0f, 427, 969, "T_Standard_Right_Base_Glow.png");
 	m_notUniqueObjectList.emplace_back(rightUI.get());
 	//m_normalUI.emplace_back(move(rightUI));
+	rightUI->GetComponent<BitmapRender3D>()->SetShaderType("Holo");
 	m_rightUI = move(rightUI);
 
 	unique_ptr<Button> desc = std::make_unique<Button>(700.0f, 0.0f, 386, 734, "T_Standard_Right_Slot_Description.png");
 	m_notUniqueObjectList.emplace_back(desc.get());
 	//m_normalUI.emplace_back(move(desc));
+	desc->GetComponent<BitmapRender3D>()->SetShaderType("Holo");
 	m_desc = move(desc);
 	
 	unique_ptr<Button> leftUpUI = std::make_unique<Button>(-720.0f, 388.0f, 427, 199, "T_Standard_Left_Base_Glow.png", 50);
 	m_notUniqueObjectList.emplace_back(leftUpUI.get());
+	leftUpUI->GetComponent<BitmapRender3D>()->SetShaderType("Holo");
 	m_leftUpUI = move(leftUpUI);
 
 
 	unique_ptr<Button> leftUI = std::make_unique<Button>(-720.0f, -100.0f, 427, 769, "T_Standard_Left_Down_Base_Glow.png", 50);
 	m_notUniqueObjectList.emplace_back(leftUI.get());
 	//m_normalUI.emplace_back(move(leftUI));
+	leftUI->GetComponent<BitmapRender3D>()->SetShaderType("Holo");
 	m_leftUI = move(leftUI);
 	//slot간격 170정도
 	 // m_buttonList는 기능용
@@ -379,7 +383,7 @@ void GameScene::OnEnter()
 
 
 	auto playerObject = std::make_unique<Player>(
-		0.0f, 0.0f, 50.0f, 50.0f, DirectX::XMFLOAT4(1.0f, 0.0f, 0.0f, 1.0f) // 녹색
+		0.0f, 0.0f, 100.0f, 100.0f, DirectX::XMFLOAT4(1.0f, 0.0f, 0.0f, 1.0f) // 녹색
 	);
 	m_player = playerObject.get();
 	m_objectList.push_back(std::move(playerObject));
