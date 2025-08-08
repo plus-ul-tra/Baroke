@@ -229,6 +229,7 @@ struct JokerFunctionsWrapper
 			boardManager.m_board[boardManager.m_useCondGroup.front().x][boardManager.m_useCondGroup.front().y] = boardManager.m_board[position.x][position.y];
 			boardManager.m_board[position.x][position.y] = nullptr;
 			boardManager.PlaceStone(position, StoneType::White, StoneAbility::None);
+			boardManager.WhiteStoneRemoveCheck({ position.x - 1, position.y });
 		}
 		},
 		{ StoneAbility::jokerExplode, [this](shared_ptr<JokerStone> jokerExplode, POINT position)
