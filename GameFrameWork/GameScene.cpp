@@ -546,14 +546,14 @@ void GameScene::KeyCommandMapping()
 
 void GameScene::OnInput(const MouseEvent& ev)
 {
+	for (auto& button : m_buttonList)
+	{
+		button->CheckInput(ev);
+	}
+	if (m_gameState == GameState::Shop) return; // 상점 모드
+
 	if (m_uiMode == UIMode::Normal)
 	{
-		for (auto& button : m_buttonList)
-		{
-			button->CheckInput(ev);
-		}
-		if (m_gameState == GameState::Shop) return; // 상점 모드
-
 		if (ev.type == MouseType::LDown)
 		{
 			if (m_board.GetPlayer().GetBlackCount() <= m_board.GetStoneTypeAmount(Black)) return;
