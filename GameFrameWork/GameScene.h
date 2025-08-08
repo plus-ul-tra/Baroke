@@ -31,12 +31,15 @@ private:
 	//vector <unique_ptr<Button>>   m_normalUI;  // scene 전환시 texture 바꿀 얘들임
 	
 	vector <unique_ptr<Button>>	  m_jokerSlot;
+	
 	vector <unique_ptr<Button>>	  m_itemSlot;
 	vector <unique_ptr<Button>>	  m_passiveSlot;
+	vector <unique_ptr<Button>>   m_useless;
 	unique_ptr<Button>            m_desc;
 	unique_ptr<Button>			  m_rightUI;
 	unique_ptr<Button>			  m_leftUI;
 	unique_ptr<Button>			  m_leftUpUI;
+	unique_ptr<Button>			  m_cyber;
 
 	vector<pair<StoneAbility, JokerStoneInfo>> m_shopStones; // 돌 조커
 	vector<pair<StoneAbility, JokerStoneInfo>> m_shopItems; // 아이템 조커

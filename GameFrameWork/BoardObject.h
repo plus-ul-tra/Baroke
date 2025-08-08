@@ -32,7 +32,7 @@ inline unordered_map<int, BoardType> boardTypes =
 {
 	{0, {"Normal.png",						3.0f, XMFLOAT4(0.2f, 0.9f, 0.2f, 1.0f)}},
 	{1, {"Forest.png",						3.0f, XMFLOAT4(0.2f, 0.9f, 0.2f, 1.0f), {effectTypes[0], effectTypes[1], effectTypes[2], effectTypes[3]}}},
-	{2, {"Space.png",						3.0f, XMFLOAT4(0.9f, 0.0f, 0.9f, 1.0f), {effectTypes[0], effectTypes[1], effectTypes[2], effectTypes[3]}}},
+	{2, {"Space.png",						3.0f, XMFLOAT4(0.4f, 0.02f, 0.6f, 1.0f), {effectTypes[0], effectTypes[1], effectTypes[2], effectTypes[3]}}},
 	{3, {"T_Dancheong_Main_Glow.png",		3.0f, XMFLOAT4(0.9f, 0.8f, 0.6f, 1.0f), {effectTypes[0], effectTypes[1], effectTypes[2], effectTypes[3]}}},
 	{4, {"T_Halloween_Main_Glow.png",		3.0f, XMFLOAT4(1.0f, 0.5f, 0.0f, 1.0f), {effectTypes[0], effectTypes[1], effectTypes[2], effectTypes[3]}}},
 	{5, {"Cyberpunk.png",					3.0f, XMFLOAT4(0.3f, 0.3f, 0.9f, 1.0f), {effectTypes[0], effectTypes[1], effectTypes[2], effectTypes[3]}}}
