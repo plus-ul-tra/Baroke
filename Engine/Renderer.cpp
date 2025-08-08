@@ -420,17 +420,6 @@ void Renderer::SetShaderMode(const string& mode, float timer) {
 		m_pd3dContext->PSSetConstantBuffers(0, 1, cbuffers);
 
 	}
-	if (mode == "UIColor") {
-		ColorCBuffer colorData{};
-		colorData.prevColor = Mediator::GetInstance().GetUIColor();
-		colorData.targetColor = XMFLOAT4{ 0.0f,0.0f, 0.0f, 0.0f }; // dummy color
-		m_pd3dContext->UpdateSubresource(m_pUIColorCBuffer.Get(), 0, nullptr, &colorData, 0, 0);
-		m_pd3dContext->UpdateSubresource(m_pTimeCBuffer.Get(), 0, nullptr, &timeData, 0, 0);
-		ID3D11Buffer* cbuffers1[1] = { m_pUIColorCBuffer.Get() };
-		ID3D11Buffer* timebuffer[1] = { m_pTimeCBuffer.Get() };
-		m_pd3dContext->PSSetConstantBuffers(0, 1, cbuffers1);
-		m_pd3dContext->PSSetConstantBuffers(2, 1, timebuffer);
-	}
 	if (mode == "Othello") {
 		// 수정 필요
 		TimeCBuffer timeData{};
