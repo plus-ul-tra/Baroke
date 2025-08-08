@@ -14,24 +14,28 @@ void TitleScene::Initialize()
 
 	//title
 	unique_ptr<Button> title = std::make_unique<Button>(0.0f, 200.0f, 996.0f, 428.0f, "T_Main_Logo.png", 50);
-	m_UIList.emplace_back(std::move(title));
-	//m_buttonList.emplace_back(button1.get());
+	m_notUniqueObjectList.emplace_back(title.get());
+	m_titleButtonList.emplace_back(std::move(title));
 
 	unique_ptr<Button> startButton = std::make_unique<Button>(-640.0f, -450.0f, 250.0f, 60.0f, "T_Main_Start.png", 50);
 	m_buttonList.emplace_back(startButton.get());
-	m_UIList.emplace_back(std::move(startButton));
+	m_notUniqueObjectList.emplace_back(startButton.get());
+	m_titleButtonList.emplace_back(std::move(startButton));
 
 	unique_ptr<Button> tutoButton = std::make_unique<Button>(-226.6f, -450.0f, 250.0f, 60.0f, "T_Main_Tutorial.png", 50);
 	m_buttonList.emplace_back(tutoButton.get());
-	m_UIList.emplace_back(std::move(tutoButton));
+	m_notUniqueObjectList.emplace_back(tutoButton.get());
+	m_titleButtonList.emplace_back(std::move(tutoButton));
 
 	unique_ptr<Button> creditButton = std::make_unique<Button>(226.6f, -450.0f, 240.0f, 60.0f, "T_Main_Record_board.png", 50);
 	m_buttonList.emplace_back(creditButton.get());
-	m_UIList.emplace_back(std::move(creditButton));
+	m_notUniqueObjectList.emplace_back(creditButton.get());
+	m_titleButtonList.emplace_back(std::move(creditButton));
 
 	unique_ptr<Button> exitButton = std::make_unique<Button>(640.0f, -450.0f, 250.0f, 60.0f, "T_Main_Exit.png", 50);
 	m_buttonList.emplace_back(exitButton.get());
-	m_UIList.emplace_back(std::move(exitButton));
+	m_notUniqueObjectList.emplace_back(exitButton.get());
+	m_titleButtonList.emplace_back(std::move(exitButton));
 
 }
 

@@ -6,8 +6,8 @@
 
 class TitleScene : public SceneBase {
 
-private:
 	double m_elsapsedTime = 0.0;
+	vector<unique_ptr<Button>> m_titleButtonList; // ¹öÆ°µé
 protected:
 	
 public:
