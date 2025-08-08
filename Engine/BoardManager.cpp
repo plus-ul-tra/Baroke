@@ -58,6 +58,7 @@ struct JokerFunctionsWrapper
 					if (boardManager.m_board[newPosition.x][newPosition.y]) continue;
 
 					boardManager.PlaceStone(newPosition, StoneType::Black, StoneAbility::None); // 검은 돌 놓기
+					boardManager.WhiteStoneRemoveCheck(newPosition);
 					boardManager.m_playerInfo.incBlackCount(1);
 				}
 			}
@@ -68,7 +69,9 @@ struct JokerFunctionsWrapper
 					POINT newPosition = { position.x + i.x, position.y + i.y };
 					if (!boardManager.isValidPoint(newPosition)) continue;
 					if (boardManager.m_board[newPosition.x][newPosition.y]) continue;
+
 					boardManager.PlaceStone(newPosition, StoneType::Black, StoneAbility::None); // 검은 돌 놓기
+					boardManager.WhiteStoneRemoveCheck(newPosition);
 					boardManager.m_playerInfo.incBlackCount(1);
 				}
 			}
