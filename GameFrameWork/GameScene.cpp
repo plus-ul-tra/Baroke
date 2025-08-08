@@ -519,7 +519,7 @@ void GameScene::OnInput(const MouseEvent& ev)
 			{
 				std::cout << ev.pos.x << " " << ev.pos.y << std::endl;
 				m_board.SetStoneType(Joker);
-				m_board.SetStoneAbility(jokerEgg);
+				m_board.SetStoneAbility(jokerTriunion);
 
 
 				m_board.InputBasedGameLoop(ev.pos);
