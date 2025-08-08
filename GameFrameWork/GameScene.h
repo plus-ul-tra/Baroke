@@ -47,7 +47,7 @@ private:
 	enum class GameState { Stage, ShopEnter, Shop, ShopExit };
 	GameState m_gameState = GameState::Stage;
 	float m_gameStateDelayElapsed = 0.0f; // 게임 상태 전환 딜레이 경과 시간
-	float m_gameStateDelay = 1.0f; // 게임 상태 전환 딜레이
+	float m_gameStateDelay = 3.0f; // 게임 상태 전환 딜레이
 
 
 	std::vector<std::unique_ptr<HintMark>> m_hintPool;

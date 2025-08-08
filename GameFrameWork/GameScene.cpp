@@ -180,11 +180,10 @@ void GameScene::CheckStageClear()
 {
 	if (!m_board.GetStoneTypeAmount(White))  // 스테이지 클리어
 	{
-		if (m_gameStateDelayElapsed < m_gameStateDelay) return;
-
 		SceneManager::GetInstance().ChangePostProcessing("CRTFilter");
 
 		if (m_gameState == GameState::Stage) m_gameState = GameState::ShopEnter;
+		if (m_gameStateDelayElapsed < m_gameStateDelay) return;
 		if (m_gameState == GameState::ShopEnter)
 		{
 			m_gameState = GameState::Shop;
@@ -551,7 +550,9 @@ void GameScene::OnInput(const MouseEvent& ev)
 	{
 		button->CheckInput(ev);
 	}
+	if (m_gameState == GameState::ShopEnter) return; // 상점 진입 모드
 	if (m_gameState == GameState::Shop) return; // 상점 모드
+	if (m_gameState == GameState::ShopExit) return; // 상점 종료 모드
 
 	if (m_uiMode == UIMode::Normal)
 	{
