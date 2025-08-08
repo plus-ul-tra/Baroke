@@ -494,12 +494,12 @@ void GameScene::KeyCommandMapping()
 
 	m_commandMap["F2"] = [this]()
 		{
-			SceneManager::GetInstance().ChangePostProcessing("PassThrough");
+			SceneManager::GetInstance().ChangePostProcessing("CRTFilter");
 		};
 
 	m_commandMap["F3"] = [this]()
 		{
-
+			SceneManager::GetInstance().ChangePostProcessing("CRTGreen");
 		};
 
 	m_commandMap["F4"] = [this]()
@@ -510,7 +510,7 @@ void GameScene::KeyCommandMapping()
 
 	m_commandMap["F5"] = [this]()
 		{
-			SceneManager::GetInstance().ChangePostProcessing("CRTFilter");
+			SceneManager::GetInstance().ChangePostProcessing("CRTRed");
 		};
 
 	m_commandMap["Go"] = [this]()
@@ -561,13 +561,12 @@ void GameScene::OnInput(const MouseEvent& ev)
 			std::cout << "Place Black Stone : " << m_board.GetStoneTypeAmount(Black) << " / " << m_board.GetPlayer().GetBlackCount() << std::endl;
 		}
 
+
 		else if (ev.type == MouseType::RDown)
 		{
 			std::cout << ev.pos.x << " " << ev.pos.y << std::endl;
 			m_board.SetStoneType(Joker);
 			m_board.SetStoneAbility(jokerTriunion);
-
-
 			m_board.InputBasedGameLoop(ev.pos);
 			std::cout << "Place Black Stone : " << m_board.GetStoneTypeAmount(Black) << " / " << m_board.GetPlayer().GetBlackCount() << std::endl;
 			//			std::cout << "Joker Stone Count : " << m_board.GetStoneTypeAmount(Joker) << std::endl;

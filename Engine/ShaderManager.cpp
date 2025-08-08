@@ -72,6 +72,16 @@ void ShaderManager::ReadAllShaders()
 		cout << "CRTFilter리드 실패" << endl;
 	}
 
+	hr = ReadShaderResource("..\\Shader\\PassThrough_VS.cso", "..\\Shader\\CRTRed_PS.cso", "CRTRed", quadLayout, numQuadElements);
+	if (FAILED(hr)) {
+		cout << "CRTRed리드 실패" << endl;
+	}
+
+	hr = ReadShaderResource("..\\Shader\\PassThrough_VS.cso", "..\\Shader\\CRTGreen_PS.cso", "CRTGreen", quadLayout, numQuadElements);
+	if (FAILED(hr)) {
+		cout << "CRTGreen리드 실패" << endl;
+	}
+
 	hr = ReadShaderResource("..\\Shader\\DefaultShader_VS.cso", "..\\Shader\\DefaultShader_PS.cso", "DefaultShader", quadLayout, numQuadElements);
 	if (FAILED(hr)) {
 		cout << "DefaultShader리드 실패" << endl;
@@ -97,11 +107,6 @@ void ShaderManager::ReadAllShaders()
 	hr = ReadShaderResource("..\\Shader\\PassThrough_VS.cso", "..\\Shader\\BlackHole_PS.cso", "BlackHole", quadLayout, numQuadElements);
 	if (FAILED(hr)) {
 		cout << "BlackHole리드 실패" << endl;
-	}
-
-	hr = ReadShaderResource("..\\Shader\\DefaultShader_VS.cso", "..\\Shader\\Othello_PS.cso", "Othello", quadLayout, numQuadElements);
-	if (FAILED(hr)) {
-		cout << "Othello리드 실패" << endl;
 	}
 
 	hr = ReadShaderResource("..\\Shader\\DefaultShader_VS.cso", "..\\Shader\\SetRed_PS.cso", "SetRed", quadLayout, numQuadElements);
