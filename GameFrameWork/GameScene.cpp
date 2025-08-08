@@ -229,6 +229,7 @@ void GameScene::ModeCheck()
 
 	if (m_uiMode == UIMode::UseAbility) 
 	{
+		SceneManager::GetInstance().ChangePostProcessing("CRTFilter");
 		SyncPlacementHintsToPool();
 	}
 
@@ -483,6 +484,7 @@ void GameScene::KeyCommandMapping()
 		{
 			m_board.ClearHints();
 			m_board.ExitMode();
+
 			// 추후 일시정지/재개 로직 여기에
 		};
 
@@ -575,6 +577,7 @@ void GameScene::OnInput(const MouseEvent& ev)
 
 	else if (m_uiMode == UIMode::Sacrifice)
 	{
+		SceneManager::GetInstance().ChangePostProcessing("CRTRed");
 		if (ev.type == MouseType::LDown)
 		{
 			m_board.SelectSacrificeStone(ev.pos);
@@ -583,8 +586,10 @@ void GameScene::OnInput(const MouseEvent& ev)
 
 	else if (m_uiMode == UIMode::BeforeUseAbility) //	버튼 종류나 , 방향, 특정 지점을 넘겨줘야 되는 경우 여기 진입
 	{
+		SceneManager::GetInstance().ChangePostProcessing("CRTGreen");
 		if (ev.type == MouseType::LDown)
 		{
+
 			m_board.SelectUseCond(ev.pos);
 		}
 

@@ -127,6 +127,7 @@ public:
  		
 		nowMode = UIMode::Normal;
 		ResetGroup(); 
+
 		std::cout << "exit" << std::endl; }
 
 	UIMode GetMode() { return nowMode; }
