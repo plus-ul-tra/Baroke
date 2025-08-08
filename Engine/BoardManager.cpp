@@ -275,8 +275,8 @@ struct JokerFunctionsWrapper
 					int newX = position.x + patternX[j] * i;
 					int newY = position.y + patternY[j] * i;
 
-					if (!boardManager.isValidPoint({ newX, newY })) continue;
-					if (!boardManager.m_board[newX][newY]) continue;
+					if (!boardManager.isValidPoint({ newX, newY })) break;
+					if (!boardManager.m_board[newX][newY]) break;
 
 					random_device rd;
 					mt19937 rng(rd());
