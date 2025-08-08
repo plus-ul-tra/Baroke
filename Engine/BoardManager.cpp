@@ -994,50 +994,41 @@ void BoardManager::InitializeJokerInfoMap()
 	m_jokerInfoMap[StoneAbility::None] = {}; // 디폴트 돌
 
 	//------------------------------------------------------------------------------------------------ 일반 (set 1)
-
-
-
-	//m_jokerInfoMap[StoneAbility::jokerDouble] = { "jokerDouble.png",JokerType::Default,  0, 0, 0, 0, 2, 1, 2, 1, true, StoneType::Black };
-	m_jokerInfoMap[StoneAbility::jokerOmok] = { "jokerOmok.png",	JokerType::Default,  1, 0, 0, 0, 5, 2, 4, 2, true, StoneType::Black };
-	m_jokerInfoMap[StoneAbility::jokerSamok] = { "jokerSamok.png", JokerType::Default, 0, 0, 0, 0, 4, 5, 3, 2, false };
-	m_jokerInfoMap[StoneAbility::jokerSammok] = { "jokerSammok.png",JokerType::Default,  0, 0, 0, 0, 3, 2, 2, 1, false };
-
+	m_jokerInfoMap[StoneAbility::jokerOmok]			= { "jokerOmok.png", "tool1.png",		JokerType::Default, 1, 0, 0, 0, 5, 2, 4, 2, true, StoneType::Black };
+	m_jokerInfoMap[StoneAbility::jokerSamok]		= { "jokerSamok.png", "tool2.png",		JokerType::Default, 0, 0, 0, 0, 4, 5, 3, 2, false };
+	m_jokerInfoMap[StoneAbility::jokerSammok]		= { "jokerSammok.png", "tool1.png",		JokerType::Default, 0, 0, 0, 0, 3, 2, 2, 1, false };
 
 	//------------------------------------------------------------------------------------------------ 야생 (set 2)
-
-	m_jokerInfoMap[StoneAbility::jokerEvolution] = { "jokerEvolution.png", JokerType::Wild, 0, 0, 0, 0, 0, 0, 7, 3, false };						// cost 0
-	m_jokerInfoMap[StoneAbility::jokerDansu] = { "jokerDansu.png", JokerType::Wild, 1, 1, 0, 0, 0, 1, 2, 1, true, StoneType::Black };
-	m_jokerInfoMap[StoneAbility::jokerEgg] = { "jokerEgg.png", JokerType::Wild, 3, 0, 0, 1, 5, 0, 2, 1, true };
-	m_jokerInfoMap[StoneAbility::jokerOstrichEgg] = { "jokerOstrichEgg.png", JokerType::Wild, 2, 0, 0, 1, 0, 0, 0, 0, true };
-	m_jokerInfoMap[StoneAbility::jokerPeacock] = { "jokerPeacock.png", JokerType::Wild, 1, 1, 0, 3, 3, 1, 6, 3, true, StoneType::Black };				// cost 4
+	m_jokerInfoMap[StoneAbility::jokerEvolution]	= { "jokerEvolution.png", "tool2.png",	JokerType::Wild, 0, 0, 0, 0, 0, 0, 7, 3, false };						// cost 0
+	m_jokerInfoMap[StoneAbility::jokerDansu]		= { "jokerDansu.png", "tool1.png",		JokerType::Wild, 1, 1, 0, 0, 0, 1, 2, 1, true, StoneType::Black };
+	m_jokerInfoMap[StoneAbility::jokerEgg]			= { "jokerEgg.png",	"tool2.png",		JokerType::Wild, 3, 0, 0, 1, 5, 0, 2, 1, true };
+	m_jokerInfoMap[StoneAbility::jokerOstrichEgg]	= { "jokerOstrichEgg.png", "tool2.png",	JokerType::Wild, 2, 0, 0, 1, 0, 0, 0, 0, true };
+	m_jokerInfoMap[StoneAbility::jokerPeacock]		= { "jokerPeacock.png",	"tool2.png",	JokerType::Wild, 1, 1, 0, 3, 3, 1, 6, 3, true, StoneType::Black };				// cost 4
 
 	//------------------------------------------------------------------------------------------------ 우주 (set 3)
-	m_jokerInfoMap[StoneAbility::jokerTeleport] = { "jokerTeleport.png", JokerType::Space, 1, 1, 0, 0, 1, 0, 4, 2, true };
-	m_jokerInfoMap[StoneAbility::jokerExplode] = { "jokerExplode.png", JokerType::Space, 1, 1, 0, 1, 3, 1, 6, 3, true };
-	m_jokerInfoMap[StoneAbility::jokerMagnetic] = { "jokerMagnetic.png", JokerType::Space, 1, 1, 0, 3, 4, 2, 5, 2, true };
-	m_jokerInfoMap[StoneAbility::jokerBlackhole] = { "jokerBlackhole.png", JokerType::Space, 1, 1, 0, 5, 15, 0, 8, 3, true };
+	m_jokerInfoMap[StoneAbility::jokerTeleport]		= { "jokerTeleport.png", "tool1.png",	JokerType::Space, 1, 1, 0, 0, 1, 0, 4, 2, true };
+	m_jokerInfoMap[StoneAbility::jokerExplode]		= { "jokerExplode.png",	"tool2.png",	JokerType::Space, 1, 1, 0, 1, 3, 1, 6, 3, true };
+	m_jokerInfoMap[StoneAbility::jokerMagnetic]		= { "jokerMagnetic.png", "tool1.png",	JokerType::Space, 1, 1, 0, 3, 4, 2, 5, 2, true };
+	m_jokerInfoMap[StoneAbility::jokerBlackhole]	= { "jokerBlackhole.png", "tool2.png",	JokerType::Space, 1, 1, 0, 5, 15, 0, 8, 3, true };
 
 
 	//------------------------------------------------------------------------------------------------ 단청 (set 4)
-	m_jokerInfoMap[StoneAbility::jokerFusion] = { "jokerFusion.png", JokerType::Dancheong, 0, 0, 0, 2, 2, 2, 5, 2, true, StoneType::White };
-	m_jokerInfoMap[StoneAbility::jokerTriunion] = { "jokerTriunion.png", JokerType::Dancheong, 0, 0, 0, 3, 0, 3, 3, true, StoneType::White };
-	m_jokerInfoMap[StoneAbility::jokerQuadunion] = { "jokerQuadunion.png", JokerType::Dancheong, 0, 0, 0, 4, 0, 4, 4, 3, true, StoneType::White };
+	m_jokerInfoMap[StoneAbility::jokerFusion]		= { "jokerFusion.png", "tool1.png",		JokerType::Dancheong, 0, 0, 0, 2, 2, 2, 5, 2, true, StoneType::White };
+	m_jokerInfoMap[StoneAbility::jokerTriunion]		= { "jokerTriunion.png", "tool2.png",	JokerType::Dancheong, 0, 0, 0, 3, 0, 3, 3, true, StoneType::White };
+	m_jokerInfoMap[StoneAbility::jokerQuadunion]	= { "jokerQuadunion.png", "tool1.png",	JokerType::Dancheong, 0, 0, 0, 4, 0, 4, 4, 3, true, StoneType::White };
 
 	//------------------------------------------------------------------------------------------------ 할로윈 (set 6)
-	m_jokerInfoMap[StoneAbility::jokerSplit] = { "jokerSplit.png", JokerType::Halloween, 3, 0, 0, 20, 2, 0, 5, 2, true };
-	m_jokerInfoMap[StoneAbility::jokerWaxseal] = { "jokerWaxseal.png", JokerType::Halloween, 0, 0, 0, 1, 0, 0, 3, 2, true, StoneType::Black };
-	m_jokerInfoMap[StoneAbility::jokerFlip] = { "jokerFlip.png", JokerType::Halloween, 1, 1, 0, 0, 3, 1, 6, 2, true };
-	m_jokerInfoMap[StoneAbility::jokerOthello] = { "jokerOthello.png", JokerType::Halloween, 1, 0, 0, 3, 2, 4, 5, 1, true, StoneType::Black };
-	m_jokerInfoMap[StoneAbility::jokerMrchan] = { "jokerMrchan.png", JokerType::Halloween, 1, 1, 0, 0, 0, 0, 0, 3, true };
+	m_jokerInfoMap[StoneAbility::jokerSplit]		= { "jokerSplit.png", "tool2.png",		JokerType::Halloween, 3, 0, 0, 20, 2, 0, 5, 2, true };
+	m_jokerInfoMap[StoneAbility::jokerWaxseal]		= { "jokerWaxseal.png",	"tool1.png",	JokerType::Halloween, 0, 0, 0, 1, 0, 0, 3, 2, true, StoneType::Black };
+	m_jokerInfoMap[StoneAbility::jokerFlip]			= { "jokerFlip.png", "tool2.png",		JokerType::Halloween, 1, 1, 0, 0, 3, 1, 6, 2, true };
+	m_jokerInfoMap[StoneAbility::jokerOthello]		= { "jokerOthello.png", "tool1.png",	JokerType::Halloween, 1, 0, 0, 3, 2, 4, 5, 1, true, StoneType::Black };
+	m_jokerInfoMap[StoneAbility::jokerMrchan]		= { "jokerMrchan.png", "tool2.png",		JokerType::Halloween, 1, 1, 0, 0, 0, 0, 0, 3, true };
 
 	//------------------------------------------------------------------------------------------------ 자연 (set 7)
-	m_jokerInfoMap[StoneAbility::jokerShadow] = { "jokerShadow.png", JokerType::Natural, 1, 1, 0, 4, 1, 0, 4, 2, true };
-	m_jokerInfoMap[StoneAbility::jokerLight] = { "jokerLight.png", JokerType::Natural, 1, 1, 0, 0, 2, 0, 4, 2, true };
-	m_jokerInfoMap[StoneAbility::jokerTime] = { "jokerTime.png", JokerType::Natural, 3, 0, 0, 2, 0, 2, 7, 3, true };
-	m_jokerInfoMap[StoneAbility::jokerWind] = { "jokerWind.png", JokerType::Natural, 2, 5, 0, 2, 4, 1, 4, 2, true };
-
-
-
+	m_jokerInfoMap[StoneAbility::jokerShadow]		= { "jokerShadow.png", "tool1.png",		JokerType::Natural, 1, 1, 0, 4, 1, 0, 4, 2, true };
+	m_jokerInfoMap[StoneAbility::jokerLight]		= { "jokerLight.png", "tool2.png",		JokerType::Natural, 1, 1, 0, 0, 2, 0, 4, 2, true };
+	m_jokerInfoMap[StoneAbility::jokerTime]			= { "jokerTime.png", "tool1.png",		JokerType::Natural, 3, 0, 0, 2, 0, 2, 7, 3, true };
+	m_jokerInfoMap[StoneAbility::jokerWind]			= { "jokerWind.png", "tool2.png",		JokerType::Natural, 2, 5, 0, 2, 4, 1, 4, 2, true };
 }
 
 int BoardManager::CountLiberty(

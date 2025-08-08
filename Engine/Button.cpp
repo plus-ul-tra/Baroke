@@ -1,5 +1,5 @@
 #include "pch.h"
-#include "Button.h"
+#include "Engine.h"
 
 void Button::CheckInput(const MouseEvent& mouseEvent)
 {
@@ -31,21 +31,16 @@ void Button::CheckInput(const MouseEvent& mouseEvent)
 	}
 }
 
+void Button::Render(Renderer& renderer)
+{
+	if (m_isActive && m_isHovered && m_textObject)
+	{
+		m_textObject->GetComponent<BitmapRender3D>()->Render(renderer);
+	}
+}
+
 void JokerButton::ButtonFunction()
 {
-// 	if (m_isPressed)
-// 	{
-// 		BoardManager::GetInstance().SetStoneType(m_stoneType);
-// 		BoardManager::GetInstance().SetStoneAbility(m_jokerAbility);
-// 	}
-
-	//if (m_isPressed && m_isActive)
-	//{
-	//	auto& bm = BoardManager::GetInstance();
-	//	bm.SetStoneType(m_stoneType);
-	//	bm.SetStoneAbility(m_jokerAbility);
-	//}
-
 	if (m_isPressed && m_isActive)
     {
 
@@ -61,6 +56,28 @@ void JokerButton::ButtonFunction()
 	{
 
 	}
+}
+
+void JokerButton::SetButtonJoker(StoneType stoneType, StoneAbility ability)
+{
+	m_jokerAbility = ability;
+	m_stoneType = stoneType;
+
+	m_bitmapRender->ChangeTexture(m_jokerInfoMap[ability].fileName);
+	m_textObject = nullptr;
+	m_textObject = make_unique<NewObject>(m_transform->GetPosition().m128_f32[0], m_transform->GetPosition().m128_f32[1] + 20.0f, 691.0f, 200.0f, 0.0f, m_jokerInfoMap[ability].toolTipName);
+
+	BindEnabledPredicate(BuildPredicate(ability));
+}
+
+void ShopJokerButton::SetButtonJoker(JokerStoneInfo jokerInfo, StoneAbility ability)
+{
+	m_jokerInfo = jokerInfo;
+	m_jokerAbility = ability;
+
+	m_bitmapRender->ChangeTexture(jokerInfo.fileName);
+	m_textObject = nullptr;
+	m_textObject = make_unique<NewObject>(m_transform->GetPosition().m128_f32[0], m_transform->GetPosition().m128_f32[1] + 20.0f, 691.0f, 200.0f, 0.0f, m_jokerInfoMap[ability].toolTipName);
 }
 
 void ShopJokerButton::SetShowAndActive(bool active)
@@ -96,6 +113,10 @@ void ShopJokerButton::ButtonFunction()
 		}
 
 		m_isPressed = false;
+	}
+	if (m_isHovered && m_isActive)
+	{
+
 	}
 }
 
