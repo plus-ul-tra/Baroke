@@ -211,6 +211,7 @@ void GameScene::StartStage()
 
 	m_board.PlaceRandomStones(spawn);
 	m_whiteLeft = m_board.GetStoneTypeAmount(White);
+	m_board.m_playerInfo.ResetRount();
 
 	std::cout << "Stage " << m_stageNo/* << " start, Spawn White Conut : " << spawn << std::endl*/;
 }
