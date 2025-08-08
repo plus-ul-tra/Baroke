@@ -167,47 +167,41 @@ void GameScene::StartStage()
 
 	m_board.PlaceRandomStones(spawn);
 	m_whiteLeft = m_board.GetStoneTypeAmount(White);
+
 	std::cout << "Stage " << m_stageNo/* << " start, Spawn White Conut : " << spawn << std::endl*/;
 }
 
 void GameScene::CheckStageClear()
 {
-	if (m_board.GetStoneTypeAmount(White) <= 0)  // 스테이지 클리어
+	if (!m_board.GetStoneTypeAmount(White))  // 스테이지 클리어
 	{
+		if (m_gameStateDelayElapsed < m_gameStateDelay) return;
+
 		SceneManager::GetInstance().ChangePostProcessing("CRTFilter");
 
-		if (m_gameState == GameState::Stage)
-		{
-			m_gameState = GameState::ShopEnter;
-		}
+		if (m_gameState == GameState::Stage) m_gameState = GameState::ShopEnter;
 		if (m_gameState == GameState::ShopEnter)
 		{
 			m_gameState = GameState::Shop;
 			ShopStage();
 			m_shopExitButton->SetShowAndActive(true);
 		}
-
 		if (m_gameState == GameState::Shop && m_shopExitButton)
 		{
 			if (m_shopExitButton->IsEndButtonPressed())
 			{
-				m_gameState = GameState::Stage;
-
+				m_gameState = GameState::ShopExit;
 				m_shopExitButton->SetShowAndActive(false);
-				for (auto& jokerButton : m_shopJokerButtons)
-				{
-					jokerButton->SetShowAndActive(false);
-				}
+				for (auto& jokerButton : m_shopJokerButtons) jokerButton->SetShowAndActive(false);
+				m_gameStateDelayElapsed = 0.0f;
 			}
 		}
-
-		if (m_gameState == GameState::Stage)
-		{
-			StartStage();
-		}
-	} 
+		if (m_gameState == GameState::ShopExit && m_gameStateDelayElapsed > m_gameStateDelay)  m_gameState = GameState::Stage;
+		if (m_gameState == GameState::Stage) StartStage();
+	}
+	else m_gameStateDelayElapsed = 0.0f;
 }
-enum asd { test ,test2};
+enum asd { test , test2 };
 
 void GameScene::ModeCheck()
 {
@@ -215,7 +209,6 @@ void GameScene::ModeCheck()
 	//std::cout << m_uiMode << std::endl;
 
 	if (m_uiMode==UIMode::Sacrifice &&m_board.checkSacrificeSuccess())
-
 	{
 		m_board.SetMode(UIMode::BeforeUseAbility);
 		//m_board.ExitMode();
@@ -228,8 +221,6 @@ void GameScene::ModeCheck()
 		m_board.SetMode(UIMode::UseAbility);
 		std::cout << "BeforeUseAbility clear" << std::endl;
 	}
-
-
 }
 
 void GameScene::InitShop()
@@ -358,7 +349,7 @@ void GameScene::Update(double deltaTime)
 		notUniqueObject->Update(deltaTime);
 	}
 	m_boardObj->BoardSync();
-	//m_board.SyncBlackStoneCount(m_player->GetBlackStone());
+	m_gameStateDelayElapsed += deltaTime;
 	ModeCheck();
 	CheckStageClear();
 	ChangeThema();

@@ -37,15 +37,16 @@ private:
 	unique_ptr<Button>			  m_leftUI;
 	unique_ptr<Button>			  m_leftUpUI;
 
-
 	vector<pair<StoneAbility, JokerStoneInfo>> m_shopStones; // 돌 조커
 	vector<pair<StoneAbility, JokerStoneInfo>> m_shopItems; // 아이템 조커
 	unique_ptr<ShopJokerButton> m_shopJokerButtons[6] = {};
 	unique_ptr<ShopEndButton> m_shopExitButton;
 	int m_shopRng[3] = { 80, 45, 15 }; // 상점 아이템 확률
 	void ShopStage(); // 상점
-	enum class GameState { Stage, ShopEnter, Shop };
+	enum class GameState { Stage, ShopEnter, Shop, ShopExit };
 	GameState m_gameState = GameState::Stage;
+	float m_gameStateDelayElapsed = 0.0f; // 게임 상태 전환 딜레이 경과 시간
+	float m_gameStateDelay = 1.0f; // 게임 상태 전환 딜레이
 
 public:
 	//GameScene() = default;
@@ -53,7 +54,7 @@ public:
 	~GameScene() = default;
 	void Initialize() override;
 
-	void FixedUpdate(double fixedDeltaTime);
+	void FixedUpdate(double fixedDeltaTime) override;
 	void Update(double deltaTime) override;
 	void LateUpdate(double deltaTime) override;
 	//void Render(Renderer& renderer) override;
