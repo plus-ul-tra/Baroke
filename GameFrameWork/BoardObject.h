@@ -11,7 +11,8 @@ class BoardObject : public Object
 	Board m_board;
 	std::vector<Stone*> m_stones;
 
-	int currentBoardType = -1;
+	int m_currentBoardType = -1;
+	int m_changeStoneAmount = 5;
 	bool m_isBoardChanged = false; // 보드 타입이 변경되었는지 여부
   
 	vector<unique_ptr<Object>> m_screenEffectObjects; // 화면에 그려질 오브젝트들
@@ -79,7 +80,9 @@ public:
 	}
 
 	void BoardSync();
+
 	int IsBoardChanged();
+	void ResetTexture() { m_currentBoardType = -1; }
 };
 
 struct EffectType
@@ -143,11 +146,11 @@ inline void BoardObject::BoardSync()
 
 	for (int i = 0; i < 5; ++i)
 	{
-		if (currentBoardType == i) continue;
+		if (m_currentBoardType == i) continue;
 
-		if (stoneTypeAmount[i] >= 5)
+		if (stoneTypeAmount[i] >= m_changeStoneAmount)
 		{
-			currentBoardType = i;
+			m_currentBoardType = i;
 			BoardType boardType = boardTypes[i];
 
 			m_bitmapRender->ChangeBoardTexture(boardType.textureKey, boardType.changeDuration);
@@ -160,11 +163,19 @@ inline void BoardObject::BoardSync()
 				CreateObject::CreateObjectsOutOfScreen(m_screenEffectObjects, effect.effectKey, 1920.0f, 1080.0f, effect.width, effect.height, effect.amount, effect.speed, effect.exclusiveDirection);
 			}
 
+			m_changeStoneAmount++;
 			m_isBoardChanged = true;
 			break;
 		}
 	}
-	if (currentBoardType == -1) m_bitmapRender->ChangeBackGroundColor(XMFLOAT4(0.0f, 1.0f, 1.0f, 1.0f)); // 기본 배경색 설정
+	if (m_currentBoardType == -1)
+	{
+		//m_bitmapRender->ChangeBoardTexture("Normal.png", 0);
+		//m_bitmapRender->ChangeBackGroundColor(XMFLOAT4(0.0f, 1.0f, 1.0f, 1.0f)); // 기본 배경색 설정
+		m_screenEffectObjects.clear();
+		m_changeStoneAmount = 5;
+		m_isBoardChanged = true;
+	}
 }
 
 inline int BoardObject::IsBoardChanged()
@@ -172,7 +183,7 @@ inline int BoardObject::IsBoardChanged()
 	if (m_isBoardChanged)
 	{
 		m_isBoardChanged = false;
-		return currentBoardType;
+		return m_currentBoardType;
 	}
 	return -1;
 }
