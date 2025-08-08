@@ -3,6 +3,7 @@
 #include "Player.h"
 #include "BoardObject.h"
 #include "BackGround.h"
+#include "HintMark.h"
 
 class GameScene : public SceneBase { 
 	

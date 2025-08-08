@@ -1,6 +1,7 @@
 #include "cpch.h"
 #include "GameScene.h"
 
+
 #define BOARD_SIZE 15
 #define PADDING 107
 #define POSX 0
