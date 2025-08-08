@@ -27,7 +27,15 @@ private:
 
 	void InitShop(); // 상점 초기화
 	vector<unique_ptr<JokerButton>> m_jokerButtons; // 조커 버튼들 // 나중에 다른 방식으로?
-	vector <unique_ptr<Button>>   m_normalUI;  // scene 전환시 texture 바꿀 얘들임
+	//vector <unique_ptr<Button>>   m_normalUI;  // scene 전환시 texture 바꿀 얘들임
+	
+	vector <unique_ptr<Button>>	  m_jokerSlot;
+	vector <unique_ptr<Button>>	  m_itemSlot;
+	vector <unique_ptr<Button>>	  m_passiveSlot;
+	unique_ptr<Button>            m_desc;
+	unique_ptr<Button>			  m_rightUI;
+	unique_ptr<Button>			  m_leftUI;
+	unique_ptr<Button>			  m_leftUpUI;
 
 
 	vector<pair<StoneAbility, JokerStoneInfo>> m_shopStones; // 돌 조커
@@ -59,5 +67,5 @@ public:
 	void KeyCommandMapping() override;
 
 	void OnInput(const MouseEvent& ev) override;
-	void ChangeThema(int thema = -1);
+	void ChangeThema();
 };
