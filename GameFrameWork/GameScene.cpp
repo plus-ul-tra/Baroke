@@ -9,7 +9,7 @@
 #define HEIGHT 970
 #define CELL 54  // 0 기준 54 pxs
 #define STONEOFFSET 10
-
+using namespace std;
 void GameScene::SetUIButton()
 {
 	m_shopExitButton = std::make_unique<ShopEndButton>(300.0f, -300.0f, 100, 100, "Sample.png");
@@ -32,18 +32,26 @@ void GameScene::SetUIButton()
 		m_notUniqueObjectList.emplace_back(m_shopJokerButtons[3 + i].get());
 	}
 
+	//--------------------------UI일반----------------------------------
 	unique_ptr<Button> rightUI = std::make_unique<Button>(700.0f, 0.0f, 427, 969, "T_Standard_Right_Base_Glow.png");
-	//m_buttonList.emplace_back(rightUI.get());
 	m_notUniqueObjectList.emplace_back(rightUI.get());
-	m_normalUI.emplace_back(move(rightUI));
-	
+	//m_normalUI.emplace_back(move(rightUI));
+	m_rightUI = move(rightUI);
 
-	unique_ptr<Button> rightUI_Text = std::make_unique<Button>(700.0f, 0.0f, 386, 734, "T_Standard_Right_Slot_Description.png");
-	//m_buttonList.emplace_back(rightUI.get());
-	m_notUniqueObjectList.emplace_back(rightUI_Text.get());
-	m_normalUI.emplace_back(move(rightUI_Text));
+	unique_ptr<Button> desc = std::make_unique<Button>(700.0f, 0.0f, 386, 734, "T_Standard_Right_Slot_Description.png");
+	m_notUniqueObjectList.emplace_back(desc.get());
+	//m_normalUI.emplace_back(move(desc));
+	m_desc = move(desc);
 	
+	unique_ptr<Button> leftUpUI = std::make_unique<Button>(-720.0f, 388.0f, 427, 199, "T_Standard_Left_Base_Glow.png", 50);
+	m_notUniqueObjectList.emplace_back(leftUpUI.get());
+	m_leftUpUI = move(leftUpUI);
 
+
+	unique_ptr<Button> leftUI = std::make_unique<Button>(-720.0f, -100.0f, 427, 769, "T_Standard_Left_Down_Base_Glow.png", 50);
+	m_notUniqueObjectList.emplace_back(leftUI.get());
+	//m_normalUI.emplace_back(move(leftUI));
+	m_leftUI = move(leftUI);
 	//slot간격 170정도
 	 // m_buttonList는 기능용
 	 // m_UIlist는 그리기용
@@ -53,79 +61,64 @@ void GameScene::SetUIButton()
 	unique_ptr<Button> jokerSlot1 = std::make_unique<Button>(617.0f, 341.0f, 177, 175, "T_Standard_Right_Slot_Jocker_Glow.png");
 	m_buttonList.emplace_back(jokerSlot1.get());
 	m_notUniqueObjectList.emplace_back(jokerSlot1.get());
-	m_normalUI.emplace_back(move(jokerSlot1));
+	m_jokerSlot.emplace_back(move(jokerSlot1));
 	
 
 	unique_ptr<Button> jokerSlot2 = std::make_unique<Button>(617.0f, 171.0f, 177, 175, "T_Standard_Right_Slot_Jocker.png");
 	m_buttonList.emplace_back(jokerSlot2.get());
 	m_notUniqueObjectList.emplace_back(jokerSlot2.get());
-	m_normalUI.emplace_back(move(jokerSlot2));
+	m_jokerSlot.emplace_back(move(jokerSlot2));
 	
 
 	unique_ptr<Button> jokerSlot3 = std::make_unique<Button>(617.0f, 1.0f, 177, 175, "T_Standard_Right_Slot_Jocker.png");
 	m_buttonList.emplace_back(jokerSlot3.get());
 	m_notUniqueObjectList.emplace_back(jokerSlot3.get());
-	m_normalUI.emplace_back(move(jokerSlot3));
+	m_jokerSlot.emplace_back(move(jokerSlot3));
 	
 
 	unique_ptr<Button> jokerSlot4 = std::make_unique<Button>(617.0f, -172.0f, 177, 175, "T_Standard_Right_Slot_Jocker.png");
 	m_buttonList.emplace_back(jokerSlot4.get());
 	m_notUniqueObjectList.emplace_back(jokerSlot4.get());
-	m_normalUI.emplace_back(move(jokerSlot4));
+	m_jokerSlot.emplace_back(move(jokerSlot4));
 	
 
 	unique_ptr<Button> jokerSlot5 = std::make_unique<Button>(617.0f, -342.0f, 177, 175, "T_Standard_Right_Slot_Jocker.png");
 	m_buttonList.emplace_back(jokerSlot5.get());
 	m_notUniqueObjectList.emplace_back(jokerSlot5.get());
-	m_normalUI.emplace_back(move(jokerSlot5));
+	m_jokerSlot.emplace_back(move(jokerSlot5));
 	
 
 	//-----------------------------Item slot---------------------------------------------------
 	unique_ptr<Button> itemSlot1 = std::make_unique<Button>(782.5f, 342.0f, 177, 175, "T_Standard_Right_Slot_Item_Glow.png");
 	m_buttonList.emplace_back(itemSlot1.get());
 	m_notUniqueObjectList.emplace_back(itemSlot1.get());
-	m_normalUI.emplace_back(move(itemSlot1));
+	m_itemSlot.emplace_back(move(itemSlot1));
 	
 
 	unique_ptr<Button> itemSlot2 = std::make_unique<Button>(782.5f, 171.0f, 177, 175, "T_Standard_Right_Slot_Item.png");
 	m_buttonList.emplace_back(itemSlot2.get());
 	m_notUniqueObjectList.emplace_back(itemSlot2.get());
-	m_normalUI.emplace_back(move(itemSlot2));
+	m_itemSlot.emplace_back(move(itemSlot2));
 	
 
 	//-----------------------------Passive slot---------------------------------------------------
 	unique_ptr<Button> passiveSlot1 = std::make_unique<Button>(782.5f, 1.0f, 177, 175, "T_Standard_Right_Slot_Passive_Glow.png");
 	m_buttonList.emplace_back(passiveSlot1.get());
 	m_notUniqueObjectList.emplace_back(passiveSlot1.get());
-	m_normalUI.emplace_back(move(passiveSlot1));
+	m_passiveSlot.emplace_back(move(passiveSlot1));
 	
 
 	unique_ptr<Button> passiveSlot2 = std::make_unique<Button>(782.5f, -172.0f, 177, 175, "T_Standard_Right_Slot_Passive.png");
 	m_buttonList.emplace_back(passiveSlot2.get());
 	m_notUniqueObjectList.emplace_back(passiveSlot2.get());
-	m_normalUI.emplace_back(move(passiveSlot2));
+	m_passiveSlot.emplace_back(move(passiveSlot2));
 	
 
 	unique_ptr<Button> passiveSlot3 = std::make_unique<Button>(782.5f, -342.0f, 177, 175, "T_Standard_Right_Slot_Passive.png");
 	m_buttonList.emplace_back(passiveSlot3.get());
 	m_notUniqueObjectList.emplace_back(passiveSlot3.get());
-	m_normalUI.emplace_back(move(passiveSlot3));
+	m_passiveSlot.emplace_back(move(passiveSlot3));
 	
-
-
-
-
-	unique_ptr<Button> leftUpUI = std::make_unique<Button>(-720.0f, 388.0f, 427, 199, "T_Standard_Left_Base_Glow.png", 50);
-	m_notUniqueObjectList.emplace_back(leftUpUI.get());
-	m_normalUI.emplace_back(move(leftUpUI));
-	
-
-	unique_ptr<Button> leftUI = std::make_unique<Button>(-720.0f, -100.0f, 427, 769, "T_Standard_Left_Down_Base_Glow.png", 50);
-	m_notUniqueObjectList.emplace_back(leftUI.get());
-	m_normalUI.emplace_back(move(leftUI));
-	
-
-
 
 
 	// ------------------------------------joker button-------------------------------------------
@@ -367,7 +360,7 @@ void GameScene::Update(double deltaTime)
 	//m_board.SyncBlackStoneCount(m_player->GetBlackStone());
 	ModeCheck();
 	CheckStageClear();
-	ChangeThema(m_boardObj->IsBoardChanged());
+	ChangeThema();
 }
 
 void GameScene::LateUpdate(double deltaTime)
@@ -416,7 +409,12 @@ void GameScene::OnLeave()
 	std::cout << "Game1 Scene Left" << std::endl;
 	Reset();
 	m_jokerButtons.clear();
-	m_normalUI.clear();
+	
+	//m_normalUI.clear();
+
+	m_jokerSlot.clear();
+	m_itemSlot.clear();
+	m_passiveSlot.clear();
 }
 
 void GameScene::OnCommand(std::string& cmd)
@@ -567,58 +565,156 @@ void GameScene::OnInput(const MouseEvent& ev)
 	
 }
 
-void GameScene::ChangeThema(int thema)
+void GameScene::ChangeThema()
 {
-	switch (thema)
+	switch (m_boardObj->IsBoardChanged())
 	{
 	case 0: // Forest
 		Mediator::GetInstance().SetUIColor(XMFLOAT4(1.0f, 1.0f, 1.0f, 1.0f));
 
-		for (auto& bt : m_normalUI)
+		for (auto& bt : m_jokerSlot)
 		{
 			auto rend = bt->GetComponent<BitmapRender3D>();
-			rend->SetShaderType("UIColor");
+			//rend->SetShaderType("UIColor");
+			rend->ChangeTexture("T_Jungle_Right_Slot_Jocker.png");
 		}
+
+		for (auto& bt : m_itemSlot)
+		{
+			auto rend = bt->GetComponent<BitmapRender3D>();
+			//rend->SetShaderType("UIColor");
+			rend->ChangeTexture("T_Jungle_Right_Slot_Item.png");
+		}
+
+		for (auto& bt : m_passiveSlot)
+		{
+			auto rend = bt->GetComponent<BitmapRender3D>();
+			//rend->SetShaderType("UIColor");
+			rend->ChangeTexture("T_Jungle_Right_Slot_Passive.png");
+		}
+
+		m_desc->GetComponent<BitmapRender3D>()->ChangeTexture("T_Jungle_Right_Slot_Description.png");
+		m_rightUI->GetComponent<BitmapRender3D>()->ChangeTexture("T_Jungle_Right_Base_Glow.png");
+		m_leftUI->GetComponent<BitmapRender3D>()->ChangeTexture("T_Jungle_Left_Down_Base_Glow.png");
+		m_leftUpUI->GetComponent<BitmapRender3D>()->ChangeTexture("T_Jungle_Left_Base_Glow.png");
+		
 		break;
 
 	case 1: // Space
 		Mediator::GetInstance().SetUIColor(XMFLOAT4(1.0f, 1.0f, 1.0f, 1.0f));
 
-		for (auto& bt : m_normalUI)
+		for (auto& bt : m_jokerSlot)
 		{
 			auto rend = bt->GetComponent<BitmapRender3D>();
-			rend->SetShaderType("UIColor");
+			//rend->SetShaderType("UIColor");
+			rend->ChangeTexture("T_Space_Right_Slot_Jocker.png");
 		}
+
+		for (auto& bt : m_itemSlot)
+		{
+			auto rend = bt->GetComponent<BitmapRender3D>();
+			//rend->SetShaderType("UIColor");
+			rend->ChangeTexture("T_Space_Right_Slot_Item.png");
+		}
+
+		for (auto& bt : m_passiveSlot)
+		{
+			auto rend = bt->GetComponent<BitmapRender3D>();
+			//rend->SetShaderType("UIColor");
+			rend->ChangeTexture("T_Space_Right_Slot_Passive.png");
+		}
+		m_desc->GetComponent<BitmapRender3D>()->ChangeTexture("T_Space_Right_Slot_Description.png");
+		m_rightUI->GetComponent<BitmapRender3D>()->ChangeTexture("T_Space_Right_Base_Glow.png");
+		m_leftUI->GetComponent<BitmapRender3D>()->ChangeTexture("T_Space_Left_Down_Base_Glow.png");
+		m_leftUpUI->GetComponent<BitmapRender3D>()->ChangeTexture("T_Space_Left_Base_Glow.png");
 		break;
 
 	case 2: // Korea
 		Mediator::GetInstance().SetUIColor(XMFLOAT4(1.0f, 1.0f, 1.0f, 1.0f));
 
-		for (auto& bt : m_normalUI)
+		for (auto& bt : m_jokerSlot)
 		{
 			auto rend = bt->GetComponent<BitmapRender3D>();
-			rend->SetShaderType("UIColor");
+			//rend->SetShaderType("UIColor");
+			rend->ChangeTexture("T_Dancheong_Right_Slot_Jocker.png");
 		}
+
+		for (auto& bt : m_itemSlot)
+		{
+			auto rend = bt->GetComponent<BitmapRender3D>();
+			//rend->SetShaderType("UIColor");
+			rend->ChangeTexture("T_Dancheong_Right_Slot_Item.png");
+		}
+
+		for (auto& bt : m_passiveSlot)
+		{
+			auto rend = bt->GetComponent<BitmapRender3D>();
+			//rend->SetShaderType("UIColor");
+			rend->ChangeTexture("T_Dancheong_Right_Slot_Passive.png");
+		}
+
+		m_desc->GetComponent<BitmapRender3D>()->ChangeTexture("T_Dancheong_Right_Slot_Description.png");
+		m_rightUI->GetComponent<BitmapRender3D>()->ChangeTexture("T_Dancheong_Right_Base_Glow.png");
+		m_leftUI->GetComponent<BitmapRender3D>()->ChangeTexture("T_Dancheong_Left_Down_Base_Glow.png");
+		m_leftUpUI->GetComponent<BitmapRender3D>()->ChangeTexture("T_Dancheong_Left_Base_Glow.png");
 		break;
 
 	case 3: // Halloween
 		Mediator::GetInstance().SetUIColor(XMFLOAT4(1.0f, 1.0f, 1.0f, 1.0f));
 
-		for (auto& bt : m_normalUI)
+		for (auto& bt : m_jokerSlot)
 		{
 			auto rend = bt->GetComponent<BitmapRender3D>();
-			rend->SetShaderType("UIColor");
+			//rend->SetShaderType("UIColor");
+			rend->ChangeTexture("T_Halloween_Right_Slot_Jocker.png");
 		}
+
+		for (auto& bt : m_itemSlot)
+		{
+			auto rend = bt->GetComponent<BitmapRender3D>();
+			//rend->SetShaderType("UIColor");
+			rend->ChangeTexture("T_Halloween_Right_Slot_Item.png");
+		}
+
+		for (auto& bt : m_passiveSlot)
+		{
+			auto rend = bt->GetComponent<BitmapRender3D>();
+			//rend->SetShaderType("UIColor");
+			rend->ChangeTexture("T_Halloween_Right_Slot_Passive.png");
+		}
+		m_desc->GetComponent<BitmapRender3D>()->ChangeTexture("T_Halloween_Right_Slot_Description.png");
+		m_rightUI->GetComponent<BitmapRender3D>()->ChangeTexture("T_Halloween_Right_Base_Glow.png");
+		m_leftUI->GetComponent<BitmapRender3D>()->ChangeTexture("T_Halloween_Left_Down_Base_Glow.png");
+		m_leftUpUI->GetComponent<BitmapRender3D>()->ChangeTexture("T_Halloween_Left_Base_Glow.png");
 		break;
 
 	case 4: // Cyber
 		Mediator::GetInstance().SetUIColor(XMFLOAT4(1.0f, 1.0f, 1.0f, 1.0f));
 
-		for (auto& bt : m_normalUI)
+		for (auto& bt : m_jokerSlot)
 		{
 			auto rend = bt->GetComponent<BitmapRender3D>();
-			rend->SetShaderType("UIColor");
+			//rend->SetShaderType("UIColor");
+			rend->ChangeTexture("T_Cyberpunk_Right_Slot_Jocker.png");
 		}
+
+		for (auto& bt : m_itemSlot)
+		{
+			auto rend = bt->GetComponent<BitmapRender3D>();
+			//rend->SetShaderType("UIColor");
+			rend->ChangeTexture("T_Cyberpunk_Right_Slot_Item.png");
+		}
+
+		for (auto& bt : m_passiveSlot)
+		{
+			auto rend = bt->GetComponent<BitmapRender3D>();
+			//rend->SetShaderType("UIColor");
+			rend->ChangeTexture("T_Cyberpunk_Right_Passive_Jocker.png");
+		}
+		m_desc->GetComponent<BitmapRender3D>()->ChangeTexture("Cyberpunk_Description.png");
+		m_rightUI->GetComponent<BitmapRender3D>()->ChangeTexture("Cyberpunk_Righ.png");
+		m_leftUI->GetComponent<BitmapRender3D>()->ChangeTexture("Cyberpunk_Left_Down.png");
+		m_leftUpUI->GetComponent<BitmapRender3D>()->ChangeTexture("Cyberpunk_Left.png");
 		break;
 
 	default: // 기본 테마
