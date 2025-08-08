@@ -19,7 +19,7 @@ void Button::CheckInput(const MouseEvent& mouseEvent)
 	if (isInX && isInY)
 	{
 		m_isHovered = true;
-		if (!m_isActive) { m_isPressed = false; return; }
+		if (!m_isActive) { return; }
 		m_inputType = mouseEvent.type;
 		if (m_inputType == MouseType::LDown) m_isPressed = true;
 		else m_isPressed = false;
@@ -42,7 +42,6 @@ void JokerButton::ButtonFunction()
 {
 	if (m_isPressed && m_isActive)
     {
-
 		std::cout << "button click" << std::endl;
 
 		BoardManager::GetInstance().SetMode(UIMode::Sacrifice);

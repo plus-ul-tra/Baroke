@@ -62,7 +62,7 @@ public:
 	void SetHeight(float height) { m_height = height; }
 
 	bool GetIsActive() const { return m_isActive; }
-	void SetIsActive(bool active) { m_isActive = active; }
+	void SetIsActive(bool active) { m_isActive = active; m_isPressed = false; }
 
 	void CheckInput(const MouseEvent& mouseEvent);
 

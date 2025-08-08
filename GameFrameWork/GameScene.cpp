@@ -201,7 +201,7 @@ void GameScene::CheckStageClear()
 				m_gameStateDelayElapsed = 0.0f;
 			}
 		}
-		if (m_gameState == GameState::ShopExit && m_gameStateDelayElapsed > m_gameStateDelay)  m_gameState = GameState::Stage;
+		if (m_gameState == GameState::ShopExit && m_gameStateDelayElapsed > m_gameStateDelay) m_gameState = GameState::Stage;
 		if (m_gameState == GameState::Stage) StartStage();
 	}
 	else m_gameStateDelayElapsed = 0.0f;
@@ -546,33 +546,33 @@ void GameScene::KeyCommandMapping()
 void GameScene::OnInput(const MouseEvent& ev)
 {
 	if (m_uiMode == UIMode::Normal)
+	{
+		for (auto& button : m_buttonList)
 		{
-			for (auto& button : m_buttonList)
-			{
-				button->CheckInput(ev);
-			}
-			if (m_gameState == GameState::Shop) return; // 상점 모드
+			button->CheckInput(ev);
+		}
+		if (m_gameState == GameState::Shop) return; // 상점 모드
 
-			if (ev.type == MouseType::LDown)
-			{
-				if (m_board.GetPlayer().GetBlackCount() <= m_board.GetStoneTypeAmount(Black)) return;
-				//std::cout << ev.pos.x << " " << ev.pos.y << std::endl;
-				m_board.InputBasedGameLoop(ev.pos);
+		if (ev.type == MouseType::LDown)
+		{
+			if (m_board.GetPlayer().GetBlackCount() <= m_board.GetStoneTypeAmount(Black)) return;
+			//std::cout << ev.pos.x << " " << ev.pos.y << std::endl;
+			m_board.InputBasedGameLoop(ev.pos);
 
-				std::cout << "Place Black Stone : " << m_board.GetStoneTypeAmount(Black) << " / " << m_board.GetPlayer().GetBlackCount() << std::endl;
-			}
+			std::cout << "Place Black Stone : " << m_board.GetStoneTypeAmount(Black) << " / " << m_board.GetPlayer().GetBlackCount() << std::endl;
+		}
 
-			else if (ev.type == MouseType::RDown)
-			{
-				std::cout << ev.pos.x << " " << ev.pos.y << std::endl;
-				m_board.SetStoneType(Joker);
-				m_board.SetStoneAbility(jokerTriunion);
+		else if (ev.type == MouseType::RDown)
+		{
+			std::cout << ev.pos.x << " " << ev.pos.y << std::endl;
+			m_board.SetStoneType(Joker);
+			m_board.SetStoneAbility(jokerTriunion);
 
 
-				m_board.InputBasedGameLoop(ev.pos);
-				std::cout << "Place Black Stone : " << m_board.GetStoneTypeAmount(Black) << " / " << m_board.GetPlayer().GetBlackCount() << std::endl;
-				//			std::cout << "Joker Stone Count : " << m_board.GetStoneTypeAmount(Joker) << std::endl;
-			}
+			m_board.InputBasedGameLoop(ev.pos);
+			std::cout << "Place Black Stone : " << m_board.GetStoneTypeAmount(Black) << " / " << m_board.GetPlayer().GetBlackCount() << std::endl;
+			//			std::cout << "Joker Stone Count : " << m_board.GetStoneTypeAmount(Joker) << std::endl;
+		}
 	}
 
 	else if (m_uiMode == UIMode::Sacrifice)

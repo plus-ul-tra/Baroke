@@ -25,7 +25,6 @@ void SceneBase::Render(Renderer& renderer) {
 		}
 		obj->Render(renderer);
 	}
-	// --- UI
 	for (const auto& ui : m_UIList) {
 
 		if (auto bitmapRenderComp = ui->GetComponent<BitmapRender3D>())
@@ -49,7 +48,7 @@ void SceneBase::Render(Renderer& renderer) {
 		notUniqueObject->Render(renderer);
 	}
 }
-//
+
 void RenderObject(Object* obj, Renderer& renderer)
 {
 

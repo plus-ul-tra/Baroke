@@ -132,7 +132,7 @@ void BitmapRender3D::Update(double deltaTime)
 {
 	if (m_isAnimated)
 	{
-		m_animator.Update(static_cast<float>(deltaTime) * 1000.0f);
+		m_isAnimationEnded = !m_animator.Update(static_cast<float>(deltaTime) * 1000.0f);
 	}
 
 }
