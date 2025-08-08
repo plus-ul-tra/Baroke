@@ -33,7 +33,7 @@ void Button::CheckInput(const MouseEvent& mouseEvent)
 
 void Button::Render(Renderer& renderer)
 {
-	if (m_isActive && m_isHovered && m_textObject)
+	if (m_isHovered && m_textObject)
 	{
 		m_textObject->GetComponent<BitmapRender3D>()->Render(renderer);
 	}
