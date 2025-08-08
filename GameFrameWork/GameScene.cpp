@@ -216,7 +216,6 @@ void GameScene::ModeCheck()
 	if (m_uiMode==UIMode::Sacrifice &&m_board.checkSacrificeSuccess())
 	{
 		m_board.SetMode(UIMode::BeforeUseAbility);
-		//m_board.ExitMode();
 		std::cout << "Sacrifice clear" << std::endl;
 	}
 	
@@ -347,7 +346,7 @@ void GameScene::SyncPlacementHintsToPool()
 		float sy = static_cast<float>(screen.y);
 
 
-		m_hintPool[i]->SetScreenPos(sx + CELL/2, sy + CELL / 2);
+		m_hintPool[i]->SetScreenPos(sx + CELL/2-1, sy + CELL / 2);
 		m_hintPool[i]->Show(true);
 	}
 }
@@ -357,9 +356,9 @@ void GameScene::SetHintpool()
 {
 	
 	const int HINT_POOL_SIZE = 225;                
-	const float hintW = (float)CELL * 0.6f;       
-	const float hintH = (float)CELL * 0.6f;
-	const std::string hintTex = "High_Test.png";    
+	const float hintW = (float)CELL * 0.3f;       
+	const float hintH = (float)CELL * 0.3f;
+	const std::string hintTex = "T_White_6x6.png";    
 	std::cout << "HighTest_1 Create Success" << std::endl;
 
 	m_hintPool.reserve(HINT_POOL_SIZE);
@@ -484,7 +483,7 @@ void GameScene::KeyCommandMapping()
 		{
 			m_board.ClearHints();
 			m_board.ExitMode();
-
+			SceneManager::GetInstance().ChangePostProcessing("CRTFilter");
 			// 추후 일시정지/재개 로직 여기에
 		};
 
@@ -501,7 +500,7 @@ void GameScene::KeyCommandMapping()
 
 	m_commandMap["F3"] = [this]()
 		{
-			SceneManager::GetInstance().ChangePostProcessing("CRTGreen");
+			SceneManager::GetInstance().ChangePostProcessing("Default");
 		};
 
 	m_commandMap["F4"] = [this]()
