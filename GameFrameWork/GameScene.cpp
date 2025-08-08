@@ -245,6 +245,7 @@ void GameScene::InitShop()
 void GameScene::ShopStage()
 {
 	m_board.ResetStone();
+	m_boardObj->ResetTexture();
 	random_device rd;
 	mt19937 rng(rd());
 	uniform_int_distribution<int> dist(0, 100);
