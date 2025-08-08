@@ -3,7 +3,6 @@
 
 void Button::CheckInput(const MouseEvent& mouseEvent)
 {
-
 	POINT mousePos = mouseEvent.pos;
 	bool isInX =
 		(
