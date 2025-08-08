@@ -41,6 +41,7 @@ void NewObject::Update(double deltaTime)
 
 void CreateObject::CreateObjectsOutOfScreen(vector<unique_ptr<Object>>& objects, string imageKey, float screenWidth, float screenHeight, float width, float height, int count, float speed, direction exclusiveDirection)
 {
+	if (count <= 0) return;
 	random_device rd;
 	mt19937 gen(rd());
 
