@@ -136,12 +136,13 @@ inline void BoardObject::BoardSync()
 			m_bitmapRender->ChangeBackGroundColor(boardType.backgroundColor);
 
 			m_screenEffectObjects.clear();
-			CreateObject::CreateObjectsOutOfScreen(m_screenEffectObjects, boardType.effectKey, 1920.0f, 1080.0f, 200.0f, 50, 100.0f);
+			CreateObject::CreateObjectsOutOfScreen(m_screenEffectObjects, boardType.effectKey, 1920.0f, 1080.0f, 200.0f, 50, 100.0f, CreateObject::up);
 			m_isBoardChanged = true;
 
 			break;
 		}
 	}
+	if (currentBoardType == -1) m_bitmapRender->ChangeBackGroundColor(XMFLOAT4(0.0f, 1.0f, 1.0f, 1.0f)); // 기본 배경색 설정
 }
 
 inline int BoardObject::IsBoardChanged()

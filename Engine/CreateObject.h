@@ -6,7 +6,25 @@
 class CreateObject
 {
 public:
-	static void CreateObjectsOutOfScreen(vector<unique_ptr<Object>>& objects, string imageKey, float screenWidth, float screenHeight, float size, int count, float speed = 1.0f);
+	enum direction
+	{
+		all = 0,
+		left = 1,
+		right = 2,
+		up = 3,
+		down = 4
+	};
+
+	static void CreateObjectsOutOfScreen
+	(
+		vector<unique_ptr<Object>>& objects,
+		string imageKey,
+		float screenWidth, float screenHeight,
+		float size, int count,
+		float speed = 1.0f,
+		direction exclusiveDirection = direction::all
+	);
+
 };
 
 class NewObject : public Object
