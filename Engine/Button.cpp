@@ -3,8 +3,6 @@
 
 void Button::CheckInput(const MouseEvent& mouseEvent)
 {
-	if (!m_isActive) { m_isPressed = false; return; }
-
 	POINT mousePos = mouseEvent.pos;
 	bool isInX =
 		(
@@ -21,6 +19,7 @@ void Button::CheckInput(const MouseEvent& mouseEvent)
 	if (isInX && isInY)
 	{
 		m_isHovered = true;
+		if (!m_isActive) { m_isPressed = false; return; }
 		m_inputType = mouseEvent.type;
 		if (m_inputType == MouseType::LDown) m_isPressed = true;
 		else m_isPressed = false;
@@ -33,7 +32,7 @@ void Button::CheckInput(const MouseEvent& mouseEvent)
 
 void Button::Render(Renderer& renderer)
 {
-	if (m_isHovered && m_textObject)
+	if (m_bitmapRender->IsActive() && m_isHovered && m_textObject)
 	{
 		m_textObject->GetComponent<BitmapRender3D>()->Render(renderer);
 	}
@@ -96,14 +95,14 @@ void ShopJokerButton::ButtonFunction()
 			for (auto& jokerButton : *m_jokerButton)
 			{
 				if (!jokerButton) continue;
-				if (jokerButton->GetJokerAbility() != StoneAbility::None) continue; // ÀÌ¹Ì ´É·ÂÀÌ ÀÖ´Â Á¶Ä¿ ¹öÆ°Àº °Ç³Ê¶Ü
+				if (jokerButton->GetJokerAbility() != StoneAbility::None) continue; // ì´ë¯¸ ëŠ¥ë ¥ì´ ìˆëŠ” ì¡°ì»¤ ë²„íŠ¼ì€ ê±´ë„ˆëœ€
 
 				jokerButton->SetButtonJoker(m_jokerInfo.stoneType, m_jokerAbility);
 				m_boardManager.m_playerInfo.m_money -= m_jokerInfo.costWhite;
 
 				break;
 			}
-			SetShowAndActive(false); // »óÁ¡ Á¶Ä¿ ¹öÆ° ¼û±è
+			SetShowAndActive(false); // ìƒì  ì¡°ì»¤ ë²„íŠ¼ ìˆ¨ê¹€
 
 			std::cout << "Money : " << m_boardManager.m_playerInfo.m_money << std::endl;
 		}
