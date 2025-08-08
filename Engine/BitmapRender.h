@@ -63,6 +63,7 @@ public:
 	void SetSize(float width, float height);
 	float GetWidth() const { return m_width; }
 	float GetHeight() const { return m_height; }
+	bool IsEnded() const { return m_isAnimationEnded; } // 애니메이션이 끝났는지 반환
 
 
 	void ChangeBoardTexture(const string& nextTextureKey, float duration = 1.0f) {
