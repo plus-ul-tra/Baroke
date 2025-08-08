@@ -48,6 +48,11 @@ private:
 	float m_gameStateDelayElapsed = 0.0f; // 게임 상태 전환 딜레이 경과 시간
 	float m_gameStateDelay = 1.0f; // 게임 상태 전환 딜레이
 
+
+	std::vector<std::unique_ptr<HintMark>> m_hintPool;
+	void SyncPlacementHintsToPool();  // 하이라이트 동기화
+	void SetHintpool();
+
 public:
 	//GameScene() = default;
 	GameScene() { std::cout << "Game Scene" << std::endl; }

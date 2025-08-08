@@ -48,13 +48,11 @@ void JokerButton::ButtonFunction()
 		BoardManager::GetInstance().SetMode(UIMode::Sacrifice);
 		BoardManager::GetInstance().SetStoneType(m_stoneType);
 		BoardManager::GetInstance().SetStoneAbility(m_jokerAbility);
+		BoardManager::GetInstance().ComputePlacementHints(m_jokerAbility);
 		m_isPressed = false;
         
     }
-	if (m_isHovered && m_isActive)
-	{
 
-	}
 }
 
 void JokerButton::SetButtonJoker(StoneType stoneType, StoneAbility ability)
@@ -113,6 +111,7 @@ void ShopJokerButton::ButtonFunction()
 
 		m_isPressed = false;
 	}
+
 	if (m_isHovered && m_isActive)
 	{
 

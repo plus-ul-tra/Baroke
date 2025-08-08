@@ -6,6 +6,7 @@
 #include "InputEvents.h"
 #include "BoardManager.h"
 
+
 class Button : public Object
 {
 protected:
@@ -82,6 +83,7 @@ public:
 
 class JokerButton : public Button
 {
+	BitmapRender3D* m_tooltipRender = nullptr;
 	StoneType m_stoneType = StoneType::Joker;
 	StoneAbility m_jokerAbility = StoneAbility::None;
 
@@ -95,7 +97,7 @@ class JokerButton : public Button
 // 		case jokerDouble:   // 흑돌 2개 이상
 // 			return [&bm]() { return bm.CountStones(Black) >= 2; };
 		case jokerOmok:   // 흑돌 5개 이상
-			return [&bm]() { return bm.HasStraightLine(Black,5); };
+			return [&bm]() { return bm.HasStraightLine(Black,5)/*&& bm.CountStones(Black) >= 10*/; };
 		case jokerSamok:   // 조커돌 4개 이상
 			return [&bm]() { return bm.HasStraightLine(Joker, 4); };
 		case jokerSammok:   // 조커돌 3개 이상
@@ -115,7 +117,7 @@ class JokerButton : public Button
 			return [&bm]() { return true; };
 
 		case jokerDansu:   // 자유도가 1인 흰돌이 존재하는 경우
-			return [&bm]() { return bm.WhiteLibOne(); };
+			return [&bm]() { return /*bm.WhiteLibOne();*/bm.CountStones(Black) >= 2; };
 
 			//-------------------------------- 우주 (set 3)
 		case jokerTeleport:   // 흑돌 1개 이상
@@ -202,6 +204,7 @@ public:
 
 class ShopJokerButton : public Button
 {
+	BitmapRender3D* m_tooltipRender = nullptr;
 	JokerStoneInfo m_jokerInfo;
 	StoneAbility m_jokerAbility = StoneAbility::None;
 	vector<unique_ptr<JokerButton>>* m_jokerButton = nullptr; // 상점 조커 버튼들

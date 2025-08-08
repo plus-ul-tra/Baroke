@@ -32,6 +32,7 @@
 
 #include "ItemType.h"
 #include "ModeInfo.h"
+#include "HintMark.h"
 
 
 
