@@ -128,6 +128,11 @@ void ShaderManager::ReadAllShaders()
 	if (FAILED(hr)) {
 		cout << "SetGreen리드 실패" << endl;
 	}
+
+	hr = ReadShaderResource("..\\Shader\\DefaultShader_VS.cso", "..\\Shader\\Cyber.cso", "Cyber", quadLayout, numQuadElements);
+	if (FAILED(hr)) {
+		cout << "SetGreen리드 실패" << endl;
+	}
 }
 
 

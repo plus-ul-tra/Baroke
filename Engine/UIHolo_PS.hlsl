@@ -42,18 +42,18 @@ float4 PSMain(VS_OUTPUT input) : SV_Target
 
 
     float2 p = input.tex - float2(0.5, 0.5);
-    float r = length(p); // 반지름 (0~0.7 정도)
-    float ang = atan2(p.y, p.x); // -π ~ +π
+    float r = length(p); 
+    float ang = atan2(p.y, p.x); 
     ang = frac(ang / (2 * 3.141592)); // 0~1 로 정규화
 
 
-    float speed = 0.2; // 회전 속도 (Hz)
+    float speed = 0.2; 
     float hue = frac(ang + time * speed); // 0~1
     float3 rainbow = HueToRGB(hue);
 
 
-    float radialWave = sin(r * 40 - time * 5) * 0.5 + 0.5; // 동심원
-    float pattern = radialWave * 0.7; // 세기 조절
+    float radialWave = sin(r * 40 - time * 5) * 0.5 + 0.5; 
+    float pattern = radialWave * 0.7; 
 
     float3 holoColor = baseColor.rgb * (1.0 + rainbow * pattern * 1.5);
     return float4(holoColor, baseColor.a);

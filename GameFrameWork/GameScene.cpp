@@ -46,17 +46,56 @@ void GameScene::SetUIButton()
 	desc->GetComponent<BitmapRender3D>()->SetShaderType("Holo");
 	m_desc = move(desc);
 	
-	unique_ptr<Button> leftUpUI = std::make_unique<Button>(-720.0f, 388.0f, 427, 199, "T_Standard_Left_Base_Glow.png", 50);
+	unique_ptr<Button> leftUpUI = std::make_unique<Button>(-720.0f, 388.0f, 427, 199, "T_Standard_Left_Base_Glow.png");
 	m_notUniqueObjectList.emplace_back(leftUpUI.get());
 	leftUpUI->GetComponent<BitmapRender3D>()->SetShaderType("UIHolo");
 	m_leftUpUI = move(leftUpUI);
 
 
-	unique_ptr<Button> leftUI = std::make_unique<Button>(-720.0f, -100.0f, 427, 769, "T_Standard_Left_Down_Base_Glow.png", 50);
+	unique_ptr<Button> leftUI = std::make_unique<Button>(-720.0f, -100.0f, 427, 769, "T_Standard_Left_Down_Base_Glow.png");
 	m_notUniqueObjectList.emplace_back(leftUI.get());
 	//m_normalUI.emplace_back(move(leftUI));
 	leftUI->GetComponent<BitmapRender3D>()->SetShaderType("UIHolo");
 	m_leftUI = move(leftUI);
+
+	//-- unchanged----------------------
+
+	unique_ptr<Button> stageText = std::make_unique<Button>(-760.0f, 388.0f, 167, 67, "T_Common_Left_Stage.png");
+	m_notUniqueObjectList.emplace_back(stageText.get());
+	stageText->GetComponent<BitmapRender3D>()->SetShaderType("Holo");
+	m_useless.emplace_back(move(stageText));
+
+	unique_ptr<Button> leftLine = std::make_unique<Button>(-720.0f, -100.0f, 340, 16, "T_Common_Left_Down_Score_Guideline.png");
+	m_notUniqueObjectList.emplace_back(leftLine.get());
+	leftLine->GetComponent<BitmapRender3D>()->SetShaderType("UIHolo");
+	m_useless.emplace_back(move(leftLine));
+
+	unique_ptr<Button> scoreText = std::make_unique<Button>(-720.0f, -150.0f, 145, 40, "T_Common_Left_Down_Score.png");
+	m_notUniqueObjectList.emplace_back(scoreText.get());
+	scoreText->GetComponent<BitmapRender3D>()->SetShaderType("UIHolo");
+	m_useless.emplace_back(move(scoreText));
+
+	unique_ptr<Button> scoreFiled = std::make_unique<Button>(-720.0f, -250.0f, 204, 97, "T_Common_Left_Down_Score_Field.png");
+	m_notUniqueObjectList.emplace_back(scoreFiled.get());
+	scoreFiled->GetComponent<BitmapRender3D>()->SetShaderType("UIHolo");
+	m_useless.emplace_back(move(scoreFiled));
+
+	unique_ptr<Button> settingText = std::make_unique<Button>(-720.0f, -330.0f, 52, 34, "T_Common_Left_Down_Setting.png");
+	m_notUniqueObjectList.emplace_back(settingText.get());
+	settingText->GetComponent<BitmapRender3D>()->SetShaderType("UIHolo");
+	m_useless.emplace_back(move(settingText));
+
+	unique_ptr<Button> exitText = std::make_unique<Button>(-720.0f, -390.0f, 115, 32, "T_Common_Left_Down_Exit.png");
+	m_notUniqueObjectList.emplace_back(exitText.get());
+	//exitText->GetComponent<BitmapRender3D>()->SetShaderType("UIHolo");
+	m_useless.emplace_back(move(exitText));
+
+	unique_ptr<Button> cyberAlpha = std::make_unique<Button>(0.0f, 0.0f, 900, 900, "CyberAlpha.png");
+	m_notUniqueObjectList.emplace_back(cyberAlpha.get());
+	cyberAlpha->GetComponent<BitmapRender3D>()->SetShaderType("Holo");
+	cyberAlpha->GetComponent<BitmapRender3D>()->SetActive(false);
+	m_cyber = move(cyberAlpha);
+
 	//slot간격 170정도
 	 // m_buttonList는 기능용
 	 // m_UIlist는 그리기용
@@ -457,11 +496,12 @@ void GameScene::OnLeave()
 {
 	std::cout << "Game1 Scene Left" << std::endl;
 	Reset();
+	m_useless.clear();
 	m_jokerButtons.clear();
 	m_jokerSlot.clear();
 	m_itemSlot.clear();
 	m_passiveSlot.clear();
-  m_hintPool.clear();
+	m_hintPool.clear();
 
 }
 
@@ -666,7 +706,7 @@ void GameScene::ChangeThema(int thema)
 		m_rightUI->GetComponent<BitmapRender3D>()->ChangeTexture("T_Jungle_Right_Base_Glow.png");
 		m_leftUI->GetComponent<BitmapRender3D>()->ChangeTexture("T_Jungle_Left_Down_Base_Glow.png");
 		m_leftUpUI->GetComponent<BitmapRender3D>()->ChangeTexture("T_Jungle_Left_Base_Glow.png");
-		
+		m_cyber->GetComponent<BitmapRender3D>()->SetActive(false);
 		break;
 
 	case 2: // Space
@@ -696,6 +736,7 @@ void GameScene::ChangeThema(int thema)
 		m_rightUI->GetComponent<BitmapRender3D>()->ChangeTexture("T_Space_Right_Base_Glow.png");
 		m_leftUI->GetComponent<BitmapRender3D>()->ChangeTexture("T_Space_Left_Down_Base_Glow.png");
 		m_leftUpUI->GetComponent<BitmapRender3D>()->ChangeTexture("T_Space_Left_Base_Glow.png");
+		m_cyber->GetComponent<BitmapRender3D>()->SetActive(false);
 		break;
 
 	case 3: // Korea
@@ -726,6 +767,7 @@ void GameScene::ChangeThema(int thema)
 		m_rightUI->GetComponent<BitmapRender3D>()->ChangeTexture("T_Dancheong_Right_Base_Glow.png");
 		m_leftUI->GetComponent<BitmapRender3D>()->ChangeTexture("T_Dancheong_Left_Down_Base_Glow.png");
 		m_leftUpUI->GetComponent<BitmapRender3D>()->ChangeTexture("T_Dancheong_Left_Base_Glow.png");
+		m_cyber->GetComponent<BitmapRender3D>()->SetActive(false);
 		break;
 
 	case 4: // Halloween
@@ -755,6 +797,7 @@ void GameScene::ChangeThema(int thema)
 		m_rightUI->GetComponent<BitmapRender3D>()->ChangeTexture("T_Halloween_Right_Base_Glow.png");
 		m_leftUI->GetComponent<BitmapRender3D>()->ChangeTexture("T_Halloween_Left_Down_Base_Glow.png");
 		m_leftUpUI->GetComponent<BitmapRender3D>()->ChangeTexture("T_Halloween_Left_Base_Glow.png");
+		m_cyber->GetComponent<BitmapRender3D>()->SetActive(false);
 		break;
 
 	case 5: // Cyber
@@ -784,6 +827,8 @@ void GameScene::ChangeThema(int thema)
 		m_rightUI->GetComponent<BitmapRender3D>()->ChangeTexture("Cyberpunk_Righ.png");
 		m_leftUI->GetComponent<BitmapRender3D>()->ChangeTexture("Cyberpunk_Left_Down.png");
 		m_leftUpUI->GetComponent<BitmapRender3D>()->ChangeTexture("Cyberpunk_Left.png");
+		m_cyber->GetComponent<BitmapRender3D>()->SetActive(true);
+
 		break;
 
 	default: // 기본 테마

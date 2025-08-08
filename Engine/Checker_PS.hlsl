@@ -21,7 +21,7 @@ cbuffer TimeBuffer : register(b0)
 	float deltaTime;
 	float2 padding;
 }
-#define GRID 20        
+#define GRID 17        
 #define EDGE 1.0
 struct VS_OUTPUT // 버텍스 쉐이더 출력 구조체와 동일
 {
