@@ -74,5 +74,5 @@ public:
 	void KeyCommandMapping() override;
 
 	void OnInput(const MouseEvent& ev) override;
-	void ChangeThema();
+	void ChangeThema(int thema = -1);
 };

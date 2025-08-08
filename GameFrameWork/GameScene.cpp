@@ -166,6 +166,9 @@ void GameScene::SetUIButton()
 
 void GameScene::StartStage()
 {
+	ChangeThema(m_stageNo % 6);
+	m_boardObj->ChangeTheme(m_stageNo % 6);
+
 	m_stageNo++;
 	m_board.ResetStone();
 	int spawn = 3 + (m_stageNo - 1);
@@ -249,7 +252,6 @@ void GameScene::InitShop()
 void GameScene::ShopStage()
 {
 	m_board.ResetStone();
-	m_boardObj->ResetTexture();
 	random_device rd;
 	mt19937 rng(rd());
 	uniform_int_distribution<int> dist(0, 100);
@@ -546,14 +548,14 @@ void GameScene::KeyCommandMapping()
 
 void GameScene::OnInput(const MouseEvent& ev)
 {
+	for (auto& button : m_buttonList)
+	{
+		button->CheckInput(ev);
+	}
+	if (m_gameState == GameState::Shop) return; // 상점 모드
+
 	if (m_uiMode == UIMode::Normal)
 	{
-		for (auto& button : m_buttonList)
-		{
-			button->CheckInput(ev);
-		}
-		if (m_gameState == GameState::Shop) return; // 상점 모드
-
 		if (ev.type == MouseType::LDown)
 		{
 			if (m_board.GetPlayer().GetBlackCount() <= m_board.GetStoneTypeAmount(Black)) return;
@@ -632,11 +634,11 @@ void GameScene::OnInput(const MouseEvent& ev)
 
 }
 
-void GameScene::ChangeThema()
+void GameScene::ChangeThema(int thema)
 {
-	switch (m_boardObj->IsBoardChanged())
+	switch (thema)
 	{
-	case 0: // Forest
+	case 1: // Forest
 		Mediator::GetInstance().SetUIColor(XMFLOAT4(1.0f, 1.0f, 1.0f, 1.0f));
 
 		for (auto& bt : m_jokerSlot)
@@ -667,7 +669,7 @@ void GameScene::ChangeThema()
 		
 		break;
 
-	case 1: // Space
+	case 2: // Space
 		Mediator::GetInstance().SetUIColor(XMFLOAT4(1.0f, 1.0f, 1.0f, 1.0f));
 
 		for (auto& bt : m_jokerSlot)
@@ -696,7 +698,7 @@ void GameScene::ChangeThema()
 		m_leftUpUI->GetComponent<BitmapRender3D>()->ChangeTexture("T_Space_Left_Base_Glow.png");
 		break;
 
-	case 2: // Korea
+	case 3: // Korea
 		Mediator::GetInstance().SetUIColor(XMFLOAT4(1.0f, 1.0f, 1.0f, 1.0f));
 
 		for (auto& bt : m_jokerSlot)
@@ -726,7 +728,7 @@ void GameScene::ChangeThema()
 		m_leftUpUI->GetComponent<BitmapRender3D>()->ChangeTexture("T_Dancheong_Left_Base_Glow.png");
 		break;
 
-	case 3: // Halloween
+	case 4: // Halloween
 		Mediator::GetInstance().SetUIColor(XMFLOAT4(1.0f, 1.0f, 1.0f, 1.0f));
 
 		for (auto& bt : m_jokerSlot)
@@ -755,7 +757,7 @@ void GameScene::ChangeThema()
 		m_leftUpUI->GetComponent<BitmapRender3D>()->ChangeTexture("T_Halloween_Left_Base_Glow.png");
 		break;
 
-	case 4: // Cyber
+	case 5: // Cyber
 		Mediator::GetInstance().SetUIColor(XMFLOAT4(1.0f, 1.0f, 1.0f, 1.0f));
 
 		for (auto& bt : m_jokerSlot)
