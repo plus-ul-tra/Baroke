@@ -27,8 +27,15 @@ private:
 
 	void InitShop(); // 상점 초기화
 	vector<unique_ptr<JokerButton>> m_jokerButtons; // 조커 버튼들 // 나중에 다른 방식으로?
-	vector <unique_ptr<Button>>   m_normalUI;  // scene 전환시 texture 바꿀 얘들임
-
+	//vector <unique_ptr<Button>>   m_normalUI;  // scene 전환시 texture 바꿀 얘들임
+	
+	vector <unique_ptr<Button>>	  m_jokerSlot;
+	vector <unique_ptr<Button>>	  m_itemSlot;
+	vector <unique_ptr<Button>>	  m_passiveSlot;
+	unique_ptr<Button>            m_desc;
+	unique_ptr<Button>			  m_rightUI;
+	unique_ptr<Button>			  m_leftUI;
+	unique_ptr<Button>			  m_leftUpUI;
 
 	vector<pair<StoneAbility, JokerStoneInfo>> m_shopStones; // 돌 조커
 	vector<pair<StoneAbility, JokerStoneInfo>> m_shopItems; // 아이템 조커
@@ -36,10 +43,10 @@ private:
 	unique_ptr<ShopEndButton> m_shopExitButton;
 	int m_shopRng[3] = { 80, 45, 15 }; // 상점 아이템 확률
 	void ShopStage(); // 상점
-	enum class GameState { Stage, ShopEnter, Shop };
+	enum class GameState { Stage, ShopEnter, Shop, ShopExit };
 	GameState m_gameState = GameState::Stage;
-
-	vector<unique_ptr<Object>> m_screenEffectObjects; // 화면에 그려질 오브젝트들
+	float m_gameStateDelayElapsed = 0.0f; // 게임 상태 전환 딜레이 경과 시간
+	float m_gameStateDelay = 1.0f; // 게임 상태 전환 딜레이
 
 
 	std::vector<std::unique_ptr<HintMark>> m_hintPool;
@@ -52,7 +59,7 @@ public:
 	~GameScene() = default;
 	void Initialize() override;
 
-	void FixedUpdate(double fixedDeltaTime);
+	void FixedUpdate(double fixedDeltaTime) override;
 	void Update(double deltaTime) override;
 	void LateUpdate(double deltaTime) override;
 	//void Render(Renderer& renderer) override;
@@ -66,5 +73,5 @@ public:
 	void KeyCommandMapping() override;
 
 	void OnInput(const MouseEvent& ev) override;
-	void ChangeThema(int thema = -1);
+	void ChangeThema();
 };

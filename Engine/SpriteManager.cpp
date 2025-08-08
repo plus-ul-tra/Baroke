@@ -109,7 +109,7 @@ ComPtr<ID3D11ShaderResourceView> SpriteManager::LoadTextureSRV(const filesystem:
 
 
 	D3D11_TEXTURE2D_DESC texDesc = {};
-	texDesc.Width = width; texDesc.Height = height; texDesc.MipLevels = 1; texDesc.ArraySize = 1;
+	texDesc.Width = width;  texDesc.Height = height; texDesc.MipLevels = 1; texDesc.ArraySize = 1;
 	texDesc.Format = DXGI_FORMAT_R8G8B8A8_UNORM;
 	texDesc.SampleDesc.Count = 1; texDesc.SampleDesc.Quality = 0;
 	texDesc.Usage = D3D11_USAGE_IMMUTABLE; texDesc.BindFlags = D3D11_BIND_SHADER_RESOURCE;
@@ -127,7 +127,7 @@ ComPtr<ID3D11ShaderResourceView> SpriteManager::LoadTextureSRV(const filesystem:
 	srvDesc.Format = texDesc.Format; srvDesc.ViewDimension = D3D11_SRV_DIMENSION_TEXTURE2D;
 	srvDesc.Texture2D.MipLevels = texDesc.MipLevels; srvDesc.Texture2D.MostDetailedMip = 0;
 
-	hr = m_pDevice->CreateShaderResourceView(texture.Get(), &srvDesc, srv.GetAddressOf());
+	hr = m_pDevice->CreateShaderResourceView(texture.Get(), &srvDesc, srv.GetAddressOf()); 
 	if (FAILED(hr)) { /*예외코드*/ return nullptr; }
 
 	m_textures.emplace(key, srv);

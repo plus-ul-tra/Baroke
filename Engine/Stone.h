@@ -137,9 +137,9 @@ public:
 struct JokerStoneInfo // 조커 돌 정보
 {
 	string fileName = "jokerEgg.png"; // 조커 돌 이미지 파일 이름
+	string toolTipName = "tool1.png"; // 조커 돌 툴팁 이름
 
 	JokerType jokerType = JokerType::Default;
-
 
 	int coolTime = 0; // 조커 돌 능력 쿨타임
 	int lifeSpan = 0; // 조커 돌 능력 지속 시간

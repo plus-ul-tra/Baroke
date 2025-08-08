@@ -12,6 +12,7 @@ class Button : public Object
 protected:
 	Transform* m_transform = nullptr;
 	BitmapRender3D* m_bitmapRender = nullptr;
+	unique_ptr<Object> m_textObject = nullptr;
 
 	float m_width = 0;
 	float m_height = 0;
@@ -73,10 +74,11 @@ public:
 	
 	void Update(double dt) override
 	{
-
 		ButtonFunction();
 		Object::Update(dt);
+		if (m_isActive && m_isHovered && m_textObject) m_textObject->Update(dt);
 	}
+	void Render(Renderer& renderer) override;
 };
 
 class JokerButton : public Button
@@ -173,7 +175,6 @@ class JokerButton : public Button
 		}
 	}
 
-
 	void ButtonFunction() override;
 
 public:
@@ -181,12 +182,7 @@ public:
 		: Button(posX, posY, width, height, bitmapFile, order) {}
 
 
-	void SetButtonJoker(StoneType stoneType, StoneAbility ability) {
-		m_jokerAbility = ability;
-		m_stoneType = stoneType;
-		m_bitmapRender->ChangeTexture(m_jokerInfoMap[ability].fileName);
-		BindEnabledPredicate(BuildPredicate(ability));
-	}
+	void SetButtonJoker(StoneType stoneType, StoneAbility ability);
 	StoneAbility GetJokerAbility() const { return m_jokerAbility; }
 	void Update(double dt) override
 	{
@@ -202,8 +198,6 @@ public:
 	 	{
 	 		if (m_bitmapRender) m_bitmapRender->SetShaderType("Holo");
 	 	}
-
-		ButtonFunction();
 		Object::Update(dt);
 	}
 };
@@ -215,16 +209,17 @@ class ShopJokerButton : public Button
 	StoneAbility m_jokerAbility = StoneAbility::None;
 	vector<unique_ptr<JokerButton>>* m_jokerButton = nullptr; // 상점 조커 버튼들
 
+	void ButtonFunction() override;
+
 public:
 	ShopJokerButton(float posX, float posY, float width, float height, const std::string& bitmapFile, int order = 0)
 		: Button(posX, posY, width, height, bitmapFile, order) {}
 
-	void SetButtonJoker(JokerStoneInfo jokerInfo, StoneAbility ability) { m_jokerInfo = jokerInfo; m_jokerAbility = ability; m_bitmapRender->ChangeTexture(jokerInfo.fileName); }
+	void SetButtonJoker(JokerStoneInfo jokerInfo, StoneAbility ability);
 	void SetButton(vector<unique_ptr<JokerButton>>* jokerButton) { m_jokerButton = jokerButton; }
 
 	void SetShowAndActive(bool active);
 	StoneAbility GetJokerAbility() const { return m_jokerAbility; }
-	void ButtonFunction() override;
 };
 
 class ShopEndButton : public Button

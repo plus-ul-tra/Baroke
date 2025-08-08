@@ -1,10 +1,8 @@
 #include "pch.h"
-#include "Button.h"
+#include "Engine.h"
 
 void Button::CheckInput(const MouseEvent& mouseEvent)
 {
-	if (!m_isActive) { m_isPressed = false; return; }
-
 	POINT mousePos = mouseEvent.pos;
 	bool isInX =
 		(
@@ -21,6 +19,7 @@ void Button::CheckInput(const MouseEvent& mouseEvent)
 	if (isInX && isInY)
 	{
 		m_isHovered = true;
+		if (!m_isActive) { m_isPressed = false; return; }
 		m_inputType = mouseEvent.type;
 		if (m_inputType == MouseType::LDown) m_isPressed = true;
 		else m_isPressed = false;
@@ -31,21 +30,16 @@ void Button::CheckInput(const MouseEvent& mouseEvent)
 	}
 }
 
+void Button::Render(Renderer& renderer)
+{
+	if (m_bitmapRender->IsActive() && m_isHovered && m_textObject)
+	{
+		m_textObject->GetComponent<BitmapRender3D>()->Render(renderer);
+	}
+}
+
 void JokerButton::ButtonFunction()
 {
-// 	if (m_isPressed)
-// 	{
-// 		BoardManager::GetInstance().SetStoneType(m_stoneType);
-// 		BoardManager::GetInstance().SetStoneAbility(m_jokerAbility);
-// 	}
-
-	//if (m_isPressed && m_isActive)
-	//{
-	//	auto& bm = BoardManager::GetInstance();
-	//	bm.SetStoneType(m_stoneType);
-	//	bm.SetStoneAbility(m_jokerAbility);
-	//}
-
 	if (m_isPressed && m_isActive)
     {
 
@@ -59,6 +53,28 @@ void JokerButton::ButtonFunction()
         
     }
 
+}
+
+void JokerButton::SetButtonJoker(StoneType stoneType, StoneAbility ability)
+{
+	m_jokerAbility = ability;
+	m_stoneType = stoneType;
+
+	m_bitmapRender->ChangeTexture(m_jokerInfoMap[ability].fileName);
+	m_textObject = nullptr;
+	m_textObject = make_unique<NewObject>(m_transform->GetPosition().m128_f32[0], m_transform->GetPosition().m128_f32[1] + 20.0f, 691.0f, 200.0f, 0.0f, m_jokerInfoMap[ability].toolTipName);
+
+	BindEnabledPredicate(BuildPredicate(ability));
+}
+
+void ShopJokerButton::SetButtonJoker(JokerStoneInfo jokerInfo, StoneAbility ability)
+{
+	m_jokerInfo = jokerInfo;
+	m_jokerAbility = ability;
+
+	m_bitmapRender->ChangeTexture(jokerInfo.fileName);
+	m_textObject = nullptr;
+	m_textObject = make_unique<NewObject>(m_transform->GetPosition().m128_f32[0], m_transform->GetPosition().m128_f32[1] + 20.0f, 691.0f, 200.0f, 0.0f, m_jokerInfoMap[ability].toolTipName);
 }
 
 void ShopJokerButton::SetShowAndActive(bool active)
@@ -77,14 +93,14 @@ void ShopJokerButton::ButtonFunction()
 			for (auto& jokerButton : *m_jokerButton)
 			{
 				if (!jokerButton) continue;
-				if (jokerButton->GetJokerAbility() != StoneAbility::None) continue; // ÀÌ¹Ì ´É·ÂÀÌ ÀÖ´Â Á¶Ä¿ ¹öÆ°Àº °Ç³Ê¶Ü
+				if (jokerButton->GetJokerAbility() != StoneAbility::None) continue; // ì´ë¯¸ ëŠ¥ë ¥ì´ ìˆëŠ” ì¡°ì»¤ ë²„íŠ¼ì€ ê±´ë„ˆëœ€
 
 				jokerButton->SetButtonJoker(m_jokerInfo.stoneType, m_jokerAbility);
 				m_boardManager.m_playerInfo.m_money -= m_jokerInfo.costWhite;
 
 				break;
 			}
-			SetShowAndActive(false); // »óÁ¡ Á¶Ä¿ ¹öÆ° ¼û±è
+			SetShowAndActive(false); // ìƒì  ì¡°ì»¤ ë²„íŠ¼ ìˆ¨ê¹€
 
 			std::cout << "Money : " << m_boardManager.m_playerInfo.m_money << std::endl;
 		}
@@ -95,9 +111,10 @@ void ShopJokerButton::ButtonFunction()
 
 		m_isPressed = false;
 	}
-	if (m_isHovered)
+
+	if (m_isHovered && m_isActive)
 	{
-		std::cout << "hovering" << std::endl;
+
 	}
 }
 

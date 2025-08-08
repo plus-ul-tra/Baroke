@@ -77,10 +77,10 @@ public:
 
 	void ChangeBackGroundColor(XMFLOAT4 target) {
 		m_mediator.SetTargetColor(target);
+		m_isShaderEffectActive = true; // 쉐이더 효과 활성화
 	}
 
 	void SetShaderType(const string& type) { m_shaderType = type; } // 쉐이더 타입 설정
-	//void SetShaderType(const string& type, float duration = 1.0f) { m_shaderType = type; m_shaderTimeElapsed = 0.0f; m_shaderEffectDuration = duration; }
 
 	//일반 텍스쳐 변경으로 사용가능
 	void ChangeTexture(const string& nextTextureKey)
