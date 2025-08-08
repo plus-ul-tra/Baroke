@@ -1,0 +1,25 @@
+{ "frames": {
+   "sit_pattern1_sheet.png": {
+    "frame": { "x": 0, "y": 0, "w": 468, "h": 156 },
+    "rotated": false,
+    "trimmed": false,
+    "spriteSourceSize": { "x": 0, "y": 0, "w": 468, "h": 156 },
+    "sourceSize": { "w": 468, "h": 156 },
+    "duration": 100
+   }
+ },
+ "meta": {
+  "app": "https://www.aseprite.org/",
+  "version": "1.3.14.4-x64",
+  "format": "RGBA8888",
+  "size": { "w": 468, "h": 156 },
+  "scale": "1",
+  "frameTags": [
+  ],
+  "layers": [
+   { "name": "Layer", "opacity": 255, "blendMode": "normal" }
+  ],
+  "slices": [
+  ]
+ }
+}
