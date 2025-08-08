@@ -235,6 +235,10 @@ void GameScene::ModeCheck()
 		m_board.SetMode(UIMode::UseAbility);
 		std::cout << "BeforeUseAbility clear" << std::endl;
 	}
+	if (m_uiMode == UIMode::UseAbility) 
+	{
+		SyncPlacementHintsToPool();
+	}
 
 
 }
@@ -334,6 +338,46 @@ void GameScene::ShopStage()
 	}
 }
 
+void GameScene::SyncPlacementHintsToPool()
+{
+	const auto& hints = m_board.GetHints(); 
+
+	for (auto& h : m_hintPool) h->Show(false);
+
+	const size_t n = std::min(hints.size(), m_hintPool.size());
+	for (size_t i = 0; i < n; ++i)
+	{
+		POINT screen = m_board.BoardToScreenPosition(hints[i]);
+
+		float sx = static_cast<float>(screen.x);
+		float sy = static_cast<float>(screen.y);
+
+
+		m_hintPool[i]->SetScreenPos(sx + CELL/2, sy + CELL / 2);
+		m_hintPool[i]->Show(true);
+	}
+}
+
+
+void GameScene::SetHintpool()
+{
+	
+	const int HINT_POOL_SIZE = 225;                
+	const float hintW = (float)CELL * 0.6f;       
+	const float hintH = (float)CELL * 0.6f;
+	const std::string hintTex = "High_Test.png";    
+	std::cout << "HighTest_1 Create Success" << std::endl;
+
+	m_hintPool.reserve(HINT_POOL_SIZE);
+	for (int i = 0; i < HINT_POOL_SIZE; ++i) {
+		auto up = std::make_unique<HintMark>(hintW, hintH, hintTex, 100);
+		up->Show(false);
+		m_notUniqueObjectList.emplace_back(up.get());
+		m_hintPool.emplace_back(std::move(up));
+	}
+	
+}
+
 void GameScene::Initialize()
 {
 	std::cout << "Game Scene Init" << std::endl;
@@ -368,6 +412,8 @@ void GameScene::Update(double deltaTime)
 	ModeCheck();
 	CheckStageClear();
 	ChangeThema(m_boardObj->IsBoardChanged());
+
+
 }
 
 void GameScene::LateUpdate(double deltaTime)
@@ -406,9 +452,12 @@ void GameScene::OnEnter()
 
 	//CreateObject::CreateObjectsOutOfScreen(m_objectList, "Leaf6.png", 1920.0f, 1080.0f, 200.0f, 100, 50.0f);
 
+
+
 	SetUIButton();
 	StartStage();
 	InitShop();
+	SetHintpool();
 }
 
 void GameScene::OnLeave()
@@ -418,6 +467,7 @@ void GameScene::OnLeave()
 	m_jokerButtons.clear();
 	m_normalUI.clear();
 	m_screenEffectObjects.clear();
+	m_hintPool.clear();
 }
 
 void GameScene::OnCommand(std::string& cmd)
@@ -437,6 +487,7 @@ void GameScene::KeyCommandMapping()
 {
 	m_commandMap["Escape"] = [this]()
 		{
+			m_board.ClearHints();
 			m_board.ExitMode();
 			// 추후 일시정지/재개 로직 여기에
 		};
@@ -459,6 +510,7 @@ void GameScene::KeyCommandMapping()
 
 	m_commandMap["F4"] = [this]()
 		{
+
 			m_board.ResetStone();
 		};
 
@@ -546,26 +598,41 @@ void GameScene::OnInput(const MouseEvent& ev)
 
 	}
 
-	else if (m_uiMode ==UIMode::UseAbility)  //능력 사용 모드
+// 	else if (m_uiMode ==UIMode::UseAbility)  //능력 사용 모드
+// 	{
+// 		if (ev.type == MouseType::LDown) {
+// 			m_board.SetStoneType(m_board.GetStoneType());
+// 			m_board.SetStoneAbility(m_board.GetStoneAbility());
+// 			if (m_board.InputBasedGameLoop(ev.pos)) 
+// 			{
+// 				m_board.ExitMode();		// 능력 사용 후 다시 초기화
+// 			}
+// 			std::cout << "Place Black Stone : " << m_board.GetStoneTypeAmount(Black) << " / " << m_board.GetPlayer().GetBlackCount() << std::endl;
+// 		}
+// 
+// 	}
+	else if (m_uiMode == UIMode::UseAbility)  
 	{
 		if (ev.type == MouseType::LDown) {
+			POINT grid = m_board.MouseToBoardPosition({ (int)ev.pos.x, (int)ev.pos.y });
+
+			if (!m_board.IsPlacementAllowed(grid.x, grid.y))
+				return;
+
 			m_board.SetStoneType(m_board.GetStoneType());
 			m_board.SetStoneAbility(m_board.GetStoneAbility());
-			if (m_board.InputBasedGameLoop(ev.pos)) 
-			{
-				m_board.ExitMode();		// 능력 사용 후 다시 초기화
-			}
-			std::cout << "Place Black Stone : " << m_board.GetStoneTypeAmount(Black) << " / " << m_board.GetPlayer().GetBlackCount() << std::endl;
-		}
 
+			if (m_board.InputBasedGameLoop(ev.pos))
+			{
+				m_board.ClearHints();  
+				m_board.ExitMode();   
+				SyncPlacementHintsToPool();
+			}
+			std::cout << "Place Black Stone : " << m_board.GetStoneTypeAmount(Black)
+				<< " / " << m_board.GetPlayer().GetBlackCount() << std::endl;
+		}
 	}
 
-
-
-
-
-
-	
 }
 
 void GameScene::ChangeThema(int thema)

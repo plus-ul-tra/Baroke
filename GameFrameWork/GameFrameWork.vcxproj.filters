@@ -44,6 +44,9 @@
     <ClCompile Include="BackGround.cpp">
       <Filter>소스 파일\GameObjects</Filter>
     </ClCompile>
+    <ClCompile Include="HintMark.cpp">
+      <Filter>소스 파일\GameObjects</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="GameManager.h">
@@ -68,6 +71,9 @@
       <Filter>소스 파일\GameObjects</Filter>
     </ClInclude>
     <ClInclude Include="BackGround.h">
+      <Filter>소스 파일\GameObjects</Filter>
+    </ClInclude>
+    <ClInclude Include="HintMark.h">
       <Filter>소스 파일\GameObjects</Filter>
     </ClInclude>
   </ItemGroup>

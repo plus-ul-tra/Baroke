@@ -41,6 +41,11 @@ private:
 
 	vector<unique_ptr<Object>> m_screenEffectObjects; // 화면에 그려질 오브젝트들
 
+
+	std::vector<std::unique_ptr<HintMark>> m_hintPool;
+	void SyncPlacementHintsToPool();  // 하이라이트 동기화
+	void SetHintpool();
+
 public:
 	//GameScene() = default;
 	GameScene() { std::cout << "Game Scene" << std::endl; }

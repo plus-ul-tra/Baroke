@@ -54,13 +54,11 @@ void JokerButton::ButtonFunction()
 		BoardManager::GetInstance().SetMode(UIMode::Sacrifice);
 		BoardManager::GetInstance().SetStoneType(m_stoneType);
 		BoardManager::GetInstance().SetStoneAbility(m_jokerAbility);
+		BoardManager::GetInstance().ComputePlacementHints(m_jokerAbility);
 		m_isPressed = false;
         
     }
-	if (m_isHovered && m_isActive)
-	{
 
-	}
 }
 
 void ShopJokerButton::SetShowAndActive(bool active)
@@ -96,6 +94,10 @@ void ShopJokerButton::ButtonFunction()
 		}
 
 		m_isPressed = false;
+	}
+	if (m_isHovered)
+	{
+		std::cout << "hovering" << std::endl;
 	}
 }
 
