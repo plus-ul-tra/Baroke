@@ -391,7 +391,6 @@ void GameScene::Update(double deltaTime)
 	{
 		object->Update(deltaTime);
 	}
-
 	for (auto& UI : m_UIList)
 	{
 		UI->Update(deltaTime);

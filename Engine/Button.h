@@ -186,7 +186,7 @@ public:
 	StoneAbility GetJokerAbility() const { return m_jokerAbility; }
 	void Update(double dt) override
 	{
-
+		ButtonFunction();
 	 	m_isActive = m_isEnabledPredicate();
 	 
 	 	if (!m_isActive)
@@ -197,7 +197,7 @@ public:
 	 	else 
 	 	{
 	 		if (m_bitmapRender) m_bitmapRender->SetShaderType("Holo");
-	 	}
+		}
 		Object::Update(dt);
 	}
 };
