@@ -489,7 +489,6 @@ void GameScene::OnInput(const MouseEvent& ev)
 {
 	if (m_uiMode == UIMode::Normal)
 		{
-			
 			for (auto& button : m_buttonList)
 			{
 				button->CheckInput(ev);

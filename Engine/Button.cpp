@@ -3,7 +3,6 @@
 
 void Button::CheckInput(const MouseEvent& mouseEvent)
 {
-	if (!m_isActive) { m_isPressed = false; return; }
 
 	POINT mousePos = mouseEvent.pos;
 	bool isInX =
@@ -21,6 +20,7 @@ void Button::CheckInput(const MouseEvent& mouseEvent)
 	if (isInX && isInY)
 	{
 		m_isHovered = true;
+		if (!m_isActive) { m_isPressed = false; return; }
 		m_inputType = mouseEvent.type;
 		if (m_inputType == MouseType::LDown) m_isPressed = true;
 		else m_isPressed = false;
@@ -33,7 +33,7 @@ void Button::CheckInput(const MouseEvent& mouseEvent)
 
 void Button::Render(Renderer& renderer)
 {
-	if (m_isHovered && m_textObject)
+	if (m_bitmapRender->IsActive() && m_isHovered && m_textObject)
 	{
 		m_textObject->GetComponent<BitmapRender3D>()->Render(renderer);
 	}
