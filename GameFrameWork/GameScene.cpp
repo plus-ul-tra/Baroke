@@ -135,7 +135,7 @@ void GameScene::SetUIButton()
 
 
 	unique_ptr<JokerButton> jokerButton2 = std::make_unique<JokerButton>(617.0f, 171.0f, 100, 100, "Black.png", 50);
-	jokerButton2->SetButtonJoker(Black, None);
+	jokerButton2->SetButtonJoker(Black, jokerTeleport);
 	m_buttonList.emplace_back(jokerButton2.get());
 	m_notUniqueObjectList.emplace_back(jokerButton2.get());
 	m_jokerButtons.emplace_back(move(jokerButton2));
@@ -166,9 +166,6 @@ void GameScene::SetUIButton()
 
 void GameScene::StartStage()
 {
-	ChangeThema(m_stageNo % 6);
-	m_boardObj->ChangeTheme(m_stageNo % 6);
-
 	m_stageNo++;
 	m_board.ResetStone();
 	int spawn = 3 + (m_stageNo - 1);
@@ -202,8 +199,11 @@ void GameScene::CheckStageClear()
 				m_shopExitButton->SetShowAndActive(false);
 				for (auto& jokerButton : m_shopJokerButtons) jokerButton->SetShowAndActive(false);
 				m_gameStateDelayElapsed = 0.0f;
+				ChangeThema(m_stageNo % 6);
+				m_boardObj->ChangeTheme(m_stageNo % 6);
 			}
 		}
+
 		if (m_gameState == GameState::ShopExit && m_gameStateDelayElapsed > m_gameStateDelay) m_gameState = GameState::Stage;
 		if (m_gameState == GameState::Stage) StartStage();
 	}
