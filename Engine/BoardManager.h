@@ -107,7 +107,6 @@ private:
 	bool IsEmpty(int x, int y);
 
 
-
 	//---------------------------------------------------------------- 플레이어
 public:
 	PlayerInfo GetPlayer() { return m_playerInfo; }

@@ -364,10 +364,10 @@ struct JokerFunctionsWrapper
 			array<array<bool, SIZE_DEFAULT>, SIZE_DEFAULT> vis{};
 			if (boardManager.CountLiberty(position.x, position.y, grp, vis) == 0)
 			{
-				boardManager.m_playerInfo.m_BlackStone += jokerFusion->m_jokerInfo.functionVariable * grp.size();
+				boardManager.m_playerInfo.m_money += jokerFusion->m_jokerInfo.functionVariable * grp.size();
 			}
 
-			std::cout << boardManager.m_playerInfo.m_BlackStone << std::endl;
+
 		}
 		},
 
@@ -377,10 +377,10 @@ struct JokerFunctionsWrapper
 			array<array<bool, SIZE_DEFAULT>, SIZE_DEFAULT> vis{};
 			if (boardManager.CountLiberty(position.x, position.y, grp, vis) == 0)
 			{
-				boardManager.m_playerInfo.m_BlackStone += jokerTriunion->m_jokerInfo.functionVariable * grp.size();
+				boardManager.m_playerInfo.m_money += jokerTriunion->m_jokerInfo.functionVariable * grp.size();
 			}
 
-			std::cout << boardManager.m_playerInfo.m_BlackStone << std::endl;
+
 		}
 		},
 		{ StoneAbility::jokerQuadunion, [this](shared_ptr<JokerStone> jokerQuadunion, POINT position)
@@ -389,11 +389,10 @@ struct JokerFunctionsWrapper
 			array<array<bool, SIZE_DEFAULT>, SIZE_DEFAULT> vis{};
 			if (boardManager.CountLiberty(position.x, position.y, grp, vis) == 0)
 			{
-				boardManager.m_playerInfo.m_BlackStone += jokerQuadunion->m_jokerInfo.functionVariable * grp.size();
+				boardManager.m_playerInfo.m_money += jokerQuadunion->m_jokerInfo.functionVariable * grp.size();
 				boardManager.RemoveJokerStone(position);
 			}
 
-			std::cout << boardManager.m_playerInfo.m_BlackStone << std::endl;
 		}
 		},
 
@@ -620,8 +619,8 @@ struct JokerFunctionsWrapper
 					{
 						if (boardManager.m_stoneTypeMap.find({ position.x + patternXY[i], position.y + patternXY[j] })->second == StoneType::White)
 						{
-							boardManager.m_playerInfo.m_BlackStone += jokerShadow->m_jokerInfo.functionVariable;
-							std::cout << "Black Stone : " << boardManager.m_playerInfo.m_BlackStone << std::endl;
+
+							std::cout << "Black Stone : " << boardManager.m_playerInfo.GetBlackCount() << std::endl;
 
 							return;
 						}
@@ -674,8 +673,8 @@ struct JokerFunctionsWrapper
 				uniform_int_distribution<int> distC(m_jokerInfoMap.find(StoneAbility::jokerTime)->second.coolTime, 5);
 
 				int tempR = distR(rng);
-				boardManager.m_playerInfo.m_BlackStone += tempR;
-				std::cout << "Black Stone : " << boardManager.m_playerInfo.m_BlackStone << std::endl;
+				boardManager.m_playerInfo.incBlackCount(tempR);
+				std::cout << "Black Stone : " << boardManager.m_playerInfo.GetBlackCount() << std::endl;
 
 				int tempC = distC(rng);
 				jokerTime->m_jokerInfo.coolTime = tempC;
@@ -1116,6 +1115,10 @@ void BoardManager::ComputePlacementHints(StoneAbility ability)
 				bool ok = true;
 				switch (ability) {
 				case StoneAbility::jokerOmok:
+					if (m_isVertical) {} // 세로 케이스
+					else {} // 가로 케이스
+					//가로 케이스 R , C 기준 좌 2칸 우 2칸 유효성 검증 통과하면 ok
+					//세로 케이스 R , C 기준 상 2칸 하 2칸 유효성 검증 통과하면 ok
 // 					if (x == 0 ){ok = true;}
 // 					else {ok = false;}
 					ok = true;
@@ -1231,41 +1234,6 @@ bool BoardManager::checkBeforeAbSuccess()
 	{
 	case jokerOmok:
 	{
-// 		if (m_useCondGroup.size() != 5)
-// 			return false;
-// 
-// 		bool sameRow = std::all_of(m_useCondGroup.begin(), m_useCondGroup.end(),
-// 			[&](auto& p) { return p.y == m_useCondGroup[0].y; });
-// 
-// 		bool sameCol = std::all_of(m_useCondGroup.begin(), m_useCondGroup.end(),
-// 			[&](auto& p) { return p.x == m_useCondGroup[0].x; });
-// 
-// 		if (sameRow == sameCol)
-// 			return false;
-// 
-// 		if (sameRow)
-// 		{
-// 			std::sort(m_useCondGroup.begin(), m_useCondGroup.end(),
-// 				[](auto& a, auto& b) { return a.x < b.x; });
-// 
-// 			for (size_t i = 1; i < 5; ++i)
-// 				if (m_useCondGroup[i].x != m_useCondGroup[i - 1].x + 1)
-// 					return false;
-// 
-// 			m_isVertical = false;
-// 		}
-// 		else
-// 		{
-// 			std::sort(m_useCondGroup.begin(), m_useCondGroup.end(),
-// 				[](auto& a, auto& b) { return a.y < b.y; });
-// 
-// 			for (size_t i = 1; i < 5; ++i)
-// 				if (m_useCondGroup[i].y != m_useCondGroup[i - 1].y + 1)
-// 					return false;
-// 
-// 			m_isVertical = true;
-// 		}
-// 		return true;
 		if (m_useCondGroup.size() != 5)
 			return false;
 
@@ -1291,36 +1259,6 @@ bool BoardManager::checkBeforeAbSuccess()
 		std::sort(coords, coords + 5);
 
 
-// 		if (coords[4] - coords[0] == 4 &&
-// 			coords[3] - coords[0] == 3 &&
-// 			coords[2] - coords[0] == 2 &&
-// 			coords[1] - coords[0] == 1)
-// 		{
-// 
-// 			if (sameRow)
-// 			{
-// 				std::sort(m_useCondGroup.begin(), m_useCondGroup.end(),
-// 					[](auto& a, auto& b) { return a.x < b.x; });
-// 
-// 				for (size_t i = 1; i < 5; ++i)
-// 					if (m_useCondGroup[i].x != m_useCondGroup[i - 1].x + 1)
-// 						return false;
-// 
-// 				m_isVertical = false;
-// 			}
-// 			else
-// 			{
-// 				std::sort(m_useCondGroup.begin(), m_useCondGroup.end(),
-// 					[](auto& a, auto& b) { return a.y < b.y; });
-// 
-// 				for (size_t i = 1; i < 5; ++i)
-// 					if (m_useCondGroup[i].y != m_useCondGroup[i - 1].y + 1)
-// 						return false;
-// 
-// 				m_isVertical = true;
-// 			}
-// 			std::cout << m_isVertical;
-// 			return true;
 		if (coords[4] - coords[0] == 4 &&
 			coords[3] - coords[0] == 3 &&
 			coords[2] - coords[0] == 2 &&
@@ -1798,4 +1736,3 @@ bool BoardManager::IsOthello() const
 	}
 	return false; 
 }
-
