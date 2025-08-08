@@ -20,7 +20,8 @@ public:
 		vector<unique_ptr<Object>>& objects,
 		string imageKey,
 		float screenWidth, float screenHeight,
-		float size, int count,
+		float width, float height,
+		int count,
 		float speed = 1.0f,
 		direction exclusiveDirection = direction::all
 	);

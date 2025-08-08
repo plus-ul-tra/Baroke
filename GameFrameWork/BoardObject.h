@@ -82,17 +82,36 @@ public:
 	int IsBoardChanged();
 };
 
+struct EffectType
+{
+	string effectKey = "Leaf6.png";
+	float width = 200.0f;
+	float height = 200.0f;
+	int amount = 50;
+	float speed = 100.0f;
+	CreateObject::direction exclusiveDirection = CreateObject::all;
+};
+
+inline unordered_map<int, EffectType> effectTypes =
+{
+	{0, {"Leaf1.png", 100.0f, 200.0f, 10, 100.0f, CreateObject::left}},
+	{1, {"Leaf2.png", 100.0f, 200.0f, 10, 100.0f, CreateObject::right}},
+	{2, {"Leaf9.png", 200.0f, 200.0f, 10, 100.0f, CreateObject::up}},
+	{3, {"Leaf8.png", 200.0f, 200.0f, 10, 100.0f, CreateObject::down}}
+};
+
 struct BoardType
 {
 	string textureKey = "Original.png";
 	float changeDuration = 0.0f;
 	XMFLOAT4 backgroundColor = XMFLOAT4(0.2f, 0.9f, 0.2f, 1.0f);
-	string effectKey = "Leaf6.png"; // 화면 효과 이미지 키
+
+	EffectType effects[4] = { effectTypes[0], effectTypes[1], effectTypes[2], effectTypes[3] };
 };
 
 inline unordered_map<int, BoardType> boardTypes =
 {
-	{0, {"Forest.png",		3.0f, XMFLOAT4(0.2f, 0.9f, 0.2f, 1.0f)}},
+	{0, {"Forest.png",		3.0f, XMFLOAT4(0.2f, 0.9f, 0.2f, 1.0f), {effectTypes[0], effectTypes[1], effectTypes[2], effectTypes[3]}}},
 	{1, {"Space.png",		3.0f, XMFLOAT4(0.2f, 0.9f, 0.2f, 1.0f)}},
 	{2, {"Korea.png",		3.0f, XMFLOAT4(0.9f, 0.8f, 0.6f, 1.0f)}},
 	{3, {"Halloween.png",	3.0f, XMFLOAT4(0.2f, 0.5f, 0.8f, 1.0f)}},
@@ -136,9 +155,13 @@ inline void BoardObject::BoardSync()
 			m_bitmapRender->ChangeBackGroundColor(boardType.backgroundColor);
 
 			m_screenEffectObjects.clear();
-			CreateObject::CreateObjectsOutOfScreen(m_screenEffectObjects, boardType.effectKey, 1920.0f, 1080.0f, 200.0f, 50, 100.0f, CreateObject::up);
-			m_isBoardChanged = true;
+			for (int j = 0; j < 4; ++j)
+			{
+				auto& effect = boardType.effects[j];
+				CreateObject::CreateObjectsOutOfScreen(m_screenEffectObjects, effect.effectKey, 1920.0f, 1080.0f, effect.width, effect.height, effect.amount, effect.speed, effect.exclusiveDirection);
+			}
 
+			m_isBoardChanged = true;
 			break;
 		}
 	}
