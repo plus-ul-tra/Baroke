@@ -25,7 +25,6 @@ public:
 		float speed = 1.0f,
 		direction exclusiveDirection = direction::all
 	);
-
 };
 
 class NewObject : public Object

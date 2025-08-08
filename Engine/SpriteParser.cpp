@@ -61,7 +61,7 @@ AnimationClipsMap SpriteParser::Load(const filesystem::path& path)
 
 		AnimationClip clip;
 		clip.SetName(name); // AnimationClip에 이름을 설정하는 함수 추가
-		clip.SetLoop(tag.contains("loop") ? tag["loop"].get<bool>() : true); // Aseprite JSON에 loop 정보가 있다면 활용
+		clip.SetLoop(tag.contains("loop") ? tag["loop"].get<bool>() : false); // Aseprite JSON에 loop 정보가 있다면 활용
 
 		for (int i = from; i <= to; ++i)
 		{

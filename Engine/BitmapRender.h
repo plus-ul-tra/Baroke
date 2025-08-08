@@ -24,6 +24,8 @@ private:
 
 	SpriteAnimator m_animator; //
 	bool m_isAnimated = false;
+	bool m_isAnimationEnded = false; // 애니메이션이 끝났는지 여부
+
 	float m_shaderTimeElapsed = 1.0f; // 쉐이더 효과 시간
 	float m_shaderEffectDuration = 1.0f; // 쉐이더 효과 지속 시간
 	bool m_isShaderEffectActive = false; // 쉐이더 효과 활성화 여부

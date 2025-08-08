@@ -76,7 +76,7 @@ private:
 	unsigned int m_currentFrameIndex = 0;
 
 	float m_elapsedTime = 0.0f;
-	bool m_isLoop = true;
+	bool m_isLoop = false;
 
 public:
 	SpriteAnimator() = default;
@@ -103,7 +103,7 @@ public:
 	void SetLoop(bool loop) { m_isLoop = loop; }
 	const bool* GetLoop() const { return &m_isLoop; }
 
-	void Update(float deltaTime);
+	bool Update(float deltaTime);
 
 	const Frame& GetCurrentFrame() const;
 
