@@ -174,21 +174,21 @@ void GameScene::SetUIButton()
 
 
 	unique_ptr<JokerButton> jokerButton2 = std::make_unique<JokerButton>(617.0f, 171.0f, 100, 100, "Black.png", 50);
-	jokerButton2->SetButtonJoker(Black, jokerTeleport);
+	jokerButton2->SetButtonJoker(Joker, jokerOthello);
 	m_buttonList.emplace_back(jokerButton2.get());
 	m_notUniqueObjectList.emplace_back(jokerButton2.get());
 	m_jokerButtons.emplace_back(move(jokerButton2));
 
 
 	unique_ptr<JokerButton> jokerButton3 = std::make_unique<JokerButton>(617.0f, 1.0f, 100, 100, "Black.png");
-	jokerButton3->SetButtonJoker(Joker, None);
+	jokerButton3->SetButtonJoker(Black, jokerWaxseal);
 	m_buttonList.emplace_back(jokerButton3.get());
 	m_notUniqueObjectList.emplace_back(jokerButton3.get());
 	m_jokerButtons.emplace_back(move(jokerButton3));
 
 
 	unique_ptr<JokerButton> jokerButton4 = std::make_unique<JokerButton>(617.0f, -172.0f, 100, 100, "Black.png");
-	jokerButton4->SetButtonJoker(Black, None);
+	jokerButton4->SetButtonJoker(Joker, jokerShadow);
 	m_buttonList.emplace_back(jokerButton4.get());
 	m_notUniqueObjectList.emplace_back(jokerButton4.get());
 	m_jokerButtons.emplace_back(move(jokerButton4));
@@ -263,8 +263,18 @@ void GameScene::ModeCheck()
 	
 	if (m_uiMode == UIMode::BeforeUseAbility&&m_board.checkBeforeAbSuccess())
 	{
-		if (m_board.GetStoneAbility() == jokerSammok || m_board.GetStoneAbility() == jokerSamok || m_board.GetStoneAbility() == jokerEvolution) { m_board.ExitMode(); return; }
+		SceneManager::GetInstance().ChangePostProcessing("CRTFilter");
+		if (m_board.GetStoneAbility() == jokerSammok || 
+			m_board.GetStoneAbility() == jokerSamok || 
+			m_board.GetStoneAbility() == jokerEvolution) 
+		{ 
+			m_board.ExitMode(); 
+
+			return; 
+		}
+
 		m_board.SetMode(UIMode::UseAbility);
+		m_board.ComputePlacementHints(m_board.GetStoneAbility());
 		std::cout << "BeforeUseAbility clear" << std::endl;
 	}
 
@@ -525,6 +535,7 @@ void GameScene::KeyCommandMapping()
 		{
 			m_board.ClearHints();
 			m_board.ExitMode();
+			SyncPlacementHintsToPool();
 			SceneManager::GetInstance().ChangePostProcessing("CRTFilter");
 			// 추후 일시정지/재개 로직 여기에
 		};
@@ -610,8 +621,8 @@ void GameScene::OnInput(const MouseEvent& ev)
 		else if (ev.type == MouseType::RDown)
 		{
 			std::cout << ev.pos.x << " " << ev.pos.y << std::endl;
-			m_board.SetStoneType(Joker);
-			m_board.SetStoneAbility(jokerTriunion);
+			m_board.SetStoneType(White);
+			m_board.SetStoneAbility(None);
 			m_board.InputBasedGameLoop(ev.pos);
 			std::cout << "Place Black Stone : " << m_board.GetStoneTypeAmount(Black) << " / " << m_board.GetPlayer().GetBlackCount() << std::endl;
 			//			std::cout << "Joker Stone Count : " << m_board.GetStoneTypeAmount(Joker) << std::endl;
@@ -666,6 +677,7 @@ void GameScene::OnInput(const MouseEvent& ev)
 			{
 				m_board.ClearHints();  
 				m_board.ExitMode();   
+				//SceneManager::GetInstance().ChangePostProcessing("CRTFilter");
 				SyncPlacementHintsToPool();
 			}
 			std::cout << "Place Black Stone : " << m_board.GetStoneTypeAmount(Black)
