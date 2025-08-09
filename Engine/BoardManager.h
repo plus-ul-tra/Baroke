@@ -169,7 +169,8 @@ public:
 	bool WhiteLibOne() const;							// 자유도1인 흰돌 체크
 	bool IsColorCount(StoneType type, int need ) const; // 착수했을때 3*3범위에 특정 컬러 돌이 몇개 있는 위치가 있는지 체크
 	bool IsSamaBlackWhite() const;						// 착수했을때 3*3범위에 흑돌흰돌 개수 같은지 체크
-	bool IsLibZero() const;								// 
+	bool HasCrowdedEmptySpot6Plus() const;								// 
+	int  CountOccupiedNeighbors8(int row, int col)const;
 	bool IsConnectTwo() const;
 	bool IsOthello() const;
 };

@@ -133,7 +133,7 @@ class JokerButton : public Button
 			return [&bm]() { return bm.IsSamaBlackWhite(); };
 
 		case jokerBlackhole:   // 자유도가 0인 지점이 존재하는 경우
-			return [&bm]() { return bm.IsLibZero(); };
+			return [&bm]() { return bm.HasCrowdedEmptySpot6Plus(); };
 
 			//-------------------------------- 단청 (set 4)
 		case jokerFusion:   // 흰 돌 2개를 연결할 수 있는 지점이 있는 경우
@@ -159,7 +159,7 @@ class JokerButton : public Button
 			return [&bm]() { return bm.IsOthello(); };
 
 		case jokerMrchan:   // 항상 트루
-			return [&bm]() { return true; }; // 진화
+			return [&bm]() { return bm.m_playerInfo.GetBlackCount() == 0; };
 
 			//-------------------------------- 자연 (set 7)
 		case jokerShadow:   // 흰돌 1개 이상
