@@ -181,14 +181,14 @@ void GameScene::SetUIButton()
 
 
 	unique_ptr<JokerButton> jokerButton3 = std::make_unique<JokerButton>(617.0f, 1.0f, 100, 100, "Black.png");
-	jokerButton3->SetButtonJoker(Joker, None);
+	jokerButton3->SetButtonJoker(Joker, jokerOthello);
 	m_buttonList.emplace_back(jokerButton3.get());
 	m_notUniqueObjectList.emplace_back(jokerButton3.get());
 	m_jokerButtons.emplace_back(move(jokerButton3));
 
 
 	unique_ptr<JokerButton> jokerButton4 = std::make_unique<JokerButton>(617.0f, -172.0f, 100, 100, "Black.png");
-	jokerButton4->SetButtonJoker(Black, None);
+	jokerButton4->SetButtonJoker(Black, jokerBlackhole);
 	m_buttonList.emplace_back(jokerButton4.get());
 	m_notUniqueObjectList.emplace_back(jokerButton4.get());
 	m_jokerButtons.emplace_back(move(jokerButton4));
@@ -428,6 +428,7 @@ void GameScene::FixedUpdate(double fixedDeltaTime)
 
 void GameScene::Update(double deltaTime)
 {
+	m_boardObj->BoardSync();
 	for (auto& object : m_objectList)
 	{
 		object->Update(deltaTime);
@@ -440,7 +441,6 @@ void GameScene::Update(double deltaTime)
 	{
 		notUniqueObject->Update(deltaTime);
 	}
-	m_boardObj->BoardSync();
 	m_gameStateDelayElapsed += deltaTime;
 	ModeCheck();
 	CheckStageClear();
@@ -610,8 +610,8 @@ void GameScene::OnInput(const MouseEvent& ev)
 		else if (ev.type == MouseType::RDown)
 		{
 			std::cout << ev.pos.x << " " << ev.pos.y << std::endl;
-			m_board.SetStoneType(Joker);
-			m_board.SetStoneAbility(jokerTriunion);
+			m_board.SetStoneType(White);
+			m_board.SetStoneAbility(None);
 			m_board.InputBasedGameLoop(ev.pos);
 			std::cout << "Place Black Stone : " << m_board.GetStoneTypeAmount(Black) << " / " << m_board.GetPlayer().GetBlackCount() << std::endl;
 			//			std::cout << "Joker Stone Count : " << m_board.GetStoneTypeAmount(Joker) << std::endl;

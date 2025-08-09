@@ -145,6 +145,7 @@ inline void BoardObject::BoardSync()
 	int stoneTypeAmount[5] = { 0, 0, 0, 0, 0 };
 
 	m_board = m_boardManager.GetBoard();
+	vector<shared_ptr<Stone>> deathRow = m_boardManager.GetDeathRow();
 
 	int boardSize = m_boardManager.GetBoardSize();
 
@@ -161,6 +162,7 @@ inline void BoardObject::BoardSync()
 			}
 		}
 	}
+	for (const shared_ptr<Stone>& deathStone : deathRow) m_stones.emplace_back(deathStone.get());
 }
 
 	//for (int i = 0; i < 5; ++i)

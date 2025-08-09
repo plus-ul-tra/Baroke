@@ -553,7 +553,7 @@ struct JokerFunctionsWrapper
 				int count = 0;
 				vector<POINT> group;
 
-				for (int j = 0; j <= jokerOthello->m_jokerInfo.functionVariable; ++j)
+				for (int j = 0; j < SIZE_DEFAULT; ++j)
 				{
 					int nx = x + patternX[i] * j;
 					int ny = y + patternY[i] * j;
@@ -1069,9 +1069,11 @@ void BoardManager::RemoveGroup(const std::vector<POINT>& g)
 {
 	for (POINT p : g)
 	{
+		m_board[p.x][p.y]->DeathMove(1);
+		m_deathRow.push_back(move(m_board[p.x][p.y])); // 죽은 돌을 deathRow에 추가
 		m_board[p.x][p.y] = nullptr;
-		m_stoneTypeMap.erase(p);
 
+		if (m_stoneTypeMap.find(p) != m_stoneTypeMap.end()) m_stoneTypeMap.erase(p);
 		if (IsJokerStone(p)) RemoveJokerStone(p); // 조커 돌 제거
 	}
 }
@@ -1084,10 +1086,22 @@ void BoardManager::CheckRemovedStones()
 		{
 			if (m_board[r][c] && m_board[r][c]->m_isRemoved)
 			{
+				m_board[r][c]->m_isRemoved = false; // 돌 제거 상태 초기화
+				m_board[r][c]->DeathMove(1);
+				m_deathRow.push_back(move(m_board[r][c])); // 죽은 돌을 deathRow에 추가
 				m_board[r][c] = nullptr;
-				m_stoneTypeMap.erase({ r, c });
+
+				if (m_stoneTypeMap.find({ r, c }) != m_stoneTypeMap.end())
+				{
+					if (IsJokerStone({ r, c })) RemoveJokerStone({ r, c }); // 조커 돌 제거
+					m_stoneTypeMap.erase({ r, c });
+				}
 			}
 		}
+	}
+	for (shared_ptr<Stone>& stone : m_deathRow) 
+	{
+		if (stone && stone->m_isRemoved) m_deathRow.erase(remove(m_deathRow.begin(), m_deathRow.end(), stone), m_deathRow.end());
 	}
 }
 

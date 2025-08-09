@@ -58,6 +58,8 @@ class BoardManager : public Singleton<BoardManager>
 	void CheckRemovedStones();
 	void RemoveJokerStone(POINT position); // 조커 돌 제거 함수
 
+	vector<shared_ptr<Stone>> m_deathRow; // 제거 대기열 // 죽은 돌들
+
 public:
 
 
@@ -81,6 +83,7 @@ public:
 	bool IsJokerStone(POINT position) const;
 
 	Board GetBoard() const { return m_board; }
+	vector<shared_ptr<Stone>> GetDeathRow() const { return m_deathRow; } // 죽은 돌들 반환
 	int GetBoardSize() const { return SIZE_DEFAULT; }
 
 	unordered_map<POINT, StoneType> GetStoneTypeMap() {	return  m_stoneTypeMap;	}

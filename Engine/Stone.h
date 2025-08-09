@@ -74,6 +74,7 @@ protected:
 	XMVECTOR m_lerpStartPosition = XMVectorZero(); // 이동 시작 위치
 	XMVECTOR m_lerpEndPosition = XMVectorZero(); // 이동 끝 위치
 
+	XMVECTOR m_removePosition = XMVectorZero(); // 제거 위치
 	bool m_isRemoving = false;
 	double m_queueRemoveTime = 0.0;
 	StoneAbility ability = StoneAbility::None;
@@ -85,13 +86,14 @@ public:
 
 	void Update(double deltaTime) override; // 돌 업데이트 함수
 	void Move(POINT position, double duration = 1.0); // 돌 이동 함수
+	void DeathMove(double duration = 1.0);
 
 	bool m_isRemoved = false;
 	void Remove(double duration = 0.0) { m_isRemoving = true; m_queueRemoveTime = duration; }
 
 	POINT GetPosition() const;
 	void ChangeColor(bool isBlack = true);
-	StoneAbility GetAbility() { return ability; }
+	StoneAbility GetAbility() const { return ability; }
 };
 
 class WhiteStone : public Stone
@@ -111,6 +113,8 @@ public:
 		//m_sprite->SetShaderType("SetRed"); 
 		m_sprite->SetOrder(1);
 		m_sprite->SetActive(true);
+
+		m_removePosition = XMVectorSet(-730.0f, -250.0f, 0.0f, 1.0f);
 	}
 };
 
@@ -131,6 +135,8 @@ public:
 		//m_sprite->SetShaderType("SetRed"); 
 		m_sprite->SetOrder(1);
 		m_sprite->SetActive(true);
+
+		m_removePosition = XMVectorSet(-730.0f, 100.0f, 0.0f, 1.0f);
 	}
 };
 
@@ -175,6 +181,8 @@ public:
 		m_sprite = AddComponent<BitmapRender3D>(m_jokerInfo.fileName.c_str(), size - offset, size - offset);
 		m_sprite->SetOrder(2);
 		m_sprite->SetActive(true);
+
+		m_removePosition = XMVectorSet(750.0f, 0.0f, 0.0f, 1.0f);
 
 		m_jokerType = jokerType; // 조커 타입 설정
 		this->ability = ability;
