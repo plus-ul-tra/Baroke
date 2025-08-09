@@ -786,14 +786,14 @@ void Renderer::CreateDeviceAndSwapChain(HWND hwnd)
 	if (FAILED(hr)) { std::cerr << "HRESULT4 = 0x" << std::hex << hr << std::endl; return; }
 
 	D2D1_FACTORY_OPTIONS opts = {};
-	ComPtr<ID2D1Factory7> d2dFactory; // ID2D1Factory4 -> ID2D1Factory7, IID_PPV_ARGS(&d2dFactory)
+	ComPtr<ID2D1Factory6> d2dFactory; // ID2D1Factory4 -> ID2D1Factory7, IID_PPV_ARGS(&d2dFactory)
 #if defined(_DEBUG)
 	opts.debugLevel = D2D1_DEBUG_LEVEL_INFORMATION;
 #endif
 	// ID2D1Factory8 -> ID2D1Factory7
 	hr = D2D1CreateFactory(
 		D2D1_FACTORY_TYPE_SINGLE_THREADED,
-		__uuidof(ID2D1Factory7), // ID2D1Factory8 -> ID2D1Factory7
+		__uuidof(ID2D1Factory6), // ID2D1Factory8 -> ID2D1Factory7
 		&opts,
 		reinterpret_cast<void**>(d2dFactory.GetAddressOf()));
 	if (FAILED(hr)) { std::cerr << "HRESULT5 = 0x" << std::hex << hr << std::endl; return; }
@@ -802,11 +802,11 @@ void Renderer::CreateDeviceAndSwapChain(HWND hwnd)
 	hr = d2dFactory->CreateDevice(dxgiDevice.Get(), &baseDevice);
 	if (FAILED(hr)) { std::cerr << "HRESULT6 = 0x" << std::hex << hr << std::endl; return; }
 
-	ComPtr<ID2D1Device7> d2dDevice; // ID2D1Device4 -> ID2D1Device7
+	ComPtr<ID2D1Device6> d2dDevice; // ID2D1Device4 -> ID2D1Device7
 	hr = baseDevice.As(&d2dDevice);
 	if (FAILED(hr)) { std::cerr << "HRESULT7 = 0x" << std::hex << hr << std::endl; return; }
 
-	ComPtr<ID2D1DeviceContext7> d2dContext; // ID2D1DeviceContext7 유지
+	ComPtr<ID2D1DeviceContext6> d2dContext; // ID2D1DeviceContext7 유지
 	hr = d2dDevice->CreateDeviceContext(D2D1_DEVICE_CONTEXT_OPTIONS_NONE, &d2dContext);
 	if (FAILED(hr)) { std::cerr << "HRESULT8 = 0x" << std::hex << hr << std::endl; return; }
 

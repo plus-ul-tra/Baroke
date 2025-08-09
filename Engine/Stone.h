@@ -3,6 +3,8 @@
 #include "Transform.h"
 #include "BitmapRender.h"
 #include "Mediator.h"
+#include "CreateObject.h"
+
 enum StoneType // 돌 종류
 {
 	White,
@@ -65,6 +67,8 @@ class Stone : public Object
 protected:
 	Transform* m_transform {};
 	BitmapRender3D* m_sprite {};
+	unique_ptr<OneTimeEffect> m_placeEffect; // 돌 착수 효과
+	unique_ptr<OneTimeEffect> m_removeEffect; // 돌 제거 효과
 
 	float m_size = 0; // 돌 크기
 	float m_offset = 0; // 돌 간격
@@ -85,6 +89,7 @@ public:
 	JokerType m_jokerType = JokerType::Default;
 
 	void Update(double deltaTime) override; // 돌 업데이트 함수
+	void Render(Renderer& renderer) override;
 	void Move(POINT position, double duration = 1.0); // 돌 이동 함수
 	void DeathMove(double duration = 1.0);
 
@@ -114,6 +119,7 @@ public:
 		m_sprite->SetOrder(1);
 		m_sprite->SetActive(true);
 
+		m_placeEffect = make_unique<OneTimeEffect>(static_cast<float>(position.x) + size / 2, static_cast<float>(position.y) + size / 2, size - offset, size - offset, "cloud_pattern1_sheet.json");
 		m_removePosition = XMVectorSet(-730.0f, -250.0f, 0.0f, 1.0f);
 	}
 };
@@ -136,6 +142,7 @@ public:
 		m_sprite->SetOrder(1);
 		m_sprite->SetActive(true);
 
+		m_placeEffect = make_unique<OneTimeEffect>(static_cast<float>(position.x) + size / 2, static_cast<float>(position.y) + size / 2, size - offset, size - offset, "cloud_pattern1_sheet.json");
 		m_removePosition = XMVectorSet(-730.0f, 100.0f, 0.0f, 1.0f);
 	}
 };
@@ -182,10 +189,11 @@ public:
 		m_sprite->SetOrder(2);
 		m_sprite->SetActive(true);
 
-		m_removePosition = XMVectorSet(750.0f, 0.0f, 0.0f, 1.0f);
-
 		m_jokerType = jokerType; // 조커 타입 설정
 		this->ability = ability;
+
+		m_placeEffect = make_unique<OneTimeEffect>(static_cast<float>(position.x) + size / 2, static_cast<float>(position.y) + size / 2, size - offset, size - offset, "cloud_pattern1_sheet.json");
+		m_removePosition = XMVectorSet(750.0f, 0.0f, 0.0f, 1.0f);
 	}
 
 	JokerStoneInfo m_jokerInfo; // 조커 돌 능력 정보

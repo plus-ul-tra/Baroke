@@ -29,6 +29,26 @@ void Stone::Update(double deltaTime)
 			m_isRemoving = false;
 		}
 	}
+
+	// Âø¼ö ÀÌÆåÆ®
+	if (m_placeEffect)
+	{
+		m_placeEffect->Update(deltaTime);
+		if (m_placeEffect->m_isDead) m_placeEffect = nullptr; // Âø¼ö ÀÌÆåÆ®°¡ ³¡³ª¸é Á¦°Å
+	}
+
+	// Á¦°Å ÀÌÆåÆ®
+	if (m_isRemoved && m_removeEffect)
+	{
+		m_removeEffect->Update(deltaTime);
+		if (m_removeEffect->m_isDead) m_removeEffect = nullptr; // Á¦°Å ÀÌÆåÆ®°¡ ³¡³ª¸é Á¦°Å
+	}
+}
+
+void Stone::Render(Renderer& renderer)
+{
+	if (m_placeEffect) m_placeEffect->Render(renderer);
+	if (m_isRemoved && m_removeEffect) m_removeEffect->Render(renderer);
 }
 
 void Stone::Move(POINT position, double duration)
@@ -48,6 +68,8 @@ void Stone::DeathMove(double duration)
 
 	m_isRemoving = true;
 	m_queueRemoveTime = duration;
+
+	m_removeEffect = make_unique<OneTimeEffect>(static_cast<float>(XMVectorGetX(m_removePosition)), static_cast<float>(XMVectorGetY(m_removePosition)), m_size - m_offset, m_size - m_offset, "sit_pattern1_sheet.json");
 }
 
 POINT Stone::GetPosition() const
