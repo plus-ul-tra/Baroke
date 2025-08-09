@@ -19,8 +19,13 @@ void Button::CheckInput(const MouseEvent& mouseEvent)
 	if (isInX && isInY)
 	{
 		m_isHovered = true;
-		if (!m_isActive) { return; }
+
 		m_inputType = mouseEvent.type;
+		if (m_inputType == MouseType::RDown) m_isPressedRight = true;
+		else m_isPressedRight = false;
+
+		if (!m_isActive) { return; }
+
 		if (m_inputType == MouseType::LDown) m_isPressed = true;
 		else m_isPressed = false;
 	}
@@ -40,7 +45,7 @@ void Button::Render(Renderer& renderer)
 
 void JokerButton::ButtonFunction()
 {
-	if (m_isPressed && m_isActive)
+	if (m_isPressed && m_isActive && m_jokerAbility != StoneAbility::None)
     {
 		std::cout << "button click" << std::endl;
 
@@ -49,9 +54,17 @@ void JokerButton::ButtonFunction()
 		BoardManager::GetInstance().SetStoneAbility(m_jokerAbility);
 /*		BoardManager::GetInstance().ComputePlacementHints(m_jokerAbility);*/
 		m_isPressed = false;
-        
     }
 
+	if (m_isPressedRight)
+	{
+		m_stoneType = StoneType::Joker; // 돌 타입 초기화
+		m_jokerAbility = StoneAbility::None; // 능력 초기화
+		m_bitmapRender->ChangeTexture(m_jokerInfoMap[StoneAbility::None].fileName); // 기본 이미지로 변경
+		BindEnabledPredicate(BuildPredicate(StoneAbility::None));
+		m_textObject = nullptr;
+		m_isPressedRight = false;
+	}
 }
 
 void JokerButton::SetButtonJoker(StoneType stoneType, StoneAbility ability)

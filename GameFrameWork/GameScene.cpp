@@ -181,7 +181,7 @@ void GameScene::SetUIButton()
 
 
 	unique_ptr<JokerButton> jokerButton3 = std::make_unique<JokerButton>(617.0f, 1.0f, 100, 100, "Black.png");
-	jokerButton3->SetButtonJoker(Black, jokerWaxseal);
+	jokerButton3->SetButtonJoker(Joker, jokerOthello);
 	m_buttonList.emplace_back(jokerButton3.get());
 	m_notUniqueObjectList.emplace_back(jokerButton3.get());
 	m_jokerButtons.emplace_back(move(jokerButton3));
@@ -195,7 +195,7 @@ void GameScene::SetUIButton()
 
 
 	unique_ptr<JokerButton> jokerButton5 = std::make_unique<JokerButton>(617.0f, -342.0f, 100, 100, "Black.png");
-	jokerButton5->SetButtonJoker(Black, None);
+	jokerButton5->SetButtonJoker(Joker, None);
 	m_buttonList.emplace_back(jokerButton5.get());
 	m_notUniqueObjectList.emplace_back(jokerButton5.get());
 	m_jokerButtons.emplace_back(move(jokerButton5));
@@ -438,6 +438,7 @@ void GameScene::FixedUpdate(double fixedDeltaTime)
 
 void GameScene::Update(double deltaTime)
 {
+	m_boardObj->BoardSync();
 	for (auto& object : m_objectList)
 	{
 		object->Update(deltaTime);
@@ -450,7 +451,6 @@ void GameScene::Update(double deltaTime)
 	{
 		notUniqueObject->Update(deltaTime);
 	}
-	m_boardObj->BoardSync();
 	m_gameStateDelayElapsed += deltaTime;
 	ModeCheck();
 	CheckStageClear();
@@ -480,7 +480,6 @@ void GameScene::OnEnter()
 
 	unique_ptr<BackGround> backGround = std::make_unique<BackGround>(0.0f, 0.0f, 1920.0f, 1080.0f);
 	m_objectList.emplace_back(std::move(backGround));
-
 
 	auto playerObject = std::make_unique<Player>(
 		0.0f, 0.0f, 100.0f, 100.0f, DirectX::XMFLOAT4(1.0f, 0.0f, 0.0f, 1.0f) // 녹색
@@ -624,6 +623,8 @@ void GameScene::OnInput(const MouseEvent& ev)
 			m_board.SetStoneType(White);
 			m_board.SetStoneAbility(None);
 			m_board.InputBasedGameLoop(ev.pos);
+			m_board.SetStoneType(Black);
+			m_board.SetStoneAbility(None);
 			std::cout << "Place Black Stone : " << m_board.GetStoneTypeAmount(Black) << " / " << m_board.GetPlayer().GetBlackCount() << std::endl;
 			//			std::cout << "Joker Stone Count : " << m_board.GetStoneTypeAmount(Joker) << std::endl;
 		}

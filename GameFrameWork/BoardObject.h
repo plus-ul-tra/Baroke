@@ -74,7 +74,10 @@ public:
 	{	
 		for (auto& sp : m_stones)
 			if (auto* bmp = sp->GetComponent<BitmapRender3D>())
+			{
 				if (bmp->IsActive()) bmp->Render(r); // 돌그리기
+				sp->Render(r); // 돌 이펙트 그리기
+			}
 
 		for (auto& obj : m_screenEffectObjects)
 			if (auto* bmp = obj->GetComponent<BitmapRender3D>())
@@ -90,6 +93,7 @@ public:
 		// 각 Stone에 대해 Shader 타입 설정
 		for (auto& stone : m_stones)
 		{
+			if (!stone) continue; // nullptr 체크
 			stone->Update(deltaTime);
 			auto* bmp = stone->GetComponent<BitmapRender3D>();
 			if (!bmp || !bmp->IsActive())
@@ -145,6 +149,7 @@ inline void BoardObject::BoardSync()
 	int stoneTypeAmount[5] = { 0, 0, 0, 0, 0 };
 
 	m_board = m_boardManager.GetBoard();
+	vector<shared_ptr<Stone>> deathRow = m_boardManager.GetDeathRow();
 
 	int boardSize = m_boardManager.GetBoardSize();
 
@@ -161,6 +166,7 @@ inline void BoardObject::BoardSync()
 			}
 		}
 	}
+	for (const shared_ptr<Stone>& deathStone : deathRow) m_stones.emplace_back(deathStone.get());
 }
 
 	//for (int i = 0; i < 5; ++i)

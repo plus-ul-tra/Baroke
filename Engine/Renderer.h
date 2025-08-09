@@ -84,8 +84,8 @@ private:
 	ComPtr<ID2D1Bitmap1>              m_ptargetBitmap;          // D2D Off-screen ≈ÿΩ∫√≥ ∑°«Œ ∫Ò∆Æ∏   
 
 	// 2D text øÎ
-	ComPtr<ID2D1Device7>              m_pd2dDevice;
-	ComPtr<ID2D1DeviceContext7>       m_pd2dContext;
+	ComPtr<ID2D1Device6>              m_pd2dDevice;
+	ComPtr<ID2D1DeviceContext6>       m_pd2dContext;
 	ComPtr<ID2D1Factory1>             m_pd2dFactory; // D2D ∆—≈‰∏Æ
 	ComPtr<ID2D1SolidColorBrush>      m_pbrush;
 	ComPtr<IDWriteFactory>            m_pdwriteFactory; // DWrite ∆—≈‰∏Æ

@@ -20,15 +20,35 @@ void Stone::Update(double deltaTime)
 	}
 	if (m_isRemoving)
 	{
+		if (ability == StoneAbility::jokerBlackhole) SceneManager::GetInstance().ChangePostProcessing("CRTFilter"); // 조커 블랙홀 능력 해제시 포스트 프로세싱 초기화
 		m_queueRemoveTime -= deltaTime;
 		if (m_queueRemoveTime <= 0.0)
 		{
-			SceneManager::GetInstance().ChangePostProcessing("CRTFilter"); // 본인 쉐이더X 포스트프로세싱모드 변경임
 			m_sprite->SetActive(false);
 			m_isRemoved = true;
 			m_isRemoving = false;
 		}
 	}
+
+	// 착수 이펙트
+	if (m_placeEffect)
+	{
+		m_placeEffect->Update(deltaTime);
+		if (m_placeEffect->m_isDead) m_placeEffect = nullptr; // 착수 이펙트가 끝나면 제거
+	}
+
+	// 제거 이펙트
+	if (m_isRemoved && m_removeEffect)
+	{
+		m_removeEffect->Update(deltaTime);
+		if (m_removeEffect->m_isDead) m_removeEffect = nullptr; // 제거 이펙트가 끝나면 제거
+	}
+}
+
+void Stone::Render(Renderer& renderer)
+{
+	if (m_placeEffect) m_placeEffect->Render(renderer);
+	if (m_isRemoved && m_removeEffect) m_removeEffect->Render(renderer);
 }
 
 void Stone::Move(POINT position, double duration)
@@ -37,6 +57,19 @@ void Stone::Move(POINT position, double duration)
 
 	m_lerpStartPosition = m_transform->GetPosition();
 	m_lerpEndPosition = XMVectorSet(static_cast<float>(position.x) + m_size / 2, static_cast<float>(position.y) + m_size / 2, 0.0f, 1.0f);
+}
+
+void Stone::DeathMove(double duration)
+{
+	m_lerpTime = duration;
+	m_lerpStartPosition = m_transform->GetPosition();
+	m_lerpEndPosition = m_removePosition; // 제거 위치로 이동
+	m_lerpElapsedTime = 0.0;
+
+	m_isRemoving = true;
+	m_queueRemoveTime = duration;
+
+	m_removeEffect = make_unique<OneTimeEffect>(static_cast<float>(XMVectorGetX(m_removePosition)), static_cast<float>(XMVectorGetY(m_removePosition)), m_size - m_offset, m_size - m_offset, "sit_pattern1_sheet.json");
 }
 
 POINT Stone::GetPosition() const
@@ -60,4 +93,3 @@ void JokerStone::UpdateAbility(StoneAbility newAb)
 	m_jokerInfo = m_jokerInfoMap[newAb];  
 	m_sprite->ChangeTexture(m_jokerInfo.fileName.c_str());
 }
-
