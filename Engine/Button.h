@@ -169,7 +169,7 @@ class JokerButton : public Button
 			return [&bm]() { return bm.CountStones(Black) == 0; };
 
 		case jokerTime:   // 플레이어 흑돌 개수가 5개 미만인 경우
-			return [&bm]() {  return bm.GetsyncBlackStoneCount() < 5; };
+			return [&bm]() {  return bm.m_playerInfo.GetBlackCount() < 5; };
 
 		case jokerWind:   // 흑돌 4개 이상
 			return [&bm]() { return bm.CountStones(Black) >= 4; };

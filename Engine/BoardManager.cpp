@@ -624,6 +624,7 @@ struct JokerFunctionsWrapper
 						if (boardManager.m_stoneTypeMap.find({ position.x + patternXY[i], position.y + patternXY[j] })->second == StoneType::White)
 						{
 
+							boardManager.m_playerInfo.incBlackCount(jokerShadow->m_jokerInfo.functionVariable);
 							std::cout << "Black Stone : " << boardManager.m_playerInfo.GetBlackCount() << std::endl;
 
 							return;
@@ -770,6 +771,8 @@ bool BoardManager::InputBasedGameLoop(POINT mousePos) // 마우스 클릭으로 
 
 	CheckRemovedStones();
 	if (!PlaceStone(m_selectedPosition, m_stoneType, m_stoneAbility)) return false;
+	m_playerInfo.decBlackCount(m_SacrificeGroup.size());
+	m_playerInfo.incBlackCount(m_jokerInfoMap[m_stoneAbility].returnBlack);
 	RemoveGroup(m_SacrificeGroup);
 	JokerAbilityUpdate(); // 조커 능력 업데이트
 	WhiteStoneRemoveCheck(m_selectedPosition); // 흰 돌 체크
@@ -788,6 +791,9 @@ bool BoardManager::InputBasedGameLoop(int row, int col) // 바둑판 기준 row 
 {
 	CheckRemovedStones();
 	if (!PlaceStone({ row,col }, m_stoneType, m_stoneAbility)) return false;
+	m_playerInfo.decBlackCount(m_SacrificeGroup.size());
+	m_playerInfo.incBlackCount(m_jokerInfoMap[m_stoneAbility].returnBlack);
+	RemoveGroup(m_SacrificeGroup);
 	JokerAbilityUpdate(); // 조커 능력 업데이트
 	WhiteStoneRemoveCheck(m_selectedPosition); // 흰 돌 체크
 
@@ -1129,36 +1135,196 @@ void BoardManager::RemoveJokerStone(POINT position)
 //---------------------------------------------------------------- 착수 영역 표시 및 제한
 void BoardManager::ComputePlacementHints(StoneAbility ability)
 {
+	if (ability == StoneAbility::None) return;
 	m_hintCells.clear();
 	m_mask.clear();
 
 	for (int x = 0; x < SIZE_DEFAULT; ++x)
 		for (int y = 0; y < SIZE_DEFAULT; ++y)
 			if (IsEmpty(x, y)) {
-				bool ok = true;
+				bool ok = false;
 				switch (ability) {
 				case StoneAbility::jokerOmok:
-					if (m_isVertical) {} // 세로 케이스
-					else {} // 가로 케이스
-					//가로 케이스 R , C 기준 좌 2칸 우 2칸 유효성 검증 통과하면 ok
-					//세로 케이스 R , C 기준 상 2칸 하 2칸 유효성 검증 통과하면 ok
-// 					if (x == 0 ){ok = true;}
-// 					else {ok = false;}
+				{
+					if (m_stoneTypeMap.find({ x,y }) != m_stoneTypeMap.end()) return;
 					ok = true;
-					break;
+
+					if (m_isVertical) { // 수직인 경우
+						for (int dy = -2; dy <= 2; ++dy) {
+							if (dy == 0) continue;
+							int ny = y + dy;    int nx = x;
+							if (!isValidPoint({ nx, ny }) || !IsEmpty(nx, ny)) {
+								ok = false;
+								break;
+							}
+						}
+					}
+					else {  // 수평인 경우
+						for (int dx = -2; dx <= 2; ++dx) {
+							if (dx == 0) continue;
+							int nx =x + dx;
+							int ny = y;
+							if (!isValidPoint({ nx, ny }) || !IsEmpty(nx, ny)) {
+								ok = false;
+								break;
+							}
+						}
+					}
+				}
+				break;
+
 				case StoneAbility::jokerFusion:
+				{
+					if (m_stoneTypeMap.find({ x,y }) != m_stoneTypeMap.end()) return;
+					ok = false;
+					int whiteDirCount = 0;
+					static const int dr[4] = { 0,0,-1,1 };
+					static const int dc[4] = { 1,-1,0,0 };
+
+					for (int i = 0; i < 4; i++)
+					{
+						int xpos = x + dr[i];
+						int ypos = y + dc[i];
+						if (!isValidPoint({ xpos, ypos })) continue;
+						auto it = m_stoneTypeMap.find({ xpos,ypos });
+						if (it != m_stoneTypeMap.end() && it->second == White)
+							whiteDirCount++;
+
+					}
+
+					if (whiteDirCount >= 2) {
+						ok = true;
+					}
+				}
 					break;
 				case StoneAbility::jokerExplode:
+				{
+					if (m_stoneTypeMap.find({ x,y }) != m_stoneTypeMap.end()) return;
+					ok = false;
+					int BlackCount = 0;
+					static const int dr[8] = { 0,0,-1,1,-1,1,1,-1 };
+					static const int dc[8] = { 1,-1,0,0,1,1,-1,-1 };
+
+					for (int i = 0; i < 8; i++)
+					{
+						int xpos = x + dr[i];
+						int ypos = y + dc[i];
+						if (!isValidPoint({ xpos, ypos })) continue;
+						auto it = m_stoneTypeMap.find({ xpos,ypos });
+						if (it != m_stoneTypeMap.end() && it->second == Black)
+							BlackCount++;
+
+					}
+
+					if (BlackCount >= 5) {
+						ok = true;
+					}
+				}
 					break;
  				case StoneAbility::jokerMagnetic:
+				{
+					if (m_stoneTypeMap.find({ x,y }) != m_stoneTypeMap.end()) return;
+					ok = true;
+					// 나중에
+				}
  					break;
 				case StoneAbility::jokerBlackhole:
+				{
+					if (m_stoneTypeMap.find({ x,y }) != m_stoneTypeMap.end()) return;
+					ok = true;
+					// 나중에
+				}
 					break;
 				case StoneAbility::jokerShadow:
+				{
+					if (m_stoneTypeMap.find({ x,y }) != m_stoneTypeMap.end()) return;
+					ok = false;
+
+					static const int dr[4] = { -1,-1,1,1 };
+					static const int dc[4] = { -1,1,1,-1 };
+
+					for (int i = 0; i < 4; i++)
+					{
+						int xpos = x + dr[i];
+						int ypos = y + dc[i];
+						if (!isValidPoint({ xpos, ypos })) continue;
+						auto it = m_stoneTypeMap.find({ xpos,ypos });
+						if (it != m_stoneTypeMap.end() && it->second == White)
+							ok = true;
+
+					}
+
+				}
 					break;
 				case StoneAbility::jokerWaxseal:
+				{
+					if (m_stoneTypeMap.find({ x, y }) != m_stoneTypeMap.end())
+						break;
+
+					m_stoneTypeMap[{ x, y }] = Black;
+
+					static const int dx[4] = { 1, -1, 0, 0 };
+					static const int dy[4] = { 0, 0, 1, -1 };
+
+					std::array<std::array<bool, SIZE_DEFAULT>, SIZE_DEFAULT> seen{};
+
+					for (int dir = 0; dir < 4 && !ok; ++dir)
+					{
+						int nx = x + dx[dir], ny = y + dy[dir];
+						if (!isValidPoint({ nx, ny })) continue;
+
+						auto it = m_stoneTypeMap.find({ nx, ny });
+						if (it == m_stoneTypeMap.end() || it->second != White) continue;
+						if (seen[nx][ny]) continue;
+
+						std::array<std::array<bool, SIZE_DEFAULT>, SIZE_DEFAULT> visited{};
+						std::vector<POINT> group;
+						int libs = CountLiberty(nx, ny, group, visited);
+
+						for (const auto& p : group) seen[p.x][p.y] = true;
+
+						if (libs == 0) ok = true;
+					}
+
+					m_stoneTypeMap.erase({ x, y });
+				}
 					break;
 				case StoneAbility::jokerOthello:
+				{
+					if (m_stoneTypeMap.find({ x,y }) != m_stoneTypeMap.end()) return;
+					ok = false;
+					static const int dr[4] = { 0,0,-1,1 };
+					static const int dc[4] = { 1,-1,0,0 };
+					for (int dir = 0; dir < 4; ++dir)
+					{
+						int nx = x + dr[dir];
+						int ny = y + dc[dir];
+
+						if (!isValidPoint({ nx, ny })) continue;
+						auto it = m_stoneTypeMap.find({ nx, ny });
+						if (it == m_stoneTypeMap.end() || it->second != White) continue;
+
+						int cntWhite = 0;
+						while (isValidPoint({ nx, ny }))
+						{
+							it = m_stoneTypeMap.find({ nx, ny });
+							if (it == m_stoneTypeMap.end()) break;
+							if (it->second != White) break;
+							++cntWhite;
+							nx += dr[dir];
+							ny += dc[dir];
+						}
+						if (cntWhite >= 3 && isValidPoint({ nx, ny }))
+						{
+							it = m_stoneTypeMap.find({ nx, ny });
+							if (it != m_stoneTypeMap.end() && it->second == Black)
+							{
+								ok = true;
+								break;
+							}
+						}
+					}
+				}
 					break;
 				default:
 					ok = true;
@@ -1242,8 +1408,8 @@ bool BoardManager::checkSacrificeSuccess()
 {
 	if (m_SacrificeGroup.size() == m_jokerInfoMap[m_stoneAbility].costBlack) 
 	{
-		m_playerInfo.decBlackCount(m_SacrificeGroup.size());
-		m_playerInfo.incBlackCount(m_jokerInfoMap[m_stoneAbility].returnBlack);
+// 		m_playerInfo.decBlackCount(m_SacrificeGroup.size());
+// 		m_playerInfo.incBlackCount(m_jokerInfoMap[m_stoneAbility].returnBlack);
 		return true;
 	}
 	return false;

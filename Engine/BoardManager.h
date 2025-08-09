@@ -140,11 +140,11 @@ public:
 
 	StoneAbility GetStoneAbility() const { return m_stoneAbility; } ;
 	StoneType GetStoneType() const { return m_stoneType; };
-	void SyncBlackStoneCount(int count) { m_syncBlackStoneCount = count; }
 
-	int GetsyncBlackStoneCount() { return m_syncBlackStoneCount; }
+
+
 private:
-	int m_syncBlackStoneCount = 0;
+
 	std::vector<POINT> m_SacrificeGroup; // 희생모드에서 선택한 그룹임
 	void ResetGroup() {
 		m_SacrificeGroup.clear(); 
