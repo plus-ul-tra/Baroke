@@ -934,6 +934,7 @@ void BoardManager::ResetStone()
 			m_board[i][j] = nullptr; // 모든 위치를 nullptr로 초기화
 		}
 	}
+	m_deathRow.clear();
 	m_stoneTypeMap.clear(); // 돌 종류 맵 초기화
 	m_jokerPositions.clear(); // 조커 돌 위치와 능력 벡터 초기화
 	m_selectedPosition = { -1, -1 }; // 선택된 위치 초기화
@@ -1101,7 +1102,11 @@ void BoardManager::CheckRemovedStones()
 	}
 	for (shared_ptr<Stone>& stone : m_deathRow) 
 	{
-		if (stone && stone->m_isRemoved) m_deathRow.erase(remove(m_deathRow.begin(), m_deathRow.end(), stone), m_deathRow.end());
+		if (stone && stone->m_isRemoved)
+		{
+			stone = nullptr; // 죽은 돌을 nullptr로 설정
+			m_deathRow.erase(remove(m_deathRow.begin(), m_deathRow.end(), stone), m_deathRow.end());
+		}
 	}
 }
 

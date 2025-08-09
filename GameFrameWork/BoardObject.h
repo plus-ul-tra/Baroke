@@ -93,6 +93,7 @@ public:
 		// 각 Stone에 대해 Shader 타입 설정
 		for (auto& stone : m_stones)
 		{
+			if (!stone) continue; // nullptr 체크
 			stone->Update(deltaTime);
 			auto* bmp = stone->GetComponent<BitmapRender3D>();
 			if (!bmp || !bmp->IsActive())

@@ -18,8 +18,9 @@ protected:
 	float m_height = 0;
 
 	bool m_isActive = true;
-	bool m_isHovered = false;
 	bool m_isPressed = false;
+	bool m_isPressedRight = false; // 우클릭 여부
+	bool m_isHovered = false;
 
 	MouseType m_inputType = MouseType::Move;
 	BoardManager& m_boardManager = BoardManager::GetInstance();
@@ -93,6 +94,8 @@ class JokerButton : public Button
 
 		switch (ability)
 		{
+		case StoneAbility::None:   // 능력 없음
+			return []() { return false; };
 			//-------------------------------- 일반 (set 1)
 // 		case jokerDouble:   // 흑돌 2개 이상
 // 			return [&bm]() { return bm.CountStones(Black) >= 2; };
