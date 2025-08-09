@@ -624,6 +624,7 @@ struct JokerFunctionsWrapper
 						if (boardManager.m_stoneTypeMap.find({ position.x + patternXY[i], position.y + patternXY[j] })->second == StoneType::White)
 						{
 
+							boardManager.m_playerInfo.incBlackCount(jokerShadow->m_jokerInfo.functionVariable);
 							std::cout << "Black Stone : " << boardManager.m_playerInfo.GetBlackCount() << std::endl;
 
 							return;
@@ -1119,14 +1120,36 @@ void BoardManager::ComputePlacementHints(StoneAbility ability)
 				bool ok = true;
 				switch (ability) {
 				case StoneAbility::jokerOmok:
-					if (m_isVertical) {} // 세로 케이스
-					else {} // 가로 케이스
-					//가로 케이스 R , C 기준 좌 2칸 우 2칸 유효성 검증 통과하면 ok
-					//세로 케이스 R , C 기준 상 2칸 하 2칸 유효성 검증 통과하면 ok
-// 					if (x == 0 ){ok = true;}
-// 					else {ok = false;}
+				{
 					ok = true;
-					break;
+
+					if (!m_isVertical) {
+						// 기준점 위 2칸, 아래 2칸
+						for (int dy = -2; dy <= 2; ++dy) {
+							if (dy == 0) continue;
+							int ny = y + dy;
+							int nx = x;
+							if (!isValidPoint({ nx, ny }) || !IsEmpty(nx, ny)) {
+								ok = false;
+								break;
+							}
+						}
+					}
+					else {
+						// 기준점 좌 2칸, 우 2칸
+						for (int dx = -2; dx <= 2; ++dx) {
+							if (dx == 0) continue;
+							int nx =x + dx;
+							int ny = y;
+							if (!isValidPoint({ nx, ny }) || !IsEmpty(nx, ny)) {
+								ok = false;
+								break;
+							}
+						}
+					}
+				}
+				break;
+
 				case StoneAbility::jokerFusion:
 					break;
 				case StoneAbility::jokerExplode:
