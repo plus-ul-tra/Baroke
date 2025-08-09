@@ -1221,18 +1221,62 @@ void BoardManager::ComputePlacementHints(StoneAbility ability)
 					}
 				}
 					break;
- 				case StoneAbility::jokerMagnetic:
+				case StoneAbility::jokerMagnetic:
 				{
-					if (m_stoneTypeMap.find({ x,y }) != m_stoneTypeMap.end()) return;
-					ok = true;
-					// 나중에
+					if (m_stoneTypeMap.find({ x, y }) != m_stoneTypeMap.end())
+					{
+						ok = false;
+						break;
+					}
+					static const int dr[8] = { -1,-1,-1, 0, 0, 1, 1, 1 };
+					static const int dc[8] = { -1, 0, 1,-1, 1,-1, 0, 1 };
+
+					int whiteCount = 0;
+					int blackCount = 0;
+
+					for (int i = 0; i < 8; i++)
+					{
+						int nx = x + dc[i];
+						int ny = y + dr[i];
+
+						if (!isValidPoint({ nx, ny }))
+							continue;
+
+						auto it = m_stoneTypeMap.find({ nx, ny });
+						if (it == m_stoneTypeMap.end())
+							continue;
+
+						if (it->second == White)
+							whiteCount++;
+						else if (it->second == Black)
+							blackCount++;
+					}
+
+					ok = (whiteCount > 0 && whiteCount == blackCount);
 				}
- 					break;
+				break;
+
 				case StoneAbility::jokerBlackhole:
 				{
 					if (m_stoneTypeMap.find({ x,y }) != m_stoneTypeMap.end()) return;
-					ok = true;
-					// 나중에
+					ok = false;
+					int StoneCount = 0;
+					static const int dr[8] = { 0,0,-1,1,-1,1,1,-1 };
+					static const int dc[8] = { 1,-1,0,0,1,1,-1,-1 };
+
+					for (int i = 0; i < 8; i++)
+					{
+						int xpos = x + dr[i];
+						int ypos = y + dc[i];
+						if (!isValidPoint({ xpos, ypos })) continue;
+						if (m_stoneTypeMap.find({ xpos,ypos }) != m_stoneTypeMap.end())
+							StoneCount++;
+
+					}
+
+					if (StoneCount >= 5) {
+						ok = true;
+					}
 				}
 					break;
 				case StoneAbility::jokerShadow:
@@ -1810,35 +1854,33 @@ bool BoardManager::IsSamaBlackWhite() const
 	return false;
 }
 
-bool BoardManager::IsLibZero() const
+bool BoardManager::HasCrowdedEmptySpot6Plus() const
 {
-	static const int DR8[8] = { -1,-1,-1, 0, 0, 1, 1, 1 };
-	static const int DC8[8] = { -1,  0,  1,-1, 1,-1, 0, 1 };
-
 	for (int row = 0; row < SIZE_DEFAULT; ++row)
 		for (int col = 0; col < SIZE_DEFAULT; ++col)
 		{
-			if (m_board[row][col]) continue;
-
-			int validNbr = 0;          
-			int occNbr = 0;          
-
-			for (int k = 0; k < 8; ++k)
-			{
-				int nr = row + DR8[k];
-				int nc = col + DC8[k];
-				if (!isValidPoint({ nc, nr }))      
-					continue;                       
-
-				++validNbr;
-				if (m_board[nr][nc])               
-					++occNbr;
-			}
-
-			if (validNbr > 0 && occNbr == validNbr)
-				return true;
+			if (m_board[row][col]) continue;       
+			int occ = CountOccupiedNeighbors8(row, col);
+			if (occ >= 6) return true;                
 		}
 	return false;
+}
+
+int BoardManager::CountOccupiedNeighbors8(int row, int col) const
+{
+	static const int DR[8] = { -1,-1,-1, 0, 0, 1, 1, 1 };
+	static const int DC[8] = { -1,  0,  1,-1, 1,-1, 0, 1 };
+
+	int occ = 0;
+	for (int k = 0; k < 8; ++k)
+	{
+		int nr = row + DR[k];
+		int nc = col + DC[k];
+		if (!isValidPoint({ nc, nr })) continue; 
+
+		if (m_board[nr][nc]) ++occ;
+	}
+	return occ;
 }
 
 bool BoardManager::IsConnectTwo() const
