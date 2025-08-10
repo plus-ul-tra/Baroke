@@ -4,7 +4,7 @@
 
 void SoundManager::Initialize()
 {
-	FMOD::System_Create(&m_system);
+	System_Create(&m_system);
 	m_system->init(512, FMOD_INIT_NORMAL, nullptr);
 	LoadAll();
 }
@@ -23,7 +23,7 @@ void SoundManager::LoadAll()
 	}
 	filesystem::path resourcePath = solutionRoot/L"Resource"/L"Sounds";
 
-	for (const auto& entry : std::filesystem::recursive_directory_iterator(resourcePath))
+	for (const auto& entry : filesystem::recursive_directory_iterator(resourcePath))
 
 	{
 		if (entry.is_regular_file())
@@ -41,13 +41,13 @@ void SoundManager::LoadSound(const filesystem::path& filePath)
 	string key = filePath.filename().string();
 	if (m_sounds.find(key) == m_sounds.end())
 	{
-		FMOD::Sound* sound = nullptr;
+		Sound* sound = nullptr;
 		m_system->createSound(filePath.string().c_str(), FMOD_DEFAULT, nullptr, &sound);
 		m_sounds.emplace(key, sound);
 	}
 }
 
-FMOD::Sound* SoundManager::GetSound(const string& key) const
+Sound* SoundManager::GetSound(const string& key) const
 {
 	auto it = m_sounds.find(key);
 	if (it == m_sounds.end()) throw runtime_error("해당 사운드를 찾을 수 없음");
@@ -57,7 +57,7 @@ FMOD::Sound* SoundManager::GetSound(const string& key) const
 
 void SoundManager::PlaySoundOnce(const string& key)
 {
-	FMOD::Sound* sound = GetSound(key);
+	Sound* sound = GetSound(key);
 	if (sound) m_system->playSound(sound, nullptr, false, nullptr);
 	else throw runtime_error("해당 사운드를 찾을 수 없음");
 }
