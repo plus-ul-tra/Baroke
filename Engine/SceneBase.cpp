@@ -47,6 +47,13 @@ void SceneBase::Render(Renderer& renderer) {
 		}
 		notUniqueObject->Render(renderer);
 	}
+	renderer.UITextBegin();
+	//text 루틴 추가
+	//m_textList 에서 object와 유사한 구조로
+	renderer.DrawUIText(L"99", -680.0f, 440.0f,100.0f,100.0f,2);
+	renderer.DrawUIText(L"5959", -850.0f, -200.0f, 260.0f, 100.0f,2);
+
+	renderer.UITextEnd();
 }
 
 void RenderObject(Object* obj, Renderer& renderer)

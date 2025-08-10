@@ -143,7 +143,9 @@ void Renderer::Uninitialize()
 	m_ptargetBitmap.Reset();
 	m_pbrush.Reset();
 
-	m_ptextFormat.Reset();
+	m_smallFormat.Reset();
+	m_middleFormat.Reset();
+	m_largeFormat.Reset();
 
 	m_InputLayout.Reset();
 	m_PixelShader.Reset();
@@ -313,7 +315,7 @@ void Renderer::CreateShaderRenderTargets() {
 	hr = m_pd3dDevice->CreateShaderResourceView(m_renderTargetTex.Get(), nullptr, &m_renderTargetSRV);
 
 
-	// this
+	// this text
 	ComPtr<IDXGISurface> dxgiOffscreenSurface;
 	hr = m_renderTargetTex.As(&dxgiOffscreenSurface);
 
@@ -334,7 +336,7 @@ void Renderer::RenderBegin()
 
 	//ID3D11RenderTargetView* rtv = m_pd3dRenderTV.Get();
 	ID3D11RenderTargetView* rtv = m_offScreenRTV.Get();
-	m_pd3dContext->OMSetRenderTargets(1, &rtv, nullptr);
+	m_pd3dContext->OMSetRenderTargets(1, &rtv, nullptr); // rederTarget m_offScreenView
 
 	FLOAT backgroundColor[4] = { 0.5f, 0.5f, 0.5f, 1.0f };
 	m_pd3dContext->ClearRenderTargetView(rtv, backgroundColor);
@@ -640,8 +642,6 @@ void Renderer::PostProcessing(const ShaderSet& shaderSet)
 	m_pd3dContext->PSSetShaderResources(0, 1, nullSRV);
 }
 
-
-
 void Renderer::RenderEnd()
 {
 	// SRV 해제
@@ -736,6 +736,49 @@ void Renderer::InitializeShader(HWND hwnd)
 
 }
 
+void Renderer::UITextBegin()
+{
+	ID3D11ShaderResourceView* nullSRV[] = { nullptr };
+	m_pd3dContext->PSSetShaderResources(0, 1, nullSRV);
+
+	// D2D 타겟 지정
+	m_pd2dContext->SetTarget(m_ptargetBitmap.Get());
+	m_pd2dContext->BeginDraw();
+}
+
+void Renderer::DrawUIText(const std::wstring& s, float x, float y, float width, float height, int sizeType)
+{
+	// IDWriteTextLayout으로 변경하기
+	// 화면 좌표로 보정
+	float transX = x + 960.0f;
+	float transY = -y + 540.0f;
+	D2D1_RECT_F rc = D2D1::RectF(transX, transY, transX + width, transY + height); 
+	if (sizeType == 0) {
+		m_pd2dContext->DrawTextW(
+			s.c_str(), (UINT32)s.size(),
+			m_smallFormat.Get(), rc, m_pbrush.Get(),
+			D2D1_DRAW_TEXT_OPTIONS_NONE, DWRITE_MEASURING_MODE_NATURAL);
+	}
+	else if (sizeType == 1) {
+		m_pd2dContext->DrawTextW(
+			s.c_str(), (UINT32)s.size(),
+			m_middleFormat.Get(), rc, m_pbrush.Get(),
+			D2D1_DRAW_TEXT_OPTIONS_NONE, DWRITE_MEASURING_MODE_NATURAL);
+	}
+	else if(sizeType == 2) {
+		m_pd2dContext->DrawTextW(
+			s.c_str(), (UINT32)s.size(),
+			m_largeFormat.Get(), rc, m_pbrush.Get(),
+			D2D1_DRAW_TEXT_OPTIONS_NONE, DWRITE_MEASURING_MODE_NATURAL);
+	}
+	
+}
+
+void Renderer::UITextEnd()
+{
+	HRESULT hr = m_pd2dContext->EndDraw();
+}
+
 void Renderer::CreateDeviceAndSwapChain(HWND hwnd)
 {
 	D3D_FEATURE_LEVEL featureLevels[] = { D3D_FEATURE_LEVEL_11_0 };
@@ -819,7 +862,7 @@ void Renderer::CreateDeviceAndSwapChain(HWND hwnd)
 }
 
 
-
+// Textformat
 void Renderer::CreateWriteResource()
 {
 	ComPtr<IDWriteFactory> writeFactory = nullptr;
@@ -829,6 +872,38 @@ void Renderer::CreateWriteResource()
 		reinterpret_cast<IUnknown**>(writeFactory.GetAddressOf()));
 
 	//DX::ThrowIfFailed(hr);
+	// text format 3가지 정도 small middle large
+
+	writeFactory->CreateTextFormat(
+		L"",
+		NULL,
+		DWRITE_FONT_WEIGHT_NORMAL,
+		DWRITE_FONT_STYLE_NORMAL,
+		DWRITE_FONT_STRETCH_NORMAL,
+		75.0f,   // Font Size
+		L"", //locale
+		&m_largeFormat);
+
+	//DX::ThrowIfFailed(hr);DWRITE_TEXT_ALIGNMENT_CENTER
+	//DWRITE_TEXT_ALIGNMENT_TRAILING //오른쪽
+	m_largeFormat->SetTextAlignment(DWRITE_TEXT_ALIGNMENT_CENTER);          //중앙정렬 사용
+	m_largeFormat->SetParagraphAlignment(DWRITE_PARAGRAPH_ALIGNMENT_NEAR);  // 위쪽 정렬
+	//m_largeFormat->SetWordWrapping(DWRITE_WORD_WRAPPING_WRAP);              // 줄바꿈
+
+	writeFactory->CreateTextFormat(
+		L"",
+		NULL,
+		DWRITE_FONT_WEIGHT_NORMAL,
+		DWRITE_FONT_STYLE_NORMAL,
+		DWRITE_FONT_STRETCH_NORMAL,
+		50.0f,   // Font Size
+		L"", //locale
+		&m_middleFormat);
+
+	//DX::ThrowIfFailed(hr);DWRITE_TEXT_ALIGNMENT_CENTER
+	//DWRITE_TEXT_ALIGNMENT_TRAILING //오른쪽
+	m_middleFormat->SetTextAlignment(DWRITE_TEXT_ALIGNMENT_CENTER);          //중앙정렬 사용
+	m_middleFormat->SetParagraphAlignment(DWRITE_PARAGRAPH_ALIGNMENT_NEAR);
 
 	writeFactory->CreateTextFormat(
 		L"",
@@ -838,13 +913,12 @@ void Renderer::CreateWriteResource()
 		DWRITE_FONT_STRETCH_NORMAL,
 		20.0f,   // Font Size
 		L"", //locale
-		&m_ptextFormat);
+		&m_smallFormat);
 
-	//DX::ThrowIfFailed(hr);
-
-	m_ptextFormat->SetTextAlignment(DWRITE_TEXT_ALIGNMENT_LEADING);         // 왼쪽 정렬
-	m_ptextFormat->SetParagraphAlignment(DWRITE_PARAGRAPH_ALIGNMENT_NEAR);  // 위쪽 정렬
-	m_ptextFormat->SetWordWrapping(DWRITE_WORD_WRAPPING_WRAP);              // 줄바꿈
+	//DX::ThrowIfFailed(hr);DWRITE_TEXT_ALIGNMENT_CENTER
+	//DWRITE_TEXT_ALIGNMENT_TRAILING //오른쪽
+	m_smallFormat->SetTextAlignment(DWRITE_TEXT_ALIGNMENT_CENTER);          //중앙정렬 사용
+	m_smallFormat->SetParagraphAlignment(DWRITE_PARAGRAPH_ALIGNMENT_NEAR);
 }
 
 void Renderer::Present()

@@ -213,7 +213,7 @@ void GameScene::StartStage()
 	m_whiteLeft = m_board.GetStoneTypeAmount(White);
 	m_board.m_playerInfo.ResetRount();
 
-	std::cout << "Stage " << m_stageNo/* << " start, Spawn White Conut : " << spawn << std::endl*/;
+	std::cout << "Stage " << m_stageNo;
 }
 
 void GameScene::CheckStageClear()
@@ -655,7 +655,7 @@ void GameScene::OnInput(const MouseEvent& ev)
 // 		if (ev.type == MouseType::LDown) {
 // 			m_board.SetStoneType(m_board.GetStoneType());
 // 			m_board.SetStoneAbility(m_board.GetStoneAbility());
-// 			if (m_board.InputBasedGameLoop(ev.pos)) 
+// 			if (m_board.InputBasedGameLoop(ev.pos))
 // 			{
 // 				m_board.ExitMode();		// 능력 사용 후 다시 초기화
 // 			}
@@ -663,6 +663,7 @@ void GameScene::OnInput(const MouseEvent& ev)
 // 		}
 // 
 // 	}
+
 	else if (m_uiMode == UIMode::UseAbility)  
 	{
 		if (ev.type == MouseType::LDown) {

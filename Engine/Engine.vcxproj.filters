@@ -99,6 +99,7 @@
     <ClInclude Include="ModeInfo.h" />
     <ClInclude Include="Mediator.h" />
     <ClInclude Include="RenderTimer.h" />
+    <ClInclude Include="UIText.h" />
   </ItemGroup>
   <ItemGroup>
     <Filter Include="ETC">
