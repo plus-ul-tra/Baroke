@@ -102,31 +102,36 @@ void GameScene::SetUIButton()
 	 // m_normalUI는 텍스쳐 바꾸기용
 	// list로 수정 
 	//-----------------------------------------------joker slot------------------------------------
-	unique_ptr<Button> jokerSlot1 = std::make_unique<Button>(617.0f, 341.0f, 177, 175, "T_Standard_Right_Slot_Jocker_Glow.png");
+	unique_ptr<Button> jokerSlot1 = std::make_unique<Button>(617.0f, 341.0f, 177, 175, "T_Standard_Right_Slot_Jocker.png");
+	jokerSlot1->RegistClickedTexture("T_Standard_Right_Slot_Jocker_Glow.png",0);
 	m_buttonList.emplace_back(jokerSlot1.get());
 	m_notUniqueObjectList.emplace_back(jokerSlot1.get());
 	m_jokerSlot.emplace_back(move(jokerSlot1));
 	
 
 	unique_ptr<Button> jokerSlot2 = std::make_unique<Button>(617.0f, 171.0f, 177, 175, "T_Standard_Right_Slot_Jocker.png");
+	jokerSlot2->RegistClickedTexture("T_Standard_Right_Slot_Jocker_Glow.png",1);
 	m_buttonList.emplace_back(jokerSlot2.get());
 	m_notUniqueObjectList.emplace_back(jokerSlot2.get());
 	m_jokerSlot.emplace_back(move(jokerSlot2));
 	
 
 	unique_ptr<Button> jokerSlot3 = std::make_unique<Button>(617.0f, 1.0f, 177, 175, "T_Standard_Right_Slot_Jocker.png");
+	jokerSlot3->RegistClickedTexture("T_Standard_Right_Slot_Jocker_Glow.png",2);
 	m_buttonList.emplace_back(jokerSlot3.get());
 	m_notUniqueObjectList.emplace_back(jokerSlot3.get());
 	m_jokerSlot.emplace_back(move(jokerSlot3));
 	
 
 	unique_ptr<Button> jokerSlot4 = std::make_unique<Button>(617.0f, -172.0f, 177, 175, "T_Standard_Right_Slot_Jocker.png");
+	jokerSlot4->RegistClickedTexture("T_Standard_Right_Slot_Jocker_Glow.png",3);
 	m_buttonList.emplace_back(jokerSlot4.get());
 	m_notUniqueObjectList.emplace_back(jokerSlot4.get());
 	m_jokerSlot.emplace_back(move(jokerSlot4));
 	
 
 	unique_ptr<Button> jokerSlot5 = std::make_unique<Button>(617.0f, -342.0f, 177, 175, "T_Standard_Right_Slot_Jocker.png");
+	jokerSlot5->RegistClickedTexture("T_Standard_Right_Slot_Jocker_Glow.png",4);
 	m_buttonList.emplace_back(jokerSlot5.get());
 	m_notUniqueObjectList.emplace_back(jokerSlot5.get());
 	m_jokerSlot.emplace_back(move(jokerSlot5));
@@ -247,6 +252,24 @@ void GameScene::CheckStageClear()
 		if (m_gameState == GameState::Stage) StartStage();
 	}
 	else m_gameStateDelayElapsed = 0.0f;
+}
+void GameScene::CheckSlot()
+{
+	int index = Mediator::GetInstance().GetSlotIndex();
+	if (index != -1 && m_lastIndex !=index) {
+		for (int i = 0; i < 5; i++) {
+			if (i == index) {
+				m_jokerSlot[i]->Selected();
+				m_lastIndex = index;
+			}
+			else {
+				m_jokerSlot[i]->UnSelected();
+			}
+		}
+		
+	} 
+	
+	
 }
 enum asd { test , test2 };
 
@@ -451,10 +474,12 @@ void GameScene::Update(double deltaTime)
 	{
 		notUniqueObject->Update(deltaTime);
 	}
-	m_gameStateDelayElapsed += deltaTime;
-	ModeCheck();
-	CheckStageClear();
 
+	
+	m_gameStateDelayElapsed += deltaTime;
+	CheckSlot();
+	ModeCheck();
+	CheckStageClear();	
 	ChangeThema();
 
 }
@@ -491,10 +516,8 @@ void GameScene::OnEnter()
 	m_boardObj = boardObj.get();
 	m_objectList.emplace_back(std::move(boardObj));
 
-
+	m_lastIndex = -1;
 	//CreateObject::CreateObjectsOutOfScreen(m_objectList, "Leaf6.png", 1920.0f, 1080.0f, 200.0f, 100, 50.0f);
-
-
 
 	SetUIButton();
 	StartStage();
@@ -512,6 +535,7 @@ void GameScene::OnLeave()
 	m_itemSlot.clear();
 	m_passiveSlot.clear();
 	m_hintPool.clear();
+	m_lastIndex = -1;
 
 }
 
@@ -701,6 +725,7 @@ void GameScene::ChangeThema(int thema)
 			auto rend = bt->GetComponent<BitmapRender3D>();
 			//rend->SetShaderType("UIColor");
 			rend->ChangeTexture("T_Jungle_Right_Slot_Jocker.png");
+			
 		}
 
 		for (auto& bt : m_itemSlot)
@@ -722,6 +747,9 @@ void GameScene::ChangeThema(int thema)
 		m_leftUI->GetComponent<BitmapRender3D>()->ChangeTexture("T_Jungle_Left_Down_Base_Glow.png");
 		m_leftUpUI->GetComponent<BitmapRender3D>()->ChangeTexture("T_Jungle_Left_Base_Glow.png");
 		m_cyber->GetComponent<BitmapRender3D>()->SetActive(false);
+		m_lastIndex = -1;
+		Mediator::GetInstance().SetSlotIndex(-1);
+		ChangeOriginSlot("T_Jungle_Right_Slot_Jocker.png");
 		break;
 
 	case 2: // Space
@@ -752,6 +780,9 @@ void GameScene::ChangeThema(int thema)
 		m_leftUI->GetComponent<BitmapRender3D>()->ChangeTexture("T_Space_Left_Down_Base_Glow.png");
 		m_leftUpUI->GetComponent<BitmapRender3D>()->ChangeTexture("T_Space_Left_Base_Glow.png");
 		m_cyber->GetComponent<BitmapRender3D>()->SetActive(false);
+		m_lastIndex = -1;
+		Mediator::GetInstance().SetSlotIndex(-1);
+		ChangeOriginSlot("T_Space_Right_Slot_Jocker.png");
 		break;
 
 	case 3: // Korea
@@ -783,6 +814,9 @@ void GameScene::ChangeThema(int thema)
 		m_leftUI->GetComponent<BitmapRender3D>()->ChangeTexture("T_Dancheong_Left_Down_Base_Glow.png");
 		m_leftUpUI->GetComponent<BitmapRender3D>()->ChangeTexture("T_Dancheong_Left_Base_Glow.png");
 		m_cyber->GetComponent<BitmapRender3D>()->SetActive(false);
+		m_lastIndex = -1;
+		Mediator::GetInstance().SetSlotIndex(-1);
+		ChangeOriginSlot("T_Dancheong_Right_Slot_Jocker.png");
 		break;
 
 	case 4: // Halloween
@@ -813,6 +847,9 @@ void GameScene::ChangeThema(int thema)
 		m_leftUI->GetComponent<BitmapRender3D>()->ChangeTexture("T_Halloween_Left_Down_Base_Glow.png");
 		m_leftUpUI->GetComponent<BitmapRender3D>()->ChangeTexture("T_Halloween_Left_Base_Glow.png");
 		m_cyber->GetComponent<BitmapRender3D>()->SetActive(false);
+		m_lastIndex = -1;
+		Mediator::GetInstance().SetSlotIndex(-1);
+		ChangeOriginSlot("T_Halloween_Right_Slot_Jocker.png");
 		break;
 
 	case 5: // Cyber
@@ -824,7 +861,7 @@ void GameScene::ChangeThema(int thema)
 			//rend->SetShaderType("UIColor");
 			rend->ChangeTexture("T_Cyberpunk_Right_Slot_Jocker.png");
 		}
-
+		ChangeOriginSlot("T_Cyberpunk_Right_Slot_Jocker.png");
 		for (auto& bt : m_itemSlot)
 		{
 			auto rend = bt->GetComponent<BitmapRender3D>();
@@ -843,11 +880,20 @@ void GameScene::ChangeThema(int thema)
 		m_leftUI->GetComponent<BitmapRender3D>()->ChangeTexture("Cyberpunk_Left_Down.png");
 		m_leftUpUI->GetComponent<BitmapRender3D>()->ChangeTexture("Cyberpunk_Left.png");
 		m_cyber->GetComponent<BitmapRender3D>()->SetActive(true);
-
+		m_lastIndex = -1;
+		Mediator::GetInstance().SetSlotIndex(-1);
+		
 		break;
 
 	default: // 기본 테마
 		break;
+	}
+}
+
+void GameScene::ChangeOriginSlot(const std::string& bitmapFile)
+{
+	for (auto& slot : m_jokerSlot) {
+		slot->ChangeOriginTexture(bitmapFile);
 	}
 }
 

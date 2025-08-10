@@ -13,6 +13,8 @@ protected:
 	Transform* m_transform = nullptr;
 	BitmapRender3D* m_bitmapRender = nullptr;
 	unique_ptr<Object> m_textObject = nullptr;
+	string m_originTexture;
+	string m_selectedTexture; //클릭시 바뀔텍스쳐
 
 	float m_width = 0;
 	float m_height = 0;
@@ -21,11 +23,14 @@ protected:
 	bool m_isPressed = false;
 	bool m_isPressedRight = false; // 우클릭 여부
 	bool m_isHovered = false;
+	bool m_hasSelected = false;
+	int  m_index;
+	//bool m_isSelected = false;
 
 	MouseType m_inputType = MouseType::Move;
 	BoardManager& m_boardManager = BoardManager::GetInstance();
 
-	virtual void ButtonFunction() {}; // 버튼 기능을 구현하는 함수, 자식 클래스에서 오버라이드
+	virtual void ButtonFunction(); // 버튼 기능을 구현하는 함수, 자식 클래스에서 오버라이드
 
 	std::function<bool()> m_isEnabledPredicate = []() { return true; };
 
@@ -49,6 +54,7 @@ public:
 		m_bitmapRender = AddComponent<BitmapRender3D>(bitmapFile, width, height);
 		m_bitmapRender->SetOrder(order);
 		m_bitmapRender->SetActive(true);
+		m_originTexture = bitmapFile;
 		
 	}
 
@@ -64,13 +70,18 @@ public:
 
 	bool GetIsActive() const { return m_isActive; }
 	void SetIsActive(bool active) { m_isActive = active; m_isPressed = false; }
-
+	void RegistClickedTexture(const std::string& bitmapFile,int index);
+	void ChangeOriginTexture(const std::string& bitmapFile) { m_originTexture = bitmapFile; };
 	void CheckInput(const MouseEvent& mouseEvent);
-
+	void Selected();
+	void UnSelected();
 	void BindEnabledPredicate(std::function<bool()> pred)
 	{
 		m_isEnabledPredicate = std::move(pred);
 	}
+
+	//void SetIsSelected(bool b) { m_isSelected = b; }
+	//bool GetIsSelected()const { return m_isSelected; }
 
 	
 	void Update(double dt) override
