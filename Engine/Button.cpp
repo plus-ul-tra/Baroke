@@ -1,5 +1,6 @@
 #include "pch.h"
 #include "Engine.h"
+#include "Button.h" // 이거 왜 없어졌던거지?
 
 void Button::CheckInput(const MouseEvent& mouseEvent)
 {
@@ -102,6 +103,7 @@ void ShopJokerButton::ButtonFunction()
 	{
 		if (m_boardManager.m_playerInfo.m_money >= m_jokerInfo.costWhite)
 		{
+			bool isJokerFull = true; // 조커 버튼이 꽉 찼는지 여부
 			for (auto& jokerButton : *m_jokerButton)
 			{
 				if (!jokerButton) continue;
@@ -110,9 +112,11 @@ void ShopJokerButton::ButtonFunction()
 				jokerButton->SetButtonJoker(m_jokerInfo.stoneType, m_jokerAbility);
 				m_boardManager.m_playerInfo.m_money -= m_jokerInfo.costWhite;
 
+				isJokerFull = false; // 조커 버튼이 꽉 차지 않았음
+
 				break;
 			}
-			SetShowAndActive(false); // 상점 조커 버튼 숨김
+			SetShowAndActive(isJokerFull); // 상점 조커 버튼 숨김
 
 			std::cout << "Money : " << m_boardManager.m_playerInfo.m_money << std::endl;
 		}

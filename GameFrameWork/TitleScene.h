@@ -8,8 +8,7 @@ class TitleScene : public SceneBase {
 
 	double m_elsapsedTime = 0.0;
 	vector<unique_ptr<Button>> m_titleButtonList; // ¹öÆ°µé
-protected:
-	
+
 public:
 	//TitleScene() = default;
 	TitleScene() { std::cout << "Title Scene" << std::endl; };

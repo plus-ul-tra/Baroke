@@ -9,6 +9,7 @@
 #include "Renderer.h"
 #include "InputEvents.h"
 #include "Button.h"
+#include "SoundManager.h"
 //#include "Core.h"
 
 // 구체화는 Client에서
@@ -24,6 +25,10 @@ protected:
 	vector<Object*> m_notUniqueObjectList; // Object*로 관리하는 경우
 	//render 에 대해서 따로 관리 생각
 	std::unordered_map<std::string, std::function<void()>> m_commandMap;
+
+	SoundManager& m_soundManager = SoundManager::GetInstance();
+	Sound* m_bgm = nullptr; // 배경음악
+	Channel* m_channel = nullptr;
 	
 public:
 	SceneBase() = default;

@@ -3,6 +3,7 @@
 #include "Singleton.h"
 
 using namespace std;
+using namespace FMOD;
 
 class SoundManager : public Singleton<SoundManager>
 {
@@ -10,8 +11,8 @@ class SoundManager : public Singleton<SoundManager>
 	SoundManager() = default;
 	~SoundManager() = default;
 
-	std::unordered_map<string, FMOD::Sound*> m_sounds;
-	FMOD::System* m_system = nullptr;
+	unordered_map<string, Sound*> m_sounds;
+	System* m_system = nullptr;
 
 public:
 	void Initialize();
@@ -19,8 +20,9 @@ public:
 	void LoadAll();
 	void LoadSound(const filesystem::path& filePath);
 
-	FMOD::System* GetSystem() const { return m_system; }
-	FMOD::Sound* GetSound(const string& key) const;
+	System* GetSystem() const { return m_system; }
+	Sound* GetSound(const string& key) const;
+
 	void PlaySoundOnce(const string& key);
 
 	void Release();
