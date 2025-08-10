@@ -100,7 +100,7 @@ class JokerButton : public Button
 // 		case jokerDouble:   // 흑돌 2개 이상
 // 			return [&bm]() { return bm.CountStones(Black) >= 2; };
 		case jokerOmok:   // 흑돌 5개 이상
-			return [&bm]() { return bm.HasStraightLine(Black,5)/*&& bm.CountStones(Black) >= 10*/; };
+			return [&bm]() { return bm.HasStraightLine(Black,5)&& bm.CountStones(Black) >= 10; };
 		case jokerSamok:   // 조커돌 4개 이상
 			return [&bm]() { return bm.HasStraightLine(Joker, 4); };
 		case jokerSammok:   // 조커돌 3개 이상
@@ -108,36 +108,36 @@ class JokerButton : public Button
 
 			//-------------------------------- 야생 (set 2)
 		case jokerEgg:   // 흑돌 5개 이상
-			return [&bm]() { return bm.CountStones(Black) >= 5; };
+			return [&bm]() { return (bm.CountStones(Black) >= 5&& bm.CountJokers(jokerEgg)<3); };
 
  		case jokerOstrichEgg:   // 항상 트루
 			return [&bm]() { return true; }; // 진화
 
 		case jokerPeacock:   // 흰돌 5개 이상
-			return [&bm]() { return bm.CountStones(White) >= 5; };
+			return [&bm]() { return (bm.CountStones(White) >= 5 && bm.CountStones(Black) >= 3 && bm.GetPlacedThisStage(jokerPeacock) < 2); };
 
-		case jokerEvolution:   // 야생 돌2개 이상
-			return [&bm]() { return true; };
+		case jokerEvolution:   //
+			return [&bm]() { return bm.CountStones(Black) >= 1; };
 
 		case jokerDansu:   // 자유도가 1인 흰돌이 존재하는 경우
 			return [&bm]() { return /*bm.WhiteLibOne();*/bm.CountStones(Black) >= 2; };
 
 			//-------------------------------- 우주 (set 3)
 		case jokerTeleport:   // 흑돌 1개 이상
-			return [&bm]() { return  bm.CountStones(Black) >= 1; };
+			return [&bm]() { return  bm.CountStones(Black) >= 2; };
 
 		case jokerExplode:   // 착수 지점을 기준 3*3범위에 흑돌이 5개 이상
-			return [&bm]() { return bm.IsColorCount(StoneType::Black,5); };
+			return [&bm]() { return (bm.IsColorCount(StoneType::Black, 5) && bm.CountStones(Black) >= 3 && bm.GetPlacedThisStage(jokerExplode) < 5); };
 
 		case jokerMagnetic:   // 착수 지점을 기준 3*3범위에 흑돌 == 백돌
-			return [&bm]() { return bm.IsSamaBlackWhite(); };
+			return [&bm]() { return bm.IsSamaBlackWhite() && bm.CountStones(Black) >= 4; };
 
 		case jokerBlackhole:   // 자유도가 0인 지점이 존재하는 경우
-			return [&bm]() { return bm.HasCrowdedEmptySpot6Plus(); };
+			return [&bm]() { return (bm.HasCrowdedEmptySpot6Plus() && bm.CountStones(Black) >= 10 && bm.GetPlacedThisStage(jokerBlackhole) == 0); };
 
 			//-------------------------------- 단청 (set 4)
 		case jokerFusion:   // 흰 돌 2개를 연결할 수 있는 지점이 있는 경우
-			return [&bm]() { return  bm.IsConnectTwo(); };
+			return [&bm]() { return  bm.IsConnectTwo()&&bm.CountStones(Black)>=2; };
 
 		case jokerTriunion:   // 항상 트루
 			return [&bm]() { return true; }; // 진화
@@ -150,20 +150,23 @@ class JokerButton : public Button
 			return [&bm]() { return bm.CountStones(Black) >= 2; };
 
 		case jokerWaxseal:   // 자유도가 1인 흰돌이 존재하는 경우
-			return [&bm]() { return bm.WhiteLibOne(); };
+			return [&bm]() { return bm.WhiteLibOne() && bm.GetPlacedThisStage(jokerWaxseal) < 2; };
 
 		case jokerFlip:   // 착수 지점을 기준 3*3범위에 흰돌이 3개 이상
-			return [&bm]() {  return bm.IsColorCount(StoneType::White, 3); };
+			return [&bm]() {  return bm.IsColorCount(StoneType::White, 3) && bm.CountStones(Black) >= 3; };
 
 		case jokerOthello:   // 흑돌 기준 상하좌우 중 백돌3개 이상인 지점이 있는가?
-			return [&bm]() { return bm.IsOthello(); };
+			return [&bm]() { return bm.IsOthello() && bm.CountStones(Black) >= 2; };
 
-		case jokerMrchan:   // 항상 트루
-			return [&bm]() { return bm.m_playerInfo.GetBlackCount() == 0; };
+		case jokerMrchan:   // 흑돌 0개, 조커돌 0개
+			return [&bm]() {
+				return
+					((bm.m_playerInfo.GetBlackCount() - bm.GetStoneTypeAmount(StoneType::Black)) == 0) && bm.GetPlacedThisStage(jokerMrchan) == 0;
+				};
 
 			//-------------------------------- 자연 (set 7)
 		case jokerShadow:   // 흰돌 1개 이상
-			return [&bm]() { return bm.CountStones(White) >= 1; };
+			return [&bm]() { return bm.CountStones(White) >= 1 && bm.CountStones(Black) >= 3; };
 
 		case jokerLight:   // 흑돌 0개
 			return [&bm]() { return bm.CountStones(Black) == 0; };
