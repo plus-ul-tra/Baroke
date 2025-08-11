@@ -236,7 +236,7 @@ void GameScene::StartStage()
 	m_board.ResetStone();
 	int spawn = 3 + (m_stageNo - 1);
 
-	m_board.PlaceRandomStones(1);
+	m_board.PlaceRandomStones(10);
 	m_whiteLeft = m_board.GetStoneTypeAmount(White);
 	m_board.m_playerInfo.ResetRount();
 
@@ -276,7 +276,11 @@ void GameScene::CheckStageClear()
 			if (m_shopExitButton->IsEndButtonPressed())
 			{
 				m_gameState = GameState::ShopExit;
+
+				m_shopBuyStoneButton->SetShowAndActive(false);
+				m_shopShopRerollButton->SetShowAndActive(false);
 				m_shopExitButton->SetShowAndActive(false);
+
 				for (auto& jokerButton : m_shopJokerButtons) jokerButton->SetShowAndActive(false);
 				m_gameStateDelayElapsed = 0.0f;
 				ChangeThema(m_stageNo % 6);
