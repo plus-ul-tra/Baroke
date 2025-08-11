@@ -13,7 +13,17 @@
 using namespace std;
 void GameScene::SetUIButton()
 {
-	m_shopExitButton = std::make_unique<ShopEndButton>(300.0f, -300.0f, 100, 100, "Sample.png");
+	m_shopBuyStoneButton = make_unique<ShopBuyStoneButton>(-300.0f, -300.0f, 100, 100, "Black.png");
+	m_shopBuyStoneButton->SetShowAndActive(false);
+	m_buttonList.emplace_back(m_shopBuyStoneButton.get());
+	m_notUniqueObjectList.emplace_back(m_shopBuyStoneButton.get());
+
+	m_shopShopRerollButton = make_unique<ShopRerollButton>(0.0f, -300.0f, 100, 100, "jokerFlip.png");
+	m_shopShopRerollButton->SetShowAndActive(false);
+	m_buttonList.emplace_back(m_shopShopRerollButton.get());
+	m_notUniqueObjectList.emplace_back(m_shopShopRerollButton.get());
+
+	m_shopExitButton = make_unique<ShopEndButton>(300.0f, -300.0f, 100, 100, "Sample.png");
 	m_shopExitButton->SetShowAndActive(false);
 	m_buttonList.emplace_back(m_shopExitButton.get());
 	m_notUniqueObjectList.emplace_back(m_shopExitButton.get());
@@ -252,13 +262,17 @@ void GameScene::CheckStageClear()
 		{
 			m_gameState = GameState::Shop;
 			ShopStage();
+
+			m_shopBuyStoneButton->SetShowAndActive(true);
+			m_shopShopRerollButton->SetShowAndActive(true);
 			m_shopExitButton->SetShowAndActive(true);
 
 			m_channel->setPaused(true);
 			m_shopChannel->setPaused(false);
 		}
-		if (m_gameState == GameState::Shop && m_shopExitButton)
+		if (m_gameState == GameState::Shop && m_shopBuyStoneButton && m_shopShopRerollButton && m_shopExitButton)
 		{
+			if (m_shopShopRerollButton->IsReroll()) ShopStage(); // 상점 리롤
 			if (m_shopExitButton->IsEndButtonPressed())
 			{
 				m_gameState = GameState::ShopExit;

@@ -131,6 +131,58 @@ void ShopJokerButton::SetButtonJoker(JokerStoneInfo jokerInfo, StoneAbility abil
 	m_textObject = make_unique<NewObject>(m_transform->GetPosition().m128_f32[0], m_transform->GetPosition().m128_f32[1] + 20.0f, 691.0f, 200.0f, 0.0f, m_jokerInfoMap[ability].toolTipName);
 }
 
+void ShopBuyStoneButton::ButtonFunction()
+{
+	if (m_isPressed && m_isActive)
+	{
+		if (m_boardManager.m_playerInfo.m_money >= m_boardManager.m_playerInfo.m_blackStoneUpgrade * 2)
+		{
+			m_boardManager.m_playerInfo.m_BlackStone += 2;
+			m_boardManager.m_playerInfo.m_money -= m_boardManager.m_playerInfo.m_blackStoneUpgrade * 2;
+			m_boardManager.m_playerInfo.m_blackStoneUpgrade++;
+
+			m_isPressed = false;
+		}
+	}
+}
+
+void ShopBuyStoneButton::SetShowAndActive(bool active)
+{
+	if (m_bitmapRender) m_bitmapRender->SetActive(active);
+
+	m_isActive = active;
+}
+
+void ShopRerollButton::ButtonFunction()
+{
+	if (m_isPressed && m_isActive && !m_isRerollButtonPressed)
+	{
+		if (m_boardManager.m_playerInfo.m_money >= m_boardManager.m_playerInfo.m_rerollCount)
+		{
+			m_boardManager.m_playerInfo.m_money -= m_boardManager.m_playerInfo.m_rerollCount;
+
+			if (m_boardManager.m_playerInfo.m_rerollCount < 5) m_boardManager.m_playerInfo.m_rerollCount++;
+
+			m_isPressed = false;
+			m_isRerollButtonPressed = true;
+		}
+	}
+}
+
+void ShopRerollButton::SetShowAndActive(bool active)
+{
+	if (m_bitmapRender) m_bitmapRender->SetActive(active);
+
+	m_isActive = active;
+}
+
+bool ShopRerollButton::IsReroll()
+{
+	if (!m_isRerollButtonPressed) return false;
+	m_isRerollButtonPressed = false;
+	return true;
+}
+
 void ShopJokerButton::SetShowAndActive(bool active)
 {
 	if (m_bitmapRender) m_bitmapRender->SetActive(active);

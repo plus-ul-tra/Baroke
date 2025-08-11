@@ -244,6 +244,32 @@ public:
 	StoneAbility GetJokerAbility() const { return m_jokerAbility; }
 };
 
+class ShopBuyStoneButton : public Button
+{
+	void ButtonFunction() override;
+
+	public:
+	ShopBuyStoneButton(float posX, float posY, float width, float height, const std::string& bitmapFile, int order = 0)
+		: Button(posX, posY, width, height, bitmapFile, order) {}
+
+	void SetShowAndActive(bool active);
+};
+
+class ShopRerollButton : public Button
+{
+	bool m_isRerollButtonPressed = false; // 리롤 버튼이 눌렸는지 여부
+
+public:
+	ShopRerollButton(float posX, float posY, float width, float height, const std::string& bitmapFile, int order = 0)
+		: Button(posX, posY, width, height, bitmapFile, order) {
+	}
+
+	void ButtonFunction() override;
+	void SetShowAndActive(bool active);
+
+	bool IsReroll();
+};
+
 class ShopEndButton : public Button
 {
 	bool m_isEndButtonPressed = false;

@@ -43,6 +43,8 @@ private:
 	vector<pair<StoneAbility, JokerStoneInfo>> m_shopStones; // 돌 조커
 	vector<pair<StoneAbility, JokerStoneInfo>> m_shopItems; // 아이템 조커
 	unique_ptr<ShopJokerButton> m_shopJokerButtons[6] = {};
+	unique_ptr<ShopBuyStoneButton> m_shopBuyStoneButton;
+	unique_ptr<ShopRerollButton> m_shopShopRerollButton;
 	unique_ptr<ShopEndButton> m_shopExitButton;
 	int m_shopRng[3] = { 80, 45, 15 }; // 상점 아이템 확률
 	void ShopStage(); // 상점
