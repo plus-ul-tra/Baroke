@@ -68,6 +68,8 @@ public:
 	float GetHeight() const { return m_height; }
 	void SetHeight(float height) { m_height = height; }
 
+	BitmapRender3D* GetTextObjectRender() const;
+
 	bool GetIsActive() const { return m_isActive; }
 	void SetIsActive(bool active) { m_isActive = active; m_isPressed = false; }
 	void RegistClickedTexture(const std::string& bitmapFile,int index);
