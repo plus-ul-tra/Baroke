@@ -135,10 +135,10 @@ void ShopBuyStoneButton::ButtonFunction()
 {
 	if (m_isPressed && m_isActive)
 	{
-		if (m_boardManager.m_playerInfo.m_money >= m_boardManager.m_playerInfo.m_blackStoneUpgrade * 2)
+		if (m_boardManager.m_playerInfo.m_waxMoney >= 1 + m_boardManager.m_playerInfo.m_blackStoneUpgrade * 2)
 		{
 			m_boardManager.m_playerInfo.m_BlackStone += 2;
-			m_boardManager.m_playerInfo.m_money -= m_boardManager.m_playerInfo.m_blackStoneUpgrade * 2;
+			m_boardManager.m_playerInfo.m_waxMoney -= 1 + m_boardManager.m_playerInfo.m_blackStoneUpgrade * 2;
 			m_boardManager.m_playerInfo.m_blackStoneUpgrade++;
 
 			m_isPressed = false;
@@ -251,5 +251,17 @@ void ShopEndButton::ButtonFunction()
 		std::cout << "Shop End Button Pressed" << std::endl;
 
 		m_isPressed = false;
+	}
+}
+
+void TitleStartButton::ButtonFunction()
+{
+	{
+		if (m_isPressed && m_isActive)
+		{
+			std::cout << "Game Start!" << std::endl;
+			SceneManager::GetInstance().ChangeScene(std::string("Game1"));
+			m_isPressed = false;
+		}
 	}
 }

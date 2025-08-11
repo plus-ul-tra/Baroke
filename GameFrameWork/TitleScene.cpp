@@ -16,7 +16,7 @@ void TitleScene::Initialize()
 	m_notUniqueObjectList.emplace_back(title.get());
 	m_titleButtonList.emplace_back(std::move(title));
 
-	unique_ptr<Button> startButton = std::make_unique<Button>(-640.0f, -450.0f, 250.0f, 60.0f, "T_Main_Start.png", 50);
+	unique_ptr<TitleStartButton> startButton = std::make_unique<TitleStartButton>(-640.0f, -450.0f, 250.0f, 60.0f, "T_Main_Start.png", 50);
 	m_buttonList.emplace_back(startButton.get());
 	m_notUniqueObjectList.emplace_back(startButton.get());
 	m_titleButtonList.emplace_back(std::move(startButton));
@@ -46,6 +46,10 @@ void TitleScene::Initialize()
 void TitleScene::Update(double deltaTime)
 {
 	m_elsapsedTime += deltaTime;
+	for (auto& notUniqueObject : m_notUniqueObjectList)
+	{
+		notUniqueObject->Update(deltaTime);
+	}
 	//test용 씬전환
 }
 
@@ -117,6 +121,9 @@ void TitleScene::KeyCommandMapping()
 
 void TitleScene::OnInput(const MouseEvent& ev)
 {
-
+	for (auto& button : m_buttonList)
+	{
+		button->CheckInput(ev);
+	}
 }
 
