@@ -423,7 +423,11 @@ struct JokerFunctionsWrapper
 						int randomX = distX(rng);
 						int randomY = distY(rng);
 
-						if (boardManager.PlaceStone({ randomX, randomY }, StoneType::Black, StoneAbility::None)) break;
+						if (boardManager.PlaceStone({ randomX, randomY }, StoneType::Black, StoneAbility::None))
+						{
+							boardManager.WhiteStoneRemoveCheck({ randomX, randomY });
+							break;
+						}
 					}
 				}
 
@@ -1078,7 +1082,7 @@ int BoardManager::CountLiberty(
 	int libs = 0;
 
 	while (!st.empty()) {
-		auto& [cr, cc] = st.top(); st.pop();
+		auto [cr, cc] = st.top(); st.pop();
 		group.push_back({ cr,cc });
 
 		for (int k = 0; k < 4; ++k) {

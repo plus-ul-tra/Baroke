@@ -223,6 +223,8 @@ public:
 		}
 		Object::Update(dt);
 	}
+
+	bool IsActive() { return m_isActive; }
 };
 
 class ShopJokerButton : public Button
