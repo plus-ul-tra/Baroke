@@ -265,3 +265,27 @@ void TitleStartButton::ButtonFunction()
 		}
 	}
 }
+
+void GameEndButton::ButtonFunction()
+{
+	{
+		if (m_isPressed && m_isActive)
+		{
+			std::cout << "Return Tirle" << std::endl;
+			SceneManager::GetInstance().ChangeScene(std::string("Ending"));
+			m_isPressed = false;
+		}
+	}
+}
+
+void RetrurnTitleButton::ButtonFunction()
+{
+	{
+		if (m_isPressed && m_isActive)
+		{
+			std::cout << "Return Tirle" << std::endl;
+			SceneManager::GetInstance().ChangeScene(std::string("Title"));
+			m_isPressed = false;
+		}
+	}
+}

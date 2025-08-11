@@ -189,7 +189,7 @@ class JokerButton : public Button
 
 		case jokerTime: // 플레이어 흑돌 개수가 5개 미만인 경우
 			return [&bm]() { 				
-				return (bm.m_playerInfo.GetBlackCount() - bm.GetStoneTypeAmount(StoneType::Black)) < 5 && bm.GetPlacedThisStage(jokerShadow) < 1;
+				return (bm.m_playerInfo.GetBlackCount() - bm.GetStoneTypeAmount(StoneType::Black)) < 5 && bm.GetPlacedThisStage(jokerTime) < 1;
 				};
 		case jokerWind:   // 흑돌 4개 이상
 			return [&bm]() { return bm.CountStones(Black) >= 4; };
@@ -290,6 +290,28 @@ class TitleStartButton : public Button
 
 public:
 	TitleStartButton(float posX, float posY, float width, float height, const std::string& bitmapFile, int order = 0)
+		: Button(posX, posY, width, height, bitmapFile, order) {
+	}
+	void ButtonFunction() override;
+
+};
+
+class GameEndButton : public Button
+{
+
+public:
+	GameEndButton(float posX, float posY, float width, float height, const std::string& bitmapFile, int order = 0)
+		: Button(posX, posY, width, height, bitmapFile, order) {
+	}
+	void ButtonFunction() override;
+
+};
+
+class RetrurnTitleButton : public Button
+{
+
+public:
+	RetrurnTitleButton(float posX, float posY, float width, float height, const std::string& bitmapFile, int order = 0)
 		: Button(posX, posY, width, height, bitmapFile, order) {
 	}
 	void ButtonFunction() override;
