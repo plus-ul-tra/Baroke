@@ -349,6 +349,8 @@ struct JokerFunctionsWrapper
 					boardManager.m_board[pair.first.x][pair.first.y]->Move(boardManager.BoardToScreenPosition({ position.x, position.y }), 3);
 					boardManager.m_board[pair.first.x][pair.first.y]->Remove(3);
 
+					if (boardManager.IsJokerStone(pair.first)) boardManager.RemoveJokerStone(pair.first);
+
 					if (boardManager.m_stoneTypeMap.find(pair.first)->second == StoneType::Black)
 					{
 						//boardManager.m_playerInfo.m_BlackStone++;
@@ -813,27 +815,6 @@ bool BoardManager::InputBasedGameLoop(POINT mousePos) // 마우스 클릭으로 
 
 	m_stoneAbility = StoneAbility::None; // 돌 능력 초기화
 	
-
-	return true;
-}
-
-bool BoardManager::InputBasedGameLoop(int row, int col) // 바둑판 기준 row , col 입력 받아서 해당 배열에 액세스 해서 넣으면댐
-{
-	CheckRemovedStones();
-	if (!PlaceStone({ row,col }, m_stoneType, m_stoneAbility)) return false;
-	OnStonePlaced(m_stoneAbility);
-	m_playerInfo.decBlackCount(m_SacrificeGroup.size());
-	m_playerInfo.incBlackCount(m_jokerInfoMap[m_stoneAbility].returnBlack);
-	RemoveGroup(m_SacrificeGroup);
-	JokerAbilityUpdate(); // 조커 능력 업데이트
-	WhiteStoneRemoveCheck(m_selectedPosition); // 흰 돌 체크
-
-	m_selectedPosition = { -1, -1 }; // 마지막으로 선택된 위치 초기화
-
-	m_stoneType = StoneType::Black; // 돌 타입 초기화
-	m_stoneAbility = StoneAbility::None; // 돌 능력 초기화
-
-
 
 	return true;
 }

@@ -33,7 +33,7 @@ private:
 	vector <unique_ptr<Button>>	  m_jokerSlot;
 	vector <unique_ptr<Button>>	  m_itemSlot;
 	vector <unique_ptr<Button>>	  m_passiveSlot;
-	vector <unique_ptr<Button>>   m_useless;
+	vector <unique_ptr<Object>>   m_useless;
 	unique_ptr<Button>            m_desc;
 	unique_ptr<Button>			  m_rightUI;
 	unique_ptr<Button>			  m_leftUI;
