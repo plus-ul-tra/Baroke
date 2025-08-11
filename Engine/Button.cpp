@@ -3,13 +3,13 @@
 #include "Button.h"
 #include "Mediator.h"
 
+
 BitmapRender3D* Button::GetTextObjectRender() const
 {
 	if (m_bitmapRender->IsActive() && m_isHovered && m_textObject) return m_textObject->GetComponent<BitmapRender3D>();
 
 	return nullptr;
 }
-
 void Button::RegistClickedTexture(const std::string& bitmapFile,int index)
 {
 	m_selectedTexture = bitmapFile;
