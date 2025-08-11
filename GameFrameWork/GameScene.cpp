@@ -68,14 +68,43 @@ void GameScene::SetUIButton()
 	//m_normalUI.emplace_back(move(leftUI));
 	leftUI->GetComponent<BitmapRender3D>()->SetShaderType("UIHolo");
 	m_leftUI = move(leftUI);
+	//--------------------------흑돌 흰돌----------------------------------
+	unique_ptr<Button> BlackUI = std::make_unique<Button>(-800.0f, 120.0f, 110, 110, "Black.png");
+	m_notUniqueObjectList.emplace_back(BlackUI.get());
+	//leftUpUI->AddComponent<UIText>(-680.0f, 440.0f, 100.0f, 100.0f, 2);
+/*	leftUpUI->GetComponent<BitmapRender3D>()->SetShaderType("UIHolo");*/
+	m_BlackUI = move(BlackUI);
+
+	unique_ptr<Button> WhiteUI = std::make_unique<Button>(-640.0f, 120.0f, 110, 110, "White.png");
+	m_notUniqueObjectList.emplace_back(WhiteUI.get());
+	//leftUpUI->AddComponent<UIText>(-680.0f, 440.0f, 100.0f, 100.0f, 2);
+/*	leftUpUI->GetComponent<BitmapRender3D>()->SetShaderType("UIHolo");*/
+	m_WhiteUI = move(WhiteUI);
+
+	unique_ptr<Text> BlackCount = std::make_unique<Text>(-900.0f, 50.0f, 200.0f, 100.0f, 1);
+	BlackCount->GetComponent<UIText>()->SetText(12);
+	m_BlackText = BlackCount.get();
+	m_textList.emplace_back(BlackCount.get());
+	m_useless.emplace_back(move(BlackCount)); //렌더용
+
+	unique_ptr<Text> WhiteCount = std::make_unique<Text>(-740.0f, 50.0f, 200.0f, 100.0f, 1);
+	WhiteCount->GetComponent<UIText>()->SetText(0);
+	m_WhiteText = WhiteCount.get();
+	m_textList.emplace_back(WhiteCount.get());
+	m_useless.emplace_back(move(WhiteCount)); //렌더용
+
+
+
 	//--------------------동적 Text---------------------
 	unique_ptr<Text> textStage = std::make_unique<Text>(-680.0f, 440.0f, 100.0f, 100.0f, 2);
 	textStage->GetComponent<UIText>()->SetText(10);
+	m_stageText = textStage.get();
 	m_textList.emplace_back(textStage.get());
 	m_useless.emplace_back(move(textStage)); //렌더용
 
 	unique_ptr<Text> textScore = std::make_unique<Text>(-850.0f, -200.0f, 260.0f, 100.0f, 2);
 	textScore->GetComponent<UIText>()->SetText(000000);
+	m_scoreText = textScore.get();
 	m_textList.emplace_back(textScore.get());
 	m_useless.emplace_back(move(textScore));
 
@@ -194,7 +223,7 @@ void GameScene::SetUIButton()
 
 	// ------------------------------------joker button-------------------------------------------
 	unique_ptr<JokerButton> jokerButton1 = std::make_unique<JokerButton>(617.0f, 341.0f, 100, 100, "Black.png", 50);
-	jokerButton1->SetButtonJoker(Joker, jokerBlackhole);
+	jokerButton1->SetButtonJoker(Joker, jokerTeleport);
 	m_buttonList.emplace_back(jokerButton1.get());
 	m_notUniqueObjectList.emplace_back(jokerButton1.get());
 	m_jokerButtons.emplace_back(move(jokerButton1));
@@ -234,11 +263,16 @@ void GameScene::StartStage()
 {
 	m_stageNo++;
 	m_board.ResetStone();
+	m_board.ResetStagePlaced(); // 조커 착수 트래킹 리셋
 	int spawn = 3 + (m_stageNo - 1);
 
 	m_board.PlaceRandomStones(10);
 	m_whiteLeft = m_board.GetStoneTypeAmount(White);
-	m_board.m_playerInfo.ResetRount();
+	m_board.m_playerInfo.ResetRound();
+
+	if (m_stageText)
+		if (auto ui = m_stageText->GetComponent<UIText>())
+			ui->SetText(m_stageNo);
 
 	m_soundManager.PlaySoundOnce("stonePlace.wav");
 
@@ -251,7 +285,7 @@ void GameScene::CheckStageClear()
 
 	if (!m_board.GetStoneTypeAmount(White))  // 스테이지 클리어
 	{
-		m_board.ResetStagePlaced(); // 조커 착수 트래킹 리셋
+
 		SceneManager::GetInstance().ChangePostProcessing("CRTFilter");
 
 		if (m_gameState == GameState::Stage) m_gameState = GameState::ShopEnter;
@@ -529,6 +563,17 @@ void GameScene::Update(double deltaTime)
 		notUniqueObject->Update(deltaTime);
 	}
 
+	if (m_scoreText)
+		if (auto score = m_scoreText->GetComponent<UIText>())
+			score->SetText(m_board.GetPlayer().m_score);
+
+	if (m_BlackText)
+		if (auto black = m_BlackText->GetComponent<UIText>())
+			black->SetText(m_board.GetPlayer().GetBlackCount()-m_board.CountStones(Black));
+
+	if (m_WhiteText)
+		if (auto white = m_WhiteText->GetComponent<UIText>())
+			white->SetText(m_board.GetPlayer().m_money);
 	
 	m_gameStateDelayElapsed += deltaTime;
 	CheckSlot();

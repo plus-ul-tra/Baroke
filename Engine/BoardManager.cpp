@@ -943,11 +943,13 @@ size_t BoardManager::WhiteStoneRemoveCheck(POINT selectedPosition)
 		if (CountLiberty(nr, nc, grp, vis) == 0)
 		{
 			groupSize += grp.size();
+
 			RemoveGroup(grp);
 		}
 	}
 
 	m_playerInfo.m_money += groupSize;
+	m_playerInfo.m_score += groupSize * 100;
 	return groupSize;
 }
 
@@ -1039,7 +1041,7 @@ void BoardManager::InitializeJokerInfoMap()
 	m_jokerInfoMap[StoneAbility::jokerTeleport] = { "jokerTeleport.png", "T_JokerTeleport_Tooltip.png", "jokerTeleport.wav",	JokerType::Space, 1, 1, 0, 0, 2, 0, 4, 2, true };
 	m_jokerInfoMap[StoneAbility::jokerExplode] = { "jokerExplode.png",	"T_JokerExplode_Tooltip.png", "jokerExplode.wav",		JokerType::Space, 1, 1, 0, 1, 3, 0, 6, 3, true };
 	m_jokerInfoMap[StoneAbility::jokerMagnetic] = { "jokerMagnetic.png", "T_JokerMagnetic_Tooltip.png", "jokerMagnetic.wav",	JokerType::Space, 1, 1, 0, 3, 4, 2, 5, 2, true };
-	m_jokerInfoMap[StoneAbility::jokerBlackhole] = { "jokerBlackhole.png", "T_JokerBlackhole_Tooltip.png", "jokerBlackhole.wav",	JokerType::Space, 1, 1, 0, 5, 15, 0, 8, 3, true };
+	m_jokerInfoMap[StoneAbility::jokerBlackhole] = { "jokerBlackhole.png", "T_JokerBlackhole_Tooltip.png", "jokerBlackhole.wav",	JokerType::Space, 1, 1, 0, 5, 10, 0, 8, 3, true };
 
 	//------------------------------------------------------------------------------------------------ 단청 (set 4)
 	m_jokerInfoMap[StoneAbility::jokerFusion] = { "jokerFusion.png", "T_JokerFusion_Tooltip.png", "jokerFusion.wav",			JokerType::Dancheong, 0, 0, 0, 2, 2, 0, 5, 2, true, StoneType::White };
