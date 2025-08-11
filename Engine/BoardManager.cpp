@@ -896,12 +896,16 @@ bool BoardManager::PlaceStone(POINT selectedPosition, StoneType stoneType, Stone
 {
 	if (!isValidPoint(selectedPosition))
 	{
-		std::cout << "unValid Position: (" << selectedPosition.x << ", " << selectedPosition.y << ")" << std::endl;
+
+		std::cout << "invalid position: (" << selectedPosition.x << ", " << selectedPosition.y << ")" << std::endl;
+
 		return false;
 	}
 	if (m_board[selectedPosition.x][selectedPosition.y])
 	{
-		std::cout << "exist stone: (" << selectedPosition.x << ", " << selectedPosition.y << ")" << std::endl;
+
+		std::cout << "already exit: (" << selectedPosition.x << ", " << selectedPosition.y << ")" << std::endl;
+
 		return false;
 	}
 
@@ -1034,9 +1038,9 @@ void BoardManager::InitializeJokerInfoMap()
 	m_jokerInfoMap[StoneAbility::None] = {}; // 디폴트 돌
 
 	//------------------------------------------------------------------------------------------------ 일반 (set 1)
-	m_jokerInfoMap[StoneAbility::jokerOmok]			= { "jokerOmok.png", "T_JokerOmok_Tooltip.png",				JokerType::Default, 1, 0, 0, 0, 5, 2, 4, 2, true, StoneType::Black };
-	m_jokerInfoMap[StoneAbility::jokerSamok]		= { "jokerSamok.png", "T_JokerSamok_Tooltip.png",			JokerType::Default, 0, 0, 0, 0, 0, 0, 3, 2, false };
-	m_jokerInfoMap[StoneAbility::jokerSammok]		= { "jokerSammok.png", "T_JokerSammok_Tooltip.png",			JokerType::Default, 0, 0, 0, 0, 0, 2, 2, 1, false };
+	m_jokerInfoMap[StoneAbility::jokerOmok]			= { "jokerOmok.png", "T_JokerOmok_Tooltip.png", "jokerOmok.wav",				JokerType::Default, 1, 0, 0, 0, 5, 2, 4, 2, true, StoneType::Black };
+	m_jokerInfoMap[StoneAbility::jokerSamok]		= { "jokerSamok.png", "T_JokerSamok_Tooltip.png", "jokerSamok.wav",				JokerType::Default, 0, 0, 0, 0, 0, 0, 3, 2, false };
+	m_jokerInfoMap[StoneAbility::jokerSammok]		= { "jokerSammok.png", "T_JokerSammok_Tooltip.png", "jokerSammok.wav",			JokerType::Default, 0, 0, 0, 0, 0, 2, 2, 1, false };
 
 	//------------------------------------------------------------------------------------------------ 야생 (set 2)
 	m_jokerInfoMap[StoneAbility::jokerEvolution]	= { "jokerEvolution.png", "T_JokerEvolution_Tooltip.png",	JokerType::Wild, 0, 0, 0, 0, 1, 0, 7, 3, false };						// cost 0
@@ -1068,6 +1072,7 @@ void BoardManager::InitializeJokerInfoMap()
 	m_jokerInfoMap[StoneAbility::jokerLight]		= { "jokerLight.png", "T_JokerLight_Tooltip.png",			JokerType::Natural, 0, 0, 0, 0, 0, 0, 4, 2, true, StoneType::Black };
 	m_jokerInfoMap[StoneAbility::jokerTime]			= { "jokerTime.png", "T_JokerTime_Tooltip.png",				JokerType::Natural, 3, 0, 0, 2, 0, 2, 7, 3, true };
 	m_jokerInfoMap[StoneAbility::jokerWind]			= { "jokerWind.png", "T_JokerWind_Tooltip.png",				JokerType::Natural, 2, 5, 0, 2, 4, 1, 4, 2, true };
+
 }
 
 int BoardManager::CountLiberty(

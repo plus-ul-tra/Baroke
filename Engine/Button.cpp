@@ -1,5 +1,17 @@
 #include "pch.h"
 #include "Engine.h"
+#include "Button.h"
+#include "Mediator.h"
+
+void Button::RegistClickedTexture(const std::string& bitmapFile,int index)
+{
+	m_selectedTexture = bitmapFile;
+	m_hasSelected = true;
+	m_index = index;
+}
+
+
+
 
 void Button::CheckInput(const MouseEvent& mouseEvent)
 {
@@ -26,13 +38,36 @@ void Button::CheckInput(const MouseEvent& mouseEvent)
 
 		if (!m_isActive) { return; }
 
-		if (m_inputType == MouseType::LDown) m_isPressed = true;
+		if (m_inputType == MouseType::LDown) { m_isPressed = true;}
 		else m_isPressed = false;
 	}
 	else
 	{
 		m_isHovered = false;
 	}
+}
+
+void Button::Selected()
+{
+	m_bitmapRender->ChangeBoardTexture(m_selectedTexture);
+}
+void Button::UnSelected() {
+	m_bitmapRender->ChangeTexture(m_originTexture);
+}
+
+void Button::ButtonFunction(){
+
+	if (!m_hasSelected) {
+		return;
+	}
+
+	if (m_isPressed) {
+		//m_isSelected = true;
+		Mediator::GetInstance().SetSlotIndex(m_index);
+		m_isPressed = false;
+		
+	}
+
 }
 
 void Button::Render(Renderer& renderer)
@@ -102,6 +137,7 @@ void ShopJokerButton::ButtonFunction()
 	{
 		if (m_boardManager.m_playerInfo.m_money >= m_jokerInfo.costWhite)
 		{
+			bool isJokerFull = true; // 조커 버튼이 꽉 찼는지 여부
 			for (auto& jokerButton : *m_jokerButton)
 			{
 				if (!jokerButton) continue;
@@ -110,9 +146,11 @@ void ShopJokerButton::ButtonFunction()
 				jokerButton->SetButtonJoker(m_jokerInfo.stoneType, m_jokerAbility);
 				m_boardManager.m_playerInfo.m_money -= m_jokerInfo.costWhite;
 
+				isJokerFull = false; // 조커 버튼이 꽉 차지 않았음
+
 				break;
 			}
-			SetShowAndActive(false); // 상점 조커 버튼 숨김
+			SetShowAndActive(isJokerFull); // 상점 조커 버튼 숨김
 
 			std::cout << "Money : " << m_boardManager.m_playerInfo.m_money << std::endl;
 		}

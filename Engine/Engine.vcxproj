@@ -278,6 +278,7 @@
     <ClInclude Include="Timer.h" />
     <ClInclude Include="Transform.h" />
     <ClInclude Include="UI.h" />
+    <ClInclude Include="UIText.h" />
     <ClInclude Include="Window.h" />
   </ItemGroup>
   <ItemGroup>

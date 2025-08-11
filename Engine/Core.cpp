@@ -26,11 +26,6 @@ void MIYABI::Core::BootManagers()
 	Mediator::GetInstance().Initialize();
 	RenderTimer::GetInstance();
 	SoundManager::GetInstance().Initialize(); // 사운드 매니저 초기화
-	//SoundManager::GetInstance().PlaySoundOnce("TestSound.ogg");
-
-	//JokerManager::GetInstance().Initialize(); // 조커 매니저 초기화
-
-
 }
 
 
