@@ -287,16 +287,6 @@ class ShopEndButton : public Button
 	void ButtonFunction() override;
 };
 
-class SceneChangeButton : public Button
-{
-	string m_sceneName; // 전환할 씬 이름
-public:
-	SceneChangeButton(float posX, float posY, float width, float height, const std::string& bitmapFile, const string& sceneName, int order = 0)
-		: Button(posX, posY, width, height, bitmapFile, order) { m_sceneName = sceneName; }
-	void ButtonFunction() override;
-
-};
-
 class GameEndButton : public Button
 {
 
@@ -308,12 +298,13 @@ public:
 
 };
 
-class RetrurnTitleButton : public Button
+class SceneChangeButton : public Button
 {
 	string m_sceneName; // 전환할 씬 이름
 public:
 	SceneChangeButton(float posX, float posY, float width, float height, const std::string& bitmapFile, const string& sceneName, int order = 0)
 		: Button(posX, posY, width, height, bitmapFile, order) { m_sceneName = sceneName; }
+
 	void ButtonFunction() override;
 
 };
