@@ -91,9 +91,9 @@ public:
 	
 	void Update(double dt) override
 	{
+		if (m_isActive && m_isHovered && m_textObject) m_textObject->Update(dt);
 		ButtonFunction();
 		Object::Update(dt);
-		if (m_isActive && m_isHovered && m_textObject) m_textObject->Update(dt);
 	}
 	void Render(Renderer& renderer) override;
 };

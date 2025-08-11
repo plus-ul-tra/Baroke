@@ -15,7 +15,6 @@
 // 구체화는 Client에서
 class SceneBase {
 
-private:
 	double m_timeScale = 1.0;
 	
 protected:

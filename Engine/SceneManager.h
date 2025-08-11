@@ -33,6 +33,8 @@ private:
 	string m_currentPostProcessing;
 	// Scene으로 부터 그려야할 obejct를 받을 컨테이너 및 가져올 함수 필요.
 
+	bool m_isExit = false; // 씬 전환
+
 public:
 
 	void Initialize(HWND hwnd);
@@ -57,6 +59,8 @@ public:
 
 
 	void OnCommand(std::string& cmd);			// 입력처리
+	void SetExit(bool isExit) { m_isExit = isExit; }
+	bool IsExit() const { return m_isExit; }
 
 	void InitializeAllScenes();
 
