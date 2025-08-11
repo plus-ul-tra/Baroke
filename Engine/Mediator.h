@@ -23,10 +23,13 @@ public:
 	POINT GetPosition() const { return m_position;  }
 	void Reset() { m_position = { 0, 0 }; } // 위치 초기화
 	void SetBackGroundColor(XMFLOAT4 prev, XMFLOAT4 target) { m_prevColor = prev, m_targetColor = target; }
+
 	void SetPrevColor(XMFLOAT4 prev) { m_prevColor = prev; }
 	void SetTargetColor(XMFLOAT4 target) { m_targetColor = target; }
+
 	void SetSlotIndex(int index) { /*std::cout << "Set Index" << index << std::endl;*/ m_selectedIndex = index; }
 	int GetSlotIndex() const { return m_selectedIndex; }
+
 	XMFLOAT4 GetBackPrevColor() const { return m_prevColor; }
 	XMFLOAT4 GetBackTargetColor() const { return m_targetColor; }
 
