@@ -130,9 +130,8 @@ public:
 		m_bitmapRender->ChangeBackGroundColor(boardType.backgroundColor);
 		m_screenEffectObjects.clear();
 
-		for (int j = 0; j < 4; ++j)
+		for (EffectType & effect : boardType.effects)
 		{
-			auto& effect = boardType.effects[j];
 			CreateObject::CreateObjectsOutOfScreen(m_screenEffectObjects, effect.effectKey, 1920.0f, 1080.0f, effect.width, effect.height, effect.amount, effect.speed, effect.exclusiveDirection);
 		}
 		m_isBoardChanged = true;

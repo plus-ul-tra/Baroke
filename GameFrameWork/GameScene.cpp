@@ -396,8 +396,8 @@ void GameScene::InitShop()
 	for (auto& jokers : m_jokerInfoMap)
 	{
 		if (!jokers.second.inShop) continue; // 상점에 없는 조커는 제외
-		if (jokers.second.isStone) m_shopStones.push_back({ jokers.first, jokers.second });
-		else m_shopItems.push_back({ jokers.first, jokers.second });
+		if (jokers.second.isStone) m_shopStones.emplace_back(jokers.first, jokers.second);
+		else m_shopItems.emplace_back(jokers.first, jokers.second);
 	}
 }
 
@@ -820,7 +820,6 @@ void GameScene::OnInput(const MouseEvent& ev)
 				<< " / " << m_board.GetPlayer().GetBlackCount() << std::endl;
 		}
 	}
-
 }
 
 void GameScene::ChangeThema(int thema)
@@ -862,7 +861,7 @@ void GameScene::ChangeThema(int thema)
 		Mediator::GetInstance().SetSlotIndex(-1);
 		ChangeOriginSlot("T_Jungle_Right_Slot_Jocker.png");
 
-
+		m_channel->stop();
 		m_channel = nullptr;
 		m_bgm = SoundManager::GetInstance().GetSound("wild1.mp3");
 		m_soundManager.GetSystem()->getChannel(0, &m_channel);
@@ -903,7 +902,7 @@ void GameScene::ChangeThema(int thema)
 		Mediator::GetInstance().SetSlotIndex(-1);
 		ChangeOriginSlot("T_Space_Right_Slot_Jocker.png");
 
-
+		m_channel->stop();
 		m_channel = nullptr;
 		m_bgm = SoundManager::GetInstance().GetSound("space1.mp3");
 		m_soundManager.GetSystem()->getChannel(0, &m_channel);
@@ -945,7 +944,7 @@ void GameScene::ChangeThema(int thema)
 		Mediator::GetInstance().SetSlotIndex(-1);
 		ChangeOriginSlot("T_Dancheong_Right_Slot_Jocker.png");
 
-
+		m_channel->stop();
 		m_channel = nullptr;
 		m_bgm = SoundManager::GetInstance().GetSound("dancheong1.mp3");
 		m_soundManager.GetSystem()->getChannel(0, &m_channel);
@@ -986,7 +985,7 @@ void GameScene::ChangeThema(int thema)
 		Mediator::GetInstance().SetSlotIndex(-1);
 		ChangeOriginSlot("T_Halloween_Right_Slot_Jocker.png");
 
-
+		m_channel->stop();
 		m_channel = nullptr;
 		m_bgm = SoundManager::GetInstance().GetSound("halloween1.mp3");
 		m_soundManager.GetSystem()->getChannel(0, &m_channel);
@@ -1025,7 +1024,8 @@ void GameScene::ChangeThema(int thema)
 
 		m_lastIndex = -1;
 		Mediator::GetInstance().SetSlotIndex(-1);
-		
+
+		m_channel->stop();
 		m_channel = nullptr;
 		m_bgm = SoundManager::GetInstance().GetSound("cyberpunk1.mp3");
 		m_soundManager.GetSystem()->getChannel(0, &m_channel);
@@ -1047,6 +1047,7 @@ void GameScene::ChangeThema(int thema)
 		Mediator::GetInstance().SetSlotIndex(-1);
 		ChangeOriginSlot("T_Standard_Right_Slot_Jocker.png");
 
+		m_channel->stop();
 		m_channel = nullptr;
 		m_bgm = SoundManager::GetInstance().GetSound("MainBGM.mp3");
 		m_soundManager.GetSystem()->getChannel(0, &m_channel);

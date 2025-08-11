@@ -647,13 +647,13 @@ struct JokerFunctionsWrapper
 			if (jokerShadow->m_jokerInfo.functionDuration) return; // 0이 아니면 리턴
 			jokerShadow->m_jokerInfo.functionDuration--;
 			int patternXY[2] = { -1, 1 };
-			for (int i = 0; i < 2; ++i)
+			for (int i : patternXY)
 			{
-				for (int j = 0; j < 2; ++j)
+				for (int j : patternXY)
 				{
-					if (boardManager.isValidPoint({ position.x + patternXY[i], position.y + patternXY[j] }) && boardManager.m_board[position.x + patternXY[i]][position.y + patternXY[j]])
+					if (boardManager.isValidPoint({ position.x + i, position.y + j }) && boardManager.m_board[position.x + i][position.y + j])
 					{
-						if (boardManager.m_stoneTypeMap.find({ position.x + patternXY[i], position.y + patternXY[j] })->second == StoneType::White)
+						if (boardManager.m_stoneTypeMap.find({ position.x + i, position.y + j })->second == StoneType::White)
 						{
 
 							boardManager.m_playerInfo.incBlackCount(jokerShadow->m_jokerInfo.functionVariable);
@@ -1077,7 +1077,7 @@ int BoardManager::CountLiberty(
 	int libs = 0;
 
 	while (!st.empty()) {
-		auto [cr, cc] = st.top(); st.pop();
+		auto& [cr, cc] = st.top(); st.pop();
 		group.push_back({ cr,cc });
 
 		for (int k = 0; k < 4; ++k) {
