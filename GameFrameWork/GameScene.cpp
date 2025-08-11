@@ -61,11 +61,13 @@ void GameScene::SetUIButton()
 	//--------------------동적 Text---------------------
 	unique_ptr<Text> textStage = std::make_unique<Text>(-680.0f, 440.0f, 100.0f, 100.0f, 2);
 	textStage->GetComponent<UIText>()->SetText(10);
-	m_textList.emplace_back(move(textStage)); //렌더용
+	m_textList.emplace_back(textStage.get());
+	m_useless.emplace_back(move(textStage)); //렌더용
 
 	unique_ptr<Text> textScore = std::make_unique<Text>(-850.0f, -200.0f, 260.0f, 100.0f, 2);
 	textScore->GetComponent<UIText>()->SetText(000000);
-	m_textList.emplace_back(move(textScore));
+	m_textList.emplace_back(textScore.get());
+	m_useless.emplace_back(move(textScore));
 
 
 	//-- unchanged----------------------
@@ -740,7 +742,7 @@ void GameScene::OnInput(const MouseEvent& ev)
 	else if (m_uiMode == UIMode::UseAbility)  
 	{
 		if (ev.type == MouseType::LDown) {
-			POINT grid = m_board.MouseToBoardPosition({ (int)ev.pos.x, (int)ev.pos.y });
+			POINT grid = m_board.MouseToBoardPosition(ev.pos);
 
 			if (!m_board.IsPlacementAllowed(grid.x, grid.y))
 				return;
