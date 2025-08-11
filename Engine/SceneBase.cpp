@@ -54,6 +54,12 @@ void SceneBase::Render(Renderer& renderer) {
 	renderer.DrawUIText(L"¶ËÁØÇõ", -850.0f, -200.0f, 260.0f, 100.0f,2);
 
 	renderer.UITextEnd();
+
+	for (const auto& button : m_buttonList)
+	{
+		BitmapRender3D* toolTip = button->GetTextObjectRender();
+		if (toolTip) toolTip->Render(renderer);
+	}
 }
 
 void RenderObject(Object* obj, Renderer& renderer)
