@@ -8,7 +8,7 @@
 class GameScene : public SceneBase { 
 	
 private:
-	Player* m_player = nullptr;
+	Player* m_player = nullptr;  // 이거 플레이어 플레이어가 아니라 판다임
 	BoardObject* m_boardObj = nullptr;
 	BoardManager& m_board = BoardManager::GetInstance(); // 싱글톤 보드 매니저
 
