@@ -2,6 +2,7 @@
 #include "Object.h"
 #include "Transform.h"
 #include "BitmapRender.h"
+#include "UIText.h"
 #include "InputManager.h"
 #include "InputEvents.h"
 #include "BoardManager.h"
@@ -57,6 +58,7 @@ public:
 		m_originTexture = bitmapFile;
 		
 	}
+	virtual ~Button() {  }
 
 
 	XMVECTOR GetPosition() const { return m_transform->GetPosition(); }
@@ -248,4 +250,25 @@ class ShopEndButton : public Button
 
 	void SetShowAndActive(bool active);
 	void ButtonFunction() override;
+};
+
+// 점수 및 동적 Text
+class Text : public Object {
+private:
+	UIText* m_text;
+	float m_posX{};
+	float m_posY{};
+	float m_width{};
+	float m_height{};      //rect size 용
+	int m_sizeType{};
+public:
+	Text(float posX, float posY, float width, float height, int size) : m_posX(posX), m_posY(posY), m_width(width), m_height(height), m_sizeType(size) {
+		m_text = AddComponent<UIText>(m_posX, m_posY, m_width, m_height, m_sizeType);
+	};
+	~Text() { delete m_text; }
+	void SetText(int value) {
+		m_text->SetText(value);
+		// 필요시 int 외에 추가
+	}
+	void Update(double deltaTime) override{};
 };

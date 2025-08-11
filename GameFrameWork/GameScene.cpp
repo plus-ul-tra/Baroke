@@ -48,6 +48,7 @@ void GameScene::SetUIButton()
 	
 	unique_ptr<Button> leftUpUI = std::make_unique<Button>(-720.0f, 388.0f, 427, 199, "T_Standard_Left_Base_Glow.png");
 	m_notUniqueObjectList.emplace_back(leftUpUI.get());
+	//leftUpUI->AddComponent<UIText>(-680.0f, 440.0f, 100.0f, 100.0f, 2);
 	leftUpUI->GetComponent<BitmapRender3D>()->SetShaderType("UIHolo");
 	m_leftUpUI = move(leftUpUI);
 
@@ -57,9 +58,18 @@ void GameScene::SetUIButton()
 	//m_normalUI.emplace_back(move(leftUI));
 	leftUI->GetComponent<BitmapRender3D>()->SetShaderType("UIHolo");
 	m_leftUI = move(leftUI);
+	//--------------------동적 Text---------------------
+	unique_ptr<Text> textStage = std::make_unique<Text>(-680.0f, 440.0f, 100.0f, 100.0f, 2);
+	textStage->GetComponent<UIText>()->SetText(10);
+	m_textList.emplace_back(move(textStage)); //렌더용
+
+	unique_ptr<Text> textScore = std::make_unique<Text>(-850.0f, -200.0f, 260.0f, 100.0f, 2);
+	textScore->GetComponent<UIText>()->SetText(000000);
+	m_textList.emplace_back(move(textScore));
+
 
 	//-- unchanged----------------------
-
+	// 장식품
 	unique_ptr<Button> stageText = std::make_unique<Button>(-760.0f, 388.0f, 167, 67, "T_Common_Left_Stage.png");
 	m_notUniqueObjectList.emplace_back(stageText.get());
 	stageText->GetComponent<BitmapRender3D>()->SetShaderType("Holo");
@@ -172,7 +182,7 @@ void GameScene::SetUIButton()
 
 	// ------------------------------------joker button-------------------------------------------
 	unique_ptr<JokerButton> jokerButton1 = std::make_unique<JokerButton>(617.0f, 341.0f, 100, 100, "Black.png", 50);
-	jokerButton1->SetButtonJoker(Black, jokerOmok);
+	jokerButton1->SetButtonJoker(Black, jokerTime);
 	m_buttonList.emplace_back(jokerButton1.get());
 	m_notUniqueObjectList.emplace_back(jokerButton1.get());
 	m_jokerButtons.emplace_back(move(jokerButton1));

@@ -3,6 +3,7 @@
 #include "GeoRender.h"
 #include "BitmapRender.h"
 #include "TextRender.h"
+#include "UIText.h"
 #include "Core.h"
 //using namespace MIYABI;
 //class Core;
@@ -46,14 +47,26 @@ void SceneBase::Render(Renderer& renderer) {
 			}
 		}
 		notUniqueObject->Render(renderer);
+		
 	}
+
 	renderer.UITextBegin();
+	for (const auto& text : m_textList) {
+		if (auto textComp = text->GetComponent<UIText>()) {
+			textComp->TextRender(renderer);
+		}
+	}
+	renderer.UITextEnd();
+
+
+	
+	//renderer.UITextBegin();
 	//text ∑Á∆æ √ﬂ∞°
 	//m_textList ø°º≠ objectøÕ ¿ØªÁ«— ±∏¡∂∑Œ
-	renderer.DrawUIText(L"99", -680.0f, 440.0f,100.0f,100.0f,2);
-	renderer.DrawUIText(L"∂À¡ÿ«ı", -850.0f, -200.0f, 260.0f, 100.0f,2);
+	//renderer.DrawUIText(L"99", -680.0f, 440.0f,100.0f,100.0f,2);
+	//renderer.DrawUIText(L"∂À¡ÿ«ı", -850.0f, -200.0f, 260.0f, 100.0f,2);
 
-	renderer.UITextEnd();
+	//renderer.UITextEnd();
 }
 
 void RenderObject(Object* obj, Renderer& renderer)
