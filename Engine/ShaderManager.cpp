@@ -133,6 +133,11 @@ void ShaderManager::ReadAllShaders()
 	if (FAILED(hr)) {
 		cout << "SetGreen리드 실패" << endl;
 	}
+
+	hr = ReadShaderResource("..\\Shader\\PassThrough_VS.cso", "..\\Shader\\CRTNoise_PS.cso", "CRTNoise", quadLayout, numQuadElements);
+	if (FAILED(hr)) {
+		cout << "CRTNoise_PS리드 실패" << endl;
+	}
 }
 
 

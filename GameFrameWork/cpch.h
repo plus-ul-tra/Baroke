@@ -15,7 +15,7 @@
 #include <functional>
 #include <stack>
 #include <random>
-
+#include <DirectXMath.h>
 
 
 #include <DirectXMath.h>

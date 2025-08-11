@@ -4,7 +4,7 @@
 
 SceneManager::SceneManager()
 {
-	std::cout << "SceneManager success"<<std::endl;
+	//std::cout << "SceneManager success"<<std::endl;
 }
 
 

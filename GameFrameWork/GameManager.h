@@ -1,6 +1,7 @@
 #pragma once
 #include "GameScene.h"
 #include "TitleScene.h"
+#include "EndingScene.h"
 
 class GameManager : public Singleton<GameManager> {
 
