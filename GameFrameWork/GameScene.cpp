@@ -578,9 +578,7 @@ void GameScene::Update(double deltaTime)
 	m_gameStateDelayElapsed += deltaTime;
 	CheckSlot();
 	ModeCheck();
-	CheckStageClear();	
-	ChangeThema();
-
+	CheckStageClear();
 }
 
 void GameScene::LateUpdate(double deltaTime)
@@ -617,10 +615,8 @@ void GameScene::OnEnter()
 
 
 	m_lastIndex = -1;
-	//CreateObject::CreateObjectsOutOfScreen(m_objectList, "Leaf6.png", 1920.0f, 1080.0f, 200.0f, 100, 50.0f);
 
 	// 사운드
-	m_bgm = SoundManager::GetInstance().GetSound("MainBGM.mp3");
 	m_bgm->setMode(FMOD_LOOP_NORMAL);
 	m_soundManager.GetSystem()->getChannel(0, &m_channel);
 	m_soundManager.GetSystem()->playSound(m_bgm, nullptr, false, &m_channel);
@@ -630,8 +626,8 @@ void GameScene::OnEnter()
 	m_soundManager.GetSystem()->getChannel(1, &m_shopChannel);
 	m_soundManager.GetSystem()->playSound(m_shopBgm, nullptr, true, &m_shopChannel);
 
-
 	SetUIButton();
+	ChangeThema(0); // 초기 테마 설정
 	StartStage();
 	InitShop();
 	SetHintpool();
@@ -1038,6 +1034,24 @@ void GameScene::ChangeThema(int thema)
 		break;
 
 	default: // 기본 테마
+
+		Mediator::GetInstance().SetUIColor(XMFLOAT4(0.0f, 1.0f, 1.0f, 1.0f));
+
+		m_desc->GetComponent<BitmapRender3D>()->SetShaderType("UIHolo");
+		m_rightUI->GetComponent<BitmapRender3D>()->SetShaderType("UIHolo");
+		m_leftUI->GetComponent<BitmapRender3D>()->SetShaderType("UIHolo");
+		m_leftUpUI->GetComponent<BitmapRender3D>()->SetShaderType("UIHolo");
+		m_cyber->GetComponent<BitmapRender3D>()->SetActive(false);
+
+		m_lastIndex = -1;
+		Mediator::GetInstance().SetSlotIndex(-1);
+		ChangeOriginSlot("T_Standard_Right_Slot_Jocker.png");
+
+		m_channel = nullptr;
+		m_bgm = SoundManager::GetInstance().GetSound("MainBGM.mp3");
+		m_soundManager.GetSystem()->getChannel(0, &m_channel);
+		m_soundManager.GetSystem()->playSound(m_bgm, nullptr, false, &m_channel);
+
 		break;
 	}
 }
