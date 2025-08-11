@@ -14,7 +14,7 @@ void EndingScene::Initialize()
 
 void EndingScene::Update(double deltaTime)
 {
-
+	for (auto& notUniqueObject : m_notUniqueObjectList) notUniqueObject->Update(deltaTime);
 }
 
 void EndingScene::OnEnter()
@@ -48,7 +48,7 @@ void EndingScene::OnEnter()
 
 	//--Text Here
 
-	unique_ptr<Button> returnButton = std::make_unique<Button>(0.0f, -350.0f, 212.0f, 42.0f, "T_GameOver_Main_Screen.png");
+	unique_ptr<Button> returnButton = std::make_unique<SceneChangeButton>(0.0f, -350.0f, 212.0f, 42.0f, "T_GameOver_Main_Screen.png", "Title");
 	m_notUniqueObjectList.emplace_back(returnButton.get());
 	m_endingButtonList.emplace_back(std::move(returnButton));
 	SceneManager::GetInstance().ChangePostProcessing("CRTNoise");
@@ -57,6 +57,8 @@ void EndingScene::OnEnter()
 void EndingScene::OnLeave()
 {
 	Reset();
+
+	m_notUniqueObjectList.clear();
 
 	m_channel->stop();
 	m_bgm = nullptr;
@@ -105,6 +107,9 @@ void EndingScene::KeyCommandMapping()
 
 void EndingScene::OnInput(const MouseEvent& ev)
 {
-
+	for (auto& button : m_endingButtonList)
+	{
+		button->CheckInput(ev);
+	}
 }
 

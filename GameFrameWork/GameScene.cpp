@@ -286,8 +286,18 @@ void GameScene::StartStage()
 
 void GameScene::CheckStageClear()
 {
-
-	if (!m_board.GetStoneTypeAmount(White))  // 스테이지 클리어
+	if (m_board.GetStoneTypeAmount(White))
+	{
+		// 조커 조건은 어떤 식으로?
+		if (m_board.m_playerInfo.GetBlackCount() == m_board.GetStoneTypeAmount(Black))
+		{
+			m_gameState = GameState::Ending;
+			if (m_gameStateDelayElapsed < m_gameStateDelay) return;
+			SceneManager::GetInstance().ChangeScene(std::string("Ending"));
+		}
+		else m_gameStateDelayElapsed = 0.0f;
+	}
+	else  // 스테이지 클리어
 	{
 
 		SceneManager::GetInstance().ChangePostProcessing("CRTFilter");
@@ -337,7 +347,6 @@ void GameScene::CheckStageClear()
 		if (m_gameState == GameState::ShopExit && m_gameStateDelayElapsed > m_gameStateDelay) m_gameState = GameState::Stage;
 		if (m_gameState == GameState::Stage) StartStage();
 	}
-	else m_gameStateDelayElapsed = 0.0f;
 }
 void GameScene::CheckSlot()
 {
@@ -751,6 +760,7 @@ void GameScene::OnInput(const MouseEvent& ev)
 	if (m_gameState == GameState::ShopEnter) return; // 상점 진입 모드
 	if (m_gameState == GameState::Shop) return; // 상점 모드
 	if (m_gameState == GameState::ShopExit) return; // 상점 종료 모드
+	if (m_gameState == GameState::Ending) return; // 엔딩 모드
 
 	if (m_uiMode == UIMode::Normal)
 	{
