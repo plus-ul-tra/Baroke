@@ -254,13 +254,13 @@ void ShopEndButton::ButtonFunction()
 	}
 }
 
-void TitleStartButton::ButtonFunction()
+void SceneChangeButton::ButtonFunction()
 {
 	{
 		if (m_isPressed && m_isActive)
 		{
 			std::cout << "Game Start!" << std::endl;
-			SceneManager::GetInstance().ChangeScene(std::string("Game1"));
+			SceneManager::GetInstance().ChangeScene(m_sceneName);
 			m_isPressed = false;
 		}
 	}
