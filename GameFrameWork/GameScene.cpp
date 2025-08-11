@@ -157,7 +157,8 @@ void GameScene::SetUIButton()
 	settingText->GetComponent<BitmapRender3D>()->SetShaderType("UIHolo");
 	m_useless.emplace_back(move(settingText));
 
-	unique_ptr<Button> exitText = std::make_unique<Button>(-720.0f, -390.0f, 115, 32, "T_Common_Left_Down_Exit.png");
+	unique_ptr<Button> exitText = std::make_unique<SceneChangeButton>(-720.0f, -390.0f, 115, 32, "T_Common_Left_Down_Exit.png", "Ending");
+	m_buttonList.emplace_back(exitText.get());
 	m_notUniqueObjectList.emplace_back(exitText.get());
 	//exitText->GetComponent<BitmapRender3D>()->SetShaderType("UIHolo");
 	m_useless.emplace_back(move(exitText));
@@ -608,9 +609,11 @@ void GameScene::Update(double deltaTime)
 	{
 		UI->Update(deltaTime);
 	}
+	SceneManager::GetInstance().SetExit(false);
 	for (auto& notUniqueObject : m_notUniqueObjectList)
 	{
 		notUniqueObject->Update(deltaTime);
+		if (SceneManager::GetInstance().IsExit()) return;
 	}
 
 	if (m_scoreText)
@@ -651,7 +654,6 @@ void GameScene::LateUpdate(double deltaTime)
 
 void GameScene::OnEnter()
 {
-
 	std::cout << "Game1 Scene OnEnter" << std::endl;
 
 	unique_ptr<BackGround> backGround = std::make_unique<BackGround>(0.0f, 0.0f, 1920.0f, 1080.0f);

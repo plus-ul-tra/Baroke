@@ -17,9 +17,6 @@ void Button::RegistClickedTexture(const std::string& bitmapFile,int index)
 	m_index = index;
 }
 
-
-
-
 void Button::CheckInput(const MouseEvent& mouseEvent)
 {
 	POINT mousePos = mouseEvent.pos;
@@ -256,24 +253,19 @@ void ShopEndButton::ButtonFunction()
 
 void SceneChangeButton::ButtonFunction()
 {
+	if (m_isPressed && m_isActive)
 	{
-		if (m_isPressed && m_isActive)
-		{
-			std::cout << "Game Start!" << std::endl;
-			SceneManager::GetInstance().ChangeScene(m_sceneName);
-			m_isPressed = false;
-		}
+		SceneManager::GetInstance().ChangeScene(m_sceneName);
+		SceneManager::GetInstance().SetExit(true); // 씬 전환을 위해 종료 플래그 설정
+		m_isPressed = false;
 	}
 }
 
 void GameEndButton::ButtonFunction()
 {
+	if (m_isPressed && m_isActive)
 	{
-		if (m_isPressed && m_isActive)
-		{
-			std::cout << "Return Tirle" << std::endl;
-			SceneManager::GetInstance().ChangeScene(std::string("Ending"));
-			m_isPressed = false;
-		}
+		SceneManager::GetInstance().ChangeScene(std::string("Ending"));
+		m_isPressed = false;
 	}
 }
