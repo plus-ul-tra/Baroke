@@ -180,7 +180,7 @@ class JokerButton : public Button
 			return [&bm]() { return bm.CountStones(White) >= 1 && bm.CountStones(Black) >= 3; };
 
 		case jokerLight:   // 흑돌 0개
-			return [&bm]() { return bm.CountStones(Black) == 0; };
+			return [&bm]() { return bm.CountStones(Black) == 0 && bm.GetPlacedThisStage(jokerBlackhole) <2; };
 
 		case jokerTime:   // 플레이어 흑돌 개수가 5개 미만인 경우
 			return [&bm]() {  return bm.m_playerInfo.GetBlackCount() < 5; };
