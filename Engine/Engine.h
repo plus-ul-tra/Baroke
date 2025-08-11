@@ -24,6 +24,7 @@
 #include "GeoRender.h"
 #include "BitmapRender.h"
 #include "TextRender.h"
+#include "UIText.h"
 #include "Collider2D.h"
 
 #include "CreateObject.h"

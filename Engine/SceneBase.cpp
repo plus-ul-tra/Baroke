@@ -3,6 +3,7 @@
 #include "GeoRender.h"
 #include "BitmapRender.h"
 #include "TextRender.h"
+#include "UIText.h"
 #include "Core.h"
 //using namespace MIYABI;
 //class Core;
@@ -46,14 +47,33 @@ void SceneBase::Render(Renderer& renderer) {
 			}
 		}
 		notUniqueObject->Render(renderer);
+		
 	}
+  
+  	for (const auto& button : m_buttonList)
+	{
+		BitmapRender3D* toolTip = button->GetTextObjectRender();
+		if (toolTip) toolTip->Render(renderer);
+	}
+  
 	renderer.UITextBegin();
-	//text ·çÆ¾ Ãß°¡
-	//m_textList ¿¡¼­ object¿Í À¯»çÇÑ ±¸Á¶·Î
-	renderer.DrawUIText(L"99", -680.0f, 440.0f,100.0f,100.0f,2);
-	renderer.DrawUIText(L"¶ËÁØÇõ", -850.0f, -200.0f, 260.0f, 100.0f,2);
-
+	for (const auto& text : m_textList) {
+		if (auto textComp = text->GetComponent<UIText>()) {
+			textComp->TextRender(renderer);
+		}
+	}
 	renderer.UITextEnd();
+	//renderer.UITextBegin();
+	//text ë£¨í‹´ ì¶”ê°€
+	//m_textList ì—ì„œ objectì™€ ìœ ì‚¬í•œ êµ¬ì¡°ë¡œ
+	//renderer.DrawUIText(L"99", -680.0f, 440.0f,100.0f,100.0f,2);
+	//renderer.DrawUIText(L"ë˜¥ì¤€í˜", -850.0f, -200.0f, 260.0f, 100.0f,2);
+
+	//renderer.UITextEnd();
+
+
+
+
 }
 
 void RenderObject(Object* obj, Renderer& renderer)
