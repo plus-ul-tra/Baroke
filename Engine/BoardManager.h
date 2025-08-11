@@ -109,7 +109,18 @@ private:
 	static uint32_t Key(int gx, int gy) { return (uint32_t(gx) << 16) ^ uint16_t(gy); }
 	bool IsEmpty(int x, int y);
 
+	//---------------------------------------------------------------- 조커 개수 트래킹
+public:
 
+	void ResetStagePlaced() { m_stagePlacedMap.clear(); }
+	void OnStonePlaced(StoneAbility a) { if (a != StoneAbility::None) ++m_stagePlacedMap[a]; }
+	int  GetPlacedThisStage(StoneAbility a) const {
+		if (a == StoneAbility::None) return 0;
+		auto it = m_stagePlacedMap.find(a);
+		return (it == m_stagePlacedMap.end()) ? 0 : it->second;
+	}
+private:
+	std::unordered_map<StoneAbility, int> m_stagePlacedMap;
 	//---------------------------------------------------------------- 플레이어
 public:
 	PlayerInfo GetPlayer() { return m_playerInfo; }
@@ -165,6 +176,7 @@ private:
 	//---------------------------------------------------------------- 버튼 - 상태 판정용 함수
 public:
 	int  CountStones(StoneType t) const;					// 보드판위에 특정돌이 몇갠지 체크
+	int CountJokers(StoneAbility ability) const;		// 보드판위에 특정 조커 돌이 몇개 있는지 체크
 	bool HasStraightLine(StoneType type, int len) const; // 직선 범위 체크
 	bool WhiteLibOne() const;							// 자유도1인 흰돌 체크
 	bool IsColorCount(StoneType type, int need ) const; // 착수했을때 3*3범위에 특정 컬러 돌이 몇개 있는 위치가 있는지 체크

@@ -10,11 +10,12 @@ private:
 	float m_posX{};
 	float m_posY{};
 	float m_width{};
-	float m_height{};      //rect size ¿ë
+	float m_height{};      //rect size ìš©
 	int m_sizeType{};
-	//bool m_dirty{ true }; //¾È½áµµ µÉ °Í °°À½
+	//bool m_dirty{ true }; //ì•ˆì¨ë„ ë  ê²ƒ ê°™ìŒ
 
 	wstring m_Contents;
+
 	//Microsoft::WRL::ComPtr<IDWriteTextLayout> m_layout;
 public:
 	UIText(float posX, float posY, float width, float height,int size) : m_posX(posX), m_posY(posY), m_width(width), m_height(height), m_sizeType(size){};
@@ -23,9 +24,10 @@ public:
 	
 	void Update(double deltaTime) override {};
 	void OnEvent(const std::string& ev) override {};
-	// Á¤º¸ ¹Ş¾Æ¼­ º¯°æ
+	// ì •ë³´ ë°›ì•„ì„œ ë³€ê²½
 	void SetText(int value) {
 		m_Contents = std::to_wstring(value);
+
 	}
 
 	void TextRender(Renderer& renderer) {

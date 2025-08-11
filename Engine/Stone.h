@@ -51,6 +51,8 @@ enum StoneAbility // 능력 혹은 이름
 	jokerLight,
 	jokerTime, // 함수 구현 완료
 	jokerWind, // 함수 구현 완료
+
+	Count
 };
 enum JokerType
 {
@@ -170,6 +172,7 @@ struct JokerStoneInfo // 조커 돌 정보
 	int costWhite = 0; // 상점 비용
 	int rarity = 0;
 	bool isStone = false; // 돌인지 여부
+	bool inShop = true; // 상점에 나오는지 여부 기본 트루
 
 	StoneType stoneType = StoneType::Joker;
 };
