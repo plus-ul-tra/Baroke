@@ -19,6 +19,8 @@ private:
 
 	int m_stageNo = 0;		// 스테이지 단계
 	int m_whiteLeft = 0;	// 남은 흰돌 개수
+
+	void initGame(); // 게임 초기화
 	
 	void  SetUIButton(); // UI 조커 버튼 설정
  	void  StartStage();				// 스테이지 시작

@@ -11,6 +11,22 @@
 #define CELL 54  // 0 기준 54 pxs
 #define STONEOFFSET 10
 using namespace std;
+
+void GameScene::initGame()
+{
+	SetUIButton();						// 버튼들 초기화
+	ChangeThema(0);						// 초기 테마 설정
+
+	SetHintpool();						// 힌트 풀 초기화
+	m_board.GetPlayer().initGame();		// 플레이어 초기화
+	m_shopStones.clear();				// 상점 돌 초기화
+	m_shopItems.clear();				// 상점 아이템 초기화
+
+	StartStage();						// 스테이지 시작
+
+	InitShop();							// 상점 초기화
+}
+
 void GameScene::SetUIButton()
 {
 	m_shopBuyStoneButton = make_unique<ShopBuyStoneButton>(-300.0f, -300.0f, 100, 100, "Black.png");
@@ -228,7 +244,7 @@ void GameScene::SetUIButton()
 
 	// ------------------------------------joker button-------------------------------------------
 	unique_ptr<JokerButton> jokerButton1 = std::make_unique<JokerButton>(617.0f, 341.0f, 100, 100, "Black.png", 50);
-	jokerButton1->SetButtonJoker(Black, jokerWaxseal);
+	jokerButton1->SetButtonJoker(Joker, jokerExplode);
 	m_buttonList.emplace_back(jokerButton1.get());
 	m_notUniqueObjectList.emplace_back(jokerButton1.get());
 	m_jokerButtons.emplace_back(move(jokerButton1));
@@ -268,9 +284,9 @@ void GameScene::StartStage()
 {
 	m_stageNo++;
 
-	int spawn = 3 + (m_stageNo - 1);
+	int spawn = 3 + ((m_stageNo * 3) - 1);
 
-	m_board.PlaceRandomStones(10);
+	m_board.PlaceRandomStones(spawn);
 	m_whiteLeft = m_board.GetStoneTypeAmount(White);
 
 
@@ -646,11 +662,7 @@ void GameScene::OnEnter()
 	m_soundManager.GetSystem()->getChannel(1, &m_shopChannel);
 	m_soundManager.GetSystem()->playSound(m_shopBgm, nullptr, true, &m_shopChannel);
 
-	SetUIButton();
-	ChangeThema(0); // 초기 테마 설정
-	StartStage();
-	InitShop();
-	SetHintpool();
+	initGame();
 }
 
 void GameScene::OnLeave()

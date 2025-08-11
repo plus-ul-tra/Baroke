@@ -1078,7 +1078,7 @@ int BoardManager::CountLiberty(
 	int libs = 0;
 
 	while (!st.empty()) {
-		auto& [cr, cc] = st.top(); st.pop();
+		auto [cr, cc] = st.top(); st.pop();
 		group.push_back({ cr,cc });
 
 		for (int k = 0; k < 4; ++k) {
