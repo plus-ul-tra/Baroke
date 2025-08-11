@@ -177,14 +177,15 @@ class JokerButton : public Button
 
 			//-------------------------------- 자연 (set 7)
 		case jokerShadow:   // 흰돌 1개 이상
-			return [&bm]() { return bm.CountStones(White) >= 1 && bm.CountStones(Black) >= 3; };
+			return [&bm]() { return bm.CountStones(White) >= 1 && bm.CountStones(Black) >= 3 && bm.GetPlacedThisStage(jokerShadow) < 3; };
 
 		case jokerLight:   // 흑돌 0개
-			return [&bm]() { return bm.CountStones(Black) == 0 && bm.GetPlacedThisStage(jokerBlackhole) <2; };
+			return [&bm]() { return bm.CountStones(Black) == 0 && bm.GetPlacedThisStage(jokerLight) <2; };
 
-		case jokerTime:   // 플레이어 흑돌 개수가 5개 미만인 경우
-			return [&bm]() {  return bm.m_playerInfo.GetBlackCount() < 5; };
-
+		case jokerTime: // 플레이어 흑돌 개수가 5개 미만인 경우
+			return [&bm]() { 				
+				return (bm.m_playerInfo.GetBlackCount() - bm.GetStoneTypeAmount(StoneType::Black)) < 5; 
+				};
 		case jokerWind:   // 흑돌 4개 이상
 			return [&bm]() { return bm.CountStones(Black) >= 4; };
 		default:

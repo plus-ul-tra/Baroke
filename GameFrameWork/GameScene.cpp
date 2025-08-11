@@ -172,28 +172,28 @@ void GameScene::SetUIButton()
 
 	// ------------------------------------joker button-------------------------------------------
 	unique_ptr<JokerButton> jokerButton1 = std::make_unique<JokerButton>(617.0f, 341.0f, 100, 100, "Black.png", 50);
-	jokerButton1->SetButtonJoker(Joker, jokerBlackhole);
+	jokerButton1->SetButtonJoker(Joker, jokerMagnetic);
 	m_buttonList.emplace_back(jokerButton1.get());
 	m_notUniqueObjectList.emplace_back(jokerButton1.get());
 	m_jokerButtons.emplace_back(move(jokerButton1));
 
 
 	unique_ptr<JokerButton> jokerButton2 = std::make_unique<JokerButton>(617.0f, 171.0f, 100, 100, "Black.png", 50);
-	jokerButton2->SetButtonJoker(Joker, jokerMrchan);
+	jokerButton2->SetButtonJoker(Black, jokerFlip);
 	m_buttonList.emplace_back(jokerButton2.get());
 	m_notUniqueObjectList.emplace_back(jokerButton2.get());
 	m_jokerButtons.emplace_back(move(jokerButton2));
 
 
 	unique_ptr<JokerButton> jokerButton3 = std::make_unique<JokerButton>(617.0f, 1.0f, 100, 100, "Black.png");
-	jokerButton3->SetButtonJoker(Black, jokerLight);
+	jokerButton3->SetButtonJoker(Black,jokerOthello);
 	m_buttonList.emplace_back(jokerButton3.get());
 	m_notUniqueObjectList.emplace_back(jokerButton3.get());
 	m_jokerButtons.emplace_back(move(jokerButton3));
 
 
 	unique_ptr<JokerButton> jokerButton4 = std::make_unique<JokerButton>(617.0f, -172.0f, 100, 100, "Black.png");
-	jokerButton4->SetButtonJoker(Joker, jokerEgg);
+	jokerButton4->SetButtonJoker(Black, jokerTime);
 	m_buttonList.emplace_back(jokerButton4.get());
 	m_notUniqueObjectList.emplace_back(jokerButton4.get());
 	m_jokerButtons.emplace_back(move(jokerButton4));
@@ -214,7 +214,7 @@ void GameScene::StartStage()
 	m_board.ResetStone();
 	int spawn = 3 + (m_stageNo - 1);
 
-	m_board.PlaceRandomStones(50);
+	m_board.PlaceRandomStones(1);
 	m_whiteLeft = m_board.GetStoneTypeAmount(White);
 	m_board.m_playerInfo.ResetRount();
 
@@ -685,8 +685,8 @@ void GameScene::OnInput(const MouseEvent& ev)
 		else if (ev.type == MouseType::RDown)
 		{
 			std::cout << ev.pos.x << " " << ev.pos.y << std::endl;
-			m_board.SetStoneType(Joker);
-			m_board.SetStoneAbility(jokerBlackhole);
+			m_board.SetStoneType(White);
+			m_board.SetStoneAbility(None);
 			m_board.InputBasedGameLoop(ev.pos);
 			std::cout << "Place Black Stone : " << m_board.GetStoneTypeAmount(Black) << " / " << m_board.GetPlayer().GetBlackCount() << std::endl;
 			//			std::cout << "Joker Stone Count : " << m_board.GetStoneTypeAmount(Joker) << std::endl;
