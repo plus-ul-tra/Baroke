@@ -102,31 +102,36 @@ void GameScene::SetUIButton()
 	 // m_normalUI는 텍스쳐 바꾸기용
 	// list로 수정 
 	//-----------------------------------------------joker slot------------------------------------
-	unique_ptr<Button> jokerSlot1 = std::make_unique<Button>(617.0f, 341.0f, 177, 175, "T_Standard_Right_Slot_Jocker_Glow.png");
+	unique_ptr<Button> jokerSlot1 = std::make_unique<Button>(617.0f, 341.0f, 177, 175, "T_Standard_Right_Slot_Jocker.png");
+	jokerSlot1->RegistClickedTexture("T_Standard_Right_Slot_Jocker_Glow.png",0);
 	m_buttonList.emplace_back(jokerSlot1.get());
 	m_notUniqueObjectList.emplace_back(jokerSlot1.get());
 	m_jokerSlot.emplace_back(move(jokerSlot1));
 	
 
 	unique_ptr<Button> jokerSlot2 = std::make_unique<Button>(617.0f, 171.0f, 177, 175, "T_Standard_Right_Slot_Jocker.png");
+	jokerSlot2->RegistClickedTexture("T_Standard_Right_Slot_Jocker_Glow.png",1);
 	m_buttonList.emplace_back(jokerSlot2.get());
 	m_notUniqueObjectList.emplace_back(jokerSlot2.get());
 	m_jokerSlot.emplace_back(move(jokerSlot2));
 	
 
 	unique_ptr<Button> jokerSlot3 = std::make_unique<Button>(617.0f, 1.0f, 177, 175, "T_Standard_Right_Slot_Jocker.png");
+	jokerSlot3->RegistClickedTexture("T_Standard_Right_Slot_Jocker_Glow.png",2);
 	m_buttonList.emplace_back(jokerSlot3.get());
 	m_notUniqueObjectList.emplace_back(jokerSlot3.get());
 	m_jokerSlot.emplace_back(move(jokerSlot3));
 	
 
 	unique_ptr<Button> jokerSlot4 = std::make_unique<Button>(617.0f, -172.0f, 177, 175, "T_Standard_Right_Slot_Jocker.png");
+	jokerSlot4->RegistClickedTexture("T_Standard_Right_Slot_Jocker_Glow.png",3);
 	m_buttonList.emplace_back(jokerSlot4.get());
 	m_notUniqueObjectList.emplace_back(jokerSlot4.get());
 	m_jokerSlot.emplace_back(move(jokerSlot4));
 	
 
 	unique_ptr<Button> jokerSlot5 = std::make_unique<Button>(617.0f, -342.0f, 177, 175, "T_Standard_Right_Slot_Jocker.png");
+	jokerSlot5->RegistClickedTexture("T_Standard_Right_Slot_Jocker_Glow.png",4);
 	m_buttonList.emplace_back(jokerSlot5.get());
 	m_notUniqueObjectList.emplace_back(jokerSlot5.get());
 	m_jokerSlot.emplace_back(move(jokerSlot5));
@@ -216,6 +221,7 @@ void GameScene::StartStage()
 	m_soundManager.PlaySoundOnce("stonePlace.wav");
 
 	std::cout << "Stage " << m_stageNo/* << " start, Spawn White Conut : " << spawn << std::endl*/;
+
 }
 
 void GameScene::CheckStageClear()
@@ -257,6 +263,24 @@ void GameScene::CheckStageClear()
 		if (m_gameState == GameState::Stage) StartStage();
 	}
 	else m_gameStateDelayElapsed = 0.0f;
+}
+void GameScene::CheckSlot()
+{
+	int index = Mediator::GetInstance().GetSlotIndex();
+	if (index != -1 && m_lastIndex !=index) {
+		for (int i = 0; i < 5; i++) {
+			if (i == index) {
+				m_jokerSlot[i]->Selected();
+				m_lastIndex = index;
+			}
+			else {
+				m_jokerSlot[i]->UnSelected();
+			}
+		}
+		
+	} 
+	
+	
 }
 enum asd { test , test2 };
 
@@ -460,10 +484,12 @@ void GameScene::Update(double deltaTime)
 	{
 		notUniqueObject->Update(deltaTime);
 	}
-	m_gameStateDelayElapsed += deltaTime;
-	ModeCheck();
-	CheckStageClear();
 
+	
+	m_gameStateDelayElapsed += deltaTime;
+	CheckSlot();
+	ModeCheck();
+	CheckStageClear();	
 	ChangeThema();
 
 }
@@ -500,6 +526,10 @@ void GameScene::OnEnter()
 	m_boardObj = boardObj.get();
 	m_objectList.emplace_back(std::move(boardObj));
 
+
+	m_lastIndex = -1;
+	//CreateObject::CreateObjectsOutOfScreen(m_objectList, "Leaf6.png", 1920.0f, 1080.0f, 200.0f, 100, 50.0f);
+
 	// 사운드
 	m_bgm = SoundManager::GetInstance().GetSound("MainBGM.mp3");
 	m_bgm->setMode(FMOD_LOOP_NORMAL);
@@ -510,6 +540,7 @@ void GameScene::OnEnter()
 	m_shopBgm->setMode(FMOD_LOOP_NORMAL);
 	m_soundManager.GetSystem()->getChannel(1, &m_shopChannel);
 	m_soundManager.GetSystem()->playSound(m_shopBgm, nullptr, true, &m_shopChannel);
+
 
 	SetUIButton();
 	StartStage();
@@ -527,6 +558,7 @@ void GameScene::OnLeave()
 	m_itemSlot.clear();
 	m_passiveSlot.clear();
 	m_hintPool.clear();
+	m_lastIndex = -1;
 
 	// 사운드 초기화
 	m_channel->stop();
@@ -674,7 +706,7 @@ void GameScene::OnInput(const MouseEvent& ev)
 // 		if (ev.type == MouseType::LDown) {
 // 			m_board.SetStoneType(m_board.GetStoneType());
 // 			m_board.SetStoneAbility(m_board.GetStoneAbility());
-// 			if (m_board.InputBasedGameLoop(ev.pos)) 
+// 			if (m_board.InputBasedGameLoop(ev.pos))
 // 			{
 // 				m_board.ExitMode();		// 능력 사용 후 다시 초기화
 // 			}
@@ -682,6 +714,7 @@ void GameScene::OnInput(const MouseEvent& ev)
 // 		}
 // 
 // 	}
+
 	else if (m_uiMode == UIMode::UseAbility)  
 	{
 		if (ev.type == MouseType::LDown) {
@@ -719,6 +752,7 @@ void GameScene::ChangeThema(int thema)
 			auto rend = bt->GetComponent<BitmapRender3D>();
 			//rend->SetShaderType("UIColor");
 			rend->ChangeTexture("T_Jungle_Right_Slot_Jocker.png");
+			
 		}
 
 		for (auto& bt : m_itemSlot)
@@ -741,10 +775,16 @@ void GameScene::ChangeThema(int thema)
 		m_leftUpUI->GetComponent<BitmapRender3D>()->ChangeTexture("T_Jungle_Left_Base_Glow.png");
 		m_cyber->GetComponent<BitmapRender3D>()->SetActive(false);
 
+		m_lastIndex = -1;
+		Mediator::GetInstance().SetSlotIndex(-1);
+		ChangeOriginSlot("T_Jungle_Right_Slot_Jocker.png");
+
+
 		m_channel = nullptr;
 		m_bgm = SoundManager::GetInstance().GetSound("wild1.mp3");
 		m_soundManager.GetSystem()->getChannel(0, &m_channel);
 		m_soundManager.GetSystem()->playSound(m_bgm, nullptr, false, &m_channel);
+
 		break;
 
 	case 2: // Space
@@ -776,10 +816,16 @@ void GameScene::ChangeThema(int thema)
 		m_leftUpUI->GetComponent<BitmapRender3D>()->ChangeTexture("T_Space_Left_Base_Glow.png");
 		m_cyber->GetComponent<BitmapRender3D>()->SetActive(false);
 
+		m_lastIndex = -1;
+		Mediator::GetInstance().SetSlotIndex(-1);
+		ChangeOriginSlot("T_Space_Right_Slot_Jocker.png");
+
+
 		m_channel = nullptr;
 		m_bgm = SoundManager::GetInstance().GetSound("space1.mp3");
 		m_soundManager.GetSystem()->getChannel(0, &m_channel);
 		m_soundManager.GetSystem()->playSound(m_bgm, nullptr, false, &m_channel);
+
 		break;
 
 	case 3: // Korea
@@ -812,10 +858,16 @@ void GameScene::ChangeThema(int thema)
 		m_leftUpUI->GetComponent<BitmapRender3D>()->ChangeTexture("T_Dancheong_Left_Base_Glow.png");
 		m_cyber->GetComponent<BitmapRender3D>()->SetActive(false);
 
+		m_lastIndex = -1;
+		Mediator::GetInstance().SetSlotIndex(-1);
+		ChangeOriginSlot("T_Dancheong_Right_Slot_Jocker.png");
+
+
 		m_channel = nullptr;
 		m_bgm = SoundManager::GetInstance().GetSound("dancheong1.mp3");
 		m_soundManager.GetSystem()->getChannel(0, &m_channel);
 		m_soundManager.GetSystem()->playSound(m_bgm, nullptr, false, &m_channel);
+
 		break;
 
 	case 4: // Halloween
@@ -847,10 +899,16 @@ void GameScene::ChangeThema(int thema)
 		m_leftUpUI->GetComponent<BitmapRender3D>()->ChangeTexture("T_Halloween_Left_Base_Glow.png");
 		m_cyber->GetComponent<BitmapRender3D>()->SetActive(false);
 
+		m_lastIndex = -1;
+		Mediator::GetInstance().SetSlotIndex(-1);
+		ChangeOriginSlot("T_Halloween_Right_Slot_Jocker.png");
+
+
 		m_channel = nullptr;
 		m_bgm = SoundManager::GetInstance().GetSound("halloween1.mp3");
 		m_soundManager.GetSystem()->getChannel(0, &m_channel);
 		m_soundManager.GetSystem()->playSound(m_bgm, nullptr, false, &m_channel);
+
 		break;
 
 	case 5: // Cyber
@@ -862,7 +920,7 @@ void GameScene::ChangeThema(int thema)
 			//rend->SetShaderType("UIColor");
 			rend->ChangeTexture("T_Cyberpunk_Right_Slot_Jocker.png");
 		}
-
+		ChangeOriginSlot("T_Cyberpunk_Right_Slot_Jocker.png");
 		for (auto& bt : m_itemSlot)
 		{
 			auto rend = bt->GetComponent<BitmapRender3D>();
@@ -882,14 +940,25 @@ void GameScene::ChangeThema(int thema)
 		m_leftUpUI->GetComponent<BitmapRender3D>()->ChangeTexture("Cyberpunk_Left.png");
 		m_cyber->GetComponent<BitmapRender3D>()->SetActive(true);
 
+		m_lastIndex = -1;
+		Mediator::GetInstance().SetSlotIndex(-1);
+		
 		m_channel = nullptr;
 		m_bgm = SoundManager::GetInstance().GetSound("cyberpunk1.mp3");
 		m_soundManager.GetSystem()->getChannel(0, &m_channel);
 		m_soundManager.GetSystem()->playSound(m_bgm, nullptr, false, &m_channel);
+
 		break;
 
 	default: // 기본 테마
 		break;
+	}
+}
+
+void GameScene::ChangeOriginSlot(const std::string& bitmapFile)
+{
+	for (auto& slot : m_jokerSlot) {
+		slot->ChangeOriginTexture(bitmapFile);
 	}
 }
 

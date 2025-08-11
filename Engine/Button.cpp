@@ -1,6 +1,17 @@
 #include "pch.h"
 #include "Engine.h"
-#include "Button.h" // 이거 왜 없어졌던거지?
+#include "Button.h"
+#include "Mediator.h"
+
+void Button::RegistClickedTexture(const std::string& bitmapFile,int index)
+{
+	m_selectedTexture = bitmapFile;
+	m_hasSelected = true;
+	m_index = index;
+}
+
+
+
 
 void Button::CheckInput(const MouseEvent& mouseEvent)
 {
@@ -27,13 +38,36 @@ void Button::CheckInput(const MouseEvent& mouseEvent)
 
 		if (!m_isActive) { return; }
 
-		if (m_inputType == MouseType::LDown) m_isPressed = true;
+		if (m_inputType == MouseType::LDown) { m_isPressed = true;}
 		else m_isPressed = false;
 	}
 	else
 	{
 		m_isHovered = false;
 	}
+}
+
+void Button::Selected()
+{
+	m_bitmapRender->ChangeBoardTexture(m_selectedTexture);
+}
+void Button::UnSelected() {
+	m_bitmapRender->ChangeTexture(m_originTexture);
+}
+
+void Button::ButtonFunction(){
+
+	if (!m_hasSelected) {
+		return;
+	}
+
+	if (m_isPressed) {
+		//m_isSelected = true;
+		Mediator::GetInstance().SetSlotIndex(m_index);
+		m_isPressed = false;
+		
+	}
+
 }
 
 void Button::Render(Renderer& renderer)

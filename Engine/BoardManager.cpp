@@ -866,12 +866,12 @@ bool BoardManager::PlaceStone(POINT selectedPosition, StoneType stoneType, Stone
 {
 	if (!isValidPoint(selectedPosition))
 	{
-		std::cout << "유효하지 않은 위치: (" << selectedPosition.x << ", " << selectedPosition.y << ")" << std::endl;
+		std::cout << "invalid position: (" << selectedPosition.x << ", " << selectedPosition.y << ")" << std::endl;
 		return false;
 	}
 	if (m_board[selectedPosition.x][selectedPosition.y])
 	{
-		std::cout << "이미 돌이 있는 위치: (" << selectedPosition.x << ", " << selectedPosition.y << ")" << std::endl;
+		std::cout << "already exit: (" << selectedPosition.x << ", " << selectedPosition.y << ")" << std::endl;
 		return false;
 	}
 

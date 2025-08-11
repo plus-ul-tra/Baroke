@@ -20,10 +20,10 @@ private:
 	int m_stageNo = 0;		// 스테이지 단계
 	int m_whiteLeft = 0;	// 남은 흰돌 개수
 	
-	void SetUIButton(); // UI 조커 버튼 설정
+	void  SetUIButton(); // UI 조커 버튼 설정
  	void  StartStage();				// 스테이지 시작
  	void  CheckStageClear();		// 스테이지 클리어 체크
-
+	void  CheckSlot();
 	void  ModeCheck();
 
 	void InitShop(); // 상점 초기화
@@ -31,7 +31,6 @@ private:
 	//vector <unique_ptr<Button>>   m_normalUI;  // scene 전환시 texture 바꿀 얘들임
 	
 	vector <unique_ptr<Button>>	  m_jokerSlot;
-	
 	vector <unique_ptr<Button>>	  m_itemSlot;
 	vector <unique_ptr<Button>>	  m_passiveSlot;
 	vector <unique_ptr<Button>>   m_useless;
@@ -51,6 +50,9 @@ private:
 	GameState m_gameState = GameState::Stage;
 	float m_gameStateDelayElapsed = 0.0f; // 게임 상태 전환 딜레이 경과 시간
 	float m_gameStateDelay = 3.0f; // 게임 상태 전환 딜레이
+
+	int   m_lastIndex = -1;
+
 
 	std::vector<std::unique_ptr<HintMark>> m_hintPool;
 	void SyncPlacementHintsToPool();  // 하이라이트 동기화
@@ -80,4 +82,5 @@ public:
 
 	void OnInput(const MouseEvent& ev) override;
 	void ChangeThema(int thema = -1);
+	void ChangeOriginSlot(const std::string& bitmapFile);
 };

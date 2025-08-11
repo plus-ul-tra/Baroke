@@ -79,18 +79,20 @@ private:
 
 
 	ComPtr<ID3D11Texture2D>           m_renderTargetTex;     // D2D가 그릴 Off-screen 텍스처
-	ComPtr<ID3D11RenderTargetView>    m_offScreenRTV; // D2D Off-screen 텍스처용 RTV
-	ComPtr<ID3D11ShaderResourceView>  m_renderTargetSRV; // D2D Off-screen 텍스처용 SRV
-	ComPtr<ID2D1Bitmap1>              m_ptargetBitmap;          // D2D Off-screen 텍스처 래핑 비트맵  
+	ComPtr<ID3D11RenderTargetView>    m_offScreenRTV;        // D2D Off-screen 텍스처용 RTV
+	ComPtr<ID3D11ShaderResourceView>  m_renderTargetSRV;     // D2D Off-screen 텍스처용 SRV
+	ComPtr<ID2D1Bitmap1>              m_ptargetBitmap;       // D2D Off-screen 텍스처 래핑 비트맵  
 
 	// 2D text 용
 	ComPtr<ID2D1Device6>              m_pd2dDevice;
 	ComPtr<ID2D1DeviceContext6>       m_pd2dContext;
 	ComPtr<ID2D1Factory1>             m_pd2dFactory; // D2D 팩토리
-	ComPtr<ID2D1SolidColorBrush>      m_pbrush;
+	ComPtr<ID2D1SolidColorBrush>      m_pbrush;     // 공용 text brush
 	ComPtr<IDWriteFactory>            m_pdwriteFactory; // DWrite 팩토리
-	ComPtr<IDWriteTextFormat>         m_ptextFormat;
 
+	ComPtr<IDWriteTextFormat>         m_smallFormat;
+	ComPtr<IDWriteTextFormat>         m_middleFormat;
+	ComPtr<IDWriteTextFormat>         m_largeFormat;
 	ComPtr<IWICImagingFactory>        m_pwicFactory;
 
 	// 풀스크린 쿼드 관련 (포스트 프로세싱용)
@@ -156,6 +158,10 @@ public:
 		}
 		m_postProcessShaderName = shaderName;
 	}
+
+	void UITextBegin();
+	void DrawUIText(const std::wstring& s, float x, float y, float width, float height, int sizeType);
+	void UITextEnd();
 private:
 
 	void CreateDeviceAndSwapChain(HWND hwnd);
