@@ -5,7 +5,6 @@
 // init 이나 asset 로드는 Scene 공통이므로 base로 뺄수도 있음
 void TitleScene::Initialize()
 {
-
 	std::cout << "titleScene Init" <<std::endl;
 	KeyCommandMapping();
 
@@ -37,35 +36,35 @@ void TitleScene::Initialize()
 	m_notUniqueObjectList.emplace_back(exitButton.get());
 	m_titleButtonList.emplace_back(std::move(exitButton));
 
+	// 사운드
+	m_bgm = SoundManager::GetInstance().GetSound("MainBGM.mp3");
+	m_bgm->setMode(FMOD_LOOP_NORMAL);
+	m_soundManager.GetSystem()->getChannel(0, &m_channel);
+	m_soundManager.GetSystem()->playSound(m_bgm, nullptr, false, &m_channel);
 }
 
 void TitleScene::Update(double deltaTime)
 {
-
-
 	m_elsapsedTime += deltaTime;
 	//test용 씬전환
-
-
-
-
-
 }
 
 
 void TitleScene::OnEnter()
 {
-
 	std::cout << "Title Scene OnEnter" << std::endl;
-	
 	Initialize(); // 필요시 수정
-
 }
 
 void TitleScene::OnLeave()
 {
 	std::cout << "Title Scene Left" << std::endl;
 	Reset();
+
+	// 사운드 초기화
+	m_channel->stop();
+	m_bgm = nullptr;
+	m_channel = nullptr;
 }
 
 void TitleScene::OnCommand(std::string& cmd)

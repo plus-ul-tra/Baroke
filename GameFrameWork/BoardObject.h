@@ -48,10 +48,7 @@ class BoardObject : public Object
 	Board m_board;
 	std::vector<Stone*> m_stones;
 
-	//int m_currentBoardType = -1;
-	//int m_changeStoneAmount = 5;
 	bool m_isBoardChanged = false; // 보드 타입이 변경되었는지 여부
-  
 	vector<unique_ptr<Object>> m_screenEffectObjects; // 화면에 그려질 오브젝트들
 
 public:

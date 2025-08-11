@@ -27,6 +27,8 @@ void Stone::Update(double deltaTime)
 			m_sprite->SetActive(false);
 			m_isRemoved = true;
 			m_isRemoving = false;
+
+			SoundManager::GetInstance().PlaySoundOnce("stoneDeath.wav");
 		}
 	}
 
