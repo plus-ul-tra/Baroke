@@ -3,10 +3,10 @@
 using namespace DirectX;
 void EndingScene::Initialize()
 {
-	// »ç¿ëÇÒ °Íµé
+	// ì‚¬ìš©í•  ê²ƒë“¤
 	KeyCommandMapping();
 
-	m_bgm = SoundManager::GetInstance().GetSound("MainBGM.mp3"); //»ç¿îµå ±³Ã¼
+	m_bgm = SoundManager::GetInstance().GetSound("MainBGM.mp3"); //ì‚¬ìš´ë“œ êµì²´
 	m_bgm->setMode(FMOD_LOOP_NORMAL);
 	m_soundManager.GetSystem()->getChannel(0, &m_channel);
 	m_soundManager.GetSystem()->playSound(m_bgm, nullptr, false, &m_channel);
@@ -70,7 +70,7 @@ void EndingScene::OnCommand(std::string& cmd)
 	auto it = m_commandMap.find(cmd);
 	if (it != m_commandMap.end())
 	{
-		it->second(); // ÇÔ¼ö ½ÇÇà
+		it->second(); // í•¨ìˆ˜ ì‹¤í–‰
 	}
 	else
 	{

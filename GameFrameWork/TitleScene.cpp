@@ -59,6 +59,10 @@ void TitleScene::Update(double deltaTime)
 
 void TitleScene::OnEnter()
 {
+	XMFLOAT4 color = { 0.f, 1.f, 1.f, 1.0f };
+	Mediator::GetInstance().SetBackGroundColor(color, color);
+
+	SceneManager::GetInstance().ChangePostProcessing("CRTFilter");
 	std::cout << "Title Scene OnEnter" << std::endl;
 	Initialize(); // 필요시 수정
 }

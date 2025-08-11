@@ -19,10 +19,12 @@ struct PlayerInfo
 	void ResetRound() { m_tempBlackStone = 0; }
 	void initGame() {
 		m_BlackStone = 12;
+		m_blackStoneUpgrade = 0;
 		m_tempBlackStone = 0;
 		m_whiteLeft = 0;
 		m_money = 6;
+		m_rerollCount = 0;
 		m_waxMoney = 0;
-		int m_score = 0;
+		m_score = 0;
 	}
 };
