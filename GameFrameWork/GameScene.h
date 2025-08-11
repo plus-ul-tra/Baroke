@@ -45,6 +45,7 @@ private:
 	Text*			  m_scoreText = nullptr;
 	Text*			  m_WhiteText = nullptr;
 	Text*			  m_BlackText = nullptr;
+	Text*			  m_WaxText   = nullptr;
 
 	vector<pair<StoneAbility, JokerStoneInfo>> m_shopStones; // 돌 조커
 	vector<pair<StoneAbility, JokerStoneInfo>> m_shopItems; // 아이템 조커

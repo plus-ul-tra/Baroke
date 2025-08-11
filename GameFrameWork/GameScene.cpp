@@ -68,7 +68,7 @@ void GameScene::SetUIButton()
 	//m_normalUI.emplace_back(move(leftUI));
 	leftUI->GetComponent<BitmapRender3D>()->SetShaderType("UIHolo");
 	m_leftUI = move(leftUI);
-	//--------------------------흑돌 흰돌----------------------------------
+	//--------------------------흑돌 흰돌 왁스----------------------------------
 	unique_ptr<Button> BlackUI = std::make_unique<Button>(-800.0f, 120.0f, 110, 110, "Black.png");
 	m_notUniqueObjectList.emplace_back(BlackUI.get());
 	//leftUpUI->AddComponent<UIText>(-680.0f, 440.0f, 100.0f, 100.0f, 2);
@@ -93,6 +93,11 @@ void GameScene::SetUIButton()
 	m_textList.emplace_back(WhiteCount.get());
 	m_useless.emplace_back(move(WhiteCount)); //렌더용
 
+	unique_ptr<Text> WaxCount = std::make_unique<Text>(-820.0f, 20.0f, 200.0f, 100.0f, 1);
+	WaxCount->GetComponent<UIText>()->SetText(0);
+	m_WaxText = WaxCount.get();
+	m_textList.emplace_back(WaxCount.get());
+	m_useless.emplace_back(move(WaxCount)); //렌더용
 
 
 	//--------------------동적 Text---------------------
@@ -223,7 +228,7 @@ void GameScene::SetUIButton()
 
 	// ------------------------------------joker button-------------------------------------------
 	unique_ptr<JokerButton> jokerButton1 = std::make_unique<JokerButton>(617.0f, 341.0f, 100, 100, "Black.png", 50);
-	jokerButton1->SetButtonJoker(Joker, jokerTeleport);
+	jokerButton1->SetButtonJoker(Black, jokerWaxseal);
 	m_buttonList.emplace_back(jokerButton1.get());
 	m_notUniqueObjectList.emplace_back(jokerButton1.get());
 	m_jokerButtons.emplace_back(move(jokerButton1));
@@ -238,13 +243,13 @@ void GameScene::SetUIButton()
 
 	unique_ptr<JokerButton> jokerButton3 = std::make_unique<JokerButton>(617.0f, 1.0f, 100, 100, "Black.png");
 	jokerButton3->SetButtonJoker(Black,jokerOthello);
-	m_buttonList.emplace_back(jokerButton3.get());
+	m_buttonList.emplace_back(jokerButton3.get()); 
 	m_notUniqueObjectList.emplace_back(jokerButton3.get());
 	m_jokerButtons.emplace_back(move(jokerButton3));
 
 
 	unique_ptr<JokerButton> jokerButton4 = std::make_unique<JokerButton>(617.0f, -172.0f, 100, 100, "Black.png");
-	jokerButton4->SetButtonJoker(Black, jokerTime);
+	jokerButton4->SetButtonJoker(Joker, jokerTime);
 	m_buttonList.emplace_back(jokerButton4.get());
 	m_notUniqueObjectList.emplace_back(jokerButton4.get());
 	m_jokerButtons.emplace_back(move(jokerButton4));
@@ -262,13 +267,12 @@ void GameScene::SetUIButton()
 void GameScene::StartStage()
 {
 	m_stageNo++;
-	m_board.ResetStone();
-	m_board.ResetStagePlaced(); // 조커 착수 트래킹 리셋
+
 	int spawn = 3 + (m_stageNo - 1);
 
 	m_board.PlaceRandomStones(10);
 	m_whiteLeft = m_board.GetStoneTypeAmount(White);
-	m_board.m_playerInfo.ResetRound();
+
 
 	if (m_stageText)
 		if (auto ui = m_stageText->GetComponent<UIText>())
@@ -326,6 +330,10 @@ void GameScene::CheckStageClear()
 			}
 		}
 
+		m_board.ResetStone();
+		m_board.ResetStagePlaced(); // 조커 착수 트래킹 리셋
+		m_board.m_playerInfo.ResetRound();
+
 		if (m_gameState == GameState::ShopExit && m_gameStateDelayElapsed > m_gameStateDelay) m_gameState = GameState::Stage;
 		if (m_gameState == GameState::Stage) StartStage();
 	}
@@ -349,7 +357,6 @@ void GameScene::CheckSlot()
 	
 	
 }
-enum asd { test , test2 };
 
 void GameScene::ModeCheck()
 {
@@ -574,6 +581,10 @@ void GameScene::Update(double deltaTime)
 	if (m_WhiteText)
 		if (auto white = m_WhiteText->GetComponent<UIText>())
 			white->SetText(m_board.GetPlayer().m_money);
+
+	if (m_WaxText)
+		if (auto wax = m_WaxText->GetComponent<UIText>())
+			wax->SetText(m_board.GetPlayer().m_waxMoney);
 	
 	m_gameStateDelayElapsed += deltaTime;
 	CheckSlot();

@@ -6,6 +6,7 @@
 #include "InputManager.h"
 #include "InputEvents.h"
 #include "BoardManager.h"
+/*#include "SceneManager.h"*/
 
 
 class Button : public Object
@@ -188,7 +189,7 @@ class JokerButton : public Button
 
 		case jokerTime: // 플레이어 흑돌 개수가 5개 미만인 경우
 			return [&bm]() { 				
-				return (bm.m_playerInfo.GetBlackCount() - bm.GetStoneTypeAmount(StoneType::Black)) < 5; 
+				return (bm.m_playerInfo.GetBlackCount() - bm.GetStoneTypeAmount(StoneType::Black)) < 5 && bm.GetPlacedThisStage(jokerShadow) < 1;
 				};
 		case jokerWind:   // 흑돌 4개 이상
 			return [&bm]() { return bm.CountStones(Black) >= 4; };
@@ -282,6 +283,17 @@ class ShopEndButton : public Button
 
 	void SetShowAndActive(bool active);
 	void ButtonFunction() override;
+};
+
+class TitleStartButton : public Button
+{
+
+public:
+	TitleStartButton(float posX, float posY, float width, float height, const std::string& bitmapFile, int order = 0)
+		: Button(posX, posY, width, height, bitmapFile, order) {
+	}
+	void ButtonFunction() override;
+
 };
 
 // 점수 및 동적 Text
