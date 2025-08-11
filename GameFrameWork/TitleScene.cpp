@@ -11,27 +11,30 @@ void TitleScene::Initialize()
 	unique_ptr<BackGround> backGround = std::make_unique<BackGround>(0, 0, 1920, 1080);
 	m_objectList.emplace_back(std::move(backGround));
 
+	XMFLOAT4 color = { 0.0f, 1.0f, 1.0f, 1.0f };
+	Mediator::GetInstance().SetBackGroundColor(color, color);
+	SceneManager::GetInstance().ChangePostProcessing("CRTFilter");
 	//title
-	unique_ptr<Button> title = std::make_unique<Button>(0.0f, 200.0f, 996.0f, 428.0f, "T_Main_Logo.png", 50);
+	unique_ptr<Button> title = std::make_unique<Button>(0.0f, 200.0f, 996.0f, 428.0f, "T_Main_Logo.png");
 	m_notUniqueObjectList.emplace_back(title.get());
 	m_titleButtonList.emplace_back(std::move(title));
 
-	unique_ptr<TitleStartButton> startButton = std::make_unique<TitleStartButton>(-640.0f, -450.0f, 250.0f, 60.0f, "T_Main_Start.png", 50);
+	unique_ptr<SceneChangeButton> startButton = std::make_unique<SceneChangeButton>(-640.0f, -450.0f, 250.0f, 60.0f, "T_Main_Start.png", "Game1");
 	m_buttonList.emplace_back(startButton.get());
 	m_notUniqueObjectList.emplace_back(startButton.get());
 	m_titleButtonList.emplace_back(std::move(startButton));
 
-	unique_ptr<Button> tutoButton = std::make_unique<Button>(-226.6f, -450.0f, 250.0f, 60.0f, "T_Main_Tutorial.png", 50);
+	unique_ptr<Button> tutoButton = std::make_unique<Button>(-226.6f, -450.0f, 250.0f, 60.0f, "T_Main_Tutorial.png");
 	m_buttonList.emplace_back(tutoButton.get());
 	m_notUniqueObjectList.emplace_back(tutoButton.get());
 	m_titleButtonList.emplace_back(std::move(tutoButton));
 
-	unique_ptr<Button> creditButton = std::make_unique<Button>(226.6f, -450.0f, 240.0f, 60.0f, "T_Main_Record_board.png", 50);
+	unique_ptr<Button> creditButton = std::make_unique<Button>(226.6f, -450.0f, 240.0f, 60.0f, "T_Main_Record_board.png");
 	m_buttonList.emplace_back(creditButton.get());
 	m_notUniqueObjectList.emplace_back(creditButton.get());
 	m_titleButtonList.emplace_back(std::move(creditButton));
 
-	unique_ptr<Button> exitButton = std::make_unique<Button>(640.0f, -450.0f, 250.0f, 60.0f, "T_Main_Exit.png", 50);
+	unique_ptr<Button> exitButton = std::make_unique<Button>(640.0f, -450.0f, 250.0f, 60.0f, "T_Main_Exit.png");
 	m_buttonList.emplace_back(exitButton.get());
 	m_notUniqueObjectList.emplace_back(exitButton.get());
 	m_titleButtonList.emplace_back(std::move(exitButton));
@@ -68,6 +71,8 @@ void TitleScene::OnLeave()
 {
 	std::cout << "Title Scene Left" << std::endl;
 	Reset();
+
+	m_notUniqueObjectList.clear();
 
 	// 사운드 초기화
 	m_channel->stop();

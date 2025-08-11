@@ -3,10 +3,10 @@
 using namespace DirectX;
 void EndingScene::Initialize()
 {
-	// »ç¿ëÇÒ °Íµé
+	// ì‚¬ìš©í•  ê²ƒë“¤
 	KeyCommandMapping();
 
-	m_bgm = SoundManager::GetInstance().GetSound("MainBGM.mp3"); //»ç¿îµå ±³Ã¼
+	m_bgm = SoundManager::GetInstance().GetSound("MainBGM.mp3"); //ì‚¬ìš´ë“œ êµì²´
 	m_bgm->setMode(FMOD_LOOP_NORMAL);
 	m_soundManager.GetSystem()->getChannel(0, &m_channel);
 	m_soundManager.GetSystem()->playSound(m_bgm, nullptr, false, &m_channel);
@@ -14,10 +14,7 @@ void EndingScene::Initialize()
 
 void EndingScene::Update(double deltaTime)
 {
-	for (auto& notUniqueObject : m_notUniqueObjectList)
-	{
-		notUniqueObject->Update(deltaTime);
-	}
+	for (auto& notUniqueObject : m_notUniqueObjectList) notUniqueObject->Update(deltaTime);
 }
 
 void EndingScene::OnEnter()
@@ -51,7 +48,8 @@ void EndingScene::OnEnter()
 
 	//--Text Here
 
-	unique_ptr<RetrurnTitleButton> returnButton = std::make_unique<RetrurnTitleButton>(0.0f, -350.0f, 212.0f, 42.0f, "T_GameOver_Main_Screen.png");
+	unique_ptr<Button> returnButton = std::make_unique<SceneChangeButton>(0.0f, -350.0f, 212.0f, 42.0f, "T_GameOver_Main_Screen.png", "Title");
+
 	m_notUniqueObjectList.emplace_back(returnButton.get());
 	m_endingButtonList.emplace_back(std::move(returnButton));
 	SceneManager::GetInstance().ChangePostProcessing("CRTNoise");
@@ -60,6 +58,8 @@ void EndingScene::OnEnter()
 void EndingScene::OnLeave()
 {
 	Reset();
+
+	m_notUniqueObjectList.clear();
 
 	m_channel->stop();
 	m_bgm = nullptr;
@@ -71,7 +71,7 @@ void EndingScene::OnCommand(std::string& cmd)
 	auto it = m_commandMap.find(cmd);
 	if (it != m_commandMap.end())
 	{
-		it->second(); // ÇÔ¼ö ½ÇÇà
+		it->second(); // í•¨ìˆ˜ ì‹¤í–‰
 	}
 	else
 	{
