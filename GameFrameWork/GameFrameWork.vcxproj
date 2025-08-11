@@ -141,6 +141,7 @@
     <ClCompile Include="cpch.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Create</PrecompiledHeader>
     </ClCompile>
+    <ClCompile Include="EndingScene.cpp" />
     <ClCompile Include="GameManager.cpp" />
     <ClCompile Include="GameScene.cpp" />
     <ClCompile Include="HintMark.cpp" />
@@ -152,6 +153,7 @@
     <ClInclude Include="BackGround.h" />
     <ClInclude Include="BoardObject.h" />
     <ClInclude Include="cpch.h" />
+    <ClInclude Include="EndingScene.h" />
     <ClInclude Include="Engine.h" />
     <ClInclude Include="GameManager.h" />
     <ClInclude Include="GameScene.h" />

@@ -96,7 +96,7 @@ void TitleScene::KeyCommandMapping()
 		{
 
 
-			SceneManager::GetInstance().ChangeScene(std::string("Game1"));
+			SceneManager::GetInstance().ChangeScene(std::string("Ending"));
 		};
 
 	m_commandMap["F2"] = []()

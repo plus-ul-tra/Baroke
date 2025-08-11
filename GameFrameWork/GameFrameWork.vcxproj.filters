@@ -47,6 +47,9 @@
     <ClCompile Include="HintMark.cpp">
       <Filter>소스 파일\GameObjects</Filter>
     </ClCompile>
+    <ClCompile Include="EndingScene.cpp">
+      <Filter>소스 파일\Scenes</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="GameManager.h">
@@ -75,6 +78,9 @@
     </ClInclude>
     <ClInclude Include="HintMark.h">
       <Filter>소스 파일\GameObjects</Filter>
+    </ClInclude>
+    <ClInclude Include="EndingScene.h">
+      <Filter>소스 파일\Scenes</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

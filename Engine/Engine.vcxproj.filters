@@ -20,6 +20,7 @@
     <FxCompile Include="CRTRed_PS.hlsl" />
     <FxCompile Include="CRTGreen_PS.hlsl" />
     <FxCompile Include="Cyber.hlsl" />
+    <FxCompile Include="CRTNoise_PS.hlsl" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="AnimationClip.cpp" />
