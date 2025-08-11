@@ -34,7 +34,7 @@ void GameScene::SetUIButton()
 	m_buttonList.emplace_back(m_shopBuyStoneButton.get());
 	m_notUniqueObjectList.emplace_back(m_shopBuyStoneButton.get());
 
-	m_shopShopRerollButton = make_unique<ShopRerollButton>(0.0f, -300.0f, 100, 100, "jokerFlip.png");
+	m_shopShopRerollButton = make_unique<ShopRerollButton>(0.0f, -300.0f, 100, 200, "T_Store_Reset.png");
 	m_shopShopRerollButton->SetShowAndActive(false);
 	m_buttonList.emplace_back(m_shopShopRerollButton.get());
 	m_notUniqueObjectList.emplace_back(m_shopShopRerollButton.get());
@@ -307,9 +307,18 @@ void GameScene::CheckStageClear()
 		// 조커 조건은 어떤 식으로?
 		if (m_board.m_playerInfo.GetBlackCount() == m_board.GetStoneTypeAmount(Black))
 		{
-			m_gameState = GameState::Ending;
-			if (m_gameStateDelayElapsed < m_gameStateDelay) return;
-			SceneManager::GetInstance().ChangeScene(std::string("Ending"));
+			bool isAvailableJoker = false;
+			for (auto& jokerButton : m_jokerButtons)
+			{
+				if (!jokerButton->IsActive()) continue;
+				isAvailableJoker = true;
+			}
+			if (!isAvailableJoker)
+			{
+				m_gameState = GameState::Ending;
+				if (m_gameStateDelayElapsed < m_gameStateDelay) return;
+				SceneManager::GetInstance().ChangeScene(std::string("Ending"));
+			}
 		}
 		else m_gameStateDelayElapsed = 0.0f;
 	}
@@ -347,8 +356,17 @@ void GameScene::CheckStageClear()
 
 				for (auto& jokerButton : m_shopJokerButtons) jokerButton->SetShowAndActive(false);
 				m_gameStateDelayElapsed = 0.0f;
-				ChangeThema(m_stageNo % 6);
-				m_boardObj->ChangeTheme(m_stageNo % 6);
+
+				if (m_stageNo % 2)
+				{
+					ChangeThema(0);
+					m_boardObj->ChangeTheme(0);
+				}
+				else
+				{
+					ChangeThema(m_stageNo / 2 % 6);
+					m_boardObj->ChangeTheme(m_stageNo / 2 % 6);
+				}
 
 				m_channel->setPaused(false);
 				m_shopChannel->setPosition(0, FMOD_TIMEUNIT_MS); // 시간 초기화

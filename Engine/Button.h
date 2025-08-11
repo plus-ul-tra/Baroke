@@ -223,6 +223,8 @@ public:
 		}
 		Object::Update(dt);
 	}
+
+	bool IsActive() { return m_isActive; }
 };
 
 class ShopJokerButton : public Button
@@ -308,11 +310,10 @@ public:
 
 class RetrurnTitleButton : public Button
 {
-
+	string m_sceneName; // 전환할 씬 이름
 public:
-	RetrurnTitleButton(float posX, float posY, float width, float height, const std::string& bitmapFile, int order = 0)
-		: Button(posX, posY, width, height, bitmapFile, order) {
-	}
+	SceneChangeButton(float posX, float posY, float width, float height, const std::string& bitmapFile, const string& sceneName, int order = 0)
+		: Button(posX, posY, width, height, bitmapFile, order) { m_sceneName = sceneName; }
 	void ButtonFunction() override;
 
 };

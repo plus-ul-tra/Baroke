@@ -423,7 +423,11 @@ struct JokerFunctionsWrapper
 						int randomX = distX(rng);
 						int randomY = distY(rng);
 
-						if (boardManager.PlaceStone({ randomX, randomY }, StoneType::Black, StoneAbility::None)) break;
+						if (boardManager.PlaceStone({ randomX, randomY }, StoneType::Black, StoneAbility::None))
+						{
+							boardManager.WhiteStoneRemoveCheck({ randomX, randomY });
+							break;
+						}
 					}
 				}
 
