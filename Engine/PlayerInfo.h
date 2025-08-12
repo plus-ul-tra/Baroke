@@ -11,6 +11,9 @@ struct PlayerInfo
 	int m_waxMoney = 0;
 	int m_score = 0;
 
+	PlayerInfo() = default;
+
+
 	int GetBlackCount() {
 		return m_BlackStone + m_tempBlackStone;
 	}
@@ -25,6 +28,20 @@ struct PlayerInfo
 		m_money = 6;
 		m_rerollCount = 0;
 		m_waxMoney = 0;
+		m_score = 0;
+	}
+
+
+	// 튜토리얼 초기화
+	void TutoinitGame() {
+		std::cout << "TutoInit" << std::endl;
+		m_BlackStone = 1000;
+		m_blackStoneUpgrade = 0;
+		m_tempBlackStone = 0;
+		m_whiteLeft = 0;
+		m_money = 10000;
+		m_rerollCount = 0;
+		m_waxMoney = 10000;
 		m_score = 0;
 	}
 };

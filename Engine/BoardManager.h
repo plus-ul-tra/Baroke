@@ -123,7 +123,7 @@ private:
 	std::unordered_map<StoneAbility, int> m_stagePlacedMap;
 	//---------------------------------------------------------------- 플레이어
 public:
-	PlayerInfo GetPlayer() { return m_playerInfo; }
+	PlayerInfo& GetPlayer() { return m_playerInfo; }
 	PlayerInfo m_playerInfo; // 플레이어 정보 // 흑돌, 백돌, 돈 등
 private:
 
