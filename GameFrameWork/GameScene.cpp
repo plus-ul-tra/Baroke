@@ -14,6 +14,7 @@ using namespace std;
 
 void GameScene::initGame()
 {
+	m_stageNo = 0;						// 스테이지 단계 초기화
 	SetUIButton();						// 버튼들 초기화
 	ChangeThema(0);						// 초기 테마 설정
 
