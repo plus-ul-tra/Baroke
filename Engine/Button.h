@@ -374,6 +374,19 @@ public:
 
 };
 
+class ResetStageButton : public Button
+{
+	vector<POINT> m_whiteStonePos; // 흰 돌 위치
+
+	public:
+	ResetStageButton(float posX, float posY, float width, float height, const std::string& bitmapFile, int order = 0)
+		: Button(posX, posY, width, height, bitmapFile, order) {
+	}
+
+	void SetWhiteStonePos(vector<POINT> whiteStonePos) { m_whiteStonePos = whiteStonePos; }
+	void ButtonFunction() override;
+};
+
 // 점수 및 동적 Text
 class Text : public Object {
 private:
