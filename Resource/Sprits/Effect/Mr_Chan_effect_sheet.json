@@ -89,7 +89,7 @@
   "size": { "w": 2898, "h": 239 },
   "scale": "1",
   "frameTags": [
-    { "name": "TagWave", "from": 0, "to": 8, "direction": "forward", "color": "#000000ff" }
+    { "name": "TagWave", "from": 0, "to": 8, "direction": "forward", "color": "#000000ff", "loop": true }
   ]
  }
 }

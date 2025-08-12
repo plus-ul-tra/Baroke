@@ -17,6 +17,9 @@ private:
 	wstring m_Contents;
 
 	//Microsoft::WRL::ComPtr<IDWriteTextLayout> m_layout;
+
+	bool m_isActive = true; // 활성화 여부
+
 public:
 	UIText(float posX, float posY, float width, float height,int size) : m_posX(posX), m_posY(posY), m_width(width), m_height(height), m_sizeType(size){};
 	virtual ~ UIText() = default;
@@ -33,4 +36,7 @@ public:
 	void TextRender(Renderer& renderer) {
 		renderer.DrawUIText(m_Contents,m_posX,m_posY,m_width,m_height, m_sizeType);
 	}
+
+	void SetActive(bool active) { m_isActive = active; }
+	bool IsActive() const { return m_isActive; }
 };
