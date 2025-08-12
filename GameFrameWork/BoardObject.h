@@ -50,11 +50,11 @@ struct BoardType
 inline unordered_map<int, BoardType> boardTypes =
 {
 	{0, {"Normal.png",						3.0f, XMFLOAT4(0.0f, 1.0f, 1.0f, 1.0f)}},
-	{1, {"Forest.png",						3.0f, XMFLOAT4(0.2f, 0.9f, 0.2f, 1.0f), {effectTypes[0], effectTypes[1], effectTypes[2], effectTypes[3]}}},
-	{2, {"Space.png",						3.0f, XMFLOAT4(0.4f, 0.02f, 0.6f, 1.0f), {effectTypes[0], effectTypes[1], effectTypes[2], effectTypes[3]}}},
-	{3, {"T_Dancheong_Main_Glow.png",		3.0f, XMFLOAT4(0.9f, 0.8f, 0.6f, 1.0f), {effectTypes[8], effectTypes[9], effectTypes[-1], effectTypes[-1]}}},
-	{4, {"T_Halloween_Main_Glow.png",		3.0f, XMFLOAT4(1.0f, 0.5f, 0.0f, 1.0f), {effectTypes[10], effectTypes[11], effectTypes[12], effectTypes[13]}}},
-	{5, {"Cyberpunk.png",					3.0f, XMFLOAT4(0.3f, 0.3f, 0.9f, 1.0f), {effectTypes[-1], effectTypes[-1], effectTypes[-1], effectTypes[-1]}}}
+	{1, {"Forest.png",						3.0f, XMFLOAT4(0.2f, 0.9f, 0.2f, 1.0f), }},
+	{2, {"Space.png",						3.0f, XMFLOAT4(0.4f, 0.02f, 0.6f, 1.0f), }},
+	{3, {"T_Dancheong_Main_Glow.png",		3.0f, XMFLOAT4(0.9f, 0.8f, 0.6f, 1.0f), }},
+	{4, {"T_Halloween_Main_Glow.png",		3.0f, XMFLOAT4(1.0f, 0.5f, 0.0f, 1.0f), }},
+	{5, {"Cyberpunk.png",					3.0f, XMFLOAT4(0.3f, 0.3f, 0.9f, 1.0f), }}
 };
 
 class BoardObject : public Object
@@ -201,33 +201,37 @@ inline void BoardObject::ThemeFixedObjects(int theme, vector<unique_ptr<Object>>
 
 	switch (theme)
 	{
-
+	case 1:// forest
+		objectsvector.emplace_back(make_unique<NewObject>(0.0f, 600.0f, 1920.0f, 471.0f, 0.0f, "LeafSet2.png", 100.0f, XMVectorSet(0.0f, 350.0f, 0.0f, 1.0f)));
+		objectsvector.emplace_back(make_unique<NewObject>(0.0f, -600.0f, 1918.0f, 274.0f, 0.0f, "LeafSet.png", 100.0f, XMVectorSet(0.0f, -420.0f, 0.0f, 1.0f)));
+		break;
 	case 2: // Space
-
+		objectsvector.emplace_back(make_unique<NewObject>(0.0f, 600.0f, 1920.0f, 177.0f, 0.0f, "galaxy_1.png", 100.0f, XMVectorSet(0.0f, 460.0f, 0.0f, 1.0f)));
+		objectsvector.emplace_back(make_unique<NewObject>(-119.0f, -600.0f, 1801.0f, 163.0f, 0.0f, "galaxy_2.png", 100.0f, XMVectorSet(-119.0f, -460.0f, 0.0f, 1.0f)));
+		objectsvector.emplace_back(make_unique<NewObject>(-1000.0f, 0.0f, 176.0f, 761.0f, 0.0f, "galaxy_3.png", 100.0f, XMVectorSet(-890.0f, 0.0f, 0.0f, 1.0f)));
 		break;
 
 	case 3: // Dancheong
-		objectsvector.emplace_back(make_unique<NewObject>(-600.0f, 600.0f, 100.0f, 100.0f, 0.0f, "DancheongSun.png", 100.0f, XMVectorSet(-500.0f, 400.0f, 0.0f, 1.0f)));
-		objectsvector.emplace_back(make_unique<NewObject>(600.0f, 600.0f, 100.0f, 100.0f, 0.0f, "Moon.png", 100.0f, XMVectorSet(500.0f, 400.0f, 0.0f, 1.0f)));
+		objectsvector.emplace_back(make_unique<NewObject>(0.0f, 600.0f, 1053.0f, 160.0f, 0.0f, "dancheong_1.png", 100.0f, XMVectorSet(0.0f, 460.0f, 0.0f, 1.0f)));
+		objectsvector.emplace_back(make_unique<NewObject>(0.0f, -600.0f, 1920.0f, 895.0f, 0.0f, "dancheong_4.png", 100.0f, XMVectorSet(0.0f, -100.0f, 0.0f, 1.0f)));
+		objectsvector.emplace_back(make_unique<NewObject>(-1000.0f, 50.0f, 575.0f, 567.0f, 0.0f, "dancheong_2.png", 100.0f, XMVectorSet(-690.0f, 250.0f, 0.0f, 1.0f)));
+		objectsvector.emplace_back(make_unique<NewObject>(1000.0f, 50.0f, 575.0f, 567.0f, 0.0f, "dancheong_3.png", 100.0f, XMVectorSet(690.0f, 250.0f, 0.0f, 1.0f)));
 
 		break;
 
 	case 4: // Halloween
-		objectsvector.emplace_back(make_unique<NewObject>(-1000.0f, 600.0f, 200.0f, 200.0f, 0.0f, "Spider.png", 100.0f, XMVectorSet(-900.0f, 500.0f, 0.0f, 1.0f)));
-		objectsvector.emplace_back(make_unique<NewObject>(1000.0f, -600.0f, 200.0f, 200.0f, 0.0f, "PumpkinCat.png", 100.0f, XMVectorSet(900.0f, -500.0f, 0.0f, 1.0f)));
+		objectsvector.emplace_back(make_unique<NewObject>(0.0f, 600.0f, 1920.0f, 287.0f, 0.0f, "halloween_1.png", 100.0f, XMVectorSet(0.0f, 400.0f, 0.0f, 1.0f)));
+		objectsvector.emplace_back(make_unique<NewObject>(0.0f, -600.0f, 1920.0f, 351.0f, 0.0f, "halloween_2.png", 100.0f, XMVectorSet(0.0f, -370.0f, 0.0f, 1.0f)));
 
 		break;
 
 	case 5: // Cyberpunk
-		objectsvector.emplace_back(make_unique<NewObject>(0.0f, 600.0f, 2000.0f, 250.0f, 0.0f, "CyberAll.png", 100.0f, XMVectorSet(0.0f, 500.0f, 0.0f, 1.0f)));
-		objectsvector.emplace_back(make_unique<NewObject>(750.0f, -600.0f, 100.0f, 600.0f, 0.0f, "Building1.png", 100.0f, XMVectorSet(750.0f, -500.0f, 0.0f, 1.0f)));
-		objectsvector.emplace_back(make_unique<NewObject>(600.0f, -600.0f, 100.0f, 600.0f, 0.0f, "Building2.png", 100.0f, XMVectorSet(600.0f, -500.0f, 0.0f, 1.0f)));
-		objectsvector.emplace_back(make_unique<NewObject>(-850.0f, -600.0f, 300.0f, 600.0f, 0.0f, "Building4.png", 100.0f, XMVectorSet(-850.0f, -500.0f, 0.0f, 1.0f)));
-		objectsvector.emplace_back(make_unique<NewObject>(-660.0f, -600.0f, 100.0f, 600.0f, 0.0f, "Building3.png", 100.0f, XMVectorSet(-660.0f, -500.0f, 0.0f, 1.0f)));
-		objectsvector.emplace_back(make_unique<NewObject>(-550.0f, -600.0f, 100.0f, 600.0f, 0.0f, "Building5.png", 100.0f, XMVectorSet(-550.0f, -500.0f, 0.0f, 1.0f)));
+		objectsvector.emplace_back(make_unique<NewObject>(0.0f, 600.0f, 1920.0f, 195.0f, 0.0f, "cyber_1.png", 100.0f, XMVectorSet(0.0f, 460.0f, 0.0f, 1.0f)));
+		objectsvector.emplace_back(make_unique<NewObject>(0.0f, -600.0f, 1918.0f, 429.0f, 0.0f, "cyber_2.png", 100.0f, XMVectorSet(0.0f, -335.0f, 0.0f, 1.0f)));
 		break;
 
 	default:
+		
 		break;
 	}
 }

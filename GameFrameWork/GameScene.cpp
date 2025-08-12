@@ -1236,10 +1236,10 @@ void GameScene::ChangeThema(int thema)
 
 		Mediator::GetInstance().SetUIColor(XMFLOAT4(0.0f, 1.0f, 1.0f, 1.0f));
 
-		m_desc->GetComponent<BitmapRender3D>()->SetShaderType("UIHolo");
-		m_rightUI->GetComponent<BitmapRender3D>()->SetShaderType("UIHolo");
-		m_leftUI->GetComponent<BitmapRender3D>()->SetShaderType("UIHolo");
-		m_leftUpUI->GetComponent<BitmapRender3D>()->SetShaderType("UIHolo");
+		m_desc->GetComponent<BitmapRender3D>()->ChangeTexture("T_Standard_Right_Slot_Description.png");
+		m_rightUI->GetComponent<BitmapRender3D>()->ChangeTexture("T_Standard_Right_Base_Glow.png");
+		m_leftUI->GetComponent<BitmapRender3D>()->ChangeTexture("T_Standard_Left_Down_Base_Glow.png");
+		m_leftUpUI->GetComponent<BitmapRender3D>()->ChangeTexture("T_Standard_Left_Base_Glow.png");
 		m_cyber->GetComponent<BitmapRender3D>()->SetActive(false);
 
 		m_lastIndex = -1;
@@ -1251,6 +1251,20 @@ void GameScene::ChangeThema(int thema)
 		m_bgm = SoundManager::GetInstance().GetSound("MainBGM.mp3");
 		m_soundManager.GetSystem()->getChannel(0, &m_channel);
 		m_soundManager.GetSystem()->playSound(m_bgm, nullptr, false, &m_channel);
+
+		for (auto& bt : m_itemSlot)
+		{
+			auto rend = bt->GetComponent<BitmapRender3D>();
+			//rend->SetShaderType("UIColor");
+			rend->ChangeTexture("T_Standard_Right_Slot_Item.png");
+		}
+
+		for (auto& bt : m_passiveSlot)
+		{
+			auto rend = bt->GetComponent<BitmapRender3D>();
+			//rend->SetShaderType("UIColor");
+			rend->ChangeTexture("T_Standard_Right_Slot_Passive.png");
+		}
 
 		break;
 	}
