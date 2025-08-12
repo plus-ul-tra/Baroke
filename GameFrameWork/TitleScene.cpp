@@ -40,6 +40,9 @@ void TitleScene::Initialize()
 	m_titleButtonList.emplace_back(std::move(exitButton));
 
 	// 사운드
+	m_channel->stop();
+	m_bgm = nullptr;
+	m_channel = nullptr;
 	m_bgm = SoundManager::GetInstance().GetSound("MainBGM.mp3");
 	m_bgm->setMode(FMOD_LOOP_NORMAL);
 	m_soundManager.GetSystem()->getChannel(0, &m_channel);
