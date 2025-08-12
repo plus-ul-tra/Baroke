@@ -877,6 +877,10 @@ void Renderer::CreateDeviceAndSwapChain(HWND hwnd)
 // Textformat
 void Renderer::CreateWriteResource()
 {
+	AddFontResourceExW(L".\\Resource\\Galmuri11.ttf",
+		FR_PRIVATE, // 현재 프로세스 전용
+		nullptr);
+
 	ComPtr<IDWriteFactory> writeFactory = nullptr;
 	HRESULT hr = DWriteCreateFactory(
 		DWRITE_FACTORY_TYPE_SHARED,
@@ -887,7 +891,7 @@ void Renderer::CreateWriteResource()
 	// text format 3가지 정도 small middle large
 
 	writeFactory->CreateTextFormat(
-		L"",
+		L"Galmuri11",
 		NULL,
 		DWRITE_FONT_WEIGHT_NORMAL,
 		DWRITE_FONT_STYLE_NORMAL,
@@ -903,7 +907,7 @@ void Renderer::CreateWriteResource()
 	//m_largeFormat->SetWordWrapping(DWRITE_WORD_WRAPPING_WRAP);              // 줄바꿈
 
 	writeFactory->CreateTextFormat(
-		L"",
+		L"Galmuri11",
 		NULL,
 		DWRITE_FONT_WEIGHT_NORMAL,
 		DWRITE_FONT_STYLE_NORMAL,
@@ -918,7 +922,7 @@ void Renderer::CreateWriteResource()
 	m_middleFormat->SetParagraphAlignment(DWRITE_PARAGRAPH_ALIGNMENT_NEAR);
 
 	writeFactory->CreateTextFormat(
-		L"",
+		L"Galmuri11",
 		NULL,
 		DWRITE_FONT_WEIGHT_NORMAL,
 		DWRITE_FONT_STYLE_NORMAL,
