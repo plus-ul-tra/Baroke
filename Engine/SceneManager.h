@@ -81,7 +81,7 @@ void SceneManager::ChangeScene(const T& index) {
 		if (auto it = m_sceneNameMap.find(index); it != m_sceneNameMap.end()) {
 			m_sceneList[m_currentSceneIndex]->OnLeave();
 			m_currentSceneIndex = it->second;
-			m_sceneList[m_currentSceneIndex]->OnEnter();
+			m_sceneList[m_currentSceneIndex]->OnEnter(); //각자 CRT 즉시 적용
 		}
 		else { std::cout << "Error: invalid Scene Id" << std::endl; return; }
 

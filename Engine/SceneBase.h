@@ -42,7 +42,7 @@ public:
 
 	// 안씀
 	void RenderObject(Object* obj, Renderer& renderer);
-
+	void OnEffect();
 	// Scene에 따라서 구현 필수는 아님
 	virtual void FixedUpdate(double fixedDeltaTime);
 	virtual void LateUpdate(double deltaTime);

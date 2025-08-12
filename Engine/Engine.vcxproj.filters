@@ -21,6 +21,8 @@
     <FxCompile Include="CRTGreen_PS.hlsl" />
     <FxCompile Include="Cyber.hlsl" />
     <FxCompile Include="CRTNoise_PS.hlsl" />
+    <FxCompile Include="CRTOff_PS.hlsl" />
+    <FxCompile Include="CRTOn_PS.hlsl" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="AnimationClip.cpp" />

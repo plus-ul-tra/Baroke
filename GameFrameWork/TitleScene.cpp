@@ -71,6 +71,8 @@ void TitleScene::OnEnter()
 	Mediator::GetInstance().SetBackGroundColor(color, color);
 
 	SceneManager::GetInstance().ChangePostProcessing("CRTFilter");
+	//SceneManager::GetInstance().ChangePostProcessing("CRTOff"); //1초
+	//SceneManager::GetInstance().ChangePostProcessing("CRTOn");  //1초
 	std::cout << "Title Scene OnEnter" << std::endl;
 	Initialize(); // 필요시 수정
 }
@@ -78,6 +80,7 @@ void TitleScene::OnEnter()
 void TitleScene::OnLeave()
 {
 	std::cout << "Title Scene Left" << std::endl;
+	
 	Reset();
 
 	m_notUniqueObjectList.clear();
@@ -123,12 +126,12 @@ void TitleScene::KeyCommandMapping()
 
 	m_commandMap["F3"] = []()
 		{
-			std::cout << "F3 Command Received" << std::endl;
+			SceneManager::GetInstance().ChangePostProcessing("CRTOff");
 		};
 
 	m_commandMap["F4"] = []()
 		{
-			std::cout << "F4 Command Received" << std::endl;
+			SceneManager::GetInstance().ChangePostProcessing("CRTOn");
 		};
 	m_commandMap["F5"] = []()
 		{
