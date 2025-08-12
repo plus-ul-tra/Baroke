@@ -186,7 +186,7 @@ void GameScene::SetUIButton()
 	settingText->GetComponent<BitmapRender3D>()->SetShaderType("UIHolo");
 	m_useless.emplace_back(move(settingText));
 
-	unique_ptr<Button> exitText = std::make_unique<SceneChangeButton>(-720.0f, -390.0f, 115, 32, "T_Common_Left_Down_Exit.png", "Ending",buttonType::GameToEnding);
+	unique_ptr<Button> exitText = std::make_unique<SceneChangeButton>(-720.0f, -390.0f, 115, 32, "T_Common_Left_Down_Exit.png", "Ending", buttonType::GameToEnding);
 	m_buttonList.emplace_back(exitText.get());
 	m_notUniqueObjectList.emplace_back(exitText.get());
 	//exitText->GetComponent<BitmapRender3D>()->SetShaderType("UIHolo");
