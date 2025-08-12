@@ -39,7 +39,7 @@ void NewObject::Update(double deltaTime)
 	if (DirectX::XMVector3Equal(newPos, targetPos)) m_destination = { 0.0f, 0.0f, 0.0f, 1.0f };
 }
 
-void CreateObject::CreateObjectsOutOfScreen(vector<unique_ptr<Object>>& objects, string imageKey, float screenWidth, float screenHeight, float width, float height, int count, float speed, direction exclusiveDirection)
+void CreateObject::CreateObjectsOutOfScreen(vector<unique_ptr<Object>>& objects, string imageKey, float screenWidth, float screenHeight, float width, float height, int count, float speed, direction exclusiveDirection, float rotation)
 {
 	if (count <= 0) return;
 	random_device rd;
@@ -48,7 +48,7 @@ void CreateObject::CreateObjectsOutOfScreen(vector<unique_ptr<Object>>& objects,
 	uniform_real_distribution<float> distX(-(screenWidth / 2), screenWidth / 2);
 	uniform_real_distribution<float> distY(-(screenHeight / 2), screenHeight / 2);
 	uniform_real_distribution<float> distDirection(-(screenWidth + screenHeight), screenWidth + screenHeight);
-	uniform_real_distribution<float> rotationDist(0.0f, 1.0f);
+	uniform_real_distribution<float> rotationDist(-rotation, rotation);
 
 	if (exclusiveDirection)
 	{
@@ -59,19 +59,19 @@ void CreateObject::CreateObjectsOutOfScreen(vector<unique_ptr<Object>>& objects,
 			float rotation = rotationDist(gen);
 			if (exclusiveDirection == direction::left)
 			{
-				objects.emplace_back(make_unique<NewObject>(-(screenWidth / 2 + width), posY, width, height, rotation, imageKey, speed, XMVectorSet(-screenWidth / 2, posY, 0.0f, 1.0f)));
+				objects.emplace_back(make_unique<NewObject>(-(screenWidth / 2 + width), posY, width, height, rotation, imageKey, speed, XMVectorSet((-screenWidth + width / 2) / 2, posY, 0.0f, 1.0f)));
 			}
 			else if (exclusiveDirection == direction::right)
 			{
-				objects.emplace_back(make_unique<NewObject>(screenWidth / 2 + width, posY, width, height, rotation, imageKey, speed, XMVectorSet(screenWidth / 2, posY, 0.0f, 1.0f)));
+				objects.emplace_back(make_unique<NewObject>(screenWidth / 2 + width, posY, width, height, rotation, imageKey, speed, XMVectorSet((screenWidth - width / 2) / 2, posY, 0.0f, 1.0f)));
 			}
 			else if (exclusiveDirection == direction::up)
 			{
-				objects.emplace_back(make_unique<NewObject>(posX, screenHeight / 2 + height, width, height, rotation, imageKey, speed, XMVectorSet(posX, screenHeight / 2, 0.0f, 1.0f)));
+				objects.emplace_back(make_unique<NewObject>(posX, screenHeight / 2 + height, width, height, rotation, imageKey, speed, XMVectorSet(posX, (screenHeight - height / 2) / 2, 0.0f, 1.0f)));
 			}
 			else if (exclusiveDirection == direction::down)
 			{
-				objects.emplace_back(make_unique<NewObject>(posX, -(screenHeight / 2 + height), width, height, rotation, imageKey, speed, XMVectorSet(posX, -screenHeight / 2, 0.0f, 1.0f)));
+				objects.emplace_back(make_unique<NewObject>(posX, -(screenHeight / 2 + height), width, height, rotation, imageKey, speed, XMVectorSet(posX, (-screenHeight + height / 2) / 2, 0.0f, 1.0f)));
 			}
 		}
 		return;
