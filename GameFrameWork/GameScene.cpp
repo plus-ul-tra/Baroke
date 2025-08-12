@@ -34,7 +34,7 @@ void GameScene::SetUIButton()
 	m_buttonList.emplace_back(m_shopBuyStoneButton.get());
 	m_notUniqueObjectList.emplace_back(m_shopBuyStoneButton.get());
 
-	m_shopShopRerollButton = make_unique<ShopRerollButton>(0.0f, -300.0f, 100, 200, "T_Store_Reset.png");
+	m_shopShopRerollButton = make_unique<ShopRerollButton>(0.0f, -300.0f, 100, 200, "Black.png");
 	m_shopShopRerollButton->SetShowAndActive(false);
 	m_buttonList.emplace_back(m_shopShopRerollButton.get());
 	m_notUniqueObjectList.emplace_back(m_shopShopRerollButton.get());
@@ -434,10 +434,19 @@ void GameScene::ModeCheck()
 	if (m_uiMode == UIMode::UseAbility) 
 	{
 		//std::cout << "UseAbility" << std::endl;
-		SceneManager::GetInstance().ChangePostProcessing("CRTFilter");
+
 		SyncPlacementHintsToPool();
 	}
 
+
+}
+
+void GameScene::CRTAccess()
+{
+	if (m_uiMode == UIMode::Normal) { SceneManager::GetInstance().ChangePostProcessing("CRTFilter"); }
+	else if (m_uiMode == UIMode::Sacrifice){ SceneManager::GetInstance().ChangePostProcessing("CRTRed"); }
+	else if (m_uiMode == UIMode::BeforeUseAbility) { SceneManager::GetInstance().ChangePostProcessing("CRTGreen"); }
+	else if (m_uiMode == UIMode::UseAbility) { SceneManager::GetInstance().ChangePostProcessing("CRTFilter"); }
 
 }
 
@@ -633,6 +642,7 @@ void GameScene::Update(double deltaTime)
 			wax->SetText(m_board.GetPlayer().m_waxMoney);
 	
 	m_gameStateDelayElapsed += deltaTime;
+	CRTAccess();
 	CheckSlot();
 	ModeCheck();
 	CheckStageClear();
@@ -819,7 +829,7 @@ void GameScene::OnInput(const MouseEvent& ev)
 
 	else if (m_uiMode == UIMode::Sacrifice)
 	{
-		SceneManager::GetInstance().ChangePostProcessing("CRTRed");
+
 		if (ev.type == MouseType::LDown)
 		{
 			m_board.SelectSacrificeStone(ev.pos);

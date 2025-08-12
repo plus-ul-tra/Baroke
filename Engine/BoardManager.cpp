@@ -541,10 +541,12 @@ struct JokerFunctionsWrapper
 						if (boardManager.m_stoneTypeMap.find(newPosition)->second == StoneType::White)
 						{
 							boardManager.m_board[newPosition.x][newPosition.y]->ChangeColor();
+							boardManager.m_stoneTypeMap[newPosition] = StoneType::Black;
 						}
 						else if (boardManager.m_stoneTypeMap.find(newPosition)->second == StoneType::Black)
 						{
 							boardManager.m_board[newPosition.x][newPosition.y]->ChangeColor(false);
+							boardManager.m_stoneTypeMap[newPosition] = StoneType::White;
 						}
 					}
 				}

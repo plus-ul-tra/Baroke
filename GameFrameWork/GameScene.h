@@ -27,6 +27,7 @@ private:
  	void  CheckStageClear();		// 스테이지 클리어 체크
 	void  CheckSlot();
 	void  ModeCheck();
+	void CRTAccess();
 
 	void InitShop(); // 상점 초기화
 	vector<unique_ptr<JokerButton>> m_jokerButtons; // 조커 버튼들 // 나중에 다른 방식으로?
