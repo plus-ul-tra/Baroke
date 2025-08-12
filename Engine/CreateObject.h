@@ -23,7 +23,8 @@ public:
 		float width, float height,
 		int count,
 		float speed = 1.0f,
-		direction exclusiveDirection = direction::all
+		direction exclusiveDirection = direction::all,
+		float rotation = 0.0f
 	);
 };
 

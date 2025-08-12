@@ -97,6 +97,11 @@ void RenderObject(Object* obj, Renderer& renderer)
 }
 
 
+void SceneBase::OnEffect()
+{
+	SceneManager::GetInstance().ChangePostProcessing("CRTOn");
+}
+
 void SceneBase::FixedUpdate(double fixedDeltaTime)
 {
 

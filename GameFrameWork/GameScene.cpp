@@ -199,7 +199,7 @@ void GameScene::SetUIButton()
 	settingText->GetComponent<BitmapRender3D>()->SetShaderType("UIHolo");
 	m_useless.emplace_back(move(settingText));
 
-	unique_ptr<Button> exitText = std::make_unique<SceneChangeButton>(-720.0f, -390.0f, 115, 32, "T_Common_Left_Down_Exit.png", "Ending",buttonType::GameToEnding);
+	unique_ptr<Button> exitText = std::make_unique<SceneChangeButton>(-720.0f, -390.0f, 115, 32, "T_Common_Left_Down_Exit.png", "Ending", buttonType::GameToEnding);
 	m_buttonList.emplace_back(exitText.get());
 	m_notUniqueObjectList.emplace_back(exitText.get());
 	//exitText->GetComponent<BitmapRender3D>()->SetShaderType("UIHolo");
@@ -668,6 +668,8 @@ void GameScene::FixedUpdate(double fixedDeltaTime)
 
 void GameScene::Update(double deltaTime)
 {
+	m_filterElsapsedTime += deltaTime;
+
 	m_boardObj->BoardSync();
 	for (auto& object : m_objectList)
 	{
@@ -677,11 +679,10 @@ void GameScene::Update(double deltaTime)
 	{
 		UI->Update(deltaTime);
 	}
-	SceneManager::GetInstance().SetExit(false);
 	for (auto& notUniqueObject : m_notUniqueObjectList)
 	{
 		notUniqueObject->Update(deltaTime);
-		if (SceneManager::GetInstance().IsExit()) return;
+		if (SceneManager::GetInstance().IsExit()) break;
 	}
 
 	if (m_buyStonePriceText)
@@ -713,6 +714,7 @@ void GameScene::Update(double deltaTime)
 		if (auto wax = m_WaxText->GetComponent<UIText>())
 			wax->SetText(m_board.m_playerInfo.m_waxMoney);
 
+
 // 	if (m_board.GetPlayer().GetBlackCount() <= m_board.GetStoneTypeAmount(Black))
 // 	{
 // 		m_popupText->GetComponent<UIText>()->SetActive(true);
@@ -721,19 +723,7 @@ void GameScene::Update(double deltaTime)
 // 	{
 // 		m_popupText->GetComponent<UIText>()->SetActive(false);
 // 	}
-	
-	m_gameStateDelayElapsed += deltaTime;
-	CRTAccess();
-	CheckSlot();
-	ModeCheck();
-	CheckStageClear();
-}
 
-void GameScene::LateUpdate(double deltaTime)
-{
-	/*for (auto& a : m_objectList) {
-		a->LateUpdate(deltaTime);
-	}*/
 	if (!DirectX::XMVector3Equal(m_moveDir, DirectX::XMVectorZero()) && m_player)
 	{
 		DirectX::XMVECTOR dir = DirectX::XMVector3Normalize(m_moveDir);
@@ -741,6 +731,38 @@ void GameScene::LateUpdate(double deltaTime)
 	}
 
 	m_moveDir = DirectX::XMVectorZero();
+
+	
+	m_gameStateDelayElapsed += deltaTime;
+
+	CheckSlot();
+	ModeCheck();
+	CheckStageClear();
+
+	if (m_isFilterQueue && m_filterElsapsedTime > 0.8f)
+	{
+		m_isFilterQueue = false;
+		CRTAccess();
+	}
+
+	if (SceneManager::GetInstance().IsExit())
+	{
+		if (!m_isExitrQueue)
+		{
+			m_isExitrQueue = true;
+			m_filterElsapsedTime = 0.0f;
+			SceneManager::GetInstance().ChangePostProcessing("CRTOff");
+		}
+		if (m_isExitrQueue && m_filterElsapsedTime > 1.3f)
+		{
+			m_isExitrQueue = false;
+			SceneManager::GetInstance().ChangeSceneToNext();
+		}
+	}
+}
+
+void GameScene::LateUpdate(double deltaTime)
+{
 }
 
 void GameScene::OnEnter()
@@ -749,6 +771,13 @@ void GameScene::OnEnter()
 
 	unique_ptr<BackGround> backGround = std::make_unique<BackGround>(0.0f, 0.0f, 1920.0f, 1080.0f);
 	m_objectList.emplace_back(std::move(backGround));
+
+	XMFLOAT4 color = { 0.0f, 1.0f, 1.0f, 1.0f };
+	Mediator::GetInstance().SetBackGroundColor(color, color);
+	SceneManager::GetInstance().ChangePostProcessing("CRTOn");
+	m_filterElsapsedTime = 0.0f;
+	m_isFilterQueue = true;
+	m_isExitrQueue = false;
 
 	auto playerObject = std::make_unique<Player>(
 		0.0f, 0.0f, 100.0f, 100.0f, DirectX::XMFLOAT4(1.0f, 0.0f, 0.0f, 1.0f) // 녹색

@@ -84,7 +84,7 @@ float4 PSMain(VS_OUTPUT In) : SV_Target
     float2 glitchOffset = float2(0.001, 0.005);
 
 
-    float burst = step(0.98, hash11(floor(time * 3.0))); // ∂ß∂ß∑Œ 1.0¿Ã µ 
+    float burst = step(0.98, hash11(floor(time * 3.0))); // 1.0 µ 
     float burstScale = lerp(1.0, 2.0, burst);
     float2 chromaOffset = glitchOffset * burstScale;
 

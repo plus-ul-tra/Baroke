@@ -34,6 +34,7 @@ private:
 	// Scene으로 부터 그려야할 obejct를 받을 컨테이너 및 가져올 함수 필요.
 
 	bool m_isExit = false; // 씬 전환
+	string m_nextSceneName; // 다음 씬 이름
 
 public:
 
@@ -52,6 +53,7 @@ public:
 	// string, int 대응
 	template<typename T>
 	void ChangeScene(const T& index);
+	void ChangeSceneToNext();
 	template<typename T>
 	void LoadScene(const T& index);
 
@@ -59,8 +61,10 @@ public:
 
 
 	void OnCommand(std::string& cmd);			// 입력처리
-	void SetExit(bool isExit) { m_isExit = isExit; }
+
+	void SetExit(bool isExit, string nextSceneName = "") { m_isExit = isExit; m_nextSceneName = nextSceneName; }
 	bool IsExit() const { return m_isExit; }
+	string GetNextSceneName() const { return m_nextSceneName; }
 
 	void InitializeAllScenes();
 
@@ -81,7 +85,7 @@ void SceneManager::ChangeScene(const T& index) {
 		if (auto it = m_sceneNameMap.find(index); it != m_sceneNameMap.end()) {
 			m_sceneList[m_currentSceneIndex]->OnLeave();
 			m_currentSceneIndex = it->second;
-			m_sceneList[m_currentSceneIndex]->OnEnter();
+			m_sceneList[m_currentSceneIndex]->OnEnter(); //각자 CRT 즉시 적용
 		}
 		else { std::cout << "Error: invalid Scene Id" << std::endl; return; }
 

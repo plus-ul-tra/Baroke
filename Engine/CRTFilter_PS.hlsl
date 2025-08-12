@@ -42,8 +42,8 @@ float4 PSMain(VS_OUTPUT Input) : SV_Target
     // Rgb
     float2 glitchOffset = float2(0.001, 0.005); // UV 이동
     float4 texR = g_Texture.Sample(g_Sampler, distortedUV + glitchOffset); // R 채널
-    float4 texG = g_Texture.Sample(g_Sampler, distortedUV - glitchOffset); // G 채널
-    float4 texB = g_Texture.Sample(g_Sampler, distortedUV); // B 채널 그대로
+    float4 texG = g_Texture.Sample(g_Sampler, distortedUV - glitchOffset); 
+    float4 texB = g_Texture.Sample(g_Sampler, distortedUV); 
 
     // 스캔라인이 홀수일 때 RGB 채널에 색상 섞기
     float4 glitchColor = float4(texR.r, texG.g, texB.b, 1.0);

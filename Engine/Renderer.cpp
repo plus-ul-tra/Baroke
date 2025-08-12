@@ -629,7 +629,22 @@ void Renderer::PostProcessing(const ShaderSet& shaderSet)
 		ID3D11Buffer* cbuffers[1] = { m_pTimeCBuffer.Get() };
 		m_pd3dContext->PSSetConstantBuffers(0, 1, cbuffers);
 	}
-	
+	if (m_postProcessShaderName == "CRTOn"|| m_postProcessShaderName == "CRTOff") {
+
+		TimeCBuffer timeData{};
+		m_blackHoleTime += 0.008f;
+
+		//if (m_blackHoleTime > 8.0f) m_blackHoleTime = 0.0f;
+		// 반복시간
+		timeData.time = m_blackHoleTime;//RenderTimer::GetInstance().GetElapsedTime() / 2.0f;
+		timeData.deltaTime = 1.0f; // 고정 델타타임
+		timeData.padding[0] = 0.0f;
+		timeData.padding[1] = 0.0f;
+		m_pd3dContext->UpdateSubresource(m_pTimeCBuffer.Get(), 0, nullptr, &timeData, 0, 0);
+		ID3D11Buffer* cbuffers[1] = { m_pTimeCBuffer.Get() };
+		m_pd3dContext->PSSetConstantBuffers(0, 1, cbuffers);
+
+	}
 
 	// 뷰포트 설정
 	D3D11_VIEWPORT viewport = {};
@@ -877,6 +892,10 @@ void Renderer::CreateDeviceAndSwapChain(HWND hwnd)
 // Textformat
 void Renderer::CreateWriteResource()
 {
+	AddFontResourceExW(L".\\Resource\\Galmuri11.ttf",
+		FR_PRIVATE, // 현재 프로세스 전용
+		nullptr);
+
 	ComPtr<IDWriteFactory> writeFactory = nullptr;
 	HRESULT hr = DWriteCreateFactory(
 		DWRITE_FACTORY_TYPE_SHARED,
@@ -887,7 +906,7 @@ void Renderer::CreateWriteResource()
 	// text format 3가지 정도 small middle large
 
 	writeFactory->CreateTextFormat(
-		L"",
+		L"Galmuri11",
 		NULL,
 		DWRITE_FONT_WEIGHT_NORMAL,
 		DWRITE_FONT_STYLE_NORMAL,
@@ -903,7 +922,7 @@ void Renderer::CreateWriteResource()
 	//m_largeFormat->SetWordWrapping(DWRITE_WORD_WRAPPING_WRAP);              // 줄바꿈
 
 	writeFactory->CreateTextFormat(
-		L"",
+		L"Galmuri11",
 		NULL,
 		DWRITE_FONT_WEIGHT_NORMAL,
 		DWRITE_FONT_STYLE_NORMAL,
@@ -918,7 +937,7 @@ void Renderer::CreateWriteResource()
 	m_middleFormat->SetParagraphAlignment(DWRITE_PARAGRAPH_ALIGNMENT_NEAR);
 
 	writeFactory->CreateTextFormat(
-		L"",
+		L"Galmuri11",
 		NULL,
 		DWRITE_FONT_WEIGHT_NORMAL,
 		DWRITE_FONT_STYLE_NORMAL,

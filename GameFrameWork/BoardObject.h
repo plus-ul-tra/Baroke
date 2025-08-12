@@ -9,15 +9,34 @@ struct EffectType
 	int amount = 50;
 	float speed = 100.0f;
 	CreateObject::direction exclusiveDirection = CreateObject::all;
+	float rotation = 0.0f;
 };
 
 inline unordered_map<int, EffectType> effectTypes =
 {
 	{-1, {"Sample.png", 0.0f, 0.0f, 0, 0.0f, CreateObject::all}},
-	{0, {"Leaf1.png", 100.0f, 200.0f, 10, 100.0f, CreateObject::left}},
-	{1, {"Leaf2.png", 100.0f, 200.0f, 10, 100.0f, CreateObject::right}},
-	{2, {"Leaf9.png", 200.0f, 200.0f, 10, 100.0f, CreateObject::up}},
-	{3, {"Leaf8.png", 200.0f, 200.0f, 10, 100.0f, CreateObject::down}}
+
+	// 숲
+	{0, {"Leaf6.png", 100.0f, 200.0f, 10, 100.0f, CreateObject::left, 0.5f}},
+	{1, {"Leaf11.png", 100.0f, 200.0f, 10, 100.0f, CreateObject::right, 0.5f}},
+	{2, {"Leaf1.png", 100.0f, 200.0f, 20, 100.0f, CreateObject::up, 0.5f}},
+	{3, {"Leaf8.png", 200.0f, 200.0f, 20, 100.0f, CreateObject::down, 0.2f}},
+
+	// 우주
+	{4, {"Leaf12.png", 200.0f, 200.0f, 20, 100.0f, CreateObject::left}},
+	{5, {"Leaf13.png", 200.0f, 200.0f, 20, 100.0f, CreateObject::right}},
+	{6, {"Leaf14.png", 200.0f, 200.0f, 20, 100.0f, CreateObject::up}},
+	{7, {"Leaf15.png", 200.0f, 200.0f, 20, 100.0f, CreateObject::down}},
+
+	// 단청
+	{8, {"Mountain1.png", 200.0f, 200.0f, 5, 100.0f, CreateObject::down}},
+	{9, {"Mountain2.png", 200.0f, 300.0f, 5, 100.0f, CreateObject::down}},
+
+	// 할로윈
+	{10, {"SmallNet.png", 250.0f, 200.0f, 10, 100.0f, CreateObject::up}},
+	{11, {"gravestone3.png", 200.0f, 300.0f, 5, 100.0f, CreateObject::down}},
+	{12, {"Pumpkin1.png", 250.0f, 200.0f, 5, 100.0f, CreateObject::down}},
+	{13, {"Pumpkin2.png", 250.0f, 200.0f, 5, 100.0f, CreateObject::down}},
 };
 
 struct BoardType
@@ -33,9 +52,9 @@ inline unordered_map<int, BoardType> boardTypes =
 	{0, {"Normal.png",						3.0f, XMFLOAT4(0.0f, 1.0f, 1.0f, 1.0f)}},
 	{1, {"Forest.png",						3.0f, XMFLOAT4(0.2f, 0.9f, 0.2f, 1.0f), {effectTypes[0], effectTypes[1], effectTypes[2], effectTypes[3]}}},
 	{2, {"Space.png",						3.0f, XMFLOAT4(0.4f, 0.02f, 0.6f, 1.0f), {effectTypes[0], effectTypes[1], effectTypes[2], effectTypes[3]}}},
-	{3, {"T_Dancheong_Main_Glow.png",		3.0f, XMFLOAT4(0.9f, 0.8f, 0.6f, 1.0f), {effectTypes[0], effectTypes[1], effectTypes[2], effectTypes[3]}}},
-	{4, {"T_Halloween_Main_Glow.png",		3.0f, XMFLOAT4(1.0f, 0.5f, 0.0f, 1.0f), {effectTypes[0], effectTypes[1], effectTypes[2], effectTypes[3]}}},
-	{5, {"Cyberpunk.png",					3.0f, XMFLOAT4(0.3f, 0.3f, 0.9f, 1.0f), {effectTypes[0], effectTypes[1], effectTypes[2], effectTypes[3]}}}
+	{3, {"T_Dancheong_Main_Glow.png",		3.0f, XMFLOAT4(0.9f, 0.8f, 0.6f, 1.0f), {effectTypes[8], effectTypes[9], effectTypes[-1], effectTypes[-1]}}},
+	{4, {"T_Halloween_Main_Glow.png",		3.0f, XMFLOAT4(1.0f, 0.5f, 0.0f, 1.0f), {effectTypes[10], effectTypes[11], effectTypes[12], effectTypes[13]}}},
+	{5, {"Cyberpunk.png",					3.0f, XMFLOAT4(0.3f, 0.3f, 0.9f, 1.0f), {effectTypes[-1], effectTypes[-1], effectTypes[-1], effectTypes[-1]}}}
 };
 
 class BoardObject : public Object
@@ -116,26 +135,9 @@ public:
 			if (bmp && bmp->IsActive()) bmp->Update(deltaTime);
 		}
 	}
-
 	void BoardSync();
-
-	//int IsBoardChanged();
-	//void ResetTexture() { m_currentBoardType = -1; }
-	void ChangeTheme(int theme)
-	{
-		if (theme < 0 || theme >= boardTypes.size()) return;
-
-		BoardType boardType = boardTypes[theme];
-		m_bitmapRender->ChangeBoardTexture(boardType.textureKey, boardType.changeDuration);
-		m_bitmapRender->ChangeBackGroundColor(boardType.backgroundColor);
-		m_screenEffectObjects.clear();
-
-		for (EffectType & effect : boardType.effects)
-		{
-			CreateObject::CreateObjectsOutOfScreen(m_screenEffectObjects, effect.effectKey, 1920.0f, 1080.0f, effect.width, effect.height, effect.amount, effect.speed, effect.exclusiveDirection);
-		}
-		m_isBoardChanged = true;
-	}
+	void ChangeTheme(int theme);
+	void ThemeFixedObjects(int theme, vector<unique_ptr<Object>>& objectsvector);
 };
 
 inline void BoardObject::BoardSync()
@@ -157,54 +159,75 @@ inline void BoardObject::BoardSync()
 			{
 				auto& stone = m_board[r][c];
 				m_stones.emplace_back(stone.get());
-
-				//if (stone->m_jokerType != JokerType::Default) stoneTypeAmount[stone->m_jokerType]++;
 			}
 		}
 	}
 	for (const shared_ptr<Stone>& deathStone : deathRow) m_stones.emplace_back(deathStone.get());
 }
 
-	//for (int i = 0; i < 5; ++i)
-	//{
-	//	if (m_currentBoardType == i) continue;
+inline void BoardObject::ChangeTheme(int theme)
+{
+	if (theme < 0 || theme >= boardTypes.size()) return;
 
-	//	if (stoneTypeAmount[i] >= m_changeStoneAmount)
-	//	{
-	//		m_currentBoardType = i;
-	//		BoardType boardType = boardTypes[i];
+	BoardType boardType = boardTypes[theme];
 
-	//		m_bitmapRender->ChangeBoardTexture(boardType.textureKey, boardType.changeDuration);
-	//		m_bitmapRender->ChangeBackGroundColor(boardType.backgroundColor);
+	m_bitmapRender->ChangeBoardTexture(boardType.textureKey, boardType.changeDuration);
+	m_bitmapRender->ChangeBackGroundColor(boardType.backgroundColor);
 
-	//		m_screenEffectObjects.clear();
-	//		for (int j = 0; j < 4; ++j)
-	//		{
-	//			auto& effect = boardType.effects[j];
-	//			CreateObject::CreateObjectsOutOfScreen(m_screenEffectObjects, effect.effectKey, 1920.0f, 1080.0f, effect.width, effect.height, effect.amount, effect.speed, effect.exclusiveDirection);
-	//		}
+	m_screenEffectObjects.clear();
 
-	//		m_changeStoneAmount++;
-	//		m_isBoardChanged = true;
-	//		break;
-	//	}
-	//}
-	//if (m_currentBoardType == -1)
-	//{
-	//	//m_bitmapRender->ChangeBoardTexture("Normal.png", 0);
-	//	//m_bitmapRender->ChangeBackGroundColor(XMFLOAT4(0.0f, 1.0f, 1.0f, 1.0f)); // 기본 배경색 설정
-	//	m_screenEffectObjects.clear();
-	//	m_changeStoneAmount = 5;
-	//	m_isBoardChanged = true;
-	//}
-	//}
+	for (EffectType& effect : boardType.effects)
+	{
+		CreateObject::CreateObjectsOutOfScreen
+		(
+			m_screenEffectObjects,
+			effect.effectKey,
+			1920.0f, 1080.0f,
+			effect.width, effect.height,
+			effect.amount,
+			effect.speed,
+			effect.exclusiveDirection,
+			effect.rotation
+		);
+	}
+	ThemeFixedObjects(theme, m_screenEffectObjects);
 
-//inline int BoardObject::IsBoardChanged()
-//{
-//	if (m_isBoardChanged)
-//	{
-//		m_isBoardChanged = false;
-//		return m_currentBoardType;
-//	}
-//	return -1;
-//}
+	m_isBoardChanged = true;
+}
+
+inline void BoardObject::ThemeFixedObjects(int theme, vector<unique_ptr<Object>>& objectsvector)
+{
+	if (theme < 0 || theme >= boardTypes.size()) return;
+
+	switch (theme)
+	{
+
+	case 2: // Space
+
+		break;
+
+	case 3: // Dancheong
+		objectsvector.emplace_back(make_unique<NewObject>(-600.0f, 600.0f, 100.0f, 100.0f, 0.0f, "DancheongSun.png", 100.0f, XMVectorSet(-500.0f, 400.0f, 0.0f, 1.0f)));
+		objectsvector.emplace_back(make_unique<NewObject>(600.0f, 600.0f, 100.0f, 100.0f, 0.0f, "Moon.png", 100.0f, XMVectorSet(500.0f, 400.0f, 0.0f, 1.0f)));
+
+		break;
+
+	case 4: // Halloween
+		objectsvector.emplace_back(make_unique<NewObject>(-1000.0f, 600.0f, 200.0f, 200.0f, 0.0f, "Spider.png", 100.0f, XMVectorSet(-900.0f, 500.0f, 0.0f, 1.0f)));
+		objectsvector.emplace_back(make_unique<NewObject>(1000.0f, -600.0f, 200.0f, 200.0f, 0.0f, "PumpkinCat.png", 100.0f, XMVectorSet(900.0f, -500.0f, 0.0f, 1.0f)));
+
+		break;
+
+	case 5: // Cyberpunk
+		objectsvector.emplace_back(make_unique<NewObject>(0.0f, 600.0f, 2000.0f, 250.0f, 0.0f, "CyberAll.png", 100.0f, XMVectorSet(0.0f, 500.0f, 0.0f, 1.0f)));
+		objectsvector.emplace_back(make_unique<NewObject>(750.0f, -600.0f, 100.0f, 600.0f, 0.0f, "Building1.png", 100.0f, XMVectorSet(750.0f, -500.0f, 0.0f, 1.0f)));
+		objectsvector.emplace_back(make_unique<NewObject>(600.0f, -600.0f, 100.0f, 600.0f, 0.0f, "Building2.png", 100.0f, XMVectorSet(600.0f, -500.0f, 0.0f, 1.0f)));
+		objectsvector.emplace_back(make_unique<NewObject>(-850.0f, -600.0f, 300.0f, 600.0f, 0.0f, "Building4.png", 100.0f, XMVectorSet(-850.0f, -500.0f, 0.0f, 1.0f)));
+		objectsvector.emplace_back(make_unique<NewObject>(-660.0f, -600.0f, 100.0f, 600.0f, 0.0f, "Building3.png", 100.0f, XMVectorSet(-660.0f, -500.0f, 0.0f, 1.0f)));
+		objectsvector.emplace_back(make_unique<NewObject>(-550.0f, -600.0f, 100.0f, 600.0f, 0.0f, "Building5.png", 100.0f, XMVectorSet(-550.0f, -500.0f, 0.0f, 1.0f)));
+		break;
+
+	default:
+		break;
+	}
+}
