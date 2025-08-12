@@ -21,7 +21,7 @@ struct PlayerInfo
 	void decBlackCount(int count) { m_tempBlackStone -= count; }
 	void ResetRound() { m_tempBlackStone = 0; }
 	void initGame() {
-		m_BlackStone = 25;
+		m_BlackStone = 20;
 		m_blackStoneUpgrade = 0;
 		m_tempBlackStone = 0;
 		m_whiteLeft = 0;

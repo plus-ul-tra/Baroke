@@ -296,7 +296,7 @@ void GameScene::SetUIButton()
 
 
 	unique_ptr<JokerButton> jokerButton2 = std::make_unique<JokerButton>(617.0f, 171.0f, 100, 100, "T_Blackstone.png", 50);
-	jokerButton2->SetButtonJoker(White, jokerFusion);
+	jokerButton2->SetButtonJoker(Black, None);
 	m_buttonList.emplace_back(jokerButton2.get());
 	m_notUniqueObjectList.emplace_back(jokerButton2.get());
 	m_jokerButtons.emplace_back(move(jokerButton2));
@@ -351,7 +351,7 @@ void GameScene::StartStage()
 {
 	m_stageNo++;
 
-	int spawn = 3 + (m_stageNo  - 1);
+	int spawn = 3 + (m_stageNo * 2);
 
 	m_resetStageButton->SetWhiteStonePos(m_board.PlaceRandomStones(spawn));
 	m_whiteLeft = m_board.GetStoneTypeAmount(White);
@@ -396,7 +396,7 @@ void GameScene::CheckStageClear()
 
 		if (m_gameState == GameState::Stage) m_gameState = GameState::ShopEnter;
     
-		//if (m_gameStateDelayElapsed < m_gameStateDelay) return;    // 잠시 꺼둠 최종빌드때 다시 켜야댐
+		if (m_gameStateDelayElapsed < m_gameStateDelay) return;    // 잠시 꺼둠 최종빌드때 다시 켜야댐
 
 		if (m_gameState == GameState::ShopEnter)
 		{
