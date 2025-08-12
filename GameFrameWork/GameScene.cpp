@@ -194,8 +194,10 @@ void GameScene::SetUIButton()
 	scoreFiled->GetComponent<BitmapRender3D>()->SetShaderType("UIHolo");
 	m_useless.emplace_back(move(scoreFiled));
 
-	unique_ptr<Button> settingText = std::make_unique<Button>(-720.0f, -330.0f, 52, 34, "T_Common_Left_Down_Setting.png");
+	unique_ptr<ResetStageButton> settingText = std::make_unique<ResetStageButton>(-720.0f, -330.0f, 52, 34, "T_Common_Left_Down_Setting.png");
+	m_buttonList.emplace_back(settingText.get());
 	m_notUniqueObjectList.emplace_back(settingText.get());
+	m_resetStageButton = settingText.get();
 	settingText->GetComponent<BitmapRender3D>()->SetShaderType("UIHolo");
 	m_useless.emplace_back(move(settingText));
 
@@ -351,9 +353,8 @@ void GameScene::StartStage()
 
 	int spawn = 3 + ((m_stageNo * 3) - 1);
 
-	m_board.PlaceRandomStones(spawn);
+	m_resetStageButton->SetWhiteStonePos(m_board.PlaceRandomStones(spawn));
 	m_whiteLeft = m_board.GetStoneTypeAmount(White);
-
 
 	if (m_stageText)
 		if (auto ui = m_stageText->GetComponent<UIText>())

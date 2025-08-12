@@ -784,7 +784,7 @@ void BoardManager::Initialize(int offX, int offY, int drawW, int drawH, int _cel
 	ResetStone();
 }
 
-void BoardManager::PlaceRandomStones(int amount)
+vector<POINT> BoardManager::PlaceRandomStones(int amount)
 {
 	int N = SIZE_DEFAULT;
 	std::vector<std::pair<int, int>> allPositions;
@@ -798,12 +798,16 @@ void BoardManager::PlaceRandomStones(int amount)
 
 	int n = std::min(static_cast<int>(allPositions.size()), amount);
 
+	std::vector<POINT> placedPositions;
+
 	for (int i = 0; i < n; ++i)
 	{
 		int r = allPositions[i].first;
 		int c = allPositions[i].second;
 		PlaceStone({ r, c }, StoneType::White, StoneAbility::None);
+		placedPositions.push_back({ r, c });
 	}
+	return placedPositions;
 }
 
 

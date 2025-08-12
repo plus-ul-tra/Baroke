@@ -55,6 +55,8 @@ private:
 	Text*				m_WaxText   = nullptr;
 	Text*				m_popupText = nullptr;
 
+	ResetStageButton* m_resetStageButton = nullptr; // 스테이지 리셋 버튼
+
 	vector<pair<StoneAbility, JokerStoneInfo>> m_shopStones; // 돌 조커
 	vector<pair<StoneAbility, JokerStoneInfo>> m_shopItems; // 아이템 조커
 	unique_ptr<ShopJokerButton> m_shopJokerButtons[6] = {};
@@ -70,7 +72,6 @@ private:
 	float m_gameStateDelay = 3.0f; // 게임 상태 전환 딜레이
 
 	int   m_lastIndex = -1;
-
 
 	std::vector<std::unique_ptr<HintMark>> m_hintPool;
 	void SyncPlacementHintsToPool();  // 하이라이트 동기화
