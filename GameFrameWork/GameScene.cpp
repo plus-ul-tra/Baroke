@@ -30,12 +30,12 @@ void GameScene::initGame()
 
 void GameScene::SetUIButton()
 {
-	m_shopBuyStoneButton = make_unique<ShopBuyStoneButton>(-300.0f, -300.0f, 75, 75, "T_Blackstone.png");
+	m_shopBuyStoneButton = make_unique<ShopBuyStoneButton>(-300.0f, -300.0f, 100, 100, "T_Blackstone.png");
 	m_shopBuyStoneButton->SetShowAndActive(false);
 	m_buttonList.emplace_back(m_shopBuyStoneButton.get());
 	m_notUniqueObjectList.emplace_back(m_shopBuyStoneButton.get());
 
-	unique_ptr<Text> buyStonePrice = std::make_unique<Text>(-335.0f, -350.0f, 100.0f, 50.0f, 0.5);
+	unique_ptr<Text> buyStonePrice = std::make_unique<Text>(-325.0f, -350.0f, 100.0f, 50.0f, 0.75);
 	buyStonePrice->GetComponent<UIText>()->SetText(000000);
 	buyStonePrice->GetComponent<UIText>()->SetActive(false);
 	m_buyStonePriceText = buyStonePrice.get();
@@ -47,7 +47,7 @@ void GameScene::SetUIButton()
 	m_buttonList.emplace_back(m_shopShopRerollButton.get());
 	m_notUniqueObjectList.emplace_back(m_shopShopRerollButton.get());
 
-	unique_ptr<Text> buyRerollPrice = std::make_unique<Text>(-35.0f, -350.0f, 100.0f, 50.0f, 0.5);
+	unique_ptr<Text> buyRerollPrice = std::make_unique<Text>(-50.0f, -365.0f, 150.0f, 75.0f, 0.75);
 	buyRerollPrice->GetComponent<UIText>()->SetText(000000);
 	buyRerollPrice->GetComponent<UIText>()->SetActive(false);
 	m_buyRerollPriceText = buyRerollPrice.get();
@@ -61,12 +61,12 @@ void GameScene::SetUIButton()
 
 	for (int i = 0; i < 3; i++)
 	{
-		m_shopJokerButtons[i] = make_unique<ShopJokerButton>(-300.0f + (i * 300.0f), 300.0f, 75, 75, "Sample.png");
+		m_shopJokerButtons[i] = make_unique<ShopJokerButton>(-300.0f + (i * 300.0f), 300.0f, 100, 100, "Sample.png");
 		m_shopJokerButtons[i]->SetShowAndActive(false);
 		m_buttonList.emplace_back(m_shopJokerButtons[i].get());
 		m_notUniqueObjectList.emplace_back(m_shopJokerButtons[i].get());
 
-		unique_ptr<Text> shopJokerText = std::make_unique<Text>(-335.0f + (i * 300.0f), 250.0f, 100.0f, 50.0f, 0.5);
+		unique_ptr<Text> shopJokerText = std::make_unique<Text>(-350.0f + (i * 300.0f), 250.0f, 150.0f, 75.0f, 0.75);
 		shopJokerText->GetComponent<UIText>()->SetText(000000);
 		shopJokerText->GetComponent<UIText>()->SetActive(false);
 		m_shopJokerTexts[i] = shopJokerText.get();
@@ -80,7 +80,7 @@ void GameScene::SetUIButton()
 		m_buttonList.emplace_back(m_shopJokerButtons[3 + i].get());
 		m_notUniqueObjectList.emplace_back(m_shopJokerButtons[3 + i].get());
 
-		unique_ptr<Text> shopJokerText = std::make_unique<Text>(-335.0f + (i * 300.0f), -50.0f, 100.0f, 50.0f, 0.5);
+		unique_ptr<Text> shopJokerText = std::make_unique<Text>(-350.0f + (i * 300.0f), -50.0f, 150.0f, 75.0f, 0.75);
 		shopJokerText->GetComponent<UIText>()->SetText(000000);
 		shopJokerText->GetComponent<UIText>()->SetActive(false);
 		m_shopJokerTexts[3 + i] = shopJokerText.get();
