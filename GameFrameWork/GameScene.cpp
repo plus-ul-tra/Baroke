@@ -319,6 +319,27 @@ void GameScene::SetUIButton()
 	m_buttonList.emplace_back(jokerButton5.get());
 	m_notUniqueObjectList.emplace_back(jokerButton5.get());
 	m_jokerButtons.emplace_back(move(jokerButton5));
+
+	// 액티브 조커
+	unique_ptr<JokerButton> jokerButton6 = std::make_unique<JokerButton>(783.0f, 1.0f, 100, 100, "Black.png");
+	jokerButton6->SetButtonJoker(Black, None);
+	m_buttonList.emplace_back(jokerButton6.get());
+	m_notUniqueObjectList.emplace_back(jokerButton6.get());
+	m_jokerButtons.emplace_back(move(jokerButton6));
+
+
+	unique_ptr<JokerButton> jokerButton7 = std::make_unique<JokerButton>(783.0f, -172.0f, 100, 100, "Black.png");
+	jokerButton7->SetButtonJoker(Black, None);
+	m_buttonList.emplace_back(jokerButton7.get());
+	m_notUniqueObjectList.emplace_back(jokerButton7.get());
+	m_jokerButtons.emplace_back(move(jokerButton7));
+
+
+	unique_ptr<JokerButton> jokerButton8 = std::make_unique<JokerButton>(783.0f, -342.0f, 100, 100, "Black.png");
+	jokerButton8->SetButtonJoker(Black, None);
+	m_buttonList.emplace_back(jokerButton8.get());
+	m_notUniqueObjectList.emplace_back(jokerButton8.get());
+	m_jokerButtons.emplace_back(move(jokerButton8));
 }
 
 
