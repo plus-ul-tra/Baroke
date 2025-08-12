@@ -43,11 +43,14 @@ private:
 	unique_ptr<Button>			  m_WhiteUI;
 	unique_ptr<Button>			  m_leftUpUI;
 	unique_ptr<Button>			  m_cyber;
-	Text*			  m_stageText = nullptr;
-	Text*			  m_scoreText = nullptr;
-	Text*			  m_WhiteText = nullptr;
-	Text*			  m_BlackText = nullptr;
-	Text*			  m_WaxText   = nullptr;
+	Text*				m_buyStonePriceText = nullptr;
+	Text*				m_buyRerollPriceText = nullptr;
+	Text*				m_shopJokerTexts[6] = {}; // 상점 조커 텍스트
+	Text*				m_stageText = nullptr;
+	Text*				m_scoreText = nullptr;
+	Text*				m_WhiteText = nullptr;
+	Text*				m_BlackText = nullptr;
+	Text*				m_WaxText   = nullptr;
 
 	vector<pair<StoneAbility, JokerStoneInfo>> m_shopStones; // 돌 조커
 	vector<pair<StoneAbility, JokerStoneInfo>> m_shopItems; // 아이템 조커

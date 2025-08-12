@@ -34,10 +34,24 @@ void GameScene::SetUIButton()
 	m_buttonList.emplace_back(m_shopBuyStoneButton.get());
 	m_notUniqueObjectList.emplace_back(m_shopBuyStoneButton.get());
 
-	m_shopShopRerollButton = make_unique<ShopRerollButton>(0.0f, -300.0f, 100, 200, "T_Store_Reset.png");
+	unique_ptr<Text> buyStonePrice = std::make_unique<Text>(-350.0f, -350.0f, 100.0f, 50.0f, 0.5);
+	buyStonePrice->GetComponent<UIText>()->SetText(000000);
+	buyStonePrice->GetComponent<UIText>()->SetActive(false);
+	m_buyStonePriceText = buyStonePrice.get();
+	m_textList.emplace_back(buyStonePrice.get());
+	m_useless.emplace_back(move(buyStonePrice));
+
+	m_shopShopRerollButton = make_unique<ShopRerollButton>(0.0f, -300.0f, 100, 200, "jokerFlip.png");
 	m_shopShopRerollButton->SetShowAndActive(false);
 	m_buttonList.emplace_back(m_shopShopRerollButton.get());
 	m_notUniqueObjectList.emplace_back(m_shopShopRerollButton.get());
+
+	unique_ptr<Text> buyRerollPrice = std::make_unique<Text>(-50.0f, -350.0f, 100.0f, 50.0f, 0.5);
+	buyRerollPrice->GetComponent<UIText>()->SetText(000000);
+	buyRerollPrice->GetComponent<UIText>()->SetActive(false);
+	m_buyRerollPriceText = buyRerollPrice.get();
+	m_textList.emplace_back(buyRerollPrice.get());
+	m_useless.emplace_back(move(buyRerollPrice));
 
 	m_shopExitButton = make_unique<ShopEndButton>(300.0f, -300.0f, 100, 100, "Sample.png");
 	m_shopExitButton->SetShowAndActive(false);
@@ -50,6 +64,13 @@ void GameScene::SetUIButton()
 		m_shopJokerButtons[i]->SetShowAndActive(false);
 		m_buttonList.emplace_back(m_shopJokerButtons[i].get());
 		m_notUniqueObjectList.emplace_back(m_shopJokerButtons[i].get());
+
+		unique_ptr<Text> shopJokerText = std::make_unique<Text>(-350.0f + (i * 300.0f), 250.0f, 100.0f, 50.0f, 0.5);
+		shopJokerText->GetComponent<UIText>()->SetText(000000);
+		shopJokerText->GetComponent<UIText>()->SetActive(false);
+		m_shopJokerTexts[i] = shopJokerText.get();
+		m_textList.emplace_back(shopJokerText.get());
+		m_useless.emplace_back(move(shopJokerText));
 	}
 	for (int i = 0; i < 3; i++)
 	{
@@ -57,6 +78,13 @@ void GameScene::SetUIButton()
 		m_shopJokerButtons[3 + i]->SetShowAndActive(false);
 		m_buttonList.emplace_back(m_shopJokerButtons[3 + i].get());
 		m_notUniqueObjectList.emplace_back(m_shopJokerButtons[3 + i].get());
+
+		unique_ptr<Text> shopJokerText = std::make_unique<Text>(-350.0f + (i * 300.0f), -50.0f, 100.0f, 50.0f, 0.5);
+		shopJokerText->GetComponent<UIText>()->SetText(000000);
+		shopJokerText->GetComponent<UIText>()->SetActive(false);
+		m_shopJokerTexts[3 + i] = shopJokerText.get();
+		m_textList.emplace_back(shopJokerText.get());
+		m_useless.emplace_back(move(shopJokerText));
 	}
 
 	//--------------------------UI일반----------------------------------
@@ -245,7 +273,7 @@ void GameScene::SetUIButton()
 
 	// ------------------------------------joker button-------------------------------------------
 	unique_ptr<JokerButton> jokerButton1 = std::make_unique<JokerButton>(617.0f, 341.0f, 100, 100, "Black.png", 50);
-	jokerButton1->SetButtonJoker(Joker, jokerExplode);
+	jokerButton1->SetButtonJoker(Joker, jokerFusion);
 	m_buttonList.emplace_back(jokerButton1.get());
 	m_notUniqueObjectList.emplace_back(jokerButton1.get());
 	m_jokerButtons.emplace_back(move(jokerButton1));
@@ -338,7 +366,9 @@ void GameScene::CheckStageClear()
 			ShopStage();
 
 			m_shopBuyStoneButton->SetShowAndActive(true);
+			m_buyStonePriceText->GetComponent<UIText>()->SetActive(true);
 			m_shopShopRerollButton->SetShowAndActive(true);
+			m_buyRerollPriceText->GetComponent<UIText>()->SetActive(true);
 			m_shopExitButton->SetShowAndActive(true);
 
 			m_channel->setPaused(true);
@@ -352,21 +382,29 @@ void GameScene::CheckStageClear()
 				m_gameState = GameState::ShopExit;
 
 				m_shopBuyStoneButton->SetShowAndActive(false);
+				m_buyStonePriceText->GetComponent<UIText>()->SetActive(false);
 				m_shopShopRerollButton->SetShowAndActive(false);
+				m_buyRerollPriceText->GetComponent<UIText>()->SetActive(false);
 				m_shopExitButton->SetShowAndActive(false);
 
 				for (auto& jokerButton : m_shopJokerButtons) jokerButton->SetShowAndActive(false);
+				for (auto& shopJokerText : m_shopJokerTexts)
+				{
+					shopJokerText->GetComponent<UIText>()->SetActive(false);
+					shopJokerText->GetComponent<UIText>()->SetText(000000);
+				}
+
 				m_gameStateDelayElapsed = 0.0f;
 
 				if (m_stageNo % 2)
 				{
-					ChangeThema(0);
-					m_boardObj->ChangeTheme(0);
+					ChangeThema((m_stageNo / 2 + 1) % 6);
+					m_boardObj->ChangeTheme((m_stageNo / 2 + 1) % 6);
 				}
 				else
 				{
-					ChangeThema(m_stageNo / 2 % 6);
-					m_boardObj->ChangeTheme(m_stageNo / 2 % 6);
+					ChangeThema(0);
+					m_boardObj->ChangeTheme(0);
 				}
 
 				m_channel->setPaused(false);
@@ -463,6 +501,11 @@ void GameScene::ShopStage()
 		shopJokerButton->SetShowAndActive(false);
 		shopJokerButton->SetButtonJoker(JokerStoneInfo{}, StoneAbility::None);
 	}
+	for (auto& shopJokerText : m_shopJokerTexts)
+	{
+		shopJokerText->GetComponent<UIText>()->SetActive(false);
+		shopJokerText->GetComponent<UIText>()->SetText(000000);
+	}
 	
 
 	for (int i = 0; i < 3; i++)
@@ -507,6 +550,7 @@ void GameScene::ShopStage()
 			m_shopJokerButtons[i]->SetShowAndActive(true);
 			m_shopJokerButtons[i]->SetButtonJoker(info, stone);
 			m_shopJokerButtons[i]->SetButton(&m_jokerButtons);
+			m_shopJokerTexts[i]->GetComponent<UIText>()->SetActive(true);
 		}
 	}
 	for (int i = 0; i < 3; i++)
@@ -541,6 +585,7 @@ void GameScene::ShopStage()
 			m_shopJokerButtons[3 + i]->SetShowAndActive(true);
 			m_shopJokerButtons[3 + i]->SetButtonJoker(info, stone);
 			m_shopJokerButtons[3 + i]->SetButton(&m_jokerButtons);
+			m_shopJokerTexts[3 + i]->GetComponent<UIText>()->SetActive(true);
 		}
 	}
 }
@@ -616,21 +661,34 @@ void GameScene::Update(double deltaTime)
 		if (SceneManager::GetInstance().IsExit()) return;
 	}
 
+	if (m_buyStonePriceText)
+		if (auto price = m_buyStonePriceText->GetComponent<UIText>())
+			price->SetText(m_board.m_playerInfo.m_blackStoneUpgrade * 2);
+
+	if (m_buyRerollPriceText)
+		if (auto price = m_buyRerollPriceText->GetComponent<UIText>())
+			price->SetText(m_board.m_playerInfo.m_rerollCount);
+
+	if (m_shopJokerTexts)
+		for (int i = 0; i < 6; i++)
+			if (auto text = m_shopJokerTexts[i]->GetComponent<UIText>())
+				text->SetText(m_jokerInfoMap[m_shopJokerButtons[i]->GetJokerAbility()].costWhite);
+
 	if (m_scoreText)
 		if (auto score = m_scoreText->GetComponent<UIText>())
-			score->SetText(m_board.GetPlayer().m_score);
+			score->SetText(m_board.m_playerInfo.m_score);
 
 	if (m_BlackText)
 		if (auto black = m_BlackText->GetComponent<UIText>())
-			black->SetText(m_board.GetPlayer().GetBlackCount()-m_board.CountStones(Black));
+			black->SetText(m_board.m_playerInfo.GetBlackCount()-m_board.CountStones(Black));
 
 	if (m_WhiteText)
 		if (auto white = m_WhiteText->GetComponent<UIText>())
-			white->SetText(m_board.GetPlayer().m_money);
+			white->SetText(m_board.m_playerInfo.m_money);
 
 	if (m_WaxText)
 		if (auto wax = m_WaxText->GetComponent<UIText>())
-			wax->SetText(m_board.GetPlayer().m_waxMoney);
+			wax->SetText(m_board.m_playerInfo.m_waxMoney);
 	
 	m_gameStateDelayElapsed += deltaTime;
 	CheckSlot();
@@ -858,9 +916,6 @@ void GameScene::OnInput(const MouseEvent& ev)
 
 			if (!m_board.IsPlacementAllowed(grid.x, grid.y))
 				return;
-
-			m_board.SetStoneType(m_board.GetStoneType());
-			m_board.SetStoneAbility(m_board.GetStoneAbility());
 
 			if (m_board.InputBasedGameLoop(ev.pos))
 			{

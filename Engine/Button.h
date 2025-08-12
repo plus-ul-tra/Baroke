@@ -318,6 +318,7 @@ private:
 	float m_width{};
 	float m_height{};      //rect size 용
 	int m_sizeType{};
+
 public:
 	Text(float posX, float posY, float width, float height, int size) : m_posX(posX), m_posY(posY), m_width(width), m_height(height), m_sizeType(size) {
 		m_text = AddComponent<UIText>(m_posX, m_posY, m_width, m_height, m_sizeType);

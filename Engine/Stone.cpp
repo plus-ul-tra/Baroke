@@ -6,6 +6,8 @@ unordered_map<StoneAbility, JokerStoneInfo> m_jokerInfoMap;
 
 void Stone::Update(double deltaTime)
 {
+	if (m_sprite && m_sprite->IsActive()) m_sprite->Update(deltaTime);
+
 	if (m_lerpTime > 0.0)
 	{
 		m_lerpElapsedTime += deltaTime;
