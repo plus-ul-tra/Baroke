@@ -60,7 +60,7 @@ void TutoScene::SetUIButton()
 		for (int j = 0; j < 4; j++)
 		{
 			int slot = i * 4 + j;
-			m_shopJokerButtons[slot] = make_unique<ShopJokerButton>(-850 + (j * 85.f), 180.0f - (100.f * i), 70, 70, "Sample.png");
+			m_shopJokerButtons[slot] = make_unique<ShopJokerButton>(-850 + (j * 85.f), 180.0f - (100.f * i), 70, 70, "Sample.png", true);
 			m_shopJokerButtons[slot]->SetShowAndActive(true);
 			m_buttonList.emplace_back(m_shopJokerButtons[slot].get());
 			m_notUniqueObjectList.emplace_back(m_shopJokerButtons[slot].get());
