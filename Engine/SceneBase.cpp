@@ -59,6 +59,7 @@ void SceneBase::Render(Renderer& renderer) {
 	renderer.UITextBegin();
 	for (const auto& text : m_textList) {
 		if (auto textComp = text->GetComponent<UIText>()) {
+			if (!textComp->IsActive()) continue;
 			textComp->TextRender(renderer);
 		}
 	}

@@ -48,19 +48,7 @@ void CreateObject::CreateObjectsOutOfScreen(vector<unique_ptr<Object>>& objects,
 	uniform_real_distribution<float> distX(-(screenWidth / 2), screenWidth / 2);
 	uniform_real_distribution<float> distY(-(screenHeight / 2), screenHeight / 2);
 	uniform_real_distribution<float> distDirection(-(screenWidth + screenHeight), screenWidth + screenHeight);
-	uniform_real_distribution<float> rotationDist(0.0f, 60.0f);
-
-	//ComPtr<ID3D11ShaderResourceView> texture = SpriteManager::GetInstance().LoadTextureSRV(imageKey);
-	//ComPtr<ID3D11Resource> texture2D;
-	//texture->GetResource(texture2D.GetAddressOf());
-	//float width = 0.0f, height = 0.0f;
-	//if (texture2D)
-	//{
-	//	D3D11_TEXTURE2D_DESC desc;
-	//	static_cast<ID3D11Texture2D*>(texture2D.Get())->GetDesc(&desc);
-	//	width = static_cast<float>(desc.Width);
-	//	height = static_cast<float>(desc.Height);
-	//}
+	uniform_real_distribution<float> rotationDist(0.0f, 1.0f);
 
 	if (exclusiveDirection)
 	{
