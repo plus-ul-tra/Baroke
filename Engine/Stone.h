@@ -154,8 +154,8 @@ public:
 
 struct JokerStoneInfo // 조커 돌 정보
 {
-	string fileName = "T_whitestone.png"; // 조커 돌 이미지 파일 이름
-	string toolTipName = "tool1.png"; // 조커 돌 툴팁 이름
+	string fileName = "Empty.png"; // 조커 돌 이미지 파일 이름
+	string toolTipName = "Empty.png"; // 조커 돌 툴팁 이름
 	string soundName = "stonePlace.wav"; // 조커 돌 착수 사운드 이름
 
 	JokerType jokerType = JokerType::Default;
