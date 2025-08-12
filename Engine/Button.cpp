@@ -259,6 +259,23 @@ void SceneChangeButton::ButtonFunction()
 		SceneManager::GetInstance().SetExit(true); // 씬 전환을 위해 종료 플래그 설정
 		m_isPressed = false;
 	}
+
+	switch (m_buttonType) {
+	case buttonType::TitleToGame: // 타이틀에서 게임으로 전환
+	{
+		if (m_isHovered && m_isActive) m_bitmapRender->ChangeTexture("T_Main_Start_Select.png");
+
+		else if (!m_isHovered && m_isActive) m_bitmapRender->ChangeTexture("T_Main_Start.png");
+	}
+	break;
+	case buttonType::TitleToTutorial: // 타이틀에서 튜토리얼로 전환
+	{
+		if (m_isHovered && m_isActive) m_bitmapRender->ChangeTexture("T_Main_Tutorial_Select.png");
+		else if (!m_isHovered && m_isActive) m_bitmapRender->ChangeTexture("T_Main_Tutorial.png");
+	}
+	default:
+		break;
+	}
 }
 
 void GameEndButton::ButtonFunction()
@@ -267,5 +284,59 @@ void GameEndButton::ButtonFunction()
 	{
 		SceneManager::GetInstance().ChangeScene(std::string("Ending"));
 		m_isPressed = false;
+	}
+}
+
+void CreditButton::ButtonFunction()
+{
+	if (m_isPressed && m_isActive)
+	{
+		std::cout << "Credit Button Pressed" << std::endl;
+		m_isPressed = false;
+	}
+
+	if (m_isHovered && m_isActive)
+	{
+		m_bitmapRender->ChangeTexture("T_Main_Credit_Select.png");
+	}
+	else if (!m_isHovered && m_isActive)
+	{
+		m_bitmapRender->ChangeTexture("T_Credit.png");
+	}
+}
+
+void SettingButton::ButtonFunction()
+{
+	if (m_isPressed && m_isActive)
+	{
+		std::cout << "Setting Button Pressed" << std::endl;
+		m_isPressed = false;
+	}
+
+	if (m_isHovered && m_isActive)
+	{
+		m_bitmapRender->ChangeTexture("T_Main_Setting_Select.png");
+	}
+	else if (!m_isHovered && m_isActive)
+	{
+		m_bitmapRender->ChangeTexture("T_Main_Setting.png");
+	}
+}
+
+void ExitButton::ButtonFunction()
+{
+	if (m_isPressed && m_isActive)
+	{
+		PostQuitMessage(0);
+		m_isPressed = false;
+	}
+
+	if (m_isHovered && m_isActive)
+	{
+		m_bitmapRender->ChangeTexture("T_Main_Exit_Select.png");
+	}
+	else if (!m_isHovered && m_isActive)
+	{
+		m_bitmapRender->ChangeTexture("T_Main_Exit.png");
 	}
 }
