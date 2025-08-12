@@ -126,6 +126,12 @@ void GameScene::SetUIButton()
 /*	leftUpUI->GetComponent<BitmapRender3D>()->SetShaderType("UIHolo");*/
 	m_WhiteUI = move(WhiteUI);
 
+	unique_ptr<Button> WaxUI = std::make_unique<Button>(-720.0f, -5.0f, 70, 70, "jokerWaxseal.png");
+	m_notUniqueObjectList.emplace_back(WaxUI.get());
+	//leftUpUI->AddComponent<UIText>(-680.0f, 440.0f, 100.0f, 100.0f, 2);
+/*	leftUpUI->GetComponent<BitmapRender3D>()->SetShaderType("UIHolo");*/
+	m_WaxUI = move(WaxUI);
+
 	unique_ptr<Text> BlackCount = std::make_unique<Text>(-900.0f, 50.0f, 200.0f, 100.0f, 1);
 	BlackCount->GetComponent<UIText>()->SetText(12);
 	m_BlackText = BlackCount.get();
@@ -138,7 +144,7 @@ void GameScene::SetUIButton()
 	m_textList.emplace_back(WhiteCount.get());
 	m_useless.emplace_back(move(WhiteCount)); //렌더용
 
-	unique_ptr<Text> WaxCount = std::make_unique<Text>(-820.0f, 20.0f, 200.0f, 100.0f, 1);
+	unique_ptr<Text> WaxCount = std::make_unique<Text>(-820.0f, 30.0f, 200.0f, 100.0f, 1);
 	WaxCount->GetComponent<UIText>()->SetText(0);
 	m_WaxText = WaxCount.get();
 	m_textList.emplace_back(WaxCount.get());
@@ -158,6 +164,13 @@ void GameScene::SetUIButton()
 	m_textList.emplace_back(textScore.get());
 	m_useless.emplace_back(move(textScore));
 
+
+	unique_ptr<Text> popupMsg = std::make_unique<Text>(-1000.f, 300.f, 2000.0f, 100.0f, 1);
+	popupMsg->GetComponent<UIText>()->SetText(L"No more moves available");
+	popupMsg->GetComponent<UIText>()->SetActive(false);
+	m_popupText = popupMsg.get();
+	m_textList.emplace_back(popupMsg.get());
+	m_useless.emplace_back(move(popupMsg));
 
 	//-- unchanged----------------------
 	// 장식품
@@ -281,7 +294,7 @@ void GameScene::SetUIButton()
 
 
 	unique_ptr<JokerButton> jokerButton2 = std::make_unique<JokerButton>(617.0f, 171.0f, 100, 100, "Black.png", 50);
-	jokerButton2->SetButtonJoker(Black, None);
+	jokerButton2->SetButtonJoker(White, jokerFusion);
 	m_buttonList.emplace_back(jokerButton2.get());
 	m_notUniqueObjectList.emplace_back(jokerButton2.get());
 	m_jokerButtons.emplace_back(move(jokerButton2));
@@ -565,7 +578,7 @@ void GameScene::ShopStage()
 	}
 	for (int i = 0; i < 3; i++)
 	{
-		if (dist(rng) < m_shopRng[i])
+		if (dist(rng) < m_shopRng2[i])
 		{
 			StoneAbility stone = StoneAbility::None;
 			JokerStoneInfo info = JokerStoneInfo();
@@ -700,6 +713,16 @@ void GameScene::Update(double deltaTime)
 		if (auto wax = m_WaxText->GetComponent<UIText>())
 			wax->SetText(m_board.m_playerInfo.m_waxMoney);
 
+
+// 	if (m_board.GetPlayer().GetBlackCount() <= m_board.GetStoneTypeAmount(Black))
+// 	{
+// 		m_popupText->GetComponent<UIText>()->SetActive(true);
+// 	}
+// 	else
+// 	{
+// 		m_popupText->GetComponent<UIText>()->SetActive(false);
+// 	}
+
 	if (!DirectX::XMVector3Equal(m_moveDir, DirectX::XMVectorZero()) && m_player)
 	{
 		DirectX::XMVECTOR dir = DirectX::XMVector3Normalize(m_moveDir);
@@ -707,6 +730,7 @@ void GameScene::Update(double deltaTime)
 	}
 
 	m_moveDir = DirectX::XMVectorZero();
+
 	
 	m_gameStateDelayElapsed += deltaTime;
 

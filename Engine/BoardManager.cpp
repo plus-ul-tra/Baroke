@@ -1053,7 +1053,7 @@ void BoardManager::InitializeJokerInfoMap()
 
 	//------------------------------------------------------------------------------------------------ 단청 (set 4)
 
-	m_jokerInfoMap[StoneAbility::jokerFusion] = { "jokerFusion.png", "T_JokerFusion_Tooltip.png", "jokerFusion.wav",			JokerType::Dancheong, 0, 0, 0, 2, 2, 0, 5, 2, true, true, StoneType::White };
+	m_jokerInfoMap[StoneAbility::jokerFusion] = { "jokerFusion.png", "T_JokerFusion_Tooltip.png", "jokerBlackhole.wav",			JokerType::Dancheong, 0, 0, 0, 2, 2, 0, 5, 2, true, true, StoneType::White };
 	m_jokerInfoMap[StoneAbility::jokerTriunion] = { "jokerTriunion.png", "T_JokerFusion_Tooltip.png", "jokerTriunion.wav",		JokerType::Dancheong, 0, 0, 0, 3, 0, 0, 3, 2, true, false, StoneType::White };
 	m_jokerInfoMap[StoneAbility::jokerQuadunion] = { "jokerQuadunion.png", "T_JokerFusion_Tooltip.png", "jokerQuadunion.wav",	JokerType::Dancheong, 0, 0, 0, 4, 0, 0, 4, 3, true, false, StoneType::White };
 

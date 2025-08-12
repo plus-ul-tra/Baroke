@@ -33,6 +33,11 @@ public:
 
 	}
 
+	void SetText(wstring value) {
+		m_Contents = value;
+
+	}
+
 	void TextRender(Renderer& renderer) {
 		renderer.DrawUIText(m_Contents,m_posX,m_posY,m_width,m_height, m_sizeType);
 	}
