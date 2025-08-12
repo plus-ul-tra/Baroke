@@ -123,7 +123,7 @@ public:
 		m_sprite->SetActive(true);
 
 		m_placeEffect = make_unique<OneTimeEffect>(static_cast<float>(position.x) + size / 2, static_cast<float>(position.y) + size / 2, size - offset, size - offset, "cloud_pattern1_sheet.json");
-		m_removePosition = XMVectorSet(-730.0f, -250.0f, 0.0f, 1.0f);
+		m_removePosition = XMVectorSet(-640.0f, 120.0f, 0.0f, 1.0f);
 	}
 };
 
@@ -146,7 +146,7 @@ public:
 		m_sprite->SetActive(true);
 
 		m_placeEffect = make_unique<OneTimeEffect>(static_cast<float>(position.x) + size / 2, static_cast<float>(position.y) + size / 2, size - offset, size - offset, "cloud_pattern1_sheet.json");
-		m_removePosition = XMVectorSet(-730.0f, 100.0f, 0.0f, 1.0f);
+		m_removePosition = XMVectorSet(-800.0f, 120.0f, 0.0f, 1.0f);
 
 		SoundManager::GetInstance().PlaySoundOnce("stonePlace.wav"); // 흑돌 착수 사운드 재생
 	}
