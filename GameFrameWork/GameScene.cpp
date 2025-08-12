@@ -351,7 +351,7 @@ void GameScene::StartStage()
 {
 	m_stageNo++;
 
-	int spawn = 3 + ((m_stageNo * 3) - 1);
+	int spawn = 3 + (m_stageNo  - 1);
 
 	m_resetStageButton->SetWhiteStonePos(m_board.PlaceRandomStones(spawn));
 	m_whiteLeft = m_board.GetStoneTypeAmount(White);
@@ -709,7 +709,7 @@ void GameScene::Update(double deltaTime)
 
 	if (m_buyStonePriceText)
 		if (auto price = m_buyStonePriceText->GetComponent<UIText>())
-			price->SetText(m_board.m_playerInfo.m_blackStoneUpgrade * 2);
+			price->SetText(m_board.m_playerInfo.m_blackStoneUpgrade * 2 + 1);
 
 	if (m_buyRerollPriceText)
 		if (auto price = m_buyRerollPriceText->GetComponent<UIText>())
