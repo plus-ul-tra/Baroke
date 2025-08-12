@@ -910,7 +910,13 @@ bool BoardManager::PlaceStone(POINT selectedPosition, StoneType stoneType, Stone
 		}
 		else
 		{
-			m_board[selectedPosition.x][selectedPosition.y] = make_shared<JokerStone>(BoardToScreenPosition(selectedPosition), m_cell, m_stoneOffset, stoneAbility, m_jokerInfoMap[stoneAbility].jokerType);
+			m_board[selectedPosition.x][selectedPosition.y] = make_shared<JokerStone>
+				(
+					BoardToScreenPosition(selectedPosition),
+					m_cell, m_stoneOffset,
+					stoneAbility,
+					m_jokerInfoMap[stoneAbility].jokerType
+				);
 
 			m_jokerPositions.emplace_back(selectedPosition, stoneAbility);
 		}
@@ -923,7 +929,13 @@ bool BoardManager::PlaceStone(POINT selectedPosition, StoneType stoneType, Stone
 		}
 		else
 		{
-			m_board[selectedPosition.x][selectedPosition.y] = make_shared<JokerStone>(BoardToScreenPosition(selectedPosition), m_cell , m_stoneOffset, stoneAbility, m_jokerInfoMap[stoneAbility].jokerType);
+			m_board[selectedPosition.x][selectedPosition.y] = make_shared<JokerStone>
+				(
+					BoardToScreenPosition(selectedPosition),
+					m_cell , m_stoneOffset,
+					stoneAbility,
+					m_jokerInfoMap[stoneAbility].jokerType
+				);
 
 			m_jokerPositions.emplace_back(selectedPosition, stoneAbility);
 		}
@@ -1034,42 +1046,62 @@ void BoardManager::InitializeJokerInfoMap()
 	m_jokerInfoMap[StoneAbility::None] = {}; // 디폴트 돌
 
 	//------------------------------------------------------------------------------------------------ 일반 (set 1)
-	m_jokerInfoMap[StoneAbility::jokerOmok]			= { "jokerOmok.png", "T_JokerOmok_Tooltip.png", "jokerOmok.wav",				JokerType::Default, 1, 0, 0, 0, 5, 2, 4, 2, true, true, StoneType::Black };
-	m_jokerInfoMap[StoneAbility::jokerSamok]		= { "jokerSamok.png", "T_JokerSamok_Tooltip.png", "jokerSamok.wav",				JokerType::Default, 0, 0, 0, 0, 0, 0, 3, 2, false };
-	m_jokerInfoMap[StoneAbility::jokerSammok]		= { "jokerSammok.png", "T_JokerSammok_Tooltip.png", "jokerSammok.wav",			JokerType::Default, 0, 0, 0, 0, 0, 2, 2, 1, false };
+	m_jokerInfoMap[StoneAbility::jokerOmok]			= { "T_jokerOmok.png", "T_JokerOmok_Tooltip.png", "jokerOmok.wav",				JokerType::Default, 1, 0, 0, 0, 5, 2, 4, 2, true, true, StoneType::Black };
+	m_jokerInfoMap[StoneAbility::jokerSamok]		= { "T_jokerSamok.png", "T_JokerSamok_Tooltip.png", "jokerSamok.wav",				JokerType::Default, 0, 0, 0, 0, 0, 0, 3, 2, false };
+	m_jokerInfoMap[StoneAbility::jokerSammok]		= { "T_jokerSammok.png", "T_JokerSammok_Tooltip.png", "jokerSammok.wav",			JokerType::Default, 0, 0, 0, 0, 0, 2, 2, 1, false };
 
 	//------------------------------------------------------------------------------------------------ 야생 (set 2)
-	m_jokerInfoMap[StoneAbility::jokerEvolution] = { "jokerEvolution.png", "T_JokerEvolution_Tooltip.png", "jokerEvolution.mp3",	JokerType::Wild, 0, 0, 0, 0, 1, 0, 7, 3, false };						// cost 0
-	m_jokerInfoMap[StoneAbility::jokerDansu] = { "jokerDansu.png", "T_JokerDansu_Tooltip.png", "jokerDansu.wav",				JokerType::Wild, 1, 1, 0, 0, 2, 0, 2, 1, true };
-	m_jokerInfoMap[StoneAbility::jokerEgg] = { "jokerEgg.png",	"T_JokerEgg_Tooltip.png", "jokerEgg.wav",						JokerType::Wild, 5, 0, 0, 1, 5, 0, 2, 1, true };
-	m_jokerInfoMap[StoneAbility::jokerOstrichEgg] = { "jokerOstrichEgg.png", "T_JokerEgg_Tooltip.png", "jokerOstrichEgg.mp3",		JokerType::Wild, 4, 0, 0, 2, 0, 0, 0, 2, true, false };
-	m_jokerInfoMap[StoneAbility::jokerPeacock] = { "jokerPeacock.png",	"T_JokerPeacock_Tooltip.png", "jokerPeacockActive.mp3",	JokerType::Wild, 1, 1, 0, 3, 3, 1, 6, 3, true, true, StoneType::Black };				// cost 4
+	m_jokerInfoMap[StoneAbility::jokerEvolution]	= { "T_jokerEvolution.png", "T_JokerEvolution_Tooltip.png", "jokerEvolution.mp3",	JokerType::Wild, 0, 0, 0, 0, 1, 0, 7, 3, false };						// cost 0
+	m_jokerInfoMap[StoneAbility::jokerDansu]		= { "T_jokerDansu.png", "T_JokerDansu_Tooltip.png", "jokerDansu.wav",				JokerType::Wild, 1, 1, 0, 0, 2, 0, 2, 1, true };
+	m_jokerInfoMap[StoneAbility::jokerEgg]			= { "T_jokerEgg.png",	"T_JokerEgg_Tooltip.png", "jokerEgg.wav",					JokerType::Wild, 5, 0, 0, 1, 5, 0, 2, 1, true };
+	m_jokerInfoMap[StoneAbility::jokerOstrichEgg]	= { "T_jokerOstrichEgg.png", "T_JokerEgg_Tooltip.png", "jokerOstrichEgg.mp3",		JokerType::Wild, 4, 0, 0, 2, 0, 0, 0, 2, true, false };
+	m_jokerInfoMap[StoneAbility::jokerPeacock]		= { "T_jokerPeacock.png",	"T_JokerPeacock_Tooltip.png", "jokerPeacockActive.mp3",	JokerType::Wild, 1, 1, 0, 3, 3, 1, 6, 3, true, true, StoneType::Black };				// cost 4
 
 	//------------------------------------------------------------------------------------------------ 우주 (set 3)
-	m_jokerInfoMap[StoneAbility::jokerTeleport] = { "jokerTeleport.png", "T_JokerTeleport_Tooltip.png", "jokerTeleport.wav",	JokerType::Space, 1, 1, 0, 0, 2, 0, 4, 2, true };
-	m_jokerInfoMap[StoneAbility::jokerExplode] = { "jokerExplode.png",	"T_JokerExplode_Tooltip.png", "jokerExplode.wav",		JokerType::Space, 1, 1, 0, 1, 3, 0, 6, 3, true };
-	m_jokerInfoMap[StoneAbility::jokerMagnetic] = { "jokerMagnetic.png", "T_JokerMagnetic_Tooltip.png", "jokerMagnetic.wav",	JokerType::Space, 1, 1, 0, 3, 4, 2, 5, 2, true };
-	m_jokerInfoMap[StoneAbility::jokerBlackhole] = { "jokerBlackhole.png", "T_JokerBlackhole_Tooltip.png", "jokerBlackhole.wav",	JokerType::Space, 1, 1, 0, 5, 10, 0, 8, 3, true };
+	m_jokerInfoMap[StoneAbility::jokerTeleport]		= { "T_jokerTeleport.png", "T_JokerTeleport_Tooltip.png", "jokerTeleport.wav",	JokerType::Space, 1, 1, 0, 0, 2, 0, 4, 2, true };
+	m_jokerInfoMap[StoneAbility::jokerExplode]		= { "T_jokerExplode.png",	"T_JokerExplode_Tooltip.png", "jokerExplode.wav",		JokerType::Space, 1, 1, 0, 1, 3, 0, 6, 3, true };
+	m_jokerInfoMap[StoneAbility::jokerMagnetic]		= { "T_jokerMagnetic.png", "T_JokerMagnetic_Tooltip.png", "jokerMagnetic.wav",	JokerType::Space, 1, 1, 0, 3, 4, 2, 5, 2, true };
+	m_jokerInfoMap[StoneAbility::jokerBlackhole]	= { "T_Balckhole.png", "T_JokerBlackhole_Tooltip.png", "jokerBlackhole.wav",	JokerType::Space, 1, 1, 0, 5, 10, 0, 8, 3, true };
 
 	//------------------------------------------------------------------------------------------------ 단청 (set 4)
-
-	m_jokerInfoMap[StoneAbility::jokerFusion] = { "jokerFusion.png", "T_JokerFusion_Tooltip.png", "jokerBlackhole.wav",			JokerType::Dancheong, 0, 0, 0, 2, 2, 0, 5, 2, true, true, StoneType::White };
-	m_jokerInfoMap[StoneAbility::jokerTriunion] = { "jokerTriunion.png", "T_JokerFusion_Tooltip.png", "jokerTriunion.wav",		JokerType::Dancheong, 0, 0, 0, 3, 0, 0, 3, 2, true, false, StoneType::White };
-	m_jokerInfoMap[StoneAbility::jokerQuadunion] = { "jokerQuadunion.png", "T_JokerFusion_Tooltip.png", "jokerQuadunion.wav",	JokerType::Dancheong, 0, 0, 0, 4, 0, 0, 4, 3, true, false, StoneType::White };
+	m_jokerInfoMap[StoneAbility::jokerFusion]		= { "T_jokerFusion.png", "T_JokerFusion_Tooltip.png", "jokerBlackhole.wav",		JokerType::Dancheong, 0, 0, 0, 2, 2, 0, 5, 2, true, true, StoneType::White };
+	m_jokerInfoMap[StoneAbility::jokerTriunion]		= { "T_jokerTriunion.png", "T_JokerFusion_Tooltip.png", "jokerTriunion.wav",		JokerType::Dancheong, 0, 0, 0, 3, 0, 0, 3, 2, true, false, StoneType::White };
+	m_jokerInfoMap[StoneAbility::jokerQuadunion]	= { "T_jokerQuadunion.png", "T_JokerFusion_Tooltip.png", "jokerQuadunion.wav",	JokerType::Dancheong, 0, 0, 0, 4, 0, 0, 4, 3, true, false, StoneType::White };
 
 	//------------------------------------------------------------------------------------------------ 할로윈 (set 6)
-	m_jokerInfoMap[StoneAbility::jokerSplit] = { "jokerSplit.png", "T_JokerSplit_Tooltip.png", "jokerSplit.mp3",				JokerType::Halloween, 3, 0, 0, 20, 2, 0, 5, 2, true };
-	m_jokerInfoMap[StoneAbility::jokerWaxseal] = { "jokerWaxseal.png",	"T_JokerWaxseal_Tooltip.png", "jokerWaxseal.mp3",		JokerType::Halloween, 0, 0, 0, 1, 0, 0, 3, 2, true, true, StoneType::Black };
-	m_jokerInfoMap[StoneAbility::jokerFlip] = { "jokerFlip.png", "T_JokerFlip_Tooltip.png", "jokerFlip.wav",				JokerType::Halloween, 1, 1, 0, 0, 3, 1, 6, 2, true, true, StoneType::Black };
-	m_jokerInfoMap[StoneAbility::jokerOthello] = { "jokerOthello.png", "T_JokerOthello_Tooltip.png", "jokerOthello.wav",		JokerType::Halloween, 1, 0, 0, 3, 2, 4, 5, 1, true, true, StoneType::Black };
-	m_jokerInfoMap[StoneAbility::jokerMrchan] = { "jokerMrchan.png", "T_JokerMrchan_Tooltip.png", "jokerMrchan.wav",			JokerType::Halloween, 1, 1, 0, 0, 0, 0, 0, 3, true };
+	m_jokerInfoMap[StoneAbility::jokerSplit]		= { "T_jokerSplit.png", "T_JokerSplit_Tooltip.png", "jokerSplit.mp3",				JokerType::Halloween, 3, 0, 0, 20, 2, 0, 5, 2, true };
+	m_jokerInfoMap[StoneAbility::jokerWaxseal]		= { "T_jokerWaxseal.png",	"T_JokerWaxseal_Tooltip.png", "jokerWaxseal.mp3",		JokerType::Halloween, 0, 0, 0, 1, 0, 0, 3, 2, true, true, StoneType::Black };
+	m_jokerInfoMap[StoneAbility::jokerFlip]			= { "T_jokerFlip.png", "T_JokerFlip_Tooltip.png", "jokerFlip.wav",				JokerType::Halloween, 1, 1, 0, 0, 3, 1, 6, 2, true, true, StoneType::Black };
+	m_jokerInfoMap[StoneAbility::jokerOthello]		= { "T_jokerOthello.png", "T_JokerOthello_Tooltip.png", "jokerOthello.wav",		JokerType::Halloween, 1, 0, 0, 3, 2, 4, 5, 1, true, true, StoneType::Black };
+	m_jokerInfoMap[StoneAbility::jokerMrchan]		= { "T_jokerMrchan.png", "T_JokerMrchan_Tooltip.png", "jokerMrchan.wav",			JokerType::Halloween, 1, 1, 0, 0, 0, 0, 0, 3, true };
 
 	//------------------------------------------------------------------------------------------------ 자연 (set 7)
-	m_jokerInfoMap[StoneAbility::jokerShadow] = { "jokerShadow.png", "T_JokerShadow_Tooltip.png", "jokerShadow.wav",			JokerType::Natural, 1, 1, 0, 4, 3, 0, 4, 2, true };
-	m_jokerInfoMap[StoneAbility::jokerLight] = { "jokerLight.png", "T_JokerLight_Tooltip.png", "jokerLight.mp3",				JokerType::Natural, 1, 1, 0, 0, 0, 0, 4, 2, true, true, StoneType::Black };
-	m_jokerInfoMap[StoneAbility::jokerTime] = { "jokerTime.png", "T_JokerTime_Tooltip.png", "jokerTime.mp3",				JokerType::Natural, 3, 0, 0, 2, 0, 2, 7, 3, true };
-	m_jokerInfoMap[StoneAbility::jokerWind] = { "jokerWind.png", "T_JokerWind_Tooltip.png", "jokerWind.wav",				JokerType::Natural, 2, 5, 0, 2, 4, 1, 4, 2, true };
+	m_jokerInfoMap[StoneAbility::jokerShadow]		= { "T_jokerShadow.png", "T_JokerShadow_Tooltip.png", "jokerShadow.wav",			JokerType::Natural, 1, 1, 0, 4, 3, 0, 4, 2, true };
+	m_jokerInfoMap[StoneAbility::jokerLight]		= { "T_jokerLight.png", "T_JokerLight_Tooltip.png", "jokerLight.mp3",				JokerType::Natural, 1, 1, 0, 0, 0, 0, 4, 2, true, true, StoneType::Black };
+	m_jokerInfoMap[StoneAbility::jokerTime]			= { "T_jokerTime.png", "T_JokerTime_Tooltip.png", "jokerTime.mp3",				JokerType::Natural, 3, 0, 0, 2, 0, 2, 7, 3, true };
+	m_jokerInfoMap[StoneAbility::jokerWind]			= { "T_jokerWind.png", "T_JokerWind_Tooltip.png", "jokerWind.wav",				JokerType::Natural, 2, 5, 0, 2, 4, 1, 4, 2, true };
 
+
+	// 조커 돌 애니메이션
+	m_jokerAnimationMap[StoneAbility::jokerDansu] = "jokerDansu.json";
+	m_jokerAnimationMap[StoneAbility::jokerEgg] = "jokerEgg.json";
+	m_jokerAnimationMap[StoneAbility::jokerOstrichEgg] = "jokerOstrichEgg.json";
+
+	m_jokerAnimationMap[StoneAbility::jokerTeleport] = "jokerTeleport.json";
+	m_jokerAnimationMap[StoneAbility::jokerExplode] = "jokerExplode.json";
+	m_jokerAnimationMap[StoneAbility::jokerMagnetic] = "jokerMagnetic.json";
+
+	m_jokerAnimationMap[StoneAbility::jokerFusion] = "jokerFusion.json";
+	m_jokerAnimationMap[StoneAbility::jokerTriunion] = "jokerTriunion.json";
+	m_jokerAnimationMap[StoneAbility::jokerQuadunion] = "jokerQuadunion.json";
+
+	m_jokerAnimationMap[StoneAbility::jokerSplit] = "jokerSplit.json";
+	m_jokerAnimationMap[StoneAbility::jokerFlip] = "jokerFlip.json";
+
+	m_jokerAnimationMap[StoneAbility::jokerShadow] = "jokerShadow.json";
+	m_jokerAnimationMap[StoneAbility::jokerLight] = "jokerLight.json";
+	m_jokerAnimationMap[StoneAbility::jokerTime] = "jokerTime.json";
+	m_jokerAnimationMap[StoneAbility::jokerWind] = "jokerWind.json";
 }
 
 int BoardManager::CountLiberty(

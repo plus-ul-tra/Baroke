@@ -30,7 +30,7 @@ void GameScene::initGame()
 
 void GameScene::SetUIButton()
 {
-	m_shopBuyStoneButton = make_unique<ShopBuyStoneButton>(-300.0f, -300.0f, 75, 75, "Black.png");
+	m_shopBuyStoneButton = make_unique<ShopBuyStoneButton>(-300.0f, -300.0f, 75, 75, "T_Blackstone.png");
 	m_shopBuyStoneButton->SetShowAndActive(false);
 	m_buttonList.emplace_back(m_shopBuyStoneButton.get());
 	m_notUniqueObjectList.emplace_back(m_shopBuyStoneButton.get());
@@ -114,19 +114,19 @@ void GameScene::SetUIButton()
 	leftUI->GetComponent<BitmapRender3D>()->SetShaderType("UIHolo");
 	m_leftUI = move(leftUI);
 	//--------------------------흑돌 흰돌 왁스----------------------------------
-	unique_ptr<Button> BlackUI = std::make_unique<Button>(-800.0f, 120.0f, 110, 110, "Black.png");
+	unique_ptr<Button> BlackUI = std::make_unique<Button>(-800.0f, 120.0f, 110, 110, "T_Blackstone.png");
 	m_notUniqueObjectList.emplace_back(BlackUI.get());
 	//leftUpUI->AddComponent<UIText>(-680.0f, 440.0f, 100.0f, 100.0f, 2);
 /*	leftUpUI->GetComponent<BitmapRender3D>()->SetShaderType("UIHolo");*/
 	m_BlackUI = move(BlackUI);
 
-	unique_ptr<Button> WhiteUI = std::make_unique<Button>(-640.0f, 120.0f, 110, 110, "White.png");
+	unique_ptr<Button> WhiteUI = std::make_unique<Button>(-640.0f, 120.0f, 110, 110, "T_whitestone.png");
 	m_notUniqueObjectList.emplace_back(WhiteUI.get());
 	//leftUpUI->AddComponent<UIText>(-680.0f, 440.0f, 100.0f, 100.0f, 2);
 /*	leftUpUI->GetComponent<BitmapRender3D>()->SetShaderType("UIHolo");*/
 	m_WhiteUI = move(WhiteUI);
 
-	unique_ptr<Button> WaxUI = std::make_unique<Button>(-720.0f, -5.0f, 70, 70, "jokerWaxseal.png");
+	unique_ptr<Button> WaxUI = std::make_unique<Button>(-720.0f, -5.0f, 70, 70, "T_jokerWaxseal.png");
 	m_notUniqueObjectList.emplace_back(WaxUI.get());
 	//leftUpUI->AddComponent<UIText>(-680.0f, 440.0f, 100.0f, 100.0f, 2);
 /*	leftUpUI->GetComponent<BitmapRender3D>()->SetShaderType("UIHolo");*/
@@ -286,56 +286,56 @@ void GameScene::SetUIButton()
 
 
 	// ------------------------------------joker button-------------------------------------------
-	unique_ptr<JokerButton> jokerButton1 = std::make_unique<JokerButton>(617.0f, 341.0f, 100, 100, "Black.png", 50);
+	unique_ptr<JokerButton> jokerButton1 = std::make_unique<JokerButton>(617.0f, 341.0f, 100, 100, "T_Blackstone.png", 50);
 	jokerButton1->SetButtonJoker(Black, jokerWaxseal);
 	m_buttonList.emplace_back(jokerButton1.get());
 	m_notUniqueObjectList.emplace_back(jokerButton1.get());
 	m_jokerButtons.emplace_back(move(jokerButton1));
 
 
-	unique_ptr<JokerButton> jokerButton2 = std::make_unique<JokerButton>(617.0f, 171.0f, 100, 100, "Black.png", 50);
+	unique_ptr<JokerButton> jokerButton2 = std::make_unique<JokerButton>(617.0f, 171.0f, 100, 100, "T_Blackstone.png", 50);
 	jokerButton2->SetButtonJoker(White, jokerFusion);
 	m_buttonList.emplace_back(jokerButton2.get());
 	m_notUniqueObjectList.emplace_back(jokerButton2.get());
 	m_jokerButtons.emplace_back(move(jokerButton2));
 
 
-	unique_ptr<JokerButton> jokerButton3 = std::make_unique<JokerButton>(617.0f, 1.0f, 100, 100, "Black.png");
+	unique_ptr<JokerButton> jokerButton3 = std::make_unique<JokerButton>(617.0f, 1.0f, 100, 100, "T_Blackstone.png");
 	jokerButton3->SetButtonJoker(Black, None);
 	m_buttonList.emplace_back(jokerButton3.get()); 
 	m_notUniqueObjectList.emplace_back(jokerButton3.get());
 	m_jokerButtons.emplace_back(move(jokerButton3));
 
 
-	unique_ptr<JokerButton> jokerButton4 = std::make_unique<JokerButton>(617.0f, -172.0f, 100, 100, "Black.png");
+	unique_ptr<JokerButton> jokerButton4 = std::make_unique<JokerButton>(617.0f, -172.0f, 100, 100, "T_Blackstone.png");
 	jokerButton4->SetButtonJoker(Black, None);
 	m_buttonList.emplace_back(jokerButton4.get());
 	m_notUniqueObjectList.emplace_back(jokerButton4.get());
 	m_jokerButtons.emplace_back(move(jokerButton4));
 
 
-	unique_ptr<JokerButton> jokerButton5 = std::make_unique<JokerButton>(617.0f, -342.0f, 100, 100, "Black.png");
+	unique_ptr<JokerButton> jokerButton5 = std::make_unique<JokerButton>(617.0f, -342.0f, 100, 100, "T_Blackstone.png");
 	jokerButton5->SetButtonJoker(Black, None);
 	m_buttonList.emplace_back(jokerButton5.get());
 	m_notUniqueObjectList.emplace_back(jokerButton5.get());
 	m_jokerButtons.emplace_back(move(jokerButton5));
 
 	// 액티브 조커
-	unique_ptr<JokerButton> jokerButton6 = std::make_unique<JokerButton>(783.0f, 1.0f, 100, 100, "Black.png");
+	unique_ptr<JokerButton> jokerButton6 = std::make_unique<JokerButton>(781.0f, 1.0f, 100, 100, "T_Blackstone.png");
 	jokerButton6->SetButtonJoker(Black, None);
 	m_buttonList.emplace_back(jokerButton6.get());
 	m_notUniqueObjectList.emplace_back(jokerButton6.get());
 	m_jokerButtons.emplace_back(move(jokerButton6));
 
 
-	unique_ptr<JokerButton> jokerButton7 = std::make_unique<JokerButton>(783.0f, -172.0f, 100, 100, "Black.png");
+	unique_ptr<JokerButton> jokerButton7 = std::make_unique<JokerButton>(781.0f, -172.0f, 100, 100, "T_Blackstone.png");
 	jokerButton7->SetButtonJoker(Black, None);
 	m_buttonList.emplace_back(jokerButton7.get());
 	m_notUniqueObjectList.emplace_back(jokerButton7.get());
 	m_jokerButtons.emplace_back(move(jokerButton7));
 
 
-	unique_ptr<JokerButton> jokerButton8 = std::make_unique<JokerButton>(783.0f, -342.0f, 100, 100, "Black.png");
+	unique_ptr<JokerButton> jokerButton8 = std::make_unique<JokerButton>(781.0f, -342.0f, 100, 100, "T_Blackstone.png");
 	jokerButton8->SetButtonJoker(Black, None);
 	m_buttonList.emplace_back(jokerButton8.get());
 	m_notUniqueObjectList.emplace_back(jokerButton8.get());
@@ -716,7 +716,12 @@ void GameScene::Update(double deltaTime)
 	if (m_shopJokerTexts)
 		for (int i = 0; i < 6; i++)
 			if (auto text = m_shopJokerTexts[i]->GetComponent<UIText>())
+			{
 				text->SetText(m_jokerInfoMap[m_shopJokerButtons[i]->GetJokerAbility()].costWhite);
+
+				if (m_shopJokerButtons[i]->IsActive()) text->SetActive(true);
+				else text->SetActive(false);
+			}
 
 	if (m_scoreText)
 		if (auto score = m_scoreText->GetComponent<UIText>())

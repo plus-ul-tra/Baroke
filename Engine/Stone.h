@@ -117,7 +117,7 @@ public:
 		m_transform->SetScale(XMVectorSet(1.0f, 1.0f, 1.0f, 1.0f));
 		m_transform->SetRotation(0.0f);
 
-		m_sprite = AddComponent<BitmapRender3D>("White.png", size - offset, size - offset);
+		m_sprite = AddComponent<BitmapRender3D>("T_whitestone.png", (size - offset) * 1.5f, (size - offset) * 1.5f);
 		//m_sprite->SetShaderType("SetRed"); 
 		m_sprite->SetOrder(1);
 		m_sprite->SetActive(true);
@@ -140,7 +140,7 @@ public:
 		m_transform->SetScale(XMVectorSet(1.0f, 1.0f, 1.0f, 1.0f));
 		m_transform->SetRotation(0.0f);
 
-		m_sprite = AddComponent<BitmapRender3D>("Black.png", size - offset, size - offset);
+		m_sprite = AddComponent<BitmapRender3D>("T_Blackstone.png", (size - offset) * 1.5f, (size - offset) * 1.5f);
 		//m_sprite->SetShaderType("SetRed"); 
 		m_sprite->SetOrder(1);
 		m_sprite->SetActive(true);
@@ -154,7 +154,7 @@ public:
 
 struct JokerStoneInfo // 조커 돌 정보
 {
-	string fileName = "White.png"; // 조커 돌 이미지 파일 이름
+	string fileName = "T_whitestone.png"; // 조커 돌 이미지 파일 이름
 	string toolTipName = "tool1.png"; // 조커 돌 툴팁 이름
 	string soundName = "stonePlace.wav"; // 조커 돌 착수 사운드 이름
 
@@ -166,7 +166,7 @@ struct JokerStoneInfo // 조커 돌 정보
 	int functionDuration = 0; // 조커 돌 능력 함수 지속 시간 // 0이면 한번만 실행
 	int functionVariable = 0; // 조커 돌 능력 함수에 사용되는 변수 // 능력에 따라 다름
 
-	int costBlack		 = 0;
+	int costBlack = 0;
 	int returnBlack = 0;
 
 	int costWhite = 0; // 상점 비용
@@ -177,6 +177,7 @@ struct JokerStoneInfo // 조커 돌 정보
 	StoneType stoneType = StoneType::Joker;
 };
 extern unordered_map<StoneAbility, JokerStoneInfo> m_jokerInfoMap; // 조커 돌 능력 정보 맵 // 능력의 기본값 저장용
+extern unordered_map<StoneAbility, string> m_jokerAnimationMap; // 조커 돌 애니메이션 맵 // 능력의 애니메이션 이름 저장용
 
 class JokerStone : public Stone
 {
@@ -192,7 +193,11 @@ public:
 		m_transform->SetScale(XMVectorSet(1.0f, 1.0f, 1.0f, 1.0f));
 		m_transform->SetRotation(0.0f);
 
-		m_sprite = AddComponent<BitmapRender3D>(m_jokerInfo.fileName, size - offset, size - offset);
+		if (m_jokerAnimationMap.find(ability) != m_jokerAnimationMap.end())
+		{
+			m_sprite = AddComponent<BitmapRender3D>(m_jokerAnimationMap[ability], (size - offset) * 1.5f, (size - offset) * 1.5f);
+		}
+		else m_sprite = AddComponent<BitmapRender3D>(m_jokerInfo.fileName, (size - offset) * 1.5f, (size - offset) * 1.5f);
 		m_sprite->SetOrder(2);
 		m_sprite->SetActive(true);
 
