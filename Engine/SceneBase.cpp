@@ -39,6 +39,7 @@ void SceneBase::Render(Renderer& renderer) {
 	}
 	for (const auto& notUniqueObject : m_notUniqueObjectList)
 	{
+		notUniqueObject->Render(renderer);
 		if (auto bitmapRenderComp = notUniqueObject->GetComponent<BitmapRender3D>())
 		{
 			if (bitmapRenderComp->IsActive())
@@ -46,8 +47,6 @@ void SceneBase::Render(Renderer& renderer) {
 				bitmapRenderComp->Render(renderer);
 			}
 		}
-		notUniqueObject->Render(renderer);
-		
 	}
   
   	for (const auto& button : m_buttonList)

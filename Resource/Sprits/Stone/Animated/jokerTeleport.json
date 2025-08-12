@@ -1,0 +1,247 @@
+{ "frames": [
+   {
+    "filename": "jokerTeleport 0.png",
+    "frame": { "x": 0, "y": 0, "w": 200, "h": 200 },
+    "rotated": false,
+    "trimmed": false,
+    "spriteSourceSize": { "x": 0, "y": 0, "w": 200, "h": 200 },
+    "sourceSize": { "w": 200, "h": 200 },
+    "duration": 100
+   },
+   {
+    "filename": "jokerTeleport 1.png",
+    "frame": { "x": 200, "y": 0, "w": 200, "h": 200 },
+    "rotated": false,
+    "trimmed": false,
+    "spriteSourceSize": { "x": 0, "y": 0, "w": 200, "h": 200 },
+    "sourceSize": { "w": 200, "h": 200 },
+    "duration": 100
+   },
+   {
+    "filename": "jokerTeleport 2.png",
+    "frame": { "x": 400, "y": 0, "w": 200, "h": 200 },
+    "rotated": false,
+    "trimmed": false,
+    "spriteSourceSize": { "x": 0, "y": 0, "w": 200, "h": 200 },
+    "sourceSize": { "w": 200, "h": 200 },
+    "duration": 100
+   },
+   {
+    "filename": "jokerTeleport 3.png",
+    "frame": { "x": 600, "y": 0, "w": 200, "h": 200 },
+    "rotated": false,
+    "trimmed": false,
+    "spriteSourceSize": { "x": 0, "y": 0, "w": 200, "h": 200 },
+    "sourceSize": { "w": 200, "h": 200 },
+    "duration": 100
+   },
+   {
+    "filename": "jokerTeleport 4.png",
+    "frame": { "x": 800, "y": 0, "w": 200, "h": 200 },
+    "rotated": false,
+    "trimmed": false,
+    "spriteSourceSize": { "x": 0, "y": 0, "w": 200, "h": 200 },
+    "sourceSize": { "w": 200, "h": 200 },
+    "duration": 100
+   },
+   {
+    "filename": "jokerTeleport 5.png",
+    "frame": { "x": 1000, "y": 0, "w": 200, "h": 200 },
+    "rotated": false,
+    "trimmed": false,
+    "spriteSourceSize": { "x": 0, "y": 0, "w": 200, "h": 200 },
+    "sourceSize": { "w": 200, "h": 200 },
+    "duration": 100
+   },
+   {
+    "filename": "jokerTeleport 6.png",
+    "frame": { "x": 1200, "y": 0, "w": 200, "h": 200 },
+    "rotated": false,
+    "trimmed": false,
+    "spriteSourceSize": { "x": 0, "y": 0, "w": 200, "h": 200 },
+    "sourceSize": { "w": 200, "h": 200 },
+    "duration": 100
+   },
+   {
+    "filename": "jokerTeleport 7.png",
+    "frame": { "x": 1400, "y": 0, "w": 200, "h": 200 },
+    "rotated": false,
+    "trimmed": false,
+    "spriteSourceSize": { "x": 0, "y": 0, "w": 200, "h": 200 },
+    "sourceSize": { "w": 200, "h": 200 },
+    "duration": 100
+   },
+   {
+    "filename": "jokerTeleport 8.png",
+    "frame": { "x": 1600, "y": 0, "w": 200, "h": 200 },
+    "rotated": false,
+    "trimmed": false,
+    "spriteSourceSize": { "x": 0, "y": 0, "w": 200, "h": 200 },
+    "sourceSize": { "w": 200, "h": 200 },
+    "duration": 100
+   },
+   {
+    "filename": "jokerTeleport 9.png",
+    "frame": { "x": 1800, "y": 0, "w": 200, "h": 200 },
+    "rotated": false,
+    "trimmed": false,
+    "spriteSourceSize": { "x": 0, "y": 0, "w": 200, "h": 200 },
+    "sourceSize": { "w": 200, "h": 200 },
+    "duration": 100
+   },
+   {
+    "filename": "jokerTeleport 10.png",
+    "frame": { "x": 2000, "y": 0, "w": 200, "h": 200 },
+    "rotated": false,
+    "trimmed": false,
+    "spriteSourceSize": { "x": 0, "y": 0, "w": 200, "h": 200 },
+    "sourceSize": { "w": 200, "h": 200 },
+    "duration": 100
+   },
+   {
+    "filename": "jokerTeleport 11.png",
+    "frame": { "x": 2200, "y": 0, "w": 200, "h": 200 },
+    "rotated": false,
+    "trimmed": false,
+    "spriteSourceSize": { "x": 0, "y": 0, "w": 200, "h": 200 },
+    "sourceSize": { "w": 200, "h": 200 },
+    "duration": 100
+   },
+   {
+    "filename": "jokerTeleport 12.png",
+    "frame": { "x": 2400, "y": 0, "w": 200, "h": 200 },
+    "rotated": false,
+    "trimmed": false,
+    "spriteSourceSize": { "x": 0, "y": 0, "w": 200, "h": 200 },
+    "sourceSize": { "w": 200, "h": 200 },
+    "duration": 100
+   },
+   {
+    "filename": "jokerTeleport 13.png",
+    "frame": { "x": 2600, "y": 0, "w": 200, "h": 200 },
+    "rotated": false,
+    "trimmed": false,
+    "spriteSourceSize": { "x": 0, "y": 0, "w": 200, "h": 200 },
+    "sourceSize": { "w": 200, "h": 200 },
+    "duration": 100
+   },
+   {
+    "filename": "jokerTeleport 14.png",
+    "frame": { "x": 2800, "y": 0, "w": 200, "h": 200 },
+    "rotated": false,
+    "trimmed": false,
+    "spriteSourceSize": { "x": 0, "y": 0, "w": 200, "h": 200 },
+    "sourceSize": { "w": 200, "h": 200 },
+    "duration": 100
+   },
+   {
+    "filename": "jokerTeleport 15.png",
+    "frame": { "x": 3000, "y": 0, "w": 200, "h": 200 },
+    "rotated": false,
+    "trimmed": false,
+    "spriteSourceSize": { "x": 0, "y": 0, "w": 200, "h": 200 },
+    "sourceSize": { "w": 200, "h": 200 },
+    "duration": 100
+   },
+   {
+    "filename": "jokerTeleport 16.png",
+    "frame": { "x": 3200, "y": 0, "w": 200, "h": 200 },
+    "rotated": false,
+    "trimmed": false,
+    "spriteSourceSize": { "x": 0, "y": 0, "w": 200, "h": 200 },
+    "sourceSize": { "w": 200, "h": 200 },
+    "duration": 100
+   },
+   {
+    "filename": "jokerTeleport 17.png",
+    "frame": { "x": 3400, "y": 0, "w": 200, "h": 200 },
+    "rotated": false,
+    "trimmed": false,
+    "spriteSourceSize": { "x": 0, "y": 0, "w": 200, "h": 200 },
+    "sourceSize": { "w": 200, "h": 200 },
+    "duration": 100
+   },
+   {
+    "filename": "jokerTeleport 18.png",
+    "frame": { "x": 3600, "y": 0, "w": 200, "h": 200 },
+    "rotated": false,
+    "trimmed": false,
+    "spriteSourceSize": { "x": 0, "y": 0, "w": 200, "h": 200 },
+    "sourceSize": { "w": 200, "h": 200 },
+    "duration": 100
+   },
+   {
+    "filename": "jokerTeleport 19.png",
+    "frame": { "x": 3800, "y": 0, "w": 200, "h": 200 },
+    "rotated": false,
+    "trimmed": false,
+    "spriteSourceSize": { "x": 0, "y": 0, "w": 200, "h": 200 },
+    "sourceSize": { "w": 200, "h": 200 },
+    "duration": 100
+   },
+   {
+    "filename": "jokerTeleport 20.png",
+    "frame": { "x": 4000, "y": 0, "w": 200, "h": 200 },
+    "rotated": false,
+    "trimmed": false,
+    "spriteSourceSize": { "x": 0, "y": 0, "w": 200, "h": 200 },
+    "sourceSize": { "w": 200, "h": 200 },
+    "duration": 100
+   },
+   {
+    "filename": "jokerTeleport 21.png",
+    "frame": { "x": 4200, "y": 0, "w": 200, "h": 200 },
+    "rotated": false,
+    "trimmed": false,
+    "spriteSourceSize": { "x": 0, "y": 0, "w": 200, "h": 200 },
+    "sourceSize": { "w": 200, "h": 200 },
+    "duration": 100
+   },
+   {
+    "filename": "jokerTeleport 22.png",
+    "frame": { "x": 4400, "y": 0, "w": 200, "h": 200 },
+    "rotated": false,
+    "trimmed": false,
+    "spriteSourceSize": { "x": 0, "y": 0, "w": 200, "h": 200 },
+    "sourceSize": { "w": 200, "h": 200 },
+    "duration": 100
+   },
+   {
+    "filename": "jokerTeleport 23.png",
+    "frame": { "x": 4600, "y": 0, "w": 200, "h": 200 },
+    "rotated": false,
+    "trimmed": false,
+    "spriteSourceSize": { "x": 0, "y": 0, "w": 200, "h": 200 },
+    "sourceSize": { "w": 200, "h": 200 },
+    "duration": 100
+   },
+   {
+    "filename": "jokerTeleport 24.png",
+    "frame": { "x": 4800, "y": 0, "w": 200, "h": 200 },
+    "rotated": false,
+    "trimmed": false,
+    "spriteSourceSize": { "x": 0, "y": 0, "w": 200, "h": 200 },
+    "sourceSize": { "w": 200, "h": 200 },
+    "duration": 100
+   },
+   {
+    "filename": "jokerTeleport 25.png",
+    "frame": { "x": 5000, "y": 0, "w": 200, "h": 200 },
+    "rotated": false,
+    "trimmed": false,
+    "spriteSourceSize": { "x": 0, "y": 0, "w": 200, "h": 200 },
+    "sourceSize": { "w": 200, "h": 200 },
+    "duration": 100
+   }
+ ],
+ "meta": {
+  "app": "https://www.aseprite.org/",
+  "version": "1.3.14.4-x64",
+  "format": "RGBA8888",
+  "size": { "w": 5200, "h": 200 },
+  "scale": "1",
+    "frameTags": [
+        {"name": "TagWave", "from": 0, "to": 25, "direction": "forward", "color": "#000000ff", "loop": true}
+    ]
+ }
+}

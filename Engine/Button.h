@@ -17,7 +17,6 @@ enum class buttonType
 	TutorialToTitle,
 	GameToEnding,
 	EndingToTitle,
-
 };
 
 class Button : public Object
@@ -26,10 +25,9 @@ protected:
 	Transform* m_transform = nullptr;
 	BitmapRender3D* m_bitmapRender = nullptr;
 	unique_ptr<Object> m_textObject = nullptr;
-
-
+	unique_ptr<Object> m_shopIcon = nullptr;
+	unique_ptr<Object> m_priceIcon = nullptr;
 	Button* m_otherButton = nullptr; // 다른 버튼과 연동할 때 사용
-
 
 	string m_originTexture;
 	string m_selectedTexture; //클릭시 바뀔텍스쳐
@@ -256,12 +254,17 @@ class ShopJokerButton : public Button
 
 public:
 	ShopJokerButton(float posX, float posY, float width, float height, const std::string& bitmapFile, int order = 0)
-		: Button(posX, posY, width, height, bitmapFile, order) {}
+		: Button(posX, posY, width, height, bitmapFile, order)
+	{
+		m_shopIcon = make_unique<NewObject>(m_transform->GetPosition().m128_f32[0] + 3.0f, m_transform->GetPosition().m128_f32[1] - 10.0f, 100.0f, 200.0f, 0.0f, "T_Store_Joker.png");
+		m_priceIcon = make_unique<NewObject>(m_transform->GetPosition().m128_f32[0] - 10.0f, m_transform->GetPosition().m128_f32[1] - 66.0f, 30.0f, 30.0f, 0.0f, "T_Store_Joker_Stone.png");
+	}
 
 	void SetButtonJoker(JokerStoneInfo jokerInfo, StoneAbility ability);
 	void SetButton(vector<unique_ptr<JokerButton>>* jokerButton) { m_jokerButton = jokerButton; }
 
 	void SetShowAndActive(bool active);
+	bool IsActive() { return m_isActive; }
 	StoneAbility GetJokerAbility() const { return m_jokerAbility; }
 };
 
@@ -271,7 +274,11 @@ class ShopBuyStoneButton : public Button
 
 	public:
 	ShopBuyStoneButton(float posX, float posY, float width, float height, const std::string& bitmapFile, int order = 0)
-		: Button(posX, posY, width, height, bitmapFile, order) {}
+		: Button(posX, posY, width, height, bitmapFile, order)
+	{
+		m_shopIcon = make_unique<NewObject>(m_transform->GetPosition().m128_f32[0] + 3.0f, m_transform->GetPosition().m128_f32[1] - 10.0f, 100.0f, 200.0f, 0.0f, "T_Store_Joker.png");
+		m_priceIcon = make_unique<NewObject>(m_transform->GetPosition().m128_f32[0] - 10.0f, m_transform->GetPosition().m128_f32[1] - 66.0f, 30.0f, 30.0f, 0.0f, "T_jokerWaxseal.png");
+	}
 
 	void SetShowAndActive(bool active);
 };
@@ -282,7 +289,12 @@ class ShopRerollButton : public Button
 
 public:
 	ShopRerollButton(float posX, float posY, float width, float height, const std::string& bitmapFile, int order = 0)
-		: Button(posX, posY, width, height, bitmapFile, order) {
+		: Button(posX, posY, width, height, bitmapFile, order)
+	{
+		m_shopIcon = make_unique<NewObject>(m_transform->GetPosition().m128_f32[0] + 3.0f, m_transform->GetPosition().m128_f32[1] - 10.0f, 100.0f, 200.0f, 0.0f, "T_Store_Reset.png");
+		m_width = 100.0f;
+		m_height = 200.0f;
+		m_priceIcon = make_unique<NewObject>(m_transform->GetPosition().m128_f32[0] - 10.0f, m_transform->GetPosition().m128_f32[1] - 66.0f, 30.0f, 30.0f, 0.0f, "T_Store_Joker_Stone.png");
 	}
 
 	void ButtonFunction() override;

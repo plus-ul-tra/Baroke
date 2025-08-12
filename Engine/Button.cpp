@@ -76,10 +76,11 @@ void Button::ButtonFunction(){
 
 void Button::Render(Renderer& renderer)
 {
-	//if (m_bitmapRender->IsActive() && m_isHovered && m_textObject)
-	//{
-	//	m_textObject->GetComponent<BitmapRender3D>()->Render(renderer);
-	//}
+	if (m_bitmapRender->IsActive())
+	{
+		if (m_shopIcon) m_shopIcon->GetComponent<BitmapRender3D>()->Render(renderer);
+		if (m_priceIcon) m_priceIcon->GetComponent<BitmapRender3D>()->Render(renderer);
+	}
 }
 
 void JokerButton::ButtonFunction()
@@ -113,7 +114,7 @@ void JokerButton::SetButtonJoker(StoneType stoneType, StoneAbility ability)
 
 	m_bitmapRender->ChangeTexture(m_jokerInfoMap[ability].fileName);
 	m_textObject = nullptr;
-	m_textObject = make_unique<NewObject>(m_transform->GetPosition().m128_f32[0], m_transform->GetPosition().m128_f32[1] + 20.0f, 691.0f, 200.0f, 0.0f, m_jokerInfoMap[ability].toolTipName);
+	m_textObject = make_unique<NewObject>(m_transform->GetPosition().m128_f32[0] - 345.5f, m_transform->GetPosition().m128_f32[1] - 100.0f, 691.0f, 200.0f, 0.0f, m_jokerInfoMap[ability].toolTipName);
 
 	BindEnabledPredicate(BuildPredicate(ability));
 }
@@ -125,7 +126,7 @@ void ShopJokerButton::SetButtonJoker(JokerStoneInfo jokerInfo, StoneAbility abil
 
 	m_bitmapRender->ChangeTexture(jokerInfo.fileName);
 	m_textObject = nullptr;
-	m_textObject = make_unique<NewObject>(m_transform->GetPosition().m128_f32[0], m_transform->GetPosition().m128_f32[1] + 20.0f, 691.0f, 200.0f, 0.0f, m_jokerInfoMap[ability].toolTipName);
+	m_textObject = make_unique<NewObject>(m_transform->GetPosition().m128_f32[0] - 345.5f, m_transform->GetPosition().m128_f32[1] - 100.0f, 691.0f, 200.0f, 0.0f, m_jokerInfoMap[ability].toolTipName);
 }
 
 void ShopBuyStoneButton::ButtonFunction()
@@ -194,19 +195,38 @@ void ShopJokerButton::ButtonFunction()
 		if (m_boardManager.m_playerInfo.m_money >= m_jokerInfo.costWhite)
 		{
 			bool isJokerFull = true; // 조커 버튼이 꽉 찼는지 여부
-			for (auto& jokerButton : *m_jokerButton)
+			if (m_jokerInfo.isStone)
 			{
-				if (!jokerButton) continue;
-				if (jokerButton->GetJokerAbility() != StoneAbility::None) continue; // 이미 능력이 있는 조커 버튼은 건너뜀
+				for (int i = 0; i < 5; ++i)
+				{
+					auto jokerButton = (*m_jokerButton)[i].get();
+					if (!jokerButton) continue;
+					if (jokerButton->GetJokerAbility() != StoneAbility::None) continue; // 이미 능력이 있는 조커 버튼은 건너뜀
 
-				jokerButton->SetButtonJoker(m_jokerInfo.stoneType, m_jokerAbility);
-				m_boardManager.m_playerInfo.m_money -= m_jokerInfo.costWhite;
+					jokerButton->SetButtonJoker(m_jokerInfo.stoneType, m_jokerAbility);
+					m_boardManager.m_playerInfo.m_money -= m_jokerInfo.costWhite;
 
-				isJokerFull = false; // 조커 버튼이 꽉 차지 않았음
+					isJokerFull = false; // 조커 버튼이 꽉 차지 않았음
 
-				break;
+					break;
+				}
+				SetShowAndActive(isJokerFull); // 상점 조커 버튼 숨김
 			}
-			SetShowAndActive(isJokerFull); // 상점 조커 버튼 숨김
+			else
+			{
+				for (int i = 5; i < 8; ++i)
+				{
+					auto jokerButton = (*m_jokerButton)[i].get();
+					if (!jokerButton) continue;
+					if (jokerButton->GetJokerAbility() != StoneAbility::None) continue;
+
+					jokerButton->SetButtonJoker(m_jokerInfo.stoneType, m_jokerAbility);
+					m_boardManager.m_playerInfo.m_money -= m_jokerInfo.costWhite;
+					isJokerFull = false;
+					break;
+				}
+				SetShowAndActive(isJokerFull);
+			}
 
 			std::cout << "Money : " << m_boardManager.m_playerInfo.m_money << std::endl;
 		}
