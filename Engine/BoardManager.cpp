@@ -931,6 +931,7 @@ bool BoardManager::PlaceStone(POINT selectedPosition, StoneType stoneType, Stone
 
 	// 사석 판정용 돌 타입 저장 // JokerStone이라도 StoneType::Black 이라면 흑돌로 저장
 	m_stoneTypeMap[selectedPosition] = stoneType;
+	std::cout << stoneType << std::endl;
 
 	return true;
 }
@@ -1033,7 +1034,7 @@ void BoardManager::InitializeJokerInfoMap()
 	m_jokerInfoMap[StoneAbility::None] = {}; // 디폴트 돌
 
 	//------------------------------------------------------------------------------------------------ 일반 (set 1)
-	m_jokerInfoMap[StoneAbility::jokerOmok]			= { "jokerOmok.png", "T_JokerOmok_Tooltip.png", "jokerOmok.wav",				JokerType::Default, 1, 0, 0, 0, 5, 2, 4, 2, true, StoneType::Black };
+	m_jokerInfoMap[StoneAbility::jokerOmok]			= { "jokerOmok.png", "T_JokerOmok_Tooltip.png", "jokerOmok.wav",				JokerType::Default, 1, 0, 0, 0, 5, 2, 4, 2, true, true, StoneType::Black };
 	m_jokerInfoMap[StoneAbility::jokerSamok]		= { "jokerSamok.png", "T_JokerSamok_Tooltip.png", "jokerSamok.wav",				JokerType::Default, 0, 0, 0, 0, 0, 0, 3, 2, false };
 	m_jokerInfoMap[StoneAbility::jokerSammok]		= { "jokerSammok.png", "T_JokerSammok_Tooltip.png", "jokerSammok.wav",			JokerType::Default, 0, 0, 0, 0, 0, 2, 2, 1, false };
 
@@ -1042,7 +1043,7 @@ void BoardManager::InitializeJokerInfoMap()
 	m_jokerInfoMap[StoneAbility::jokerDansu] = { "jokerDansu.png", "T_JokerDansu_Tooltip.png", "jokerDansu.wav",				JokerType::Wild, 1, 1, 0, 0, 2, 0, 2, 1, true };
 	m_jokerInfoMap[StoneAbility::jokerEgg] = { "jokerEgg.png",	"T_JokerEgg_Tooltip.png", "jokerEgg.wav",						JokerType::Wild, 5, 0, 0, 1, 5, 0, 2, 1, true };
 	m_jokerInfoMap[StoneAbility::jokerOstrichEgg] = { "jokerOstrichEgg.png", "T_JokerEgg_Tooltip.png", "jokerOstrichEgg.mp3",		JokerType::Wild, 4, 0, 0, 2, 0, 0, 0, 2, true, false };
-	m_jokerInfoMap[StoneAbility::jokerPeacock] = { "jokerPeacock.png",	"T_JokerPeacock_Tooltip.png", "jokerPeacockActive.mp3",	JokerType::Wild, 1, 1, 0, 3, 3, 1, 6, 3, true, StoneType::Black };				// cost 4
+	m_jokerInfoMap[StoneAbility::jokerPeacock] = { "jokerPeacock.png",	"T_JokerPeacock_Tooltip.png", "jokerPeacockActive.mp3",	JokerType::Wild, 1, 1, 0, 3, 3, 1, 6, 3, true, true, StoneType::Black };				// cost 4
 
 	//------------------------------------------------------------------------------------------------ 우주 (set 3)
 	m_jokerInfoMap[StoneAbility::jokerTeleport] = { "jokerTeleport.png", "T_JokerTeleport_Tooltip.png", "jokerTeleport.wav",	JokerType::Space, 1, 1, 0, 0, 2, 0, 4, 2, true };
@@ -1051,20 +1052,20 @@ void BoardManager::InitializeJokerInfoMap()
 	m_jokerInfoMap[StoneAbility::jokerBlackhole] = { "jokerBlackhole.png", "T_JokerBlackhole_Tooltip.png", "jokerBlackhole.wav",	JokerType::Space, 1, 1, 0, 5, 10, 0, 8, 3, true };
 
 	//------------------------------------------------------------------------------------------------ 단청 (set 4)
-	m_jokerInfoMap[StoneAbility::jokerFusion] = { "jokerFusion.png", "T_JokerFusion_Tooltip.png", "jokerFusion.wav",			JokerType::Dancheong, 0, 0, 0, 2, 2, 0, 5, 2, true, StoneType::White };
+	m_jokerInfoMap[StoneAbility::jokerFusion] = { "jokerFusion.png", "T_JokerFusion_Tooltip.png", "jokerFusion.wav",			JokerType::Dancheong, 0, 0, 0, 2, 2, 0, 5, 2, true, true, StoneType::White };
 	m_jokerInfoMap[StoneAbility::jokerTriunion] = { "jokerTriunion.png", "T_JokerFusion_Tooltip.png", "jokerTriunion.wav",		JokerType::Dancheong, 0, 0, 0, 3, 0, 0, 3, 2, true, false, StoneType::White };
 	m_jokerInfoMap[StoneAbility::jokerQuadunion] = { "jokerQuadunion.png", "T_JokerFusion_Tooltip.png", "jokerQuadunion.wav",	JokerType::Dancheong, 0, 0, 0, 4, 0, 0, 4, 3, true, false, StoneType::White };
 
 	//------------------------------------------------------------------------------------------------ 할로윈 (set 6)
 	m_jokerInfoMap[StoneAbility::jokerSplit] = { "jokerSplit.png", "T_JokerSplit_Tooltip.png", "jokerSplit.mp3",				JokerType::Halloween, 3, 0, 0, 20, 2, 0, 5, 2, true };
-	m_jokerInfoMap[StoneAbility::jokerWaxseal] = { "jokerWaxseal.png",	"T_JokerWaxseal_Tooltip.png", "jokerWaxseal.mp3",		JokerType::Halloween, 0, 0, 0, 1, 0, 0, 3, 2, true, StoneType::Black };
-	m_jokerInfoMap[StoneAbility::jokerFlip] = { "jokerFlip.png", "T_JokerFlip_Tooltip.png", "jokerFlip.wav",				JokerType::Halloween, 1, 1, 0, 0, 3, 1, 6, 2, true, StoneType::Black };
-	m_jokerInfoMap[StoneAbility::jokerOthello] = { "jokerOthello.png", "T_JokerOthello_Tooltip.png", "jokerOthello.wav",		JokerType::Halloween, 1, 0, 0, 3, 2, 4, 5, 1, true, StoneType::Black };
+	m_jokerInfoMap[StoneAbility::jokerWaxseal] = { "jokerWaxseal.png",	"T_JokerWaxseal_Tooltip.png", "jokerWaxseal.mp3",		JokerType::Halloween, 0, 0, 0, 1, 0, 0, 3, 2, true, true, StoneType::Black };
+	m_jokerInfoMap[StoneAbility::jokerFlip] = { "jokerFlip.png", "T_JokerFlip_Tooltip.png", "jokerFlip.wav",				JokerType::Halloween, 1, 1, 0, 0, 3, 1, 6, 2, true, true, StoneType::Black };
+	m_jokerInfoMap[StoneAbility::jokerOthello] = { "jokerOthello.png", "T_JokerOthello_Tooltip.png", "jokerOthello.wav",		JokerType::Halloween, 1, 0, 0, 3, 2, 4, 5, 1, true, true, StoneType::Black };
 	m_jokerInfoMap[StoneAbility::jokerMrchan] = { "jokerMrchan.png", "T_JokerMrchan_Tooltip.png", "jokerMrchan.wav",			JokerType::Halloween, 1, 1, 0, 0, 0, 0, 0, 3, true };
 
 	//------------------------------------------------------------------------------------------------ 자연 (set 7)
 	m_jokerInfoMap[StoneAbility::jokerShadow] = { "jokerShadow.png", "T_JokerShadow_Tooltip.png", "jokerShadow.wav",			JokerType::Natural, 1, 1, 0, 4, 3, 0, 4, 2, true };
-	m_jokerInfoMap[StoneAbility::jokerLight] = { "jokerLight.png", "T_JokerLight_Tooltip.png", "jokerLight.mp3",				JokerType::Natural, 1, 1, 0, 0, 0, 0, 4, 2, true, StoneType::Black };
+	m_jokerInfoMap[StoneAbility::jokerLight] = { "jokerLight.png", "T_JokerLight_Tooltip.png", "jokerLight.mp3",				JokerType::Natural, 1, 1, 0, 0, 0, 0, 4, 2, true, true, StoneType::Black };
 	m_jokerInfoMap[StoneAbility::jokerTime] = { "jokerTime.png", "T_JokerTime_Tooltip.png", "jokerTime.mp3",				JokerType::Natural, 3, 0, 0, 2, 0, 2, 7, 3, true };
 	m_jokerInfoMap[StoneAbility::jokerWind] = { "jokerWind.png", "T_JokerWind_Tooltip.png", "jokerWind.wav",				JokerType::Natural, 2, 5, 0, 2, 4, 1, 4, 2, true };
 

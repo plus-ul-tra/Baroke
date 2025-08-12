@@ -9,6 +9,16 @@
 /*#include "SceneManager.h"*/
 
 
+enum class buttonType 
+{
+	None,
+	TitleToGame,
+	TitleToTutorial,
+	GameToEnding,
+	EndingToTitle,
+
+};
+
 class Button : public Object
 {
 protected:
@@ -301,10 +311,44 @@ public:
 class SceneChangeButton : public Button
 {
 	string m_sceneName; // 전환할 씬 이름
+	buttonType m_buttonType; // 버튼 타입
 public:
-	SceneChangeButton(float posX, float posY, float width, float height, const std::string& bitmapFile, const string& sceneName, int order = 0)
-		: Button(posX, posY, width, height, bitmapFile, order) { m_sceneName = sceneName; }
+	SceneChangeButton(float posX, float posY, float width, float height, const std::string& bitmapFile, const string& sceneName, buttonType btntype = buttonType::None, int order = 0)
+		: Button(posX, posY, width, height, bitmapFile, order) { m_sceneName = sceneName; m_buttonType = btntype; }
 
+	void ButtonFunction() override;
+
+};
+
+class CreditButton : public Button
+{
+
+public:
+	CreditButton(float posX, float posY, float width, float height, const std::string& bitmapFile, int order = 0)
+		: Button(posX, posY, width, height, bitmapFile, order) {
+	}
+	void ButtonFunction() override;
+
+};
+
+class SettingButton : public Button
+{
+
+public:
+	SettingButton(float posX, float posY, float width, float height, const std::string& bitmapFile, int order = 0)
+		: Button(posX, posY, width, height, bitmapFile, order) {
+	}
+	void ButtonFunction() override;
+
+};
+
+class ExitButton : public Button
+{
+
+public:
+	ExitButton(float posX, float posY, float width, float height, const std::string& bitmapFile, int order = 0)
+		: Button(posX, posY, width, height, bitmapFile, order) {
+	}
 	void ButtonFunction() override;
 
 };
