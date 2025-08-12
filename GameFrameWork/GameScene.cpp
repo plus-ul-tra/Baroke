@@ -355,6 +355,7 @@ void GameScene::StartStage()
 
 	m_resetStageButton->SetWhiteStonePos(m_board.PlaceRandomStones(spawn));
 	m_whiteLeft = m_board.GetStoneTypeAmount(White);
+	m_board.m_playerInfo.m_rerollCount = 0; // 리롤 횟수 초기화
 
 	if (m_stageText)
 		if (auto ui = m_stageText->GetComponent<UIText>())
@@ -936,6 +937,7 @@ void GameScene::KeyCommandMapping()
 
 void GameScene::OnInput(const MouseEvent& ev)
 {
+	if (m_gameState == GameState::Ending) return; // 엔딩 모드
 	for (auto& button : m_buttonList)
 	{
 		button->CheckInput(ev);
@@ -943,7 +945,6 @@ void GameScene::OnInput(const MouseEvent& ev)
 	if (m_gameState == GameState::ShopEnter) return; // 상점 진입 모드
 	if (m_gameState == GameState::Shop) return; // 상점 모드
 	if (m_gameState == GameState::ShopExit) return; // 상점 종료 모드
-	if (m_gameState == GameState::Ending) return; // 엔딩 모드
 
 	if (m_uiMode == UIMode::Normal)
 	{

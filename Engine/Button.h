@@ -380,13 +380,15 @@ public:
 class ResetStageButton : public Button
 {
 	vector<POINT> m_whiteStonePos; // 흰 돌 위치
+	int m_blackStoneCount = 0; // 현재 흑돌 개수
+	int m_money = 0; // 현재 돈
 
 	public:
 	ResetStageButton(float posX, float posY, float width, float height, const std::string& bitmapFile, int order = 0)
 		: Button(posX, posY, width, height, bitmapFile, order) {
 	}
 
-	void SetWhiteStonePos(vector<POINT> whiteStonePos) { m_whiteStonePos = whiteStonePos; }
+	void SetWhiteStonePos(vector<POINT> whiteStonePos);
 	void ButtonFunction() override;
 };
 
