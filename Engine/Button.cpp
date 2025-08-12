@@ -76,10 +76,11 @@ void Button::ButtonFunction(){
 
 void Button::Render(Renderer& renderer)
 {
-	//if (m_bitmapRender->IsActive() && m_isHovered && m_textObject)
-	//{
-	//	m_textObject->GetComponent<BitmapRender3D>()->Render(renderer);
-	//}
+	if (m_bitmapRender->IsActive())
+	{
+		if (m_shopIcon) m_shopIcon->GetComponent<BitmapRender3D>()->Render(renderer);
+		if (m_priceIcon) m_priceIcon->GetComponent<BitmapRender3D>()->Render(renderer);
+	}
 }
 
 void JokerButton::ButtonFunction()

@@ -91,8 +91,8 @@ public:
 		for (auto& sp : m_stones)
 			if (auto* bmp = sp->GetComponent<BitmapRender3D>())
 			{
+				//sp->Render(r); // 돌 이펙트 그리기
 				if (bmp->IsActive()) bmp->Render(r); // 돌그리기
-				sp->Render(r); // 돌 이펙트 그리기
 			}
 
 		for (auto& obj : m_screenEffectObjects)
