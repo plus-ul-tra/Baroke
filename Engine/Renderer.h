@@ -122,6 +122,7 @@ private:
 	ComPtr<ID3D11Buffer>              m_pUIColorCBuffer;
 
 	float 							  m_blackHoleTime = 0.0f; // 블랙홀 효과 시간
+	float						      m_OffTime = 0.0f;
 public:
 	Renderer() = default;
 	~Renderer();
@@ -152,7 +153,7 @@ public:
 	void SetPostProcessingMode(const string& shaderName) {
 		if (m_postProcessShaderName != shaderName) {
 			// 모드 변경 감지
-			if (shaderName == "BlackHole") {
+			if (shaderName == "BlackHole" || shaderName == "CRTOn" || shaderName == "CRTOff") {
 				m_blackHoleTime = 0.0f; // 초기화
 			}
 		}

@@ -629,7 +629,22 @@ void Renderer::PostProcessing(const ShaderSet& shaderSet)
 		ID3D11Buffer* cbuffers[1] = { m_pTimeCBuffer.Get() };
 		m_pd3dContext->PSSetConstantBuffers(0, 1, cbuffers);
 	}
-	
+	if (m_postProcessShaderName == "CRTOn"|| m_postProcessShaderName == "CRTOff") {
+
+		TimeCBuffer timeData{};
+		m_blackHoleTime += 0.008f;
+
+		//if (m_blackHoleTime > 8.0f) m_blackHoleTime = 0.0f;
+		// 반복시간
+		timeData.time = m_blackHoleTime;//RenderTimer::GetInstance().GetElapsedTime() / 2.0f;
+		timeData.deltaTime = 1.0f; // 고정 델타타임
+		timeData.padding[0] = 0.0f;
+		timeData.padding[1] = 0.0f;
+		m_pd3dContext->UpdateSubresource(m_pTimeCBuffer.Get(), 0, nullptr, &timeData, 0, 0);
+		ID3D11Buffer* cbuffers[1] = { m_pTimeCBuffer.Get() };
+		m_pd3dContext->PSSetConstantBuffers(0, 1, cbuffers);
+
+	}
 
 	// 뷰포트 설정
 	D3D11_VIEWPORT viewport = {};

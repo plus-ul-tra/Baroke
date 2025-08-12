@@ -138,6 +138,15 @@ void ShaderManager::ReadAllShaders()
 	if (FAILED(hr)) {
 		cout << "CRTNoise_PS리드 실패" << endl;
 	}
+
+	hr = ReadShaderResource("..\\Shader\\PassThrough_VS.cso", "..\\Shader\\CRTOff_PS.cso", "CRTOff", quadLayout, numQuadElements);
+	if (FAILED(hr)) {
+		cout << "CRTOn_PS리드 실패" << endl;
+	}
+	hr = ReadShaderResource("..\\Shader\\PassThrough_VS.cso", "..\\Shader\\CRTOn_PS.cso", "CRTOn", quadLayout, numQuadElements);
+	if (FAILED(hr)) {
+		cout << "CRTOn_PS리드 실패" << endl;
+	}
 }
 
 
