@@ -3,7 +3,7 @@
 
 
 #define BOARD_SIZE 15
-#define PADDING 107
+#define PADDING 105
 #define POSX 0
 #define POSY 0
 #define WIDTH 970
@@ -126,7 +126,7 @@ void GameScene::SetUIButton()
 /*	leftUpUI->GetComponent<BitmapRender3D>()->SetShaderType("UIHolo");*/
 	m_WhiteUI = move(WhiteUI);
 
-	unique_ptr<Button> WaxUI = std::make_unique<Button>(-720.0f, -5.0f, 70, 70, "T_jokerWaxseal.png");
+	unique_ptr<Button> WaxUI = std::make_unique<Button>(-720.0f, -5.0f, 100, 100, "T_jokerWaxseal.png");
 	m_notUniqueObjectList.emplace_back(WaxUI.get());
 	//leftUpUI->AddComponent<UIText>(-680.0f, 440.0f, 100.0f, 100.0f, 2);
 /*	leftUpUI->GetComponent<BitmapRender3D>()->SetShaderType("UIHolo");*/
@@ -381,7 +381,7 @@ void GameScene::CheckStageClear()
 			{
 				m_gameState = GameState::Ending;
 				if (m_gameStateDelayElapsed < m_gameStateDelay) return;
-				SceneManager::GetInstance().ChangeScene(std::string("Ending"));
+				SceneManager::GetInstance().SetExit(true, "Ending");
 			}
 		}
 		else m_gameStateDelayElapsed = 0.0f;
@@ -764,7 +764,7 @@ void GameScene::Update(double deltaTime)
 	ModeCheck();
 	CheckStageClear();
 
-	if (m_filterElsapsedTime > 0.8f)
+	if (!m_isExitrQueue && m_filterElsapsedTime > 0.8f)
 	{
 		if (m_isFilterQueue) m_isFilterQueue = false;
 		CRTAccess();
