@@ -223,7 +223,7 @@ inline void BoardObject::ThemeFixedObjects(int theme, vector<unique_ptr<Object>>
 		objectsvector.emplace_back(make_unique<NewObject>(750.0f, -600.0f, 100.0f, 600.0f, 0.0f, "Building1.png", 100.0f, XMVectorSet(750.0f, -500.0f, 0.0f, 1.0f)));
 		objectsvector.emplace_back(make_unique<NewObject>(600.0f, -600.0f, 100.0f, 600.0f, 0.0f, "Building2.png", 100.0f, XMVectorSet(600.0f, -500.0f, 0.0f, 1.0f)));
 		objectsvector.emplace_back(make_unique<NewObject>(-850.0f, -600.0f, 300.0f, 600.0f, 0.0f, "Building4.png", 100.0f, XMVectorSet(-850.0f, -500.0f, 0.0f, 1.0f)));
-		objectsvector.emplace_back(make_unique<NewObject>(-655.0f, -600.0f, 100.0f, 600.0f, 0.0f, "Building3.png", 100.0f, XMVectorSet(-655.0f, -500.0f, 0.0f, 1.0f)));
+		objectsvector.emplace_back(make_unique<NewObject>(-660.0f, -600.0f, 100.0f, 600.0f, 0.0f, "Building3.png", 100.0f, XMVectorSet(-660.0f, -500.0f, 0.0f, 1.0f)));
 		objectsvector.emplace_back(make_unique<NewObject>(-550.0f, -600.0f, 100.0f, 600.0f, 0.0f, "Building5.png", 100.0f, XMVectorSet(-550.0f, -500.0f, 0.0f, 1.0f)));
 		break;
 

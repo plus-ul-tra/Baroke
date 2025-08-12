@@ -30,6 +30,11 @@ protected:
 	SoundManager& m_soundManager = SoundManager::GetInstance();
 	Sound* m_bgm = nullptr; // 배경음악
 	Channel* m_channel = nullptr;
+
+	double m_filterElsapsedTime = 0.0;
+	bool m_isFilterQueue = false;
+
+	bool m_isExitrQueue = false;
 	
 public:
 	SceneBase() = default;
