@@ -255,8 +255,7 @@ void SceneChangeButton::ButtonFunction()
 {
 	if (m_isPressed && m_isActive)
 	{
-		SceneManager::GetInstance().ChangeScene(m_sceneName);
-		SceneManager::GetInstance().SetExit(true); // 씬 전환을 위해 종료 플래그 설정
+		SceneManager::GetInstance().SetExit(true, m_sceneName); // 씬 전환을 위해 종료 플래그 설정
 		m_isPressed = false;
 	}
 

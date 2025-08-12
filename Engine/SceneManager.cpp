@@ -65,6 +65,18 @@ void SceneManager::AddScene(const std::string& sceneName, std::unique_ptr<SceneB
 
 }
 
+void SceneManager::ChangeSceneToNext()
+{
+
+	if (auto it = m_sceneNameMap.find(m_nextSceneName); it != m_sceneNameMap.end()) {
+		m_sceneList[m_currentSceneIndex]->OnLeave();
+		m_currentSceneIndex = it->second;
+		m_sceneList[m_currentSceneIndex]->OnEnter(); //각자 CRT 즉시 적용
+		m_isExit = false;
+	}
+	else { std::cout << "Error: invalid Scene Id" << std::endl; return; }
+}
+
 void SceneManager::ShowDebugInfo()
 {
 	float yOffset = 10.0f; // 시작 y 위치

@@ -17,7 +17,30 @@ void EndingScene::Initialize()
 
 void EndingScene::Update(double deltaTime)
 {
+	m_filterElsapsedTime += deltaTime;
+
 	for (auto& notUniqueObject : m_notUniqueObjectList) notUniqueObject->Update(deltaTime);
+
+	if (m_isFilterQueue && m_filterElsapsedTime > 0.8f)
+	{
+		m_isFilterQueue = false;
+		SceneManager::GetInstance().ChangePostProcessing("CRTNoise");
+	}
+
+	if (SceneManager::GetInstance().IsExit())
+	{
+		if (!m_isExitrQueue)
+		{
+			m_isExitrQueue = true;
+			m_filterElsapsedTime = 0.0f;
+			SceneManager::GetInstance().ChangePostProcessing("CRTOff");
+		}
+		if (m_isExitrQueue && m_filterElsapsedTime > 1.3f)
+		{
+			m_isExitrQueue = false;
+			SceneManager::GetInstance().ChangeSceneToNext();
+		}
+	}
 }
 
 void EndingScene::OnEnter()
@@ -28,6 +51,10 @@ void EndingScene::OnEnter()
 	m_objectList.emplace_back(std::move(backGround));
 	XMFLOAT4 color = { 0.3f, 0.3f, 0.3f, 1.0f };
 	Mediator::GetInstance().SetBackGroundColor(color, color);
+	SceneManager::GetInstance().ChangePostProcessing("CRTOn");
+	m_filterElsapsedTime = 0.0f;
+	m_isFilterQueue = true;
+	m_isExitrQueue = false;
 
 	unique_ptr<Button> end = std::make_unique<Button>(0.0f, 200.0f, 521.0f, 119.0f, "T_GameOver_Main.png");
 	m_notUniqueObjectList.emplace_back(end.get());
@@ -54,7 +81,6 @@ void EndingScene::OnEnter()
 	unique_ptr<Button> returnButton = std::make_unique<SceneChangeButton>(0.0f, -350.0f, 212.0f, 42.0f, "T_GameOver_Main_Screen.png", "Title",buttonType::EndingToTitle);
 	m_notUniqueObjectList.emplace_back(returnButton.get());
 	m_endingButtonList.emplace_back(std::move(returnButton));
-	SceneManager::GetInstance().ChangePostProcessing("CRTNoise");
 }
 
 void EndingScene::OnLeave()

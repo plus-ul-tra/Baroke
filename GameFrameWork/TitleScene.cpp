@@ -13,7 +13,11 @@ void TitleScene::Initialize()
 
 	XMFLOAT4 color = { 0.0f, 1.0f, 1.0f, 1.0f };
 	Mediator::GetInstance().SetBackGroundColor(color, color);
-	SceneManager::GetInstance().ChangePostProcessing("CRTFilter");
+	SceneManager::GetInstance().ChangePostProcessing("CRTOn");
+	m_filterElsapsedTime = 0.0f;
+	m_isFilterQueue = true;
+	m_isExitrQueue = false;
+
 	//title
 	unique_ptr<Button> title = std::make_unique<Button>(9.0f, 0.0f, 798, 385, "T_Main_Logo.png");
 	m_notUniqueObjectList.emplace_back(title.get());
@@ -57,22 +61,37 @@ void TitleScene::Initialize()
 void TitleScene::Update(double deltaTime)
 {
 	m_elsapsedTime += deltaTime;
+	m_filterElsapsedTime += deltaTime;
 	for (auto& notUniqueObject : m_notUniqueObjectList)
 	{
 		notUniqueObject->Update(deltaTime);
 	}
-	//test용 씬전환
+
+	if (m_isFilterQueue && m_filterElsapsedTime > 0.8f)
+	{
+		m_isFilterQueue = false;
+		SceneManager::GetInstance().ChangePostProcessing("CRTFilter");
+	}
+
+	if (SceneManager::GetInstance().IsExit())
+	{
+		if (!m_isExitrQueue)
+		{
+			m_isExitrQueue = true;
+			m_filterElsapsedTime = 0.0f;
+			SceneManager::GetInstance().ChangePostProcessing("CRTOff");
+		}
+		if (m_isExitrQueue && m_filterElsapsedTime > 1.3f)
+		{
+			m_isExitrQueue = false;
+			SceneManager::GetInstance().ChangeSceneToNext();
+		}
+	}
 }
 
 
 void TitleScene::OnEnter()
 {
-	XMFLOAT4 color = { 0.f, 1.f, 1.f, 1.0f };
-	Mediator::GetInstance().SetBackGroundColor(color, color);
-
-	SceneManager::GetInstance().ChangePostProcessing("CRTFilter");
-	//SceneManager::GetInstance().ChangePostProcessing("CRTOff"); //1초
-	//SceneManager::GetInstance().ChangePostProcessing("CRTOn");  //1초
 	std::cout << "Title Scene OnEnter" << std::endl;
 	Initialize(); // 필요시 수정
 }
