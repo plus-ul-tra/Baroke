@@ -14,6 +14,7 @@ using namespace std;
 
 void GameScene::initGame()
 {
+	m_stageNo = 0;						// 스테이지 단계 초기화
 	SetUIButton();						// 버튼들 초기화
 	ChangeThema(0);						// 초기 테마 설정
 
@@ -472,10 +473,19 @@ void GameScene::ModeCheck()
 	if (m_uiMode == UIMode::UseAbility) 
 	{
 		//std::cout << "UseAbility" << std::endl;
-		SceneManager::GetInstance().ChangePostProcessing("CRTFilter");
+
 		SyncPlacementHintsToPool();
 	}
 
+
+}
+
+void GameScene::CRTAccess()
+{
+	if (m_uiMode == UIMode::Normal) { SceneManager::GetInstance().ChangePostProcessing("CRTFilter"); }
+	else if (m_uiMode == UIMode::Sacrifice){ SceneManager::GetInstance().ChangePostProcessing("CRTRed"); }
+	else if (m_uiMode == UIMode::BeforeUseAbility) { SceneManager::GetInstance().ChangePostProcessing("CRTGreen"); }
+	else if (m_uiMode == UIMode::UseAbility) { SceneManager::GetInstance().ChangePostProcessing("CRTFilter"); }
 
 }
 
@@ -691,6 +701,7 @@ void GameScene::Update(double deltaTime)
 			wax->SetText(m_board.m_playerInfo.m_waxMoney);
 	
 	m_gameStateDelayElapsed += deltaTime;
+	CRTAccess();
 	CheckSlot();
 	ModeCheck();
 	CheckStageClear();
@@ -877,7 +888,7 @@ void GameScene::OnInput(const MouseEvent& ev)
 
 	else if (m_uiMode == UIMode::Sacrifice)
 	{
-		SceneManager::GetInstance().ChangePostProcessing("CRTRed");
+
 		if (ev.type == MouseType::LDown)
 		{
 			m_board.SelectSacrificeStone(ev.pos);
