@@ -148,6 +148,7 @@
     <ClCompile Include="main.cpp" />
     <ClCompile Include="Player.cpp" />
     <ClCompile Include="TitleScene.cpp" />
+    <ClCompile Include="TutoScene.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="BackGround.h" />
@@ -160,6 +161,7 @@
     <ClInclude Include="HintMark.h" />
     <ClInclude Include="Player.h" />
     <ClInclude Include="TitleScene.h" />
+    <ClInclude Include="TutoScene.h" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Engine\Engine.vcxproj">

@@ -29,7 +29,7 @@ void TitleScene::Initialize()
 	m_titleButtonList.emplace_back(std::move(title));
 
 	unique_ptr<Button> creditImage = std::make_unique<Button>(0.f, -0.f, 1358.f, 742.f, "T_Main_Credit.png");
-	creditImage->GetComponent<BitmapRender3D>()->SetActive(true); // 시작은 숨김
+	creditImage->GetComponent<BitmapRender3D>()->SetActive(false); // 시작은 숨김
 	creditBtn = creditImage.get();
 	m_buttonList.emplace_back(creditImage.get());
 	m_notUniqueObjectList.emplace_back(creditImage.get());
@@ -41,7 +41,7 @@ void TitleScene::Initialize()
 	m_notUniqueObjectList.emplace_back(creditButton.get());
 	m_titleButtonList.emplace_back(std::move(creditButton));
 
-	unique_ptr<SceneChangeButton> tutoButton = std::make_unique<SceneChangeButton>(-390, -480.0f, 315.f, 144.f, "T_Main_Tutorial.png", "Game1", buttonType::TitleToTutorial); // 일단 임시로 게임1
+	unique_ptr<SceneChangeButton> tutoButton = std::make_unique<SceneChangeButton>(-390, -480.0f, 315.f, 144.f, "T_Main_Tutorial.png", "Tutorial", buttonType::TitleToTutorial); // 일단 임시로 게임1
 	m_buttonList.emplace_back(tutoButton.get());
 	m_notUniqueObjectList.emplace_back(tutoButton.get());
 	m_titleButtonList.emplace_back(std::move(tutoButton));

@@ -340,6 +340,7 @@ void GameScene::SetUIButton()
 	m_buttonList.emplace_back(jokerButton8.get());
 	m_notUniqueObjectList.emplace_back(jokerButton8.get());
 	m_jokerButtons.emplace_back(move(jokerButton8));
+
 }
 
 

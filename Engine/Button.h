@@ -14,6 +14,7 @@ enum class buttonType
 	None,
 	TitleToGame,
 	TitleToTutorial,
+	TutorialToTitle,
 	GameToEnding,
 	EndingToTitle,
 };
