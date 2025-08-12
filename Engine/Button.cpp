@@ -114,7 +114,7 @@ void JokerButton::SetButtonJoker(StoneType stoneType, StoneAbility ability)
 
 	m_bitmapRender->ChangeTexture(m_jokerInfoMap[ability].fileName);
 	m_textObject = nullptr;
-	m_textObject = make_unique<NewObject>(m_transform->GetPosition().m128_f32[0], m_transform->GetPosition().m128_f32[1] + 20.0f, 691.0f, 200.0f, 0.0f, m_jokerInfoMap[ability].toolTipName);
+	m_textObject = make_unique<NewObject>(m_transform->GetPosition().m128_f32[0] - 345.5f, m_transform->GetPosition().m128_f32[1] - 100.0f, 691.0f, 200.0f, 0.0f, m_jokerInfoMap[ability].toolTipName);
 
 	BindEnabledPredicate(BuildPredicate(ability));
 }
@@ -126,7 +126,7 @@ void ShopJokerButton::SetButtonJoker(JokerStoneInfo jokerInfo, StoneAbility abil
 
 	m_bitmapRender->ChangeTexture(jokerInfo.fileName);
 	m_textObject = nullptr;
-	m_textObject = make_unique<NewObject>(m_transform->GetPosition().m128_f32[0], m_transform->GetPosition().m128_f32[1] + 20.0f, 691.0f, 200.0f, 0.0f, m_jokerInfoMap[ability].toolTipName);
+	m_textObject = make_unique<NewObject>(m_transform->GetPosition().m128_f32[0] - 345.5f, m_transform->GetPosition().m128_f32[1] - 100.0f, 691.0f, 200.0f, 0.0f, m_jokerInfoMap[ability].toolTipName);
 }
 
 void ShopBuyStoneButton::ButtonFunction()

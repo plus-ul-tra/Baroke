@@ -3,6 +3,7 @@
 #include "SceneManager.h"
 
 unordered_map<StoneAbility, JokerStoneInfo> m_jokerInfoMap;
+unordered_map<StoneAbility, string> m_jokerAnimationMap;
 
 void Stone::Update(double deltaTime)
 {
@@ -95,5 +96,5 @@ void JokerStone::UpdateAbility(StoneAbility newAb)
 
 	ability = newAb;                  
 	m_jokerInfo = m_jokerInfoMap[newAb];  
-	m_sprite->ChangeTexture(m_jokerInfo.fileName.c_str());
+	m_sprite->ChangeTexture(m_jokerInfo.fileName);
 }

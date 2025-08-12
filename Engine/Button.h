@@ -263,6 +263,7 @@ public:
 	void SetButton(vector<unique_ptr<JokerButton>>* jokerButton) { m_jokerButton = jokerButton; }
 
 	void SetShowAndActive(bool active);
+	bool IsActive() { return m_isActive; }
 	StoneAbility GetJokerAbility() const { return m_jokerAbility; }
 };
 
@@ -275,7 +276,7 @@ class ShopBuyStoneButton : public Button
 		: Button(posX, posY, width, height, bitmapFile, order)
 	{
 		m_shopIcon = make_unique<NewObject>(m_transform->GetPosition().m128_f32[0] + 3.0f, m_transform->GetPosition().m128_f32[1] - 10.0f, 100.0f, 200.0f, 0.0f, "T_Store_Joker.png");
-		m_priceIcon = make_unique<NewObject>(m_transform->GetPosition().m128_f32[0] - 10.0f, m_transform->GetPosition().m128_f32[1] - 66.0f, 30.0f, 30.0f, 0.0f, "jokerWaxseal.png");
+		m_priceIcon = make_unique<NewObject>(m_transform->GetPosition().m128_f32[0] - 10.0f, m_transform->GetPosition().m128_f32[1] - 66.0f, 30.0f, 30.0f, 0.0f, "T_jokerWaxseal.png");
 	}
 
 	void SetShowAndActive(bool active);
