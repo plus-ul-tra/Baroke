@@ -253,11 +253,13 @@ class ShopJokerButton : public Button
 	void ButtonFunction() override;
 
 public:
-	ShopJokerButton(float posX, float posY, float width, float height, const std::string& bitmapFile, int order = 0)
+	ShopJokerButton(float posX, float posY, float width, float height, const std::string& bitmapFile,bool tutoFlag = false, int order = 0)
 		: Button(posX, posY, width, height, bitmapFile, order)
 	{
-		m_shopIcon = make_unique<NewObject>(m_transform->GetPosition().m128_f32[0] + 3.0f, m_transform->GetPosition().m128_f32[1] - 10.0f, 100.0f, 200.0f, 0.0f, "T_Store_Joker.png");
-		m_priceIcon = make_unique<NewObject>(m_transform->GetPosition().m128_f32[0] - 10.0f, m_transform->GetPosition().m128_f32[1] - 66.0f, 30.0f, 30.0f, 0.0f, "T_Store_Joker_Stone.png");
+		if (!tutoFlag) {
+			m_shopIcon = make_unique<NewObject>(m_transform->GetPosition().m128_f32[0] + 3.0f, m_transform->GetPosition().m128_f32[1] - 10.0f, 100.0f, 200.0f, 0.0f, "T_Store_Joker.png");
+			m_priceIcon = make_unique<NewObject>(m_transform->GetPosition().m128_f32[0] - 10.0f, m_transform->GetPosition().m128_f32[1] - 66.0f, 30.0f, 30.0f, 0.0f, "T_Store_Joker_Stone.png");
+		}
 	}
 
 	void SetButtonJoker(JokerStoneInfo jokerInfo, StoneAbility ability);
