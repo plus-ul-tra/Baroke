@@ -1,3 +1,4 @@
+
 #include "cpch.h"
 #include "TutoScene.h"
 
@@ -8,15 +9,15 @@
 #define POSY 0
 #define WIDTH 970
 #define HEIGHT 970
-#define CELL 54  // 0 ±âÁØ 54 pxs
+#define CELL 54  // 0 ê¸°ì¤€ 54 pxs
 #define STONEOFFSET 10
 using namespace std;
 
 void TutoScene::initGame()
 {
-	SetUIButton();						// ¹öÆ°µé ÃÊ±âÈ­
-	SetHintpool();						// ÈùÆ® Ç® ÃÊ±âÈ­
-	m_board.GetPlayer().TutoinitGame();	// ÇÃ·¹ÀÌ¾î ÃÊ±âÈ­
+	SetUIButton();						// ë²„íŠ¼ë“¤ ì´ˆê¸°í™”
+	SetHintpool();						// íŒíŠ¸ í’€ ì´ˆê¸°í™”
+	m_board.GetPlayer().TutoinitGame();	// í”Œë ˆì´ì–´ ì´ˆê¸°í™”
 	ShopStage();
 }
 
@@ -26,7 +27,7 @@ void TutoScene::SetUIButton()
 
 
 
-	//--------------------------UIÀÏ¹İ----------------------------------
+	//--------------------------UIì¼ë°˜----------------------------------
 	unique_ptr<Button> rightUI = std::make_unique<Button>(700.0f, 0.0f, 427, 969, "T_Standard_Right_Base_Glow.png");
 	m_notUniqueObjectList.emplace_back(rightUI.get());
 	//m_normalUI.emplace_back(move(rightUI));
@@ -53,7 +54,7 @@ void TutoScene::SetUIButton()
 	m_leftUI = move(leftUI);
 
 
-	//--------------------------ÁÂÃø Á¶Ä¿ ¼±ÅÃÄ­----------------------------------
+	//--------------------------ì¢Œì¸¡ ì¡°ì»¤ ì„ íƒì¹¸----------------------------------
 
 	for (int i = 0; i < 6; i++)
 	{
@@ -69,7 +70,7 @@ void TutoScene::SetUIButton()
 
 
 	//-- unchanged----------------------
-	// Àå½ÄÇ°
+	// ì¥ì‹í’ˆ
 	unique_ptr<Button> exitText = std::make_unique<SceneChangeButton>(-720.0f, -390.0f, 115, 32, "T_Common_Left_Down_Exit.png", "Title", buttonType::TutorialToTitle);
 	m_buttonList.emplace_back(exitText.get());
 	m_notUniqueObjectList.emplace_back(exitText.get());
@@ -82,11 +83,11 @@ void TutoScene::SetUIButton()
 	cyberAlpha->GetComponent<BitmapRender3D>()->SetActive(false);
 	m_cyber = move(cyberAlpha);
 
-	//slot°£°İ 170Á¤µµ
-	 // m_buttonList´Â ±â´É¿ë
-	 // m_UIlist´Â ±×¸®±â¿ë
-	 // m_normalUI´Â ÅØ½ºÃÄ ¹Ù²Ù±â¿ë
-	// list·Î ¼öÁ¤ 
+	//slotê°„ê²© 170ì •ë„
+	 // m_buttonListëŠ” ê¸°ëŠ¥ìš©
+	 // m_UIlistëŠ” ê·¸ë¦¬ê¸°ìš©
+	 // m_normalUIëŠ” í…ìŠ¤ì³ ë°”ê¾¸ê¸°ìš©
+	// listë¡œ ìˆ˜ì • 
 	//-----------------------------------------------joker slot------------------------------------
 	unique_ptr<Button> jokerSlot1 = std::make_unique<Button>(617.0f, 341.0f, 177, 175, "T_Standard_Right_Slot_Jocker.png");
 	jokerSlot1->RegistClickedTexture("T_Standard_Right_Slot_Jocker_Glow.png", 0);
@@ -446,7 +447,7 @@ void TutoScene::OnEnter()
 	m_isExitrQueue = false;
 
 	auto playerObject = std::make_unique<Player>(
-		0.0f, 0.0f, 100.0f, 100.0f, DirectX::XMFLOAT4(1.0f, 0.0f, 0.0f, 1.0f) // ³ì»ö
+		0.0f, 0.0f, 100.0f, 100.0f, DirectX::XMFLOAT4(1.0f, 0.0f, 0.0f, 1.0f) // ë…¹ìƒ‰
 	);
 	m_player = playerObject.get();
 	m_objectList.push_back(std::move(playerObject));
@@ -458,7 +459,7 @@ void TutoScene::OnEnter()
 
 	m_lastIndex = -1;
 
-	// »ç¿îµå
+	// ì‚¬ìš´ë“œ
 	m_channel->stop();
 	m_bgm = nullptr;
 	m_channel = nullptr;
@@ -487,7 +488,7 @@ void TutoScene::OnLeave()
 	m_hintPool.clear();
 	m_lastIndex = -1;
 
-	// »ç¿îµå ÃÊ±âÈ­
+	// ì‚¬ìš´ë“œ ì´ˆê¸°í™”
 	m_channel->stop();
 	m_bgm = nullptr;
 	m_channel = nullptr;
@@ -498,7 +499,7 @@ void TutoScene::OnCommand(std::string& cmd)
 	auto it = m_commandMap.find(cmd);
 	if (it != m_commandMap.end())
 	{
-		it->second(); // ÇÔ¼ö ½ÇÇà
+		it->second(); // í•¨ìˆ˜ ì‹¤í–‰
 	}
 	else
 	{
@@ -514,7 +515,7 @@ void TutoScene::KeyCommandMapping()
 			m_board.ExitMode();
 			SyncPlacementHintsToPool();
 			SceneManager::GetInstance().ChangePostProcessing("CRTFilter");
-			// ÃßÈÄ ÀÏ½ÃÁ¤Áö/Àç°³ ·ÎÁ÷ ¿©±â¿¡
+			// ì¶”í›„ ì¼ì‹œì •ì§€/ì¬ê°œ ë¡œì§ ì—¬ê¸°ì—
 		};
 
 	m_commandMap["F1"] = [this]()
@@ -604,7 +605,7 @@ void TutoScene::OnInput(const MouseEvent& ev)
 		}
 	}
 
-	else if (m_uiMode == UIMode::BeforeUseAbility) //	¹öÆ° Á¾·ù³ª , ¹æÇâ, Æ¯Á¤ ÁöÁ¡À» ³Ñ°ÜÁà¾ß µÇ´Â °æ¿ì ¿©±â ÁøÀÔ
+	else if (m_uiMode == UIMode::BeforeUseAbility) //	ë²„íŠ¼ ì¢…ë¥˜ë‚˜ , ë°©í–¥, íŠ¹ì • ì§€ì ì„ ë„˜ê²¨ì¤˜ì•¼ ë˜ëŠ” ê²½ìš° ì—¬ê¸° ì§„ì…
 	{
 		SceneManager::GetInstance().ChangePostProcessing("CRTGreen");
 		if (ev.type == MouseType::LDown)
@@ -846,7 +847,7 @@ void TutoScene::OnInput(const MouseEvent& ev)
 // 
 // 		break;
 // 
-// 	default: // ±âº» Å×¸¶
+// 	default: // ê¸°ë³¸ í…Œë§ˆ
 // 
 // 		Mediator::GetInstance().SetUIColor(XMFLOAT4(0.0f, 1.0f, 1.0f, 1.0f));
 // 
@@ -877,3 +878,4 @@ void TutoScene::OnInput(const MouseEvent& ev)
 // 	}
 // }
 // 
+
