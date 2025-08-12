@@ -50,6 +50,9 @@
     <ClCompile Include="EndingScene.cpp">
       <Filter>소스 파일\Scenes</Filter>
     </ClCompile>
+    <ClCompile Include="TutoScene.cpp">
+      <Filter>소스 파일\Scenes</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="GameManager.h">
@@ -80,6 +83,9 @@
       <Filter>소스 파일\GameObjects</Filter>
     </ClInclude>
     <ClInclude Include="EndingScene.h">
+      <Filter>소스 파일\Scenes</Filter>
+    </ClInclude>
+    <ClInclude Include="TutoScene.h">
       <Filter>소스 파일\Scenes</Filter>
     </ClInclude>
   </ItemGroup>

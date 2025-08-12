@@ -84,6 +84,7 @@ public:
 		m_bitmapRender->SetOrder(0);
 		m_bitmapRender->SetActive(true);
 		m_boardManager.Initialize(offX, offY, drawW, drawH, _cell, m_stoneOffset, padding); // 보드 매니저 초기화
+		m_stones.clear();
 	}
 	//바둑돌 그리기
 	void Render(Renderer& r) override
@@ -91,8 +92,8 @@ public:
 		for (auto& sp : m_stones)
 			if (auto* bmp = sp->GetComponent<BitmapRender3D>())
 			{
-				//sp->Render(r); // 돌 이펙트 그리기
 				if (bmp->IsActive()) bmp->Render(r); // 돌그리기
+				sp->Render(r); // 돌 이펙트 그리기
 			}
 
 		for (auto& obj : m_screenEffectObjects)

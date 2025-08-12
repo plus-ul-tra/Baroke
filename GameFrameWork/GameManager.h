@@ -2,6 +2,7 @@
 #include "GameScene.h"
 #include "TitleScene.h"
 #include "EndingScene.h"
+#include "TutoScene.h"
 
 class GameManager : public Singleton<GameManager> {
 

@@ -364,3 +364,15 @@ void ExitButton::ButtonFunction()
 		m_bitmapRender->ChangeTexture("T_Main_Exit.png");
 	}
 }
+
+void ResetStageButton::ButtonFunction()
+{
+	if (m_isPressed && m_isActive)
+	{
+		m_boardManager.ResetStone();
+		
+		for (POINT& pos : m_whiteStonePos) m_boardManager.PlaceStone(pos, StoneType::White, StoneAbility::None);
+
+		m_isPressed = false;
+	}
+}

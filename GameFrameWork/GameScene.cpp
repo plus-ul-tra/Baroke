@@ -3,7 +3,7 @@
 
 
 #define BOARD_SIZE 15
-#define PADDING 107
+#define PADDING 105
 #define POSX 0
 #define POSY 0
 #define WIDTH 970
@@ -30,12 +30,12 @@ void GameScene::initGame()
 
 void GameScene::SetUIButton()
 {
-	m_shopBuyStoneButton = make_unique<ShopBuyStoneButton>(-300.0f, -300.0f, 75, 75, "T_Blackstone.png");
+	m_shopBuyStoneButton = make_unique<ShopBuyStoneButton>(-300.0f, -300.0f, 100, 100, "T_Blackstone.png");
 	m_shopBuyStoneButton->SetShowAndActive(false);
 	m_buttonList.emplace_back(m_shopBuyStoneButton.get());
 	m_notUniqueObjectList.emplace_back(m_shopBuyStoneButton.get());
 
-	unique_ptr<Text> buyStonePrice = std::make_unique<Text>(-335.0f, -350.0f, 100.0f, 50.0f, 0.5);
+	unique_ptr<Text> buyStonePrice = std::make_unique<Text>(-325.0f, -350.0f, 100.0f, 50.0f, 0.75);
 	buyStonePrice->GetComponent<UIText>()->SetText(000000);
 	buyStonePrice->GetComponent<UIText>()->SetActive(false);
 	m_buyStonePriceText = buyStonePrice.get();
@@ -47,7 +47,7 @@ void GameScene::SetUIButton()
 	m_buttonList.emplace_back(m_shopShopRerollButton.get());
 	m_notUniqueObjectList.emplace_back(m_shopShopRerollButton.get());
 
-	unique_ptr<Text> buyRerollPrice = std::make_unique<Text>(-35.0f, -350.0f, 100.0f, 50.0f, 0.5);
+	unique_ptr<Text> buyRerollPrice = std::make_unique<Text>(-50.0f, -365.0f, 150.0f, 75.0f, 0.75);
 	buyRerollPrice->GetComponent<UIText>()->SetText(000000);
 	buyRerollPrice->GetComponent<UIText>()->SetActive(false);
 	m_buyRerollPriceText = buyRerollPrice.get();
@@ -61,12 +61,12 @@ void GameScene::SetUIButton()
 
 	for (int i = 0; i < 3; i++)
 	{
-		m_shopJokerButtons[i] = make_unique<ShopJokerButton>(-300.0f + (i * 300.0f), 300.0f, 75, 75, "Sample.png");
+		m_shopJokerButtons[i] = make_unique<ShopJokerButton>(-300.0f + (i * 300.0f), 300.0f, 100, 100, "Sample.png");
 		m_shopJokerButtons[i]->SetShowAndActive(false);
 		m_buttonList.emplace_back(m_shopJokerButtons[i].get());
 		m_notUniqueObjectList.emplace_back(m_shopJokerButtons[i].get());
 
-		unique_ptr<Text> shopJokerText = std::make_unique<Text>(-335.0f + (i * 300.0f), 250.0f, 100.0f, 50.0f, 0.5);
+		unique_ptr<Text> shopJokerText = std::make_unique<Text>(-350.0f + (i * 300.0f), 250.0f, 150.0f, 75.0f, 0.75);
 		shopJokerText->GetComponent<UIText>()->SetText(000000);
 		shopJokerText->GetComponent<UIText>()->SetActive(false);
 		m_shopJokerTexts[i] = shopJokerText.get();
@@ -80,7 +80,7 @@ void GameScene::SetUIButton()
 		m_buttonList.emplace_back(m_shopJokerButtons[3 + i].get());
 		m_notUniqueObjectList.emplace_back(m_shopJokerButtons[3 + i].get());
 
-		unique_ptr<Text> shopJokerText = std::make_unique<Text>(-335.0f + (i * 300.0f), -50.0f, 100.0f, 50.0f, 0.5);
+		unique_ptr<Text> shopJokerText = std::make_unique<Text>(-350.0f + (i * 300.0f), -50.0f, 150.0f, 75.0f, 0.75);
 		shopJokerText->GetComponent<UIText>()->SetText(000000);
 		shopJokerText->GetComponent<UIText>()->SetActive(false);
 		m_shopJokerTexts[3 + i] = shopJokerText.get();
@@ -126,7 +126,7 @@ void GameScene::SetUIButton()
 /*	leftUpUI->GetComponent<BitmapRender3D>()->SetShaderType("UIHolo");*/
 	m_WhiteUI = move(WhiteUI);
 
-	unique_ptr<Button> WaxUI = std::make_unique<Button>(-720.0f, -5.0f, 70, 70, "T_jokerWaxseal.png");
+	unique_ptr<Button> WaxUI = std::make_unique<Button>(-720.0f, -5.0f, 100, 100, "T_jokerWaxseal.png");
 	m_notUniqueObjectList.emplace_back(WaxUI.get());
 	//leftUpUI->AddComponent<UIText>(-680.0f, 440.0f, 100.0f, 100.0f, 2);
 /*	leftUpUI->GetComponent<BitmapRender3D>()->SetShaderType("UIHolo");*/
@@ -194,8 +194,10 @@ void GameScene::SetUIButton()
 	scoreFiled->GetComponent<BitmapRender3D>()->SetShaderType("UIHolo");
 	m_useless.emplace_back(move(scoreFiled));
 
-	unique_ptr<Button> settingText = std::make_unique<Button>(-720.0f, -330.0f, 52, 34, "T_Common_Left_Down_Setting.png");
+	unique_ptr<ResetStageButton> settingText = std::make_unique<ResetStageButton>(-720.0f, -330.0f, 52, 34, "T_Common_Left_Down_Setting.png");
+	m_buttonList.emplace_back(settingText.get());
 	m_notUniqueObjectList.emplace_back(settingText.get());
+	m_resetStageButton = settingText.get();
 	settingText->GetComponent<BitmapRender3D>()->SetShaderType("UIHolo");
 	m_useless.emplace_back(move(settingText));
 
@@ -340,6 +342,7 @@ void GameScene::SetUIButton()
 	m_buttonList.emplace_back(jokerButton8.get());
 	m_notUniqueObjectList.emplace_back(jokerButton8.get());
 	m_jokerButtons.emplace_back(move(jokerButton8));
+
 }
 
 
@@ -350,9 +353,8 @@ void GameScene::StartStage()
 
 	int spawn = 3 + ((m_stageNo * 3) - 1);
 
-	m_board.PlaceRandomStones(spawn);
+	m_resetStageButton->SetWhiteStonePos(m_board.PlaceRandomStones(spawn));
 	m_whiteLeft = m_board.GetStoneTypeAmount(White);
-
 
 	if (m_stageText)
 		if (auto ui = m_stageText->GetComponent<UIText>())
@@ -381,7 +383,7 @@ void GameScene::CheckStageClear()
 			{
 				m_gameState = GameState::Ending;
 				if (m_gameStateDelayElapsed < m_gameStateDelay) return;
-				SceneManager::GetInstance().ChangeScene(std::string("Ending"));
+				SceneManager::GetInstance().SetExit(true, "Ending");
 			}
 		}
 		else m_gameStateDelayElapsed = 0.0f;
@@ -764,7 +766,7 @@ void GameScene::Update(double deltaTime)
 	ModeCheck();
 	CheckStageClear();
 
-	if (m_filterElsapsedTime > 0.8f)
+	if (!m_isExitrQueue && m_filterElsapsedTime > 0.8f)
 	{
 		if (m_isFilterQueue) m_isFilterQueue = false;
 		CRTAccess();

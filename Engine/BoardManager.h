@@ -64,10 +64,9 @@ public:
 
 
 	void Initialize(int offX, int offY, int drawW, int drawH, int _cell, int _stoneOffset, int padding = 0);
-	void PlaceRandomStones(int amount); // 게임 시작 시 랜덤으로 돌을 놓기 위한 함수
+	vector<POINT> PlaceRandomStones(int amount); // 게임 시작 시 랜덤으로 돌을 놓기 위한 함수
 
 	bool InputBasedGameLoop(POINT mousePos); // 클릭으로 돌 놓기
-	bool InputBasedGameLoop(int row, int col); // 배열에 접근으로 돌 놓기
 
 	void JokerAbilityUpdate(); // 모든 조커 능력 실행
 	void JokerAbilityUse(StoneAbility ab, POINT position);
@@ -123,7 +122,7 @@ private:
 	std::unordered_map<StoneAbility, int> m_stagePlacedMap;
 	//---------------------------------------------------------------- 플레이어
 public:
-	PlayerInfo GetPlayer() { return m_playerInfo; }
+	PlayerInfo& GetPlayer() { return m_playerInfo; }
 	PlayerInfo m_playerInfo; // 플레이어 정보 // 흑돌, 백돌, 돈 등
 private:
 
