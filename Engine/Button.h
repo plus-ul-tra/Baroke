@@ -26,6 +26,7 @@ protected:
 	unique_ptr<Object> m_textObject = nullptr;
 	unique_ptr<Object> m_shopIcon = nullptr;
 	unique_ptr<Object> m_priceIcon = nullptr;
+	Button* m_otherButton = nullptr; // 다른 버튼과 연동할 때 사용
 
 	string m_originTexture;
 	string m_selectedTexture; //클릭시 바뀔텍스쳐
@@ -39,6 +40,7 @@ protected:
 	bool m_isHovered = false;
 	bool m_hasSelected = false;
 	int  m_index;
+	bool m_isToggle = false;
 	//bool m_isSelected = false;
 
 	MouseType m_inputType = MouseType::Move;
@@ -96,10 +98,6 @@ public:
 	{
 		m_isEnabledPredicate = std::move(pred);
 	}
-
-	//void SetIsSelected(bool b) { m_isSelected = b; }
-	//bool GetIsSelected()const { return m_isSelected; }
-
 	
 	void Update(double dt) override
 	{
@@ -108,6 +106,11 @@ public:
 		Object::Update(dt);
 	}
 	void Render(Renderer& renderer) override;
+
+	void resisterOtherButton(Button* otherButton)
+	{
+		m_otherButton = otherButton;
+	}
 };
 
 class JokerButton : public Button
@@ -175,7 +178,7 @@ class JokerButton : public Button
 
 			//-------------------------------- 할로윈 (set 6)
 		case jokerSplit:   // 흑돌 2개 이상
-			return [&bm]() { return bm.CountStones(Black) >= 2; };
+			return [&bm]() { return bm.CountStones(Black) >= 2 && bm.GetPlacedThisStage(jokerSplit) < 3; };
 
 		case jokerWaxseal:   // 자유도가 1인 흰돌이 존재하는 경우
 			return [&bm]() { return bm.WhiteLibOne() && bm.GetPlacedThisStage(jokerWaxseal) < 2; };
@@ -337,12 +340,13 @@ public:
 
 class CreditButton : public Button
 {
-
 public:
 	CreditButton(float posX, float posY, float width, float height, const std::string& bitmapFile, int order = 0)
-		: Button(posX, posY, width, height, bitmapFile, order) {
-	}
+		: Button(posX, posY, width, height, bitmapFile, order) {}
+
+
 	void ButtonFunction() override;
+
 
 };
 
@@ -354,6 +358,7 @@ public:
 		: Button(posX, posY, width, height, bitmapFile, order) {
 	}
 	void ButtonFunction() override;
+
 
 };
 
