@@ -355,6 +355,7 @@ void GameScene::StartStage()
 
 	m_resetStageButton->SetWhiteStonePos(m_board.PlaceRandomStones(spawn));
 	m_whiteLeft = m_board.GetStoneTypeAmount(White);
+	m_board.m_playerInfo.m_rerollCount = 0; // 리롤 횟수 초기화
 
 	if (m_stageText)
 		if (auto ui = m_stageText->GetComponent<UIText>())
