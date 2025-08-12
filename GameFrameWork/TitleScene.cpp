@@ -13,17 +13,30 @@ void TitleScene::Initialize()
 
 	XMFLOAT4 color = { 0.0f, 1.0f, 1.0f, 1.0f };
 	Mediator::GetInstance().SetBackGroundColor(color, color);
+
+	SceneManager::GetInstance().ChangePostProcessing("CRTFilter");
+
+
 	SceneManager::GetInstance().ChangePostProcessing("CRTOn");
 	m_filterElsapsedTime = 0.0f;
 	m_isFilterQueue = true;
 	m_isExitrQueue = false;
+
 
 	//title
 	unique_ptr<Button> title = std::make_unique<Button>(9.0f, 0.0f, 798, 385, "T_Main_Logo.png");
 	m_notUniqueObjectList.emplace_back(title.get());
 	m_titleButtonList.emplace_back(std::move(title));
 
+	unique_ptr<Button> creditImage = std::make_unique<Button>(0.f, -0.f, 1358.f, 742.f, "T_Main_Credit.png");
+	creditImage->GetComponent<BitmapRender3D>()->SetActive(true); // 시작은 숨김
+	creditBtn = creditImage.get();
+	m_buttonList.emplace_back(creditImage.get());
+	m_notUniqueObjectList.emplace_back(creditImage.get());
+	m_titleButtonList.emplace_back(std::move(creditImage));
+
 	unique_ptr<CreditButton> creditButton = std::make_unique<CreditButton>(-780.0f, -480.0f, 315.f, 144.f, "T_Credit.png");
+	creditButton->resisterOtherButton(creditBtn);
 	m_buttonList.emplace_back(creditButton.get());
 	m_notUniqueObjectList.emplace_back(creditButton.get());
 	m_titleButtonList.emplace_back(std::move(creditButton));
@@ -47,6 +60,8 @@ void TitleScene::Initialize()
 	m_buttonList.emplace_back(exitButton.get());
 	m_notUniqueObjectList.emplace_back(exitButton.get());
 	m_titleButtonList.emplace_back(std::move(exitButton));
+
+
 
 	// 사운드
 	m_channel->stop();

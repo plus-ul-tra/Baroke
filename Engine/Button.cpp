@@ -290,7 +290,8 @@ void CreditButton::ButtonFunction()
 {
 	if (m_isPressed && m_isActive)
 	{
-		std::cout << "Credit Button Pressed" << std::endl;
+		m_isToggle = !m_isToggle; // 토글 상태 변경
+		m_otherButton->GetComponent<BitmapRender3D>()->SetActive(m_isToggle);
 		m_isPressed = false;
 	}
 
@@ -303,6 +304,8 @@ void CreditButton::ButtonFunction()
 		m_bitmapRender->ChangeTexture("T_Credit.png");
 	}
 }
+
+
 
 void SettingButton::ButtonFunction()
 {
@@ -321,6 +324,8 @@ void SettingButton::ButtonFunction()
 		m_bitmapRender->ChangeTexture("T_Main_Setting.png");
 	}
 }
+
+
 
 void ExitButton::ButtonFunction()
 {
