@@ -937,6 +937,7 @@ void GameScene::KeyCommandMapping()
 
 void GameScene::OnInput(const MouseEvent& ev)
 {
+	if (m_gameState == GameState::Ending) return; // 엔딩 모드
 	for (auto& button : m_buttonList)
 	{
 		button->CheckInput(ev);
@@ -944,7 +945,6 @@ void GameScene::OnInput(const MouseEvent& ev)
 	if (m_gameState == GameState::ShopEnter) return; // 상점 진입 모드
 	if (m_gameState == GameState::Shop) return; // 상점 모드
 	if (m_gameState == GameState::ShopExit) return; // 상점 종료 모드
-	if (m_gameState == GameState::Ending) return; // 엔딩 모드
 
 	if (m_uiMode == UIMode::Normal)
 	{

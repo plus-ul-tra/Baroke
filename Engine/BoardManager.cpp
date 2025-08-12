@@ -1076,7 +1076,7 @@ void BoardManager::InitializeJokerInfoMap()
 	m_jokerInfoMap[StoneAbility::jokerSplit]		= { "T_jokerSplit.png", "T_JokerSplit_Tooltip.png", "jokerSplit.mp3",				JokerType::Halloween, 3, 0, 0, 20, 2, 0, 5, 2, true };
 	m_jokerInfoMap[StoneAbility::jokerWaxseal]		= { "T_jokerWaxseal.png",	"T_JokerWaxseal_Tooltip.png", "jokerWaxseal.mp3",		JokerType::Halloween, 0, 0, 0, 1, 0, 0, 3, 2, true, true, StoneType::Black };
 	m_jokerInfoMap[StoneAbility::jokerFlip]			= { "T_jokerFlip.png", "T_JokerFlip_Tooltip.png", "jokerFlip.wav",				JokerType::Halloween, 1, 1, 0, 0, 3, 1, 6, 2, true, true, StoneType::Black };
-	m_jokerInfoMap[StoneAbility::jokerOthello]		= { "T_jokerOthello.png", "T_JokerOthello_Tooltip.png", "jokerOthello.wav",		JokerType::Halloween, 1, 0, 0, 3, 2, 4, 5, 1, true, true, StoneType::Black };
+	m_jokerInfoMap[StoneAbility::jokerOthello]		= { "T_jokerOthello.png", "T_JokerOthello_Tooltip.png", "jokerOthello.wav",		JokerType::Halloween, 1, 0, 0, 2, 2, 4, 5, 1, true, true, StoneType::Black };
 	m_jokerInfoMap[StoneAbility::jokerMrchan]		= { "T_jokerMrchan.png", "T_JokerMrchan_Tooltip.png", "jokerMrchan.wav",			JokerType::Halloween, 1, 1, 0, 0, 0, 0, 0, 3, true };
 
 	//------------------------------------------------------------------------------------------------ 자연 (set 7)
