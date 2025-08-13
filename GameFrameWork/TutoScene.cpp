@@ -367,7 +367,11 @@ void TutoScene::Update(double deltaTime)
 {
 	m_filterElsapsedTime += deltaTime;
 
-	m_boardObj->BoardSync();
+	if (m_boardObj)
+	{
+		m_boardObj->BoardSync();
+		m_boardObj->Update(deltaTime);
+	}
 	for (auto& object : m_objectList)
 	{
 		object->Update(deltaTime);
@@ -469,9 +473,9 @@ void TutoScene::OnEnter()
 	m_player = playerObject.get();
 	m_objectList.push_back(std::move(playerObject));
 
-	unique_ptr<BoardObject> boardObj = std::make_unique<BoardObject>(POSX, POSY, WIDTH, HEIGHT, CELL, STONEOFFSET, PADDING);
-	m_boardObj = boardObj.get();
-	m_objectList.emplace_back(std::move(boardObj));
+	unique_ptr<BoardObject> boardObj = make_unique<BoardObject>(POSX, POSY, WIDTH, HEIGHT, CELL, STONEOFFSET, PADDING);
+	m_boardObjRender = boardObj.get();
+	m_boardObj = move(boardObj);
 
 
 	m_lastIndex = -1;
@@ -502,6 +506,9 @@ void TutoScene::OnLeave()
 	m_shopStones.clear();
 	m_lastIndex = -1;
 
+	m_board.ResetStone();
+	m_boardObj = nullptr;
+	m_boardObjRender = nullptr;
 
 	// 사운드 초기화
 	m_channel->stop();

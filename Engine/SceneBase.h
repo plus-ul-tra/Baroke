@@ -22,6 +22,7 @@ protected:
 	std::vector<std::unique_ptr<Object>> m_UIList;
 	vector<Button*> m_buttonList;
 	vector<Object*> m_notUniqueObjectList; // Object*로 관리하는 경우 //leak 초기화
+	Object* m_boardObjRender = nullptr; // BoardObject
 	vector<Text*> m_textList; // UI용 Text
 	//vector<Text*>   m_textList;
 	//render 에 대해서 따로 관리 생각
