@@ -113,42 +113,18 @@ void GameScene::SetUIButton()
 	//m_normalUI.emplace_back(move(leftUI));
 	leftUI->GetComponent<BitmapRender3D>()->SetShaderType("UIHolo");
 	m_leftUI = move(leftUI);
-	//--------------------------흑돌 흰돌 왁스----------------------------------
-	unique_ptr<Button> BlackUI = std::make_unique<Button>(-800.0f, 120.0f, 110, 110, "T_Blackstone.png");
+	//--------------------------흑돌 흰돌 UI----------------------------------
+	unique_ptr<Button> BlackUI = std::make_unique<Button>(-800.0f, 120.0f, 170, 170, "T_Blackstone.png");
 	m_notUniqueObjectList.emplace_back(BlackUI.get());
 	//leftUpUI->AddComponent<UIText>(-680.0f, 440.0f, 100.0f, 100.0f, 2);
 /*	leftUpUI->GetComponent<BitmapRender3D>()->SetShaderType("UIHolo");*/
 	m_BlackUI = move(BlackUI);
 
-	unique_ptr<Button> WhiteUI = std::make_unique<Button>(-640.0f, 120.0f, 110, 110, "T_whitestone.png");
+	unique_ptr<Button> WhiteUI = std::make_unique<Button>(-640.0f, 120.0f, 170, 170, "T_whitestone.png");
 	m_notUniqueObjectList.emplace_back(WhiteUI.get());
 	//leftUpUI->AddComponent<UIText>(-680.0f, 440.0f, 100.0f, 100.0f, 2);
 /*	leftUpUI->GetComponent<BitmapRender3D>()->SetShaderType("UIHolo");*/
 	m_WhiteUI = move(WhiteUI);
-
-	unique_ptr<Button> WaxUI = std::make_unique<Button>(-720.0f, -5.0f, 100, 100, "T_jokerWaxseal.png");
-	m_notUniqueObjectList.emplace_back(WaxUI.get());
-	//leftUpUI->AddComponent<UIText>(-680.0f, 440.0f, 100.0f, 100.0f, 2);
-/*	leftUpUI->GetComponent<BitmapRender3D>()->SetShaderType("UIHolo");*/
-	m_WaxUI = move(WaxUI);
-
-	unique_ptr<Text> BlackCount = std::make_unique<Text>(-900.0f, 50.0f, 200.0f, 100.0f, 1);
-	BlackCount->GetComponent<UIText>()->SetText(12);
-	m_BlackText = BlackCount.get();
-	m_textList.emplace_back(BlackCount.get());
-	m_useless.emplace_back(move(BlackCount)); //렌더용
-
-	unique_ptr<Text> WhiteCount = std::make_unique<Text>(-740.0f, 50.0f, 200.0f, 100.0f, 1);
-	WhiteCount->GetComponent<UIText>()->SetText(0);
-	m_WhiteText = WhiteCount.get();
-	m_textList.emplace_back(WhiteCount.get());
-	m_useless.emplace_back(move(WhiteCount)); //렌더용
-
-	unique_ptr<Text> WaxCount = std::make_unique<Text>(-820.0f, 30.0f, 200.0f, 100.0f, 1);
-	WaxCount->GetComponent<UIText>()->SetText(0);
-	m_WaxText = WaxCount.get();
-	m_textList.emplace_back(WaxCount.get());
-	m_useless.emplace_back(move(WaxCount)); //렌더용
 
 
 	//--------------------동적 Text---------------------
@@ -172,6 +148,24 @@ void GameScene::SetUIButton()
 	m_textList.emplace_back(popupMsg.get());
 	m_useless.emplace_back(move(popupMsg));
 
+	unique_ptr<Text> BlackCount = std::make_unique<Text>(-900.0f, -4.0f, 200.0f, 100.0f,0 );
+	BlackCount->GetComponent<UIText>()->SetText(12);
+	m_BlackText = BlackCount.get();
+	m_textList.emplace_back(BlackCount.get());
+	m_useless.emplace_back(move(BlackCount)); //렌더용
+
+	unique_ptr<Text> WhiteCount = std::make_unique<Text>(-740.0f, -4.0f, 200.0f, 100.0f, 0 );
+	WhiteCount->GetComponent<UIText>()->SetText(0);
+	m_WhiteText = WhiteCount.get();
+	m_textList.emplace_back(WhiteCount.get());
+	m_useless.emplace_back(move(WhiteCount)); //렌더용
+
+	unique_ptr<Text> WaxCount = std::make_unique<Text>(-820.0f, -28.0f, 200.0f, 100.0f, 0);
+	WaxCount->GetComponent<UIText>()->SetText(0);
+	m_WaxText = WaxCount.get();
+	m_textList.emplace_back(WaxCount.get());
+	m_useless.emplace_back(move(WaxCount)); //렌더용
+
 	//-- unchanged----------------------
 	// 장식품
 	unique_ptr<Button> stageText = std::make_unique<Button>(-760.0f, 388.0f, 167, 67, "T_Common_Left_Stage.png");
@@ -179,7 +173,7 @@ void GameScene::SetUIButton()
 	stageText->GetComponent<BitmapRender3D>()->SetShaderType("Holo");
 	m_useless.emplace_back(move(stageText));
 
-	unique_ptr<Button> leftLine = std::make_unique<Button>(-720.0f, -100.0f, 340, 16, "T_Common_Left_Down_Score_Guideline.png");
+	unique_ptr<Button> leftLine = std::make_unique<Button>(-720.0f, 0.0f, 340, 60, "T_Common_Left_Down_Score_Guideline.png");
 	m_notUniqueObjectList.emplace_back(leftLine.get());
 	leftLine->GetComponent<BitmapRender3D>()->SetShaderType("UIHolo");
 	m_useless.emplace_back(move(leftLine));
@@ -194,7 +188,7 @@ void GameScene::SetUIButton()
 	scoreFiled->GetComponent<BitmapRender3D>()->SetShaderType("UIHolo");
 	m_useless.emplace_back(move(scoreFiled));
 
-	unique_ptr<ResetStageButton> settingText = std::make_unique<ResetStageButton>(-720.0f, -330.0f, 52, 34, "T_Common_Left_Down_Setting.png");
+	unique_ptr<ResetStageButton> settingText = std::make_unique<ResetStageButton>(-720.0f, -330.0f, 93, 38, "T_Common_1Reset.png");
 	m_buttonList.emplace_back(settingText.get());
 	m_notUniqueObjectList.emplace_back(settingText.get());
 	m_resetStageButton = settingText.get();
@@ -204,7 +198,7 @@ void GameScene::SetUIButton()
 	unique_ptr<Button> exitText = std::make_unique<SceneChangeButton>(-720.0f, -390.0f, 115, 32, "T_Common_Left_Down_Exit.png", "Ending", buttonType::GameToEnding);
 	m_buttonList.emplace_back(exitText.get());
 	m_notUniqueObjectList.emplace_back(exitText.get());
-	//exitText->GetComponent<BitmapRender3D>()->SetShaderType("UIHolo");
+	exitText->GetComponent<BitmapRender3D>()->SetShaderType("UIHolo");
 	m_useless.emplace_back(move(exitText));
 
 	unique_ptr<Button> cyberAlpha = std::make_unique<Button>(0.0f, 0.0f, 900, 900, "CyberAlpha.png");
@@ -1053,10 +1047,10 @@ void GameScene::ChangeThema(int thema)
 			rend->ChangeTexture("T_Jungle_Right_Slot_Passive.png");
 		}
 
-		m_desc->GetComponent<BitmapRender3D>()->ChangeTexture("T_Jungle_Right_Slot_Description.png");
-		m_rightUI->GetComponent<BitmapRender3D>()->ChangeTexture("T_Jungle_Right_Base_Glow.png");
-		m_leftUI->GetComponent<BitmapRender3D>()->ChangeTexture("T_Jungle_Left_Down_Base_Glow.png");
-		m_leftUpUI->GetComponent<BitmapRender3D>()->ChangeTexture("T_Jungle_Left_Base_Glow.png");
+		m_desc->GetComponent<BitmapRender3D>()->ChangeBoardTexture("T_Jungle_Right_Slot_Description.png");
+		m_rightUI->GetComponent<BitmapRender3D>()->ChangeBoardTexture("T_Jungle_Right_Base_Glow.png");
+		m_leftUI->GetComponent<BitmapRender3D>()->ChangeBoardTexture("T_Jungle_Left_Down_Base_Glow.png");
+		m_leftUpUI->GetComponent<BitmapRender3D>()->ChangeBoardTexture("T_Jungle_Left_Base_Glow.png");
 		m_cyber->GetComponent<BitmapRender3D>()->SetActive(false);
 
 		m_lastIndex = -1;
@@ -1095,10 +1089,10 @@ void GameScene::ChangeThema(int thema)
 			//rend->SetShaderType("UIColor");
 			rend->ChangeTexture("T_Space_Right_Slot_Passive.png");
 		}
-		m_desc->GetComponent<BitmapRender3D>()->ChangeTexture("T_Space_Right_Slot_Description.png");
-		m_rightUI->GetComponent<BitmapRender3D>()->ChangeTexture("T_Space_Right_Base_Glow.png");
-		m_leftUI->GetComponent<BitmapRender3D>()->ChangeTexture("T_Space_Left_Down_Base_Glow.png");
-		m_leftUpUI->GetComponent<BitmapRender3D>()->ChangeTexture("T_Space_Left_Base_Glow.png");
+		m_desc->GetComponent<BitmapRender3D>()->ChangeBoardTexture("T_Space_Right_Slot_Description.png");
+		m_rightUI->GetComponent<BitmapRender3D>()->ChangeBoardTexture("T_Space_Right_Base_Glow.png");
+		m_leftUI->GetComponent<BitmapRender3D>()->ChangeBoardTexture("T_Space_Left_Down_Base_Glow.png");
+		m_leftUpUI->GetComponent<BitmapRender3D>()->ChangeBoardTexture("T_Space_Left_Base_Glow.png");
 		m_cyber->GetComponent<BitmapRender3D>()->SetActive(false);
 
 		m_lastIndex = -1;
@@ -1138,10 +1132,10 @@ void GameScene::ChangeThema(int thema)
 			rend->ChangeTexture("T_Dancheong_Right_Slot_Passive.png");
 		}
 
-		m_desc->GetComponent<BitmapRender3D>()->ChangeTexture("T_Dancheong_Right_Slot_Description.png");
-		m_rightUI->GetComponent<BitmapRender3D>()->ChangeTexture("T_Dancheong_Right_Base_Glow.png");
-		m_leftUI->GetComponent<BitmapRender3D>()->ChangeTexture("T_Dancheong_Left_Down_Base_Glow.png");
-		m_leftUpUI->GetComponent<BitmapRender3D>()->ChangeTexture("T_Dancheong_Left_Base_Glow.png");
+		m_desc->GetComponent<BitmapRender3D>()->ChangeBoardTexture("T_Dancheong_Right_Slot_Description.png");
+		m_rightUI->GetComponent<BitmapRender3D>()->ChangeBoardTexture("T_Dancheong_Right_Base_Glow.png");
+		m_leftUI->GetComponent<BitmapRender3D>()->ChangeBoardTexture("T_Dancheong_Left_Down_Base_Glow.png");
+		m_leftUpUI->GetComponent<BitmapRender3D>()->ChangeBoardTexture("T_Dancheong_Left_Base_Glow.png");
 		m_cyber->GetComponent<BitmapRender3D>()->SetActive(false);
 
 		m_lastIndex = -1;
@@ -1180,10 +1174,10 @@ void GameScene::ChangeThema(int thema)
 			//rend->SetShaderType("UIColor");
 			rend->ChangeTexture("T_Halloween_Right_Slot_Passive.png");
 		}
-		m_desc->GetComponent<BitmapRender3D>()->ChangeTexture("T_Halloween_Right_Slot_Description.png");
-		m_rightUI->GetComponent<BitmapRender3D>()->ChangeTexture("T_Halloween_Right_Base_Glow.png");
-		m_leftUI->GetComponent<BitmapRender3D>()->ChangeTexture("T_Halloween_Left_Down_Base_Glow.png");
-		m_leftUpUI->GetComponent<BitmapRender3D>()->ChangeTexture("T_Halloween_Left_Base_Glow.png");
+		m_desc->GetComponent<BitmapRender3D>()->ChangeBoardTexture("T_Halloween_Right_Slot_Description.png");
+		m_rightUI->GetComponent<BitmapRender3D>()->ChangeBoardTexture("T_Halloween_Right_Base_Glow.png");
+		m_leftUI->GetComponent<BitmapRender3D>()->ChangeBoardTexture("T_Halloween_Left_Down_Base_Glow.png");
+		m_leftUpUI->GetComponent<BitmapRender3D>()->ChangeBoardTexture("T_Halloween_Left_Base_Glow.png");
 		m_cyber->GetComponent<BitmapRender3D>()->SetActive(false);
 
 		m_lastIndex = -1;
@@ -1222,10 +1216,10 @@ void GameScene::ChangeThema(int thema)
 			//rend->SetShaderType("UIColor");
 			rend->ChangeTexture("T_Cyberpunk_Right_Passive_Jocker.png");
 		}
-		m_desc->GetComponent<BitmapRender3D>()->ChangeTexture("Cyberpunk_Description.png");
-		m_rightUI->GetComponent<BitmapRender3D>()->ChangeTexture("Cyberpunk_Righ.png");
-		m_leftUI->GetComponent<BitmapRender3D>()->ChangeTexture("Cyberpunk_Left_Down.png");
-		m_leftUpUI->GetComponent<BitmapRender3D>()->ChangeTexture("Cyberpunk_Left.png");
+		m_desc->GetComponent<BitmapRender3D>()->ChangeBoardTexture("Cyberpunk_Description.png");
+		m_rightUI->GetComponent<BitmapRender3D>()->ChangeBoardTexture("Cyberpunk_Righ.png");
+		m_leftUI->GetComponent<BitmapRender3D>()->ChangeBoardTexture("Cyberpunk_Left_Down.png");
+		m_leftUpUI->GetComponent<BitmapRender3D>()->ChangeBoardTexture("Cyberpunk_Left.png");
 		m_cyber->GetComponent<BitmapRender3D>()->SetActive(true);
 
 		m_lastIndex = -1;
@@ -1244,10 +1238,10 @@ void GameScene::ChangeThema(int thema)
 
 		Mediator::GetInstance().SetUIColor(XMFLOAT4(0.0f, 1.0f, 1.0f, 1.0f));
 
-		m_desc->GetComponent<BitmapRender3D>()->ChangeTexture("T_Standard_Right_Slot_Description.png");
-		m_rightUI->GetComponent<BitmapRender3D>()->ChangeTexture("T_Standard_Right_Base_Glow.png");
-		m_leftUI->GetComponent<BitmapRender3D>()->ChangeTexture("T_Standard_Left_Down_Base_Glow.png");
-		m_leftUpUI->GetComponent<BitmapRender3D>()->ChangeTexture("T_Standard_Left_Base_Glow.png");
+		m_desc->GetComponent<BitmapRender3D>()->ChangeBoardTexture("T_Standard_Right_Slot_Description.png");
+		m_rightUI->GetComponent<BitmapRender3D>()->ChangeBoardTexture("T_Standard_Right_Base_Glow.png");
+		m_leftUI->GetComponent<BitmapRender3D>()->ChangeBoardTexture("T_Standard_Left_Down_Base_Glow.png");
+		m_leftUpUI->GetComponent<BitmapRender3D>()->ChangeBoardTexture("T_Standard_Left_Base_Glow.png");
 		m_cyber->GetComponent<BitmapRender3D>()->SetActive(false);
 
 		m_lastIndex = -1;
@@ -1260,7 +1254,12 @@ void GameScene::ChangeThema(int thema)
 		m_bgm->setMode(FMOD_LOOP_NORMAL);
 		m_soundManager.GetSystem()->getChannel(0, &m_channel);
 		m_soundManager.GetSystem()->playSound(m_bgm, nullptr, false, &m_channel);
-
+		for (auto& bt : m_jokerSlot)
+		{
+			auto rend = bt->GetComponent<BitmapRender3D>();
+			//rend->SetShaderType("UIColor");
+			rend->ChangeTexture("T_Standard_Right_Slot_Jocker.png");
+		}
 		for (auto& bt : m_itemSlot)
 		{
 			auto rend = bt->GetComponent<BitmapRender3D>();

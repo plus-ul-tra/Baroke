@@ -1,8 +1,8 @@
-// 기존과 동일
+
 Texture2D g_Texture : register(t0);
 SamplerState g_Sampler : register(s0);
 
-// 시간 버퍼 (필요)
+
 cbuffer TimeBuffer : register(b0)
 {
     float time;

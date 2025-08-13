@@ -14,8 +14,8 @@ float2 BarrelDistort(float2 uv, float distortionAmount)
     float2 centerUV = uv - 0.5;
     float dist = length(centerUV);
 
-    float innerRadius = 0.0; // 왜곡이 시작되는 중심에서의 거리 (보통 0)
-    float outerRadius = 2.0; // 왜곡이 최대로 적용되는 중심에서의 거리
+    float innerRadius = 0.0; 
+    float outerRadius = 2.0; 
     
     float normalizedDist = smoothstep(innerRadius, outerRadius, dist);
 
@@ -38,14 +38,12 @@ float4 PSMain(VS_OUTPUT Input) : SV_Target
     float scanlineToggle = fmod(floor(pixelY), 2.0); //
     float scanlineFactor = lerp(0.9, 1.0, fmod(floor(pixelY), 2.0));
     
-    //시간 값에 따른 UV 변화, 글리치 강도 조절 가능.
-    // Rgb
+
     float2 glitchOffset = float2(0.001, 0.005); // UV 이동
     float4 texR = g_Texture.Sample(g_Sampler, distortedUV + glitchOffset); // R 채널
     float4 texG = g_Texture.Sample(g_Sampler, distortedUV - glitchOffset); 
     float4 texB = g_Texture.Sample(g_Sampler, distortedUV); 
 
-    // 스캔라인이 홀수일 때 RGB 채널에 색상 섞기
     float4 glitchColor = float4(texR.r, texG.g, texB.b, 1.0);
     float glitchBlend = scanlineToggle * 0.2; // 글리치 강도 
     
