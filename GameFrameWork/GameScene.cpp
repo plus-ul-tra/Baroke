@@ -349,6 +349,7 @@ void GameScene::StartStage()
 
 	int spawn = 3 + (m_stageNo * 2);
 
+	m_resetStageButton->SetIsActive(true);
 	m_resetStageButton->SetWhiteStonePos(m_board.PlaceRandomStones(spawn));
 	m_whiteLeft = m_board.GetStoneTypeAmount(White);
 	m_board.m_playerInfo.m_rerollCount = 0; // 리롤 횟수 초기화
@@ -396,6 +397,7 @@ void GameScene::CheckStageClear()
 
 		if (m_gameState == GameState::ShopEnter)
 		{
+			m_resetStageButton->SetIsActive(false);
 			m_gameState = GameState::Shop;
 			ShopStage();
 
