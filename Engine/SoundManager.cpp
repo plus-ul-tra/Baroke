@@ -6,6 +6,7 @@ void SoundManager::Initialize()
 {
 	System_Create(&m_system);
 	m_system->init(512, FMOD_INIT_NORMAL, nullptr);
+	m_system->createChannelGroup("Master", &m_channelGroup);
 	LoadAll();
 }
 
@@ -58,8 +59,31 @@ Sound* SoundManager::GetSound(const string& key) const
 void SoundManager::PlaySoundOnce(const string& key)
 {
 	Sound* sound = GetSound(key);
-	if (sound) m_system->playSound(sound, nullptr, false, nullptr);
+	sound->setMode(FMOD_LOOP_OFF); // 단일 재생
+
+	Channel* newChannel = nullptr;
+
+	if (sound) m_system->playSound(sound, m_channelGroup, false, &newChannel);
 	else throw runtime_error("해당 사운드를 찾을 수 없음");
+}
+
+void SoundManager::ReleaseChannelGroup()
+{
+	if (m_channelGroup)
+	{
+		int channelCount = 0;
+		m_channelGroup->getNumChannels(&channelCount);
+		for (int i = 0; i < channelCount; ++i)
+		{
+			Channel* channel = nullptr;
+			m_channelGroup->getChannel(i, &channel);
+			if (channel) channel->stop();
+		}
+
+		m_channelGroup->release();
+		m_channelGroup = nullptr;
+	}
+	m_system->createChannelGroup("Master", &m_channelGroup);
 }
 
 void SoundManager::Release()

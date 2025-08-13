@@ -57,12 +57,13 @@ public:
 		m_transform = AddComponent<Transform>();
 		m_bitmapRender = AddComponent<BitmapRender3D>(bitmapKey, width, height);
 		m_bitmapRender->SetOrder(order);
-		m_bitmapRender->SetActive(true);
+
 		m_transform->SetPosition(DirectX::XMVectorSet(posX, posY, 0.0f, 1.0f));
 		m_transform->SetScale(DirectX::XMVectorSet(3.2f, 3.2f, 1.0f, 1.0f));
+
 	}
 
-	bool m_isDead = false; // È¿°ú°¡ ³¡³µ´ÂÁö ¿©ºÎ
+	bool m_isDead = false; // ÃˆÂ¿Â°ÃºÂ°Â¡ Â³Â¡Â³ÂµÂ´Ã‚ÃÃ¶ Â¿Â©ÂºÃŽ
 
 	void Update(double deltaTime) override { m_bitmapRender->Update(deltaTime);	m_isDead = m_bitmapRender->IsEnded(); }
 	void Render(Renderer& renderer) override { m_bitmapRender->Render(renderer); }

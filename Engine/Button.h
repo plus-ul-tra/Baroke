@@ -6,7 +6,7 @@
 #include "InputManager.h"
 #include "InputEvents.h"
 #include "BoardManager.h"
-/*#include "SceneManager.h"*/
+
 
 
 enum class buttonType 
@@ -132,44 +132,77 @@ class JokerButton : public Button
 // 		case jokerDouble:   // 흑돌 2개 이상
 // 			return [&bm]() { return bm.CountStones(Black) >= 2; };
 		case jokerOmok:   // 흑돌 5개 이상
-			return [&bm]() { return bm.HasStraightLine(Black,5)&& bm.CountStones(Black) >= 10; };
+			return [&bm]() {
+				return
+					bm.HasStraightLine(Black, 5)
+					&& bm.CountStones(Black) >= 10; };
 		case jokerSamok:   // 조커돌 4개 이상
-			return [&bm]() { return bm.HasStraightLine(Joker, 4); };
+			return [&bm]() { 
+				return 
+					bm.HasStraightLine(Joker, 4) 
+					&& bm.CountStones(Black) >= 5
+					&& bm.GetPlacedThisStage(jokerSamok) < 2; };
 		case jokerSammok:   // 조커돌 3개 이상
-			return [&bm]() { return bm.HasStraightLine(Joker, 3); };
+			return [&bm]() { 
+				return 
+					bm.HasStraightLine(Joker, 3) 
+					&& bm.CountStones(Black) >= 5
+					&& bm.GetPlacedThisStage(jokerSammok) < 2; };
 
 			//-------------------------------- 야생 (set 2)
 		case jokerEgg:   // 흑돌 5개 이상
-			return [&bm]() { return (bm.CountStones(Black) >= 5&& bm.CountJokers(jokerEgg)<3); };
+			return [&bm]() { 
+				return (
+					bm.CountStones(Black) >= 5 
+					&& bm.CountJokers(jokerEgg)<2); };
 
  		case jokerOstrichEgg:   // 항상 트루
 			return [&bm]() { return true; }; // 진화
 
 		case jokerPeacock:   // 흰돌 5개 이상
-			return [&bm]() { return (bm.CountStones(White) >= 5 && bm.CountStones(Black) >= 3 && bm.GetPlacedThisStage(jokerPeacock) < 2); };
+			return [&bm]() { 
+				return (
+					bm.CountStones(White) >= 5 
+					&& bm.CountStones(Black) >= 3 
+					&& bm.GetPlacedThisStage(jokerPeacock) < 2); };
 
 		case jokerEvolution:   //
-			return [&bm]() { return bm.CountStones(Black) >= 1; };
+			return [&bm]() { return bm.CountStones(Black) >= 2; };
 
 		case jokerDansu:   // 자유도가 1인 흰돌이 존재하는 경우
-			return [&bm]() { return /*bm.WhiteLibOne();*/bm.CountStones(Black) >= 2; };
+			return [&bm]() { return bm.CountStones(Black) >= 4
+				&& bm.GetPlacedThisStage(jokerDansu) < 2; };
 
 			//-------------------------------- 우주 (set 3)
 		case jokerTeleport:   // 흑돌 1개 이상
 			return [&bm]() { return  bm.CountStones(Black) >= 2; };
 
 		case jokerExplode:   // 착수 지점을 기준 3*3범위에 흑돌이 5개 이상
-			return [&bm]() { return (bm.IsColorCount(StoneType::Black, 5) && bm.CountStones(Black) >= 3 && bm.GetPlacedThisStage(jokerExplode) < 5); };
+			return [&bm]() { 
+				return (
+					bm.IsColorCount(StoneType::Black, 5) 
+					&& bm.CountStones(Black) >= 3 
+					&& bm.GetPlacedThisStage(jokerExplode) < 5); };
 
 		case jokerMagnetic:   // 착수 지점을 기준 3*3범위에 흑돌 == 백돌
-			return [&bm]() { return bm.IsSamaBlackWhite() && bm.CountStones(Black) >= 4; };
+			return [&bm]() {
+				return 
+					bm.IsSamaBlackWhite() 
+					&& bm.CountStones(Black) >= 4; };
 
 		case jokerBlackhole:   // 자유도가 0인 지점이 존재하는 경우
-			return [&bm]() { return (bm.HasCrowdedEmptySpot6Plus() && bm.CountStones(Black) >= 10 && bm.GetPlacedThisStage(jokerBlackhole) == 0); };
+			return [&bm]() { 
+				return (
+					bm.HasCrowdedEmptySpot6Plus() 
+					&& bm.CountStones(Black) >= 10 
+					&& bm.GetPlacedThisStage(jokerBlackhole) == 0); };
 
 			//-------------------------------- 단청 (set 4)
 		case jokerFusion:   // 흰 돌 2개를 연결할 수 있는 지점이 있는 경우
-			return [&bm]() { return  bm.IsConnectTwo()&&bm.CountStones(Black)>=2; };
+			return [&bm]() {
+				return
+					bm.IsConnectTwo()
+					&& bm.CountStones(Black) >= 2; };
 
 		case jokerTriunion:   // 항상 트루
 			return [&bm]() { return true; }; // 진화
@@ -179,33 +212,56 @@ class JokerButton : public Button
 
 			//-------------------------------- 할로윈 (set 6)
 		case jokerSplit:   // 흑돌 2개 이상
-			return [&bm]() { return bm.CountStones(Black) >= 2 && bm.GetPlacedThisStage(jokerSplit) < 3; };
+			return [&bm]() {
+				return bm.CountStones(Black) >= 2 
+					&& bm.GetPlacedThisStage(jokerSplit) < 3; };
 
 		case jokerWaxseal:   // 자유도가 1인 흰돌이 존재하는 경우
-			return [&bm]() { return bm.WhiteLibOne() && bm.GetPlacedThisStage(jokerWaxseal) < 2; };
+			return [&bm]() { 
+				return 
+					bm.WhiteLibOne() 
+					&& bm.GetPlacedThisStage(jokerWaxseal) < 2; };
 
 		case jokerFlip:   // 착수 지점을 기준 3*3범위에 흰돌이 3개 이상
-			return [&bm]() {  return bm.IsColorCount(StoneType::White, 3) && bm.CountStones(Black) >= 3; };
+			return [&bm]() {  
+				return 
+					bm.IsColorCount(StoneType::White, 3) 
+					&& bm.CountStones(Black) >= 3; };
 
 		case jokerOthello:   // 흑돌 기준 상하좌우 중 백돌3개 이상인 지점이 있는가?
-			return [&bm]() { return bm.IsOthello() && bm.CountStones(Black) >= 2; };
+			return [&bm]() { 
+				return 
+					bm.IsOthello() 
+					&& bm.CountStones(Black) >= 2; };
 
 		case jokerMrchan:   // 흑돌 0개, 조커돌 0개
 			return [&bm]() {
-				return
-					((bm.m_playerInfo.GetBlackCount() - bm.GetStoneTypeAmount(StoneType::Black)) == 0) && bm.GetPlacedThisStage(jokerMrchan) == 0;
+				return(
+					(bm.m_playerInfo.GetBlackCount() - bm.GetStoneTypeAmount(StoneType::Black)) == 0) 
+					&& bm.GetPlacedThisStage(jokerMrchan) == 0 
+					&& bm.CountStones(Black) >= 5;
 				};
 
 			//-------------------------------- 자연 (set 7)
 		case jokerShadow:   // 흰돌 1개 이상
-			return [&bm]() { return bm.CountStones(White) >= 1 && bm.CountStones(Black) >= 3 && bm.GetPlacedThisStage(jokerShadow) < 3; };
+			return [&bm]() { 
+				return 
+					bm.CountStones(White) >= 1 
+					&& bm.CountStones(Black) >= 1 && 
+					bm.GetPlacedThisStage(jokerShadow) < 3; };
 
 		case jokerLight:   // 흑돌 0개
-			return [&bm]() { return bm.CountStones(Black) == 0 && bm.GetPlacedThisStage(jokerLight) <2; };
+			return [&bm]() { 
+				return 
+					bm.CountStones(Black) == 0 
+					&& bm.GetPlacedThisStage(jokerLight) <2; };
 
 		case jokerTime: // 플레이어 흑돌 개수가 5개 미만인 경우
 			return [&bm]() { 				
-				return (bm.m_playerInfo.GetBlackCount() - bm.GetStoneTypeAmount(StoneType::Black)) < 5 && bm.GetPlacedThisStage(jokerTime) < 1;
+				return (
+					bm.m_playerInfo.GetBlackCount() - bm.GetStoneTypeAmount(StoneType::Black)) < 5 
+					&& bm.GetPlacedThisStage(jokerTime) < 1 
+					&& bm.CountStones(Black) >= 5;
 				};
 		case jokerWind:   // 흑돌 4개 이상
 			return [&bm]() { return bm.CountStones(Black) >= 4; };
@@ -249,6 +305,7 @@ class ShopJokerButton : public Button
 	JokerStoneInfo m_jokerInfo;
 	StoneAbility m_jokerAbility = StoneAbility::None;
 	vector<unique_ptr<JokerButton>>* m_jokerButton = nullptr; // 상점 조커 버튼들
+	bool flag = false;
 
 	void ButtonFunction() override;
 
@@ -256,6 +313,7 @@ public:
 	ShopJokerButton(float posX, float posY, float width, float height, const std::string& bitmapFile,bool tutoFlag = false, int order = 0)
 		: Button(posX, posY, width, height, bitmapFile, order)
 	{
+		flag = tutoFlag;
 		if (!tutoFlag) {
 			m_shopIcon = make_unique<NewObject>(m_transform->GetPosition().m128_f32[0] + 3.0f, m_transform->GetPosition().m128_f32[1] - 10.0f, 145.0f, 241.0f, 0.0f, "T_Store_Joker.png");
 			m_priceIcon = make_unique<NewObject>(m_transform->GetPosition().m128_f32[0] - 15.0f, m_transform->GetPosition().m128_f32[1] - 66.0f, 45.0f, 45.0f, 0.0f, "T_Store_Joker_Stone.png");
@@ -354,18 +412,52 @@ public:
 
 };
 
-class SettingButton : public Button
+class RoleButton : public Button
 {
-
+	std::vector<Button*> m_linkedButtons; // A,B,C 등 연동 대상들
 public:
-	SettingButton(float posX, float posY, float width, float height, const std::string& bitmapFile, int order = 0)
+	RoleButton(float posX, float posY, float width, float height, const std::string& bitmapFile, int order = 0)
 		: Button(posX, posY, width, height, bitmapFile, order) {
 	}
 	void ButtonFunction() override;
 
+	void Link(Button* other) {
+		if (!other || other == this) return;
+		if (std::find(m_linkedButtons.begin(), m_linkedButtons.end(), other) == m_linkedButtons.end())
+			m_linkedButtons.push_back(other);
+	}
+
+	void Link(std::initializer_list<Button*> others) {
+		for (auto* b : others) Link(b);
+	}
+
+	template<typename F>
+	void ForEachLinked(F&& f) {
+		for (auto* b : m_linkedButtons) if (b) f(*b);
+	}
+
 
 };
 
+class NextButton : public Button
+{
+	int& refIndex;
+public:
+	NextButton(float posX, float posY, float width, float height, const std::string& bitmapFile, int& index, int order = 0)
+		: Button(posX, posY, width, height, bitmapFile, order), refIndex(index) {}
+	void ButtonFunction() override;
+};
+
+class PrevButton : public Button
+{
+	int& refIndex;
+public:
+	PrevButton(float posX, float posY, float width, float height, const std::string& bitmapFile,int& index, int order = 0)
+		: Button(posX, posY, width, height, bitmapFile, order), refIndex(index) {}
+	void ButtonFunction() override;
+
+
+};
 class ExitButton : public Button
 {
 
