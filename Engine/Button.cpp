@@ -130,8 +130,7 @@ void ShopJokerButton::SetButtonJoker(JokerStoneInfo jokerInfo, StoneAbility abil
 	int offset = 1;
 	if (flag) offset = -1;
 	
-	
-	m_textObject = make_unique<NewObject>(m_transform->GetPosition().m128_f32[0] - 300.0f* offset, m_transform->GetPosition().m128_f32[1] - 100.0f, 691.0f, 200.0f, 0.0f, m_jokerInfoMap[ability].toolTipName);
+	m_textObject = make_unique<NewObject>(m_transform->GetPosition().m128_f32[0] - 300.0f * offset, m_transform->GetPosition().m128_f32[1] - 100.0f, 691.0f, 200.0f, 0.0f, m_jokerInfoMap[ability].toolTipName);
 }
 
 void ShopBuyStoneButton::ButtonFunction()
@@ -419,7 +418,9 @@ void ResetStageButton::SetWhiteStonePos(vector<POINT> whiteStonePos)
 
 void ResetStageButton::ButtonFunction()
 {
-	if (m_isPressed && m_isActive)
+
+	if (BoardManager::GetInstance().CountStones(StoneType::White) == 0) return;
+	if (m_isPressed && m_isActive  )
 	{
 		m_boardManager.ResetStone();
 		

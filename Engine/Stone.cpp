@@ -30,8 +30,6 @@ void Stone::Update(double deltaTime)
 			m_sprite->SetActive(false);
 			m_isRemoved = true;
 			m_isRemoving = false;
-
-			SoundManager::GetInstance().PlaySoundOnce("stoneDeath.wav");
 		}
 	}
 
@@ -73,6 +71,8 @@ void Stone::DeathMove(double duration)
 
 	m_isRemoving = true;
 	m_queueRemoveTime = duration;
+
+	SoundManager::GetInstance().PlaySoundOnce("stoneDeath.wav");
 
 	m_removeEffect = make_unique<OneTimeEffect>(m_lerpStartPosition.m128_f32[0], m_lerpStartPosition.m128_f32[1], m_size - m_offset, m_size - m_offset, "cloud_pattern1_sheet.json");
 }
