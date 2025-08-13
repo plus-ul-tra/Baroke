@@ -3,7 +3,7 @@
 
 
 #define BOARD_SIZE 15
-#define PADDING 105
+#define PADDING 106
 #define POSX 0
 #define POSY 0
 #define WIDTH 970
