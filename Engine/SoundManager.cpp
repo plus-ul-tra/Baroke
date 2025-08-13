@@ -65,6 +65,7 @@ void SoundManager::PlaySoundOnce(const string& key)
 
 	if (sound) m_system->playSound(sound, m_channelGroup, false, &newChannel);
 	else throw runtime_error("해당 사운드를 찾을 수 없음");
+	newChannel->setVolume(SFX_VOLUME); // SFX 볼륨 설정
 }
 
 void SoundManager::ReleaseChannelGroup()
