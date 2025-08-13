@@ -44,6 +44,5 @@ public:
 		if (m_tutorialIndex > 18) { m_tutorialIndex %= 19; }
 		if (m_tutorialIndex == -1) { m_tutorialIndex = 18; }
 		m_tutorialImageBtn->GetComponent<BitmapRender3D>()->ChangeTexture("Tutorial_" + std::to_string(m_tutorialIndex) + ".png");
-		std::cout << "Tutorial Index Changed: " << m_tutorialIndex << std::endl;
 	}
 };
