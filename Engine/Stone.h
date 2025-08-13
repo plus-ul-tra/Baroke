@@ -102,6 +102,7 @@ public:
 	POINT GetPosition() const;
 	void ChangeColor(bool isBlack = true);
 	StoneAbility GetAbility() const { return ability; }
+	BitmapRender3D* GetSprite() const { return m_sprite; }
 };
 
 class WhiteStone : public Stone

@@ -1719,6 +1719,7 @@ bool BoardManager::checkBeforeAbSuccess()
 				return false;
 			} // 이미 조커 오스트리치 에그가 있는 경우
 			next = jokerOstrichEgg;
+			GetStone(tgt)->GetSprite()->ChangeTexture("jokerOstrichEgg.json");
 		}
 		else if (cur == jokerFusion)    next = jokerTriunion;
 		else if (cur == jokerTriunion)  next = jokerQuadunion;
