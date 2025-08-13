@@ -43,7 +43,7 @@ void Stone::Update(double deltaTime)
 	}
 
 	// 제거 이펙트
-	if (m_isRemoved && m_removeEffect)
+	if (m_isRemoving && m_removeEffect)
 	{
 		m_removeEffect->Update(deltaTime);
 		if (m_removeEffect->m_isDead) m_removeEffect = nullptr; // 제거 이펙트가 끝나면 제거
@@ -53,7 +53,7 @@ void Stone::Update(double deltaTime)
 void Stone::Render(Renderer& renderer)
 {
 	if (m_placeEffect) m_placeEffect->Render(renderer);
-	if (m_isRemoved && m_removeEffect) m_removeEffect->Render(renderer);
+	if (m_isRemoving && m_removeEffect) m_removeEffect->Render(renderer);
 }
 
 void Stone::Move(POINT position, double duration)
@@ -74,7 +74,7 @@ void Stone::DeathMove(double duration)
 	m_isRemoving = true;
 	m_queueRemoveTime = duration;
 
-	m_removeEffect = make_unique<OneTimeEffect>(static_cast<float>(XMVectorGetX(m_removePosition)), static_cast<float>(XMVectorGetY(m_removePosition)), m_size - m_offset, m_size - m_offset, "sit_pattern1_sheet.json");
+	m_removeEffect = make_unique<OneTimeEffect>(m_lerpStartPosition.m128_f32[0], m_lerpStartPosition.m128_f32[1], m_size - m_offset, m_size - m_offset, "cloud_pattern1_sheet.json");
 }
 
 POINT Stone::GetPosition() const
