@@ -1097,7 +1097,7 @@ void BoardManager::InitializeJokerInfoMap()
 
 	//------------------------------------------------------------------------------------------------ 자연 (set 7)
 	m_jokerInfoMap[StoneAbility::jokerShadow]		= { "T_jokerShadow.png", "T_JokerShadow_Tooltip.png", "jokerShadow.wav",		JokerType::Natural, 1, 1, 0, 2, 1, 0, 6, 2, true };
-	m_jokerInfoMap[StoneAbility::jokerLight]		= { "T_jokerLight.png", "T_JokerLight_Tooltip.png", "jokerLight.wav",		JokerType::Natural, 1, 1, 0, 0, 0, 0, 6, 2, true, true, StoneType::Black };
+	m_jokerInfoMap[StoneAbility::jokerLight]		= { "T_jokerLight.png", "T_JokerLight_Tooltip.png", "jokerLight.mp3",		JokerType::Natural, 1, 1, 0, 0, 0, 0, 6, 2, true, true, StoneType::Black };
 	m_jokerInfoMap[StoneAbility::jokerTime]			= { "T_jokerTime.png", "T_JokerTime_Tooltip.png", "jokerTime.wav",			JokerType::Natural, 5, 0, 0, 2, 5, 2, 10, 3, true };
 	m_jokerInfoMap[StoneAbility::jokerWind]			= { "T_jokerWind.png", "T_JokerWind_Tooltip.png", "jokerWind.wav",			JokerType::Natural, 2, 5, 0, 2, 4, 1, 6, 2, true };
 
