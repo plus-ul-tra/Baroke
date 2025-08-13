@@ -25,27 +25,43 @@ cbuffer TimeBuffer : register(b0)
     float2 padding;
 }
 
+float2 LocalToAtlasUV(float2 local)
+{
+    float2 texSize = float2(textureWidth, textureHeight);
+    float2 minPx = float2(sourceRectX, sourceRectY);
+    float2 sizePx = float2(sourceRectWidth, sourceRectHeight);
+
+    float2 minUV = (minPx + 0.5) / texSize;
+    float2 maxUV = (minPx + sizePx - 0.5) / texSize;
+    return lerp(minUV, maxUV, saturate(local));
+}
+
 float4 PSMain(VS_OUTPUT input) : SV_Target
 {
 
-    float4 baseColor = Texture.Sample(SamplerTexture, input.tex);
+    float2 localUV = input.tex;
 
 
+    float2 atlasUV = LocalToAtlasUV(localUV);
+
+
+    float4 baseColor = Texture.Sample(SamplerTexture, atlasUV);
     if (baseColor.a < 0.01)
         return baseColor;
 
-    
-    float3 redGlow = float3(0.0, 1.0, 0.2); 
-    float minGlowStrength = 0.3; 
 
+    float3 glowColor = float3(1.0, 0.2, 0.0);
+    float minGlowStrength = 0.3;
 
-    float flicker = (sin(time * 8.0) + 1.0) * 0.5; // 0~1 ¹üÀ§
-    flicker = pow(flicker, 2.0); 
+    float flicker = (sin(time * 8.0) + 1.0) * 0.5; // 0~1
+    flicker = pow(flicker, 2.0);
 
-    float glowStrength = minGlowStrength + flicker * (1.0 - minGlowStrength*2);
+  
+    float glowStrength = minGlowStrength + flicker * (1.0 - minGlowStrength * 2.0);
 
+ 
+    float3 finalColor = lerp(baseColor.rgb, glowColor, glowStrength);
 
-    float3 finalColor = lerp(baseColor.rgb, redGlow, glowStrength);
 
     return float4(finalColor, baseColor.a);
 }

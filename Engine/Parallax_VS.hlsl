@@ -26,8 +26,8 @@ VS_OUTPUT VSMain(VS_INPUT Input)
     float4 finalPos = Input.Position;
 
 
-    float effectStrength = 0.05; // 전체적인 기울임 강도 (조정 필요)
-    float parallaxFactor = 0.5; // 이 레이어의 시차 강도 (예: 배경은 0.2, 전경은 0.8)
+    float effectStrength = 0.05;
+    float parallaxFactor = 0.5; 
 
     float2 offset = -MouseInfluence * effectStrength * parallaxFactor;
 

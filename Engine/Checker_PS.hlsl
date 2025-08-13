@@ -23,7 +23,7 @@ cbuffer TimeBuffer : register(b0)
 }
 #define GRID 17        
 #define EDGE 1.0
-struct VS_OUTPUT // 버텍스 쉐이더 출력 구조체와 동일
+struct VS_OUTPUT 
 {
 	float4 pos : SV_POSITION;
 	float2 tex : TEXCOORD;
@@ -36,12 +36,12 @@ float4 PSMain(VS_OUTPUT input) : SV_Target
 	uvA.y = (sourceRectY + input.tex.y * sourceRectHeight) / textureHeight;
 
    
-	float2 uvB = input.tex; // nextTexture 가 통짜 이미지라고 가정
+	float2 uvB = input.tex; 
 
 	float4 colA = Texture.Sample(SamplerTexture, uvA);
 	float4 colB = nextTexture.Sample(SamplerTexture, uvB);	
     float2 cell = floor(input.tex * GRID); // (x, y)
-    float diag = (GRID - 1 - cell.x) + cell.y; // 0 … 2*GRID-2
+    float diag = (GRID - 1 - cell.x) + cell.y; 
     float diagMax = (GRID - 1) * 2.0;
 
    // float thresh = saturate(time/1.5) * ((GRID - 1) * 2);
