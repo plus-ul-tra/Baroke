@@ -59,9 +59,7 @@ Sound* SoundManager::GetSound(const string& key) const
 
 void SoundManager::PlaySoundOnce(const string& key)
 {
-	bool isPlaying = false;
-	m_sfxChannelGroup->isPlaying(&isPlaying);
-	if (!isPlaying) ReleaseSfxChannelGroup();
+	ReleaseSfxChannelGroup();
 
 	Sound* sound = GetSound(key);
 	sound->setMode(FMOD_LOOP_OFF); // 단일 재생
