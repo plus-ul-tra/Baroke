@@ -7,7 +7,7 @@
 #include "InputEvents.h"
 #include "BoardManager.h"
 
-
+class HoverGlowButton;
 
 enum class buttonType 
 {
@@ -25,7 +25,7 @@ protected:
 	Transform* m_transform = nullptr;
 	BitmapRender3D* m_bitmapRender = nullptr;
 	unique_ptr<Object> m_textObject = nullptr;
-	unique_ptr<Object> m_shopIcon = nullptr;
+	unique_ptr<HoverGlowButton> m_shopIcon = nullptr;
 	unique_ptr<Object> m_priceIcon = nullptr;
 	Button* m_otherButton = nullptr; // 다른 버튼과 연동할 때 사용
 
@@ -315,7 +315,9 @@ public:
 	{
 		flag = tutoFlag;
 		if (!tutoFlag) {
-			m_shopIcon = make_unique<NewObject>(m_transform->GetPosition().m128_f32[0] + 3.0f, m_transform->GetPosition().m128_f32[1] - 10.0f, 145.0f, 241.0f, 0.0f, "T_Store_Joker.png");
+			m_shopIcon = make_unique<HoverGlowButton>(m_transform->GetPosition().m128_f32[0] + 3.0f, m_transform->GetPosition().m128_f32[1] - 10.0f, 145.0f, 241.0f, "T_Store_Joker.png");
+			m_width = 145.0f;
+			m_height = 241.0f;
 			m_priceIcon = make_unique<NewObject>(m_transform->GetPosition().m128_f32[0] - 15.0f, m_transform->GetPosition().m128_f32[1] - 66.0f, 45.0f, 45.0f, 0.0f, "T_Store_Joker_Stone.png");
 		}
 	}
@@ -337,15 +339,14 @@ class ShopBuyStoneButton : public Button
 	ShopBuyStoneButton(float posX, float posY, float width, float height, const std::string& bitmapFile, int order = 0)
 		: Button(posX, posY, width, height, bitmapFile, order)
 	{
-		m_shopIcon = make_unique<NewObject>(m_transform->GetPosition().m128_f32[0] + 3.0f, m_transform->GetPosition().m128_f32[1] - 10.0f, 145.0f, 241.0f, 0.0f,"T_Store_Joker.png");
+		m_shopIcon = make_unique<HoverGlowButton>(m_transform->GetPosition().m128_f32[0] + 3.0f, m_transform->GetPosition().m128_f32[1] - 10.0f, 145.0f, 241.0f, "T_Store_Joker.png");
+		m_width = 145.0f;
+		m_height = 241.0f;
 		m_priceIcon = make_unique<NewObject>(m_transform->GetPosition().m128_f32[0] - 15.0f, m_transform->GetPosition().m128_f32[1] - 66.0f, 45.0f, 45.0f, 0.0f, "T_jokerWaxseal.png");
 	}
 
 	void SetShowAndActive(bool active);
 };
-
-
-
 
 class ShopRerollButton : public Button
 {
@@ -355,7 +356,7 @@ public:
 	ShopRerollButton(float posX, float posY, float width, float height, const std::string& bitmapFile, int order = 0)
 		: Button(posX, posY, width, height, bitmapFile, order)
 	{
-		m_shopIcon = make_unique<NewObject>(m_transform->GetPosition().m128_f32[0] + 3.0f, m_transform->GetPosition().m128_f32[1] - 10.0f, 145.0f, 237.0f, 0.0f, "T_Store_Reset.png");
+		m_shopIcon = make_unique<HoverGlowButton>(m_transform->GetPosition().m128_f32[0] + 3.0f, m_transform->GetPosition().m128_f32[1] - 10.0f, 145.0f, 237.0f, "T_Store_Reset.png", "T_Store_Reset_Select.png");
 		m_width = 145.0f;
 		m_height = 237.0f;
 		m_priceIcon = make_unique<NewObject>(m_transform->GetPosition().m128_f32[0] - 15.0f, m_transform->GetPosition().m128_f32[1] - 80.0f, 45.0f, 45.0f, 0.0f, "T_Store_Joker_Stone.png");
@@ -365,6 +366,18 @@ public:
 	void SetShowAndActive(bool active);
 
 	bool IsReroll();
+};
+
+class HoverGlowButton : public Button
+{
+	string m_bitmapFile; // 원래 텍스처 파일
+	string m_hoverTexture; // 호버 시 변경될 텍스처
+
+	public:
+	HoverGlowButton(float posX, float posY, float width, float height, const std::string& bitmapFile, const std::string& hoverTexture = "T_Store_Joker_Select.png")
+		: Button(posX, posY, width, height, bitmapFile) { m_bitmapFile = bitmapFile; m_hoverTexture = hoverTexture; }
+
+	void SetHover(bool isHover);
 };
 
 class ShopEndButton : public Button
