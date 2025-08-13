@@ -489,6 +489,7 @@ void TutoScene::OnEnter()
 
 	m_soundManager.ReleaseChannelGroup();
 	m_soundManager.GetSystem()->playSound(m_bgm, m_soundManager.GetChannelGroup(), false, &m_channel);
+	m_channel->setVolume(BGM_VOLUME);
 
 	initGame();
 }
