@@ -148,7 +148,8 @@ void ShopBuyStoneButton::ButtonFunction()
 		}
 	}
 
-
+	if (m_isHovered && m_isActive) m_shopIcon->SetHover(true);
+	else if (!m_isHovered && m_isActive) m_shopIcon->SetHover(false);
 }
 
 void ShopBuyStoneButton::SetShowAndActive(bool active)
@@ -173,14 +174,8 @@ void ShopRerollButton::ButtonFunction()
 		}
 	}
 
-	if (m_isHovered && m_isActive)
-	{
-		m_bitmapRender->ChangeTexture("T_Store_Reset_Select.png");
-	}
-	else if (!m_isHovered && m_isActive)
-	{
-		m_bitmapRender->ChangeTexture("T_Store_Reset.png");
-	}
+	if (m_isHovered && m_isActive) m_shopIcon->SetHover(true);
+	else if (!m_isHovered && m_isActive) m_shopIcon->SetHover(false);
 }
 
 void ShopRerollButton::SetShowAndActive(bool active)
@@ -254,10 +249,8 @@ void ShopJokerButton::ButtonFunction()
 		m_isPressed = false;
 	}
 
-	if (m_isHovered && m_isActive)
-	{
-
-	}
+	if (m_isHovered && m_isActive) m_shopIcon->SetHover(true);
+	else if (!m_isHovered && m_isActive) m_shopIcon->SetHover(false);
 }
 
 bool ShopEndButton::IsEndButtonPressed()
@@ -470,4 +463,10 @@ void PrevButton::ButtonFunction()
 		refIndex--;
 		m_isPressed = false;
 	}
+}
+
+void HoverGlowButton::SetHover(bool isHover)
+{
+	if (isHover) m_bitmapRender->ChangeTexture(m_hoverTexture);
+	else m_bitmapRender->ChangeTexture(m_bitmapFile);
 }
