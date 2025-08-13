@@ -43,16 +43,16 @@ float4 PSMain(VS_OUTPUT input) : SV_Target
 
     // 홀로그램 패턴
     float wave = sin((input.tex.y + time * 0.5) * 30.0) * 0.5 + 0.5; // 세로줄
-    //float scanline = sin((input.tex.x * 80.0) + time * 5.0) * 0.5 + 0.5; // 가로줄
+ 
 
-    // 줄무늬 패턴 합성
+
     float pattern = wave * 0.6 /*+ scanline * 0.4*/;
 
-    // 시간에 따라 회전하는 무지개색
+
     float hue = frac(time * 0.2 + pattern * 0.2);
     float3 rainbow = HueToRGB(hue);
 
-    // 홀로그램 색상 생성
+
     float3 holoColor = baseColor.rgb * (1.0 + rainbow * pattern * 1.5);
 
     return float4(holoColor, baseColor.a);

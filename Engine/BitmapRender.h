@@ -79,7 +79,7 @@ public:
 
 
 	void ChangeBackGroundColor(XMFLOAT4 target) {
-		m_mediator.SetTargetColor(target);
+		m_mediator.SetBackGroundColor(target, target);
 		m_isShaderEffectActive = true; // 쉐이더 효과 활성화
 	}
 
