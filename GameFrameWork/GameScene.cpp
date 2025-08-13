@@ -30,57 +30,60 @@ void GameScene::initGame()
 
 void GameScene::SetUIButton()
 {
-	m_shopBuyStoneButton = make_unique<ShopBuyStoneButton>(-300.0f, -300.0f, 100, 100, "T_Blackstone.png");
+	m_shopBuyStoneButton = make_unique<ShopBuyStoneButton>(-272.0f, -272.0f, 100, 100, "T_Blackstone.png");
 	m_shopBuyStoneButton->SetShowAndActive(false);
 	m_buttonList.emplace_back(m_shopBuyStoneButton.get());
 	m_notUniqueObjectList.emplace_back(m_shopBuyStoneButton.get());
 
-	unique_ptr<Text> buyStonePrice = std::make_unique<Text>(-325.0f, -350.0f, 100.0f, 50.0f, 0.75);
+	unique_ptr<Text> buyStonePrice = std::make_unique<Text>(-298.0f, -324.0f, 100.0f, 50.0f, 0.75);
 	buyStonePrice->GetComponent<UIText>()->SetText(000000);
 	buyStonePrice->GetComponent<UIText>()->SetActive(false);
 	m_buyStonePriceText = buyStonePrice.get();
 	m_textList.emplace_back(buyStonePrice.get());
 	m_useless.emplace_back(move(buyStonePrice));
-
-	m_shopShopRerollButton = make_unique<ShopRerollButton>(0.0f, -300.0f, 0, 0, "T_Store_Reset.png");
+	//---------------------------------------------------------------------------------------------------------
+	m_shopShopRerollButton = make_unique<ShopRerollButton>(-3.0f, -275.0f, 0, 0, "T_Store_Reset.png");
 	m_shopShopRerollButton->SetShowAndActive(false);
 	m_buttonList.emplace_back(m_shopShopRerollButton.get());
 	m_notUniqueObjectList.emplace_back(m_shopShopRerollButton.get());
 
-	unique_ptr<Text> buyRerollPrice = std::make_unique<Text>(-50.0f, -365.0f, 150.0f, 75.0f, 0.75);
+	unique_ptr<Text> buyRerollPrice = std::make_unique<Text>(-53.0f, -340.0f, 150.0f, 75.0f, 0.75);
 	buyRerollPrice->GetComponent<UIText>()->SetText(000000);
 	buyRerollPrice->GetComponent<UIText>()->SetActive(false);
 	m_buyRerollPriceText = buyRerollPrice.get();
 	m_textList.emplace_back(buyRerollPrice.get());
 	m_useless.emplace_back(move(buyRerollPrice));
 
-	m_shopExitButton = make_unique<ShopEndButton>(300.0f, -300.0f, 145, 237, "T_Store_Next_Stage.png");
+	m_shopExitButton = make_unique<ShopEndButton>(270.0f, -287.0f, 145, 237, "T_Store_Next_Stage.png");
 	m_shopExitButton->SetShowAndActive(false);
 	m_buttonList.emplace_back(m_shopExitButton.get());
 	m_notUniqueObjectList.emplace_back(m_shopExitButton.get());
 
+	//1째
 	for (int i = 0; i < 3; i++)
 	{
-		m_shopJokerButtons[i] = make_unique<ShopJokerButton>(-300.0f + (i * 300.0f), 300.0f, 100, 100, "Sample.png");
+		m_shopJokerButtons[i] = make_unique<ShopJokerButton>(-272.0f + (i * 270.0f), 270.0f, 100, 100, "Sample.png");
 		m_shopJokerButtons[i]->SetShowAndActive(false);
 		m_buttonList.emplace_back(m_shopJokerButtons[i].get());
 		m_notUniqueObjectList.emplace_back(m_shopJokerButtons[i].get());
 
-		unique_ptr<Text> shopJokerText = std::make_unique<Text>(-350.0f + (i * 300.0f), 250.0f, 150.0f, 75.0f, 0.75);
+		unique_ptr<Text> shopJokerText = std::make_unique<Text>(-328.0f + (i * 270.0f), 220.0f, 150.0f, 75.0f, 0.75);
 		shopJokerText->GetComponent<UIText>()->SetText(000000);
 		shopJokerText->GetComponent<UIText>()->SetActive(false);
 		m_shopJokerTexts[i] = shopJokerText.get();
 		m_textList.emplace_back(shopJokerText.get());
 		m_useless.emplace_back(move(shopJokerText));
 	}
+
+	// 2째
 	for (int i = 0; i < 3; i++)
 	{
-		m_shopJokerButtons[3 + i] = make_unique<ShopJokerButton>(-300.0f + (i * 300.0f), 0.0f, 75, 75, "Sample.png");
+		m_shopJokerButtons[3 + i] = make_unique<ShopJokerButton>(-272.0f + (i * 270.0f), 0.0f, 75, 75, "Sample.png");
 		m_shopJokerButtons[3 + i]->SetShowAndActive(false);
 		m_buttonList.emplace_back(m_shopJokerButtons[3 + i].get());
 		m_notUniqueObjectList.emplace_back(m_shopJokerButtons[3 + i].get());
 
-		unique_ptr<Text> shopJokerText = std::make_unique<Text>(-350.0f + (i * 300.0f), -50.0f, 150.0f, 75.0f, 0.75);
+		unique_ptr<Text> shopJokerText = std::make_unique<Text>(-328.0f + (i * 270.0f), -50.0f, 150.0f, 75.0f, 0.75);
 		shopJokerText->GetComponent<UIText>()->SetText(000000);
 		shopJokerText->GetComponent<UIText>()->SetActive(false);
 		m_shopJokerTexts[3 + i] = shopJokerText.get();
@@ -98,7 +101,7 @@ void GameScene::SetUIButton()
 	unique_ptr<Button> desc = std::make_unique<Button>(700.0f, 0.0f, 386, 734, "T_Standard_Right_Slot_Description.png");
 	m_notUniqueObjectList.emplace_back(desc.get());
 	//m_normalUI.emplace_back(move(desc));
-	desc->GetComponent<BitmapRender3D>()->SetShaderType("Holo");
+	desc->GetComponent<BitmapRender3D>()->SetShaderType("UIHolo");
 	m_desc = move(desc);
 	
 	unique_ptr<Button> leftUpUI = std::make_unique<Button>(-720.0f, 388.0f, 427, 199, "T_Standard_Left_Base_Glow.png");
@@ -128,7 +131,7 @@ void GameScene::SetUIButton()
 
 
 	//--------------------동적 Text---------------------
-	unique_ptr<Text> textStage = std::make_unique<Text>(-680.0f, 440.0f, 100.0f, 100.0f, 2);
+	unique_ptr<Text> textStage = std::make_unique<Text>(-680.0f, 435.0f, 100.0f, 100.0f, 2);
 	textStage->GetComponent<UIText>()->SetText(10);
 	m_stageText = textStage.get();
 	m_textList.emplace_back(textStage.get());
@@ -1048,10 +1051,10 @@ void GameScene::ChangeThema(int thema)
 			rend->ChangeTexture("T_Jungle_Right_Slot_Passive.png");
 		}
 
-		m_desc->GetComponent<BitmapRender3D>()->ChangeBoardTexture("T_Jungle_Right_Slot_Description.png");
-		m_rightUI->GetComponent<BitmapRender3D>()->ChangeBoardTexture("T_Jungle_Right_Base_Glow.png");
-		m_leftUI->GetComponent<BitmapRender3D>()->ChangeBoardTexture("T_Jungle_Left_Down_Base_Glow.png");
-		m_leftUpUI->GetComponent<BitmapRender3D>()->ChangeBoardTexture("T_Jungle_Left_Base_Glow.png");
+		m_desc->GetComponent<BitmapRender3D>()->ChangeTexture("T_Jungle_Right_Slot_Description.png");
+		m_rightUI->GetComponent<BitmapRender3D>()->ChangeTexture("T_Jungle_Right_Base_Glow.png");
+		m_leftUI->GetComponent<BitmapRender3D>()->ChangeTexture("T_Jungle_Left_Down_Base_Glow.png");
+		m_leftUpUI->GetComponent<BitmapRender3D>()->ChangeTexture("T_Jungle_Left_Base_Glow.png");
 		m_cyber->GetComponent<BitmapRender3D>()->SetActive(false);
 
 		m_lastIndex = -1;
@@ -1091,10 +1094,10 @@ void GameScene::ChangeThema(int thema)
 			//rend->SetShaderType("UIColor");
 			rend->ChangeTexture("T_Space_Right_Slot_Passive.png");
 		}
-		m_desc->GetComponent<BitmapRender3D>()->ChangeBoardTexture("T_Space_Right_Slot_Description.png");
-		m_rightUI->GetComponent<BitmapRender3D>()->ChangeBoardTexture("T_Space_Right_Base_Glow.png");
-		m_leftUI->GetComponent<BitmapRender3D>()->ChangeBoardTexture("T_Space_Left_Down_Base_Glow.png");
-		m_leftUpUI->GetComponent<BitmapRender3D>()->ChangeBoardTexture("T_Space_Left_Base_Glow.png");
+		m_desc->GetComponent<BitmapRender3D>()->ChangeTexture("T_Space_Right_Slot_Description.png");
+		m_rightUI->GetComponent<BitmapRender3D>()->ChangeTexture("T_Space_Right_Base_Glow.png");
+		m_leftUI->GetComponent<BitmapRender3D>()->ChangeTexture("T_Space_Left_Down_Base_Glow.png");
+		m_leftUpUI->GetComponent<BitmapRender3D>()->ChangeTexture("T_Space_Left_Base_Glow.png");
 		m_cyber->GetComponent<BitmapRender3D>()->SetActive(false);
 
 		m_lastIndex = -1;
@@ -1135,10 +1138,10 @@ void GameScene::ChangeThema(int thema)
 			rend->ChangeTexture("T_Dancheong_Right_Slot_Passive.png");
 		}
 
-		m_desc->GetComponent<BitmapRender3D>()->ChangeBoardTexture("T_Dancheong_Right_Slot_Description.png");
-		m_rightUI->GetComponent<BitmapRender3D>()->ChangeBoardTexture("T_Dancheong_Right_Base_Glow.png");
-		m_leftUI->GetComponent<BitmapRender3D>()->ChangeBoardTexture("T_Dancheong_Left_Down_Base_Glow.png");
-		m_leftUpUI->GetComponent<BitmapRender3D>()->ChangeBoardTexture("T_Dancheong_Left_Base_Glow.png");
+		m_desc->GetComponent<BitmapRender3D>()->ChangeTexture("T_Dancheong_Right_Slot_Description.png");
+		m_rightUI->GetComponent<BitmapRender3D>()->ChangeTexture("T_Dancheong_Right_Base_Glow.png");
+		m_leftUI->GetComponent<BitmapRender3D>()->ChangeTexture("T_Dancheong_Left_Down_Base_Glow.png");
+		m_leftUpUI->GetComponent<BitmapRender3D>()->ChangeTexture("T_Dancheong_Left_Base_Glow.png");
 		m_cyber->GetComponent<BitmapRender3D>()->SetActive(false);
 
 		m_lastIndex = -1;
@@ -1178,10 +1181,10 @@ void GameScene::ChangeThema(int thema)
 			//rend->SetShaderType("UIColor");
 			rend->ChangeTexture("T_Halloween_Right_Slot_Passive.png");
 		}
-		m_desc->GetComponent<BitmapRender3D>()->ChangeBoardTexture("T_Halloween_Right_Slot_Description.png");
-		m_rightUI->GetComponent<BitmapRender3D>()->ChangeBoardTexture("T_Halloween_Right_Base_Glow.png");
-		m_leftUI->GetComponent<BitmapRender3D>()->ChangeBoardTexture("T_Halloween_Left_Down_Base_Glow.png");
-		m_leftUpUI->GetComponent<BitmapRender3D>()->ChangeBoardTexture("T_Halloween_Left_Base_Glow.png");
+		m_desc->GetComponent<BitmapRender3D>()->ChangeTexture("T_Halloween_Right_Slot_Description.png");
+		m_rightUI->GetComponent<BitmapRender3D>()->ChangeTexture("T_Halloween_Right_Base_Glow.png");
+		m_leftUI->GetComponent<BitmapRender3D>()->ChangeTexture("T_Halloween_Left_Down_Base_Glow.png");
+		m_leftUpUI->GetComponent<BitmapRender3D>()->ChangeTexture("T_Halloween_Left_Base_Glow.png");
 		m_cyber->GetComponent<BitmapRender3D>()->SetActive(false);
 
 		m_lastIndex = -1;
@@ -1221,10 +1224,10 @@ void GameScene::ChangeThema(int thema)
 			//rend->SetShaderType("UIColor");
 			rend->ChangeTexture("T_Cyberpunk_Right_Passive_Jocker.png");
 		}
-		m_desc->GetComponent<BitmapRender3D>()->ChangeBoardTexture("Cyberpunk_Description.png");
-		m_rightUI->GetComponent<BitmapRender3D>()->ChangeBoardTexture("Cyberpunk_Righ.png");
-		m_leftUI->GetComponent<BitmapRender3D>()->ChangeBoardTexture("Cyberpunk_Left_Down.png");
-		m_leftUpUI->GetComponent<BitmapRender3D>()->ChangeBoardTexture("Cyberpunk_Left.png");
+		m_desc->GetComponent<BitmapRender3D>()->ChangeTexture("Cyberpunk_Description.png");
+		m_rightUI->GetComponent<BitmapRender3D>()->ChangeTexture("Cyberpunk_Righ.png");
+		m_leftUI->GetComponent<BitmapRender3D>()->ChangeTexture("Cyberpunk_Left_Down.png");
+		m_leftUpUI->GetComponent<BitmapRender3D>()->ChangeTexture("Cyberpunk_Left.png");
 		m_cyber->GetComponent<BitmapRender3D>()->SetActive(true);
 
 		m_lastIndex = -1;
@@ -1244,10 +1247,10 @@ void GameScene::ChangeThema(int thema)
 
 		Mediator::GetInstance().SetUIColor(XMFLOAT4(0.0f, 1.0f, 1.0f, 1.0f));
 
-		m_desc->GetComponent<BitmapRender3D>()->ChangeBoardTexture("T_Standard_Right_Slot_Description.png");
-		m_rightUI->GetComponent<BitmapRender3D>()->ChangeBoardTexture("T_Standard_Right_Base_Glow.png");
-		m_leftUI->GetComponent<BitmapRender3D>()->ChangeBoardTexture("T_Standard_Left_Down_Base_Glow.png");
-		m_leftUpUI->GetComponent<BitmapRender3D>()->ChangeBoardTexture("T_Standard_Left_Base_Glow.png");
+		m_desc->GetComponent<BitmapRender3D>()->ChangeTexture("T_Standard_Right_Slot_Description.png");
+		m_rightUI->GetComponent<BitmapRender3D>()->ChangeTexture("T_Standard_Right_Base_Glow.png");
+		m_leftUI->GetComponent<BitmapRender3D>()->ChangeTexture("T_Standard_Left_Down_Base_Glow.png");
+		m_leftUpUI->GetComponent<BitmapRender3D>()->ChangeTexture("T_Standard_Left_Base_Glow.png");
 		m_cyber->GetComponent<BitmapRender3D>()->SetActive(false);
 
 		m_lastIndex = -1;
