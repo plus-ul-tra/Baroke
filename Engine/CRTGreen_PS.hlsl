@@ -65,10 +65,10 @@ float4 PSMain(VS_OUTPUT Input) : SV_Target
     finalColor.rgb *= (1.0 - vignette * vignettePower);
     
     float redFactor = 1.0 - vignette * vignettePower;
-    finalColor.g *= 1, 0; 
+    finalColor.g *= 0.75; 
 
-    finalColor.r *= 0.3;
-    finalColor.b *= 0.3;
+    finalColor.r *= 0.5;
+    finalColor.b *= 0.5;
 
     
     return finalColor;

@@ -911,7 +911,7 @@ void Renderer::CreateWriteResource()
 		DWRITE_FONT_WEIGHT_NORMAL,
 		DWRITE_FONT_STYLE_NORMAL,
 		DWRITE_FONT_STRETCH_NORMAL,
-		70.0f,   // Font Size
+		67.0f,   // Font Size
 		L"", //locale
 		&m_largeFormat);
 

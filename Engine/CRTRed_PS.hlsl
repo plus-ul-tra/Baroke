@@ -65,11 +65,11 @@ float4 PSMain(VS_OUTPUT Input) : SV_Target
     finalColor.rgb *= (1.0 - vignette * vignettePower);
     
     float redFactor = 1.0 - vignette * vignettePower;
-    finalColor.r *= 1, 0; // 붉은 어두움
+    finalColor.r *= 0.75; // 붉은 어두움
 
     // 줄이면 붉은색 강조
-    finalColor.g *= 0.3; 
-    finalColor.b *= 0.3; 
+    finalColor.g *= 0.5; 
+    finalColor.b *= 0.5; 
 
     
     return finalColor;
