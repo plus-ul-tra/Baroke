@@ -77,9 +77,6 @@ private:
 	void SyncPlacementHintsToPool();  // 하이라이트 동기화
 	void SetHintpool();
 
-	Sound* m_shopBgm = nullptr; // 상점 배경음악
-	Channel* m_shopChannel = nullptr; // 상점 채널
-
 public:
 	//GameScene() = default;
 	GameScene() { std::cout << "Game Scene" << std::endl; }

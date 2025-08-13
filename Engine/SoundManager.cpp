@@ -58,7 +58,11 @@ Sound* SoundManager::GetSound(const string& key) const
 void SoundManager::PlaySoundOnce(const string& key)
 {
 	Sound* sound = GetSound(key);
-	if (sound) m_system->playSound(sound, nullptr, false, nullptr);
+	sound->setMode(FMOD_LOOP_OFF); // 단일 재생
+
+	Channel* newChannel = nullptr;
+
+	if (sound) m_system->playSound(sound, nullptr, false, &newChannel);
 	else throw runtime_error("해당 사운드를 찾을 수 없음");
 }
 

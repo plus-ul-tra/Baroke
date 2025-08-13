@@ -16,7 +16,7 @@ void EndingScene::Initialize()
 	m_channel = nullptr;
 	m_bgm = SoundManager::GetInstance().GetSound("lose.wav"); //사운드 교체
 	m_bgm->setMode(FMOD_LOOP_OFF);
-	m_soundManager.GetSystem()->getChannel(0, &m_channel);
+	m_soundManager.GetSystem()->getChannel(1, &m_channel);
 	m_soundManager.GetSystem()->playSound(m_bgm, nullptr, false, &m_channel);
 }
 
