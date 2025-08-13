@@ -1066,6 +1066,7 @@ void GameScene::ChangeThema(int thema)
 		m_channel->stop();
 		m_channel = nullptr;
 		m_bgm = SoundManager::GetInstance().GetSound("wild1.mp3");
+		m_bgm->setMode(FMOD_LOOP_NORMAL);
 		m_soundManager.GetSystem()->getChannel(0, &m_channel);
 		m_soundManager.GetSystem()->playSound(m_bgm, nullptr, false, &m_channel);
 
@@ -1107,6 +1108,7 @@ void GameScene::ChangeThema(int thema)
 		m_channel->stop();
 		m_channel = nullptr;
 		m_bgm = SoundManager::GetInstance().GetSound("space1.mp3");
+		m_bgm->setMode(FMOD_LOOP_NORMAL);
 		m_soundManager.GetSystem()->getChannel(0, &m_channel);
 		m_soundManager.GetSystem()->playSound(m_bgm, nullptr, false, &m_channel);
 
@@ -1149,6 +1151,7 @@ void GameScene::ChangeThema(int thema)
 		m_channel->stop();
 		m_channel = nullptr;
 		m_bgm = SoundManager::GetInstance().GetSound("dancheong1.mp3");
+		m_bgm->setMode(FMOD_LOOP_NORMAL);
 		m_soundManager.GetSystem()->getChannel(0, &m_channel);
 		m_soundManager.GetSystem()->playSound(m_bgm, nullptr, false, &m_channel);
 
@@ -1190,6 +1193,7 @@ void GameScene::ChangeThema(int thema)
 		m_channel->stop();
 		m_channel = nullptr;
 		m_bgm = SoundManager::GetInstance().GetSound("halloween1.mp3");
+		m_bgm->setMode(FMOD_LOOP_NORMAL);
 		m_soundManager.GetSystem()->getChannel(0, &m_channel);
 		m_soundManager.GetSystem()->playSound(m_bgm, nullptr, false, &m_channel);
 
@@ -1230,6 +1234,7 @@ void GameScene::ChangeThema(int thema)
 		m_channel->stop();
 		m_channel = nullptr;
 		m_bgm = SoundManager::GetInstance().GetSound("cyberpunk1.mp3");
+		m_bgm->setMode(FMOD_LOOP_NORMAL);
 		m_soundManager.GetSystem()->getChannel(0, &m_channel);
 		m_soundManager.GetSystem()->playSound(m_bgm, nullptr, false, &m_channel);
 
@@ -1252,6 +1257,7 @@ void GameScene::ChangeThema(int thema)
 		m_channel->stop();
 		m_channel = nullptr;
 		m_bgm = SoundManager::GetInstance().GetSound("MainBGM.mp3");
+		m_bgm->setMode(FMOD_LOOP_NORMAL);
 		m_soundManager.GetSystem()->getChannel(0, &m_channel);
 		m_soundManager.GetSystem()->playSound(m_bgm, nullptr, false, &m_channel);
 
