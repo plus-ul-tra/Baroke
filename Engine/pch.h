@@ -1,4 +1,13 @@
 #pragma once
+// LinkPragmas.cpp
+#pragma comment(lib, "d2d1.lib")
+#pragma comment(lib, "dwrite.lib")
+
+#ifdef _DEBUG
+#  pragma comment(lib, "fmodL_vc.lib")
+#else
+#  pragma comment(lib, "fmod_vc.lib")
+#endif
 #define NOMINMAX
 
 #include <Windows.h>
