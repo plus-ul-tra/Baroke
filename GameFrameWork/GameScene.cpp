@@ -194,14 +194,14 @@ void GameScene::SetUIButton()
 	scoreFiled->GetComponent<BitmapRender3D>()->SetShaderType("UIHolo");
 	m_useless.emplace_back(move(scoreFiled));
 
-	unique_ptr<ResetStageButton> settingText = std::make_unique<ResetStageButton>(-720.0f, -330.0f, 52, 34, "T_Common_Left_Down_Setting.png");
+	unique_ptr<ResetStageButton> settingText = std::make_unique<ResetStageButton>(-720.0f, -330.0f, 93, 38, "T_Common_1Reset.png");
 	m_buttonList.emplace_back(settingText.get());
 	m_notUniqueObjectList.emplace_back(settingText.get());
 	m_resetStageButton = settingText.get();
-	settingText->GetComponent<BitmapRender3D>()->SetShaderType("UIHolo");
+	//settingText->GetComponent<BitmapRender3D>()->SetShaderType("UIHolo");
 	m_useless.emplace_back(move(settingText));
 
-	unique_ptr<Button> exitText = std::make_unique<SceneChangeButton>(-720.0f, -390.0f, 115, 32, "T_Common_Left_Down_Exit.png", "Ending", buttonType::GameToEnding);
+	unique_ptr<SceneChangeButton> exitText = std::make_unique<SceneChangeButton>(-720.0f, -390.0f, 115, 32, "T_Common_Left_Down_Exit.png", "Ending", buttonType::GameToEnding);
 	m_buttonList.emplace_back(exitText.get());
 	m_notUniqueObjectList.emplace_back(exitText.get());
 	//exitText->GetComponent<BitmapRender3D>()->SetShaderType("UIHolo");

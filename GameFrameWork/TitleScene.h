@@ -4,12 +4,17 @@
 #include "BoardObject.h"
 #include "BackGround.h"
 
+
 class TitleScene : public SceneBase {
 
 	double m_elsapsedTime = 0.0;
 	vector<unique_ptr<Button>> m_titleButtonList; // 버튼들
 
-	Button* creditBtn;
+	Button* m_creditBtn;
+	Button* m_tutorialImageBtn;
+	Button* m_nextButton; // 다음 버튼
+	Button* m_prevButton; // 이전 버튼
+	int m_tutorialIndex = 0; // 튜토리얼 이미지 인덱스
 
 public:
 	//TitleScene() = default;
@@ -32,4 +37,13 @@ public:
 	void KeyCommandMapping() override;
 
 	void OnInput(const MouseEvent& ev) override;
+
+
+	void TutorialTextureChange()
+	{
+		if (m_tutorialIndex > 18) { m_tutorialIndex %= 19; }
+		if (m_tutorialIndex == -1) { m_tutorialIndex = 18; }
+		m_tutorialImageBtn->GetComponent<BitmapRender3D>()->ChangeTexture("Tutorial_" + std::to_string(m_tutorialIndex) + ".png");
+		std::cout << "Tutorial Index Changed: " << m_tutorialIndex << std::endl;
+	}
 };

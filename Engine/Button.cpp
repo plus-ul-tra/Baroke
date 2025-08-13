@@ -126,7 +126,12 @@ void ShopJokerButton::SetButtonJoker(JokerStoneInfo jokerInfo, StoneAbility abil
 
 	m_bitmapRender->ChangeTexture(jokerInfo.fileName);
 	m_textObject = nullptr;
-	m_textObject = make_unique<NewObject>(m_transform->GetPosition().m128_f32[0] - 345.5f, m_transform->GetPosition().m128_f32[1] - 100.0f, 691.0f, 200.0f, 0.0f, m_jokerInfoMap[ability].toolTipName);
+
+	int offset = 1;
+	if (flag) offset = -1;
+	
+	
+	m_textObject = make_unique<NewObject>(m_transform->GetPosition().m128_f32[0] - 300.0f* offset, m_transform->GetPosition().m128_f32[1] - 100.0f, 691.0f, 200.0f, 0.0f, m_jokerInfoMap[ability].toolTipName);
 }
 
 void ShopBuyStoneButton::ButtonFunction()
@@ -292,6 +297,25 @@ void SceneChangeButton::ButtonFunction()
 		if (m_isHovered && m_isActive) m_bitmapRender->ChangeTexture("T_Main_Tutorial_Select.png");
 		else if (!m_isHovered && m_isActive) m_bitmapRender->ChangeTexture("T_Main_Tutorial.png");
 	}
+	break;
+	case buttonType::TutorialToTitle: // 타이틀에서 튜토리얼로 전환
+	{
+		if (m_isHovered && m_isActive) m_bitmapRender->ChangeTexture("TUTORIALEXIT_sel.png");
+		else if (!m_isHovered && m_isActive) m_bitmapRender->ChangeTexture("TUTORIALEXIT.png");
+	}
+	break;
+	case buttonType::GameToEnding: // 타이틀에서 튜토리얼로 전환
+	{
+		if (m_isHovered && m_isActive) m_bitmapRender->ChangeTexture("T_Common_Left_Down_Exit_Select.png");
+		else if (!m_isHovered && m_isActive) m_bitmapRender->ChangeTexture("T_Common_Left_Down_Exit.png");
+	}
+	break;
+	case buttonType::EndingToTitle: // 타이틀에서 튜토리얼로 전환
+	{
+		if (m_isHovered && m_isActive) m_bitmapRender->ChangeTexture("T_GameOver_Main_Screen_Select.png");
+		else if (!m_isHovered && m_isActive) m_bitmapRender->ChangeTexture("T_GameOver_Main_Screen.png");
+	}
+	break;
 	default:
 		break;
 	}
@@ -327,21 +351,27 @@ void CreditButton::ButtonFunction()
 
 
 
-void SettingButton::ButtonFunction()
+void RoleButton::ButtonFunction()
 {
+
 	if (m_isPressed && m_isActive)
 	{
 		std::cout << "Setting Button Pressed" << std::endl;
+		m_isToggle = !m_isToggle; // 토글 상태 변경
+		for (auto& btns : m_linkedButtons) 
+		{
+			if (btns) btns->GetComponent<BitmapRender3D>()->SetActive(m_isToggle);
+		}
 		m_isPressed = false;
 	}
 
 	if (m_isHovered && m_isActive)
 	{
-		m_bitmapRender->ChangeTexture("T_Main_Setting_Select.png");
+		m_bitmapRender->ChangeTexture("T_Main_Roles_Select.png");
 	}
 	else if (!m_isHovered && m_isActive)
 	{
-		m_bitmapRender->ChangeTexture("T_Main_Setting.png");
+		m_bitmapRender->ChangeTexture("T_Main_Roles.png");
 	}
 }
 
@@ -382,6 +412,37 @@ void ResetStageButton::ButtonFunction()
 		m_boardManager.m_playerInfo.m_BlackStone = m_blackStoneCount; // 흑돌 개수 초기화
 		m_boardManager.m_playerInfo.m_money = m_money; // 돈 초기화
 
+		m_isPressed = false;
+	}
+
+	if (m_isHovered && m_isActive)
+	{
+		m_bitmapRender->ChangeTexture("T_Common_1Reset_Selcet.png");
+	}
+	else if (!m_isHovered && m_isActive)
+	{
+		m_bitmapRender->ChangeTexture("T_Common_1Reset.png");
+	}
+}
+
+void NextButton::ButtonFunction()
+{
+	if (m_isPressed && m_isActive)
+	{
+		std::cout << "index increase" << std::endl;
+		refIndex++;
+		m_isPressed = false;
+	}
+
+
+}
+
+void PrevButton::ButtonFunction()
+{
+	if (m_isPressed && m_isActive)
+	{
+		std::cout << "index decrease" << std::endl;
+		refIndex--;
 		m_isPressed = false;
 	}
 }
