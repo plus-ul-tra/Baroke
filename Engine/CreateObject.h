@@ -58,8 +58,8 @@ public:
 		m_bitmapRender = AddComponent<BitmapRender3D>(bitmapKey, width, height);
 		m_bitmapRender->SetOrder(order);
 		m_bitmapRender->SetActive(true);
-		m_transform->SetPosition(DirectX::XMVectorSet(posX, posY, 0.0f, 1.0f));
-		m_transform->SetScale(DirectX::XMVectorSet(1.0f, 1.0f, 1.0f, 1.0f));
+		m_transform->SetPosition(DirectX::XMVectorSet(posX, posY+10, 0.0f, 1.0f));
+		m_transform->SetScale(DirectX::XMVectorSet(2.5f, 2.5f, 1.0f, 1.0f));
 	}
 
 	bool m_isDead = false; // 효과가 끝났는지 여부
