@@ -93,11 +93,12 @@ void EndingScene::OnEnter()
 	m_channel->stop();
 	m_bgm = nullptr;
 	m_channel = nullptr;
-	m_bgm = SoundManager::GetInstance().GetSound("lose.wav"); //사운드 교체
-	m_bgm->setMode(FMOD_LOOP_OFF);
+	m_soundManager.PlaySoundOnce("lose.wav");
+	//m_bgm = SoundManager::GetInstance().GetSound("lose.wav"); //사운드 교체
+	//m_bgm->setMode(FMOD_LOOP_OFF);
 
-	m_soundManager.ReleaseChannelGroup();
-	m_soundManager.GetSystem()->playSound(m_bgm, m_soundManager.GetChannelGroup(), false, &m_channel);
+	//m_soundManager.ReleaseChannelGroup();
+	//m_soundManager.GetSystem()->playSound(m_bgm, m_soundManager.GetChannelGroup(), false, &m_channel);
 }
 
 void EndingScene::OnLeave()

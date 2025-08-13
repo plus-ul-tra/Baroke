@@ -1,7 +1,6 @@
 #include "cpch.h"
 #include "GameScene.h"
 
-
 #define BOARD_SIZE 15
 #define PADDING 106
 #define POSX 0
@@ -409,10 +408,12 @@ void GameScene::CheckStageClear()
 			m_channel->stop();
 			m_channel = nullptr;
 			m_bgm = nullptr;
-
 			m_bgm = m_soundManager.GetSound("ShopBGM.mp3");
 			m_bgm->setMode(FMOD_LOOP_NORMAL);
+
+			m_soundManager.ReleaseChannelGroup();
 			if (m_bgm) SoundManager::GetInstance().GetSystem()->playSound(m_bgm, m_soundManager.GetChannelGroup(), false, &m_channel);
+			m_channel->setVolume(BGM_VOLUME);
 		}
 		if (m_gameState == GameState::Shop && m_shopBuyStoneButton && m_shopShopRerollButton && m_shopExitButton)
 		{
@@ -829,6 +830,7 @@ void GameScene::OnEnter()
 	m_bgm = SoundManager::GetInstance().GetSound("MainBGM.mp3");
 	m_bgm->setMode(FMOD_LOOP_NORMAL);
 	m_soundManager.GetSystem()->playSound(m_bgm, m_soundManager.GetChannelGroup(), false, &m_channel);
+	m_channel->setVolume(BGM_VOLUME);
 
 	initGame();
 }
@@ -1076,6 +1078,7 @@ void GameScene::ChangeThema(int thema)
 
 		m_soundManager.ReleaseChannelGroup();
 		m_soundManager.GetSystem()->playSound(m_bgm, m_soundManager.GetChannelGroup(), false, &m_channel);
+		m_channel->setVolume(BGM_VOLUME);
 
 		break;
 
@@ -1119,6 +1122,7 @@ void GameScene::ChangeThema(int thema)
 
 		m_soundManager.ReleaseChannelGroup();
 		m_soundManager.GetSystem()->playSound(m_bgm, m_soundManager.GetChannelGroup(), false, &m_channel);
+		m_channel->setVolume(BGM_VOLUME);
 
 		break;
 
@@ -1163,6 +1167,7 @@ void GameScene::ChangeThema(int thema)
 
 		m_soundManager.ReleaseChannelGroup();
 		m_soundManager.GetSystem()->playSound(m_bgm, m_soundManager.GetChannelGroup(), false, &m_channel);
+		m_channel->setVolume(BGM_VOLUME);
 
 		break;
 
@@ -1206,6 +1211,7 @@ void GameScene::ChangeThema(int thema)
 
 		m_soundManager.ReleaseChannelGroup();
 		m_soundManager.GetSystem()->playSound(m_bgm, m_soundManager.GetChannelGroup(), false, &m_channel);
+		m_channel->setVolume(BGM_VOLUME);
 
 		break;
 
@@ -1248,6 +1254,7 @@ void GameScene::ChangeThema(int thema)
 
 		m_soundManager.ReleaseChannelGroup();
 		m_soundManager.GetSystem()->playSound(m_bgm, m_soundManager.GetChannelGroup(), false, &m_channel);
+		m_channel->setVolume(BGM_VOLUME);
 
 		break;
 
@@ -1272,6 +1279,7 @@ void GameScene::ChangeThema(int thema)
 
 		m_soundManager.ReleaseChannelGroup();
 		m_soundManager.GetSystem()->playSound(m_bgm, m_soundManager.GetChannelGroup(), false, &m_channel);
+		m_channel->setVolume(BGM_VOLUME);
 
 		for (auto& bt : m_jokerSlot)
 		{
