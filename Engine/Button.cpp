@@ -249,8 +249,8 @@ void ShopJokerButton::ButtonFunction()
 		m_isPressed = false;
 	}
 
-	if (m_isHovered && m_isActive) m_shopIcon->SetHover(true);
-	else if (!m_isHovered && m_isActive) m_shopIcon->SetHover(false);
+	if (m_isHovered && m_isActive && !flag) m_shopIcon->SetHover(true);
+	else if (!m_isHovered && m_isActive&&!flag) m_shopIcon->SetHover(false);
 }
 
 bool ShopEndButton::IsEndButtonPressed()

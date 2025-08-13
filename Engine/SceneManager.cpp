@@ -46,7 +46,7 @@ void SceneManager::Render()
 
 	//최종으로 디버그 모드 정보출력
 	if (MIYABI::Core::GetInstance().IsDebugMode()) {
-		ShowDebugInfo();
+		//ShowDebugInfo();
 	}
 	m_renderer->RenderEnd();
 }

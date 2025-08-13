@@ -63,8 +63,8 @@ private:
 	unique_ptr<ShopBuyStoneButton> m_shopBuyStoneButton;
 	unique_ptr<ShopRerollButton> m_shopShopRerollButton;
 	unique_ptr<ShopEndButton> m_shopExitButton;
-	int m_shopRng[3] = { 80, 45, 15 }; // 상점 아이템 확률
-	int m_shopRng2[3] = { 12, 4, 2 }; // 상점 아이템 확률
+	int m_shopRng[3] = { 80, 60, 30 }; // 상점 아이템 확률
+	int m_shopRng2[3] = { 30, 20, 10 }; // 상점 아이템 확률
 	void ShopStage(); // 상점
 	enum class GameState { Stage, ShopEnter, Shop, ShopExit, Ending };
 	GameState m_gameState = GameState::Stage;
