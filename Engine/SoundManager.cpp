@@ -7,6 +7,7 @@ void SoundManager::Initialize()
 	System_Create(&m_system);
 	m_system->init(512, FMOD_INIT_NORMAL, nullptr);
 	m_system->createChannelGroup("Master", &m_channelGroup);
+	m_system->createChannelGroup("SFX", &m_sfxChannelGroup);
 	LoadAll();
 }
 
@@ -58,12 +59,16 @@ Sound* SoundManager::GetSound(const string& key) const
 
 void SoundManager::PlaySoundOnce(const string& key)
 {
+	bool isPlaying = false;
+	m_sfxChannelGroup->isPlaying(&isPlaying);
+	if (!isPlaying) ReleaseSfxChannelGroup();
+
 	Sound* sound = GetSound(key);
 	sound->setMode(FMOD_LOOP_OFF); // 단일 재생
 
 	Channel* newChannel = nullptr;
 
-	if (sound) m_system->playSound(sound, m_channelGroup, false, &newChannel);
+	if (sound) m_system->playSound(sound, m_sfxChannelGroup, false, &newChannel);
 	else throw runtime_error("해당 사운드를 찾을 수 없음");
 	newChannel->setVolume(SFX_VOLUME); // SFX 볼륨 설정
 }
@@ -85,6 +90,25 @@ void SoundManager::ReleaseChannelGroup()
 		m_channelGroup = nullptr;
 	}
 	m_system->createChannelGroup("Master", &m_channelGroup);
+}
+
+void SoundManager::ReleaseSfxChannelGroup()
+{
+	if (m_sfxChannelGroup)
+	{
+		int channelCount = 0;
+		m_sfxChannelGroup->getNumChannels(&channelCount);
+		for (int i = 0; i < channelCount; ++i)
+		{
+			Channel* channel = nullptr;
+			m_sfxChannelGroup->getChannel(i, &channel);
+			if (channel) channel->stop();
+		}
+
+		m_sfxChannelGroup->release();
+		m_sfxChannelGroup = nullptr;
+	}
+	m_system->createChannelGroup("SFX", &m_sfxChannelGroup);
 }
 
 void SoundManager::Release()

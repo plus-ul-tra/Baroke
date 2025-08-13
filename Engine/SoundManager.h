@@ -5,7 +5,7 @@
 using namespace std;
 using namespace FMOD;
 
-constexpr float BGM_VOLUME = 0.5f;
+constexpr float BGM_VOLUME = 0.2f;
 constexpr float SFX_VOLUME = 1.25f;
 
 class SoundManager : public Singleton<SoundManager>
@@ -16,6 +16,7 @@ class SoundManager : public Singleton<SoundManager>
 
 	unordered_map<string, Sound*> m_sounds;
 	ChannelGroup* m_channelGroup = nullptr;
+	ChannelGroup* m_sfxChannelGroup = nullptr;
 	System* m_system = nullptr;
 
 public:
@@ -30,6 +31,7 @@ public:
 
 	void PlaySoundOnce(const string& key);
 	void ReleaseChannelGroup();
+	void ReleaseSfxChannelGroup();
 
 	void Release();
 };
