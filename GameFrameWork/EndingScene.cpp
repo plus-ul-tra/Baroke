@@ -71,7 +71,7 @@ void EndingScene::OnEnter()
 
 	//--Text Here
 
-	unique_ptr<Button> returnButton = std::make_unique<SceneChangeButton>(0.0f, -350.0f, 212.0f, 42.0f, "T_GameOver_Main_Screen.png", "Title",buttonType::EndingToTitle);
+	unique_ptr<SceneChangeButton> returnButton = std::make_unique<SceneChangeButton>(0.0f, -350.0f, 212.0f, 42.0f, "T_GameOver_Main_Screen.png", "Title",buttonType::EndingToTitle);
 	m_notUniqueObjectList.emplace_back(returnButton.get());
 	m_endingButtonList.emplace_back(std::move(returnButton));
 

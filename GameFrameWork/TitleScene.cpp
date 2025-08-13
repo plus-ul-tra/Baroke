@@ -30,18 +30,42 @@ void TitleScene::Initialize()
 
 	unique_ptr<Button> creditImage = std::make_unique<Button>(0.f, -0.f, 1358.f, 742.f, "T_Main_Credit.png");
 	creditImage->GetComponent<BitmapRender3D>()->SetActive(false); // 시작은 숨김
-	creditBtn = creditImage.get();
+	m_creditBtn = creditImage.get();
 	m_buttonList.emplace_back(creditImage.get());
 	m_notUniqueObjectList.emplace_back(creditImage.get());
 	m_titleButtonList.emplace_back(std::move(creditImage));
 
+	unique_ptr<Button> TutorialImage = std::make_unique<Button>(0.f, -0.f, 1366, 750, "Tutorial_1.png"); // 튜토리얼 이미지
+	TutorialImage->GetComponent<BitmapRender3D>()->SetActive(false); // 시작은 숨김
+	m_tutorialImageBtn = TutorialImage.get();
+	m_buttonList.emplace_back(TutorialImage.get());
+	m_notUniqueObjectList.emplace_back(TutorialImage.get());
+	m_titleButtonList.emplace_back(std::move(TutorialImage));
+
+	unique_ptr<NextButton> nextButton = std::make_unique<NextButton>(700.f, -0.f, 51.f, 51.f, "Tutorial_Next.png", m_tutorialIndex);
+	nextButton->GetComponent<BitmapRender3D>()->SetActive(false); // 시작은 숨김
+	m_nextButton = nextButton.get();
+	m_buttonList.emplace_back(nextButton.get());
+	m_notUniqueObjectList.emplace_back(nextButton.get());
+	m_titleButtonList.emplace_back(std::move(nextButton));
+
+	unique_ptr<PrevButton> prevButton = std::make_unique<PrevButton>(-700.f, -0.f, 51.f, 51.f, "Tutorial_Prev.png", m_tutorialIndex);
+	prevButton->GetComponent<BitmapRender3D>()->SetActive(false); // 시작은 숨김
+	m_prevButton = prevButton.get();
+	m_buttonList.emplace_back(prevButton.get());
+	m_notUniqueObjectList.emplace_back(prevButton.get());
+	m_titleButtonList.emplace_back(std::move(prevButton));
+
 	unique_ptr<CreditButton> creditButton = std::make_unique<CreditButton>(-780.0f, -480.0f, 315.f, 144.f, "T_Credit.png");
-	creditButton->resisterOtherButton(creditBtn);
+	creditButton->resisterOtherButton(m_creditBtn);
 	m_buttonList.emplace_back(creditButton.get());
 	m_notUniqueObjectList.emplace_back(creditButton.get());
 	m_titleButtonList.emplace_back(std::move(creditButton));
 
-	unique_ptr<SceneChangeButton> tutoButton = std::make_unique<SceneChangeButton>(-390, -480.0f, 315.f, 144.f, "T_Main_Tutorial.png", "Tutorial", buttonType::TitleToTutorial); // 일단 임시로 게임1
+
+
+
+	unique_ptr<SceneChangeButton> tutoButton = std::make_unique<SceneChangeButton>(-390, -480.0f, 315.f, 144.f, "T_Main_Tutorial.png", "Tutorial", buttonType::TitleToTutorial);
 	m_buttonList.emplace_back(tutoButton.get());
 	m_notUniqueObjectList.emplace_back(tutoButton.get());
 	m_titleButtonList.emplace_back(std::move(tutoButton));
@@ -51,10 +75,11 @@ void TitleScene::Initialize()
 	m_notUniqueObjectList.emplace_back(startButton.get());
 	m_titleButtonList.emplace_back(std::move(startButton));
 
-	unique_ptr<SettingButton> settingButton = std::make_unique<SettingButton>(390, -480.0f, 315.f, 144.f, "T_Main_Setting.png");
-	m_buttonList.emplace_back(settingButton.get());
-	m_notUniqueObjectList.emplace_back(settingButton.get());
-	m_titleButtonList.emplace_back(std::move(settingButton));
+	unique_ptr<RoleButton> roleButton = std::make_unique<RoleButton>(390, -480.0f, 315.f, 144.f, "T_Main_Roles.png");
+	roleButton->Link({ m_tutorialImageBtn, m_nextButton ,m_prevButton });
+	m_buttonList.emplace_back(roleButton.get());
+	m_notUniqueObjectList.emplace_back(roleButton.get());
+	m_titleButtonList.emplace_back(std::move(roleButton));
 
 	unique_ptr<ExitButton> exitButton = std::make_unique<ExitButton>(780.0f, -480.0f, 315.f, 144.f, "T_Main_Exit.png");
 	m_buttonList.emplace_back(exitButton.get());
@@ -103,6 +128,7 @@ void TitleScene::Update(double deltaTime)
 			SceneManager::GetInstance().ChangeSceneToNext();
 		}
 	}
+	TutorialTextureChange();
 }
 
 
@@ -154,9 +180,10 @@ void TitleScene::KeyCommandMapping()
 			SceneManager::GetInstance().ChangeScene(std::string("Ending"));
 		};
 
-	m_commandMap["F2"] = []()
+	m_commandMap["F2"] = [&]()
 		{
-			SceneManager::GetInstance().ChangePostProcessing("CRTFilter");
+/*			SceneManager::GetInstance().ChangePostProcessing("CRTFilter");*/
+			std::cout << "Index : " << m_tutorialIndex << std::endl;
 		};
 
 	m_commandMap["F3"] = []()
