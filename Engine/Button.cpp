@@ -430,7 +430,7 @@ void ResetStageButton::ButtonFunction()
 		m_boardManager.m_playerInfo.m_money = m_money; // 돈 초기화
 		m_boardManager.m_playerInfo.m_waxMoney = m_waxMoney; // 왁스 돈 초기화
 		m_boardManager.m_playerInfo.m_score = m_score; // 점수 초기화
-
+		m_boardManager.ResetStagePlaced();
 		m_isPressed = false;
 	}
 

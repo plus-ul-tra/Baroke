@@ -25,6 +25,7 @@ void GameScene::initGame()
 	StartStage();						// 스테이지 시작
 
 	InitShop();							// 상점 초기화
+	m_board.ResetStagePlaced(); // 조커 착수 트래킹 리셋
 }
 
 void GameScene::SetUIButton()
@@ -833,6 +834,7 @@ void GameScene::OnEnter()
 	m_bgm->setMode(FMOD_LOOP_NORMAL);
 	m_soundManager.GetSystem()->playSound(m_bgm, m_soundManager.GetChannelGroup(), false, &m_channel);
 	m_channel->setVolume(BGM_VOLUME);
+
 
 	initGame();
 }
