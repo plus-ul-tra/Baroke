@@ -9,7 +9,7 @@ class GameScene : public SceneBase {
 	
 private:
 	Player* m_player = nullptr;  // 이거 플레이어 플레이어가 아니라 판다임
-	BoardObject* m_boardObj = nullptr;
+	unique_ptr<BoardObject> m_boardObj = nullptr;
 	BoardManager& m_board = BoardManager::GetInstance(); // 싱글톤 보드 매니저
 
 	DirectX::XMVECTOR m_moveDir = DirectX::XMVectorZero();
@@ -63,8 +63,10 @@ private:
 	unique_ptr<ShopBuyStoneButton> m_shopBuyStoneButton;
 	unique_ptr<ShopRerollButton> m_shopShopRerollButton;
 	unique_ptr<ShopEndButton> m_shopExitButton;
-	int m_shopRng[3] = { 80, 45, 15 }; // 상점 아이템 확률
-	int m_shopRng2[3] = { 100, 100, 100 }; // 상점 아이템 확률
+
+	int m_shopRng[3] = { 80, 60, 30 }; // 상점 아이템 확률
+	int m_shopRng2[3] = { 30, 20, 10 }; // 상점 아이템 확률
+
 	void ShopStage(); // 상점
 	enum class GameState { Stage, ShopEnter, Shop, ShopExit, Ending };
 	GameState m_gameState = GameState::Stage;
