@@ -5,8 +5,8 @@
 using namespace std;
 using namespace FMOD;
 
-constexpr float BGM_VOLUME = 0.2f;
-constexpr float SFX_VOLUME = 1.25f;
+constexpr float BGM_VOLUME = 0.3f;
+constexpr float SFX_VOLUME = 0.6f;
 
 class SoundManager : public Singleton<SoundManager>
 {
