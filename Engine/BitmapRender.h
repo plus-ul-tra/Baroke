@@ -89,8 +89,17 @@ public:
 	void ChangeTexture(const string& nextTextureKey)
 	{
 		SpriteManager& spriteManager = SpriteManager::GetInstance();
-		m_nextTextureSRV = spriteManager.GetTextureSRV(nextTextureKey);
-		m_textureSRV = m_nextTextureSRV;
+
+		if (Extension(nextTextureKey))
+		{
+			m_animator.SetClips(&spriteManager.GetAnimationClips(nextTextureKey));
+			m_isAnimated = true;
+		}
+		else
+		{
+			m_nextTextureSRV = spriteManager.GetTextureSRV(nextTextureKey);
+			m_textureSRV = m_nextTextureSRV;
+		}
 	}
 
 	

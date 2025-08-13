@@ -58,9 +58,9 @@ public:
 		m_bitmapRender = AddComponent<BitmapRender3D>(bitmapKey, width, height);
 		m_bitmapRender->SetOrder(order);
 
+		m_bitmapRender->SetActive(true);
 		m_transform->SetPosition(DirectX::XMVectorSet(posX, posY, 0.0f, 1.0f));
-		m_transform->SetScale(DirectX::XMVectorSet(3.2f, 3.2f, 1.0f, 1.0f));
-
+		m_transform->SetScale(DirectX::XMVectorSet(2.75f, 2.75f, 1.0f, 1.0f));
 	}
 
 	bool m_isDead = false; // È¿°ú°¡ ³¡³µ´ÂÁö ¿©ºÎ
