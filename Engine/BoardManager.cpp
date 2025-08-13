@@ -1074,7 +1074,7 @@ void BoardManager::InitializeJokerInfoMap()
 	m_jokerInfoMap[StoneAbility::jokerEvolution]	= { "T_jokerEvolution.png", "T_JokerEvolution_Tooltip.png", "jokerEvolution.mp3",JokerType::Wild, 0, 0, 0, 0, 2, 0, 10, 3, false };						// cost 0
 	m_jokerInfoMap[StoneAbility::jokerDansu]		= { "T_jokerDansu.png", "T_JokerDansu_Tooltip.png", "jokerDansu.wav",		JokerType::Wild, 1, 1, 0, 0, 4, 0, 7, 1, true };
 	m_jokerInfoMap[StoneAbility::jokerEgg]			= { "T_jokerEgg.png",	"T_JokerEgg_Tooltip.png", "jokerEgg.wav",			JokerType::Wild, 5, 0, 0, 1, 5, 0, 7, 1, true };
-	m_jokerInfoMap[StoneAbility::jokerOstrichEgg]	= { "T_jokerOstrichEgg.png", "T_JokerEgg_Tooltip.png", "jokerOstrichEgg.wav",		JokerType::Wild, 4, 0, 0, 1, 0, 0, 0, 2, true, false };
+	m_jokerInfoMap[StoneAbility::jokerOstrichEgg]	= { "T_jokerOstrichEgg.png", "T_JokerEgg_Tooltip.png", "jokerOstrichEgg.mp3",		JokerType::Wild, 4, 0, 0, 1, 0, 0, 0, 2, true, false };
 	m_jokerInfoMap[StoneAbility::jokerPeacock]		= { "T_jokerPeacock.png",	"T_JokerPeacock_Tooltip.png", "jokerPeacockActive.mp3",	JokerType::Wild, 1, 1, 0, 3, 3, 1, 13, 3, true, true, StoneType::Black };				// cost 4
 
 	//------------------------------------------------------------------------------------------------ 우주 (set 3)
@@ -1098,7 +1098,7 @@ void BoardManager::InitializeJokerInfoMap()
 	//------------------------------------------------------------------------------------------------ 자연 (set 7)
 	m_jokerInfoMap[StoneAbility::jokerShadow]		= { "T_jokerShadow.png", "T_JokerShadow_Tooltip.png", "jokerShadow.wav",		JokerType::Natural, 1, 1, 0, 2, 1, 0, 6, 2, true };
 	m_jokerInfoMap[StoneAbility::jokerLight]		= { "T_jokerLight.png", "T_JokerLight_Tooltip.png", "jokerLight.mp3",		JokerType::Natural, 1, 1, 0, 0, 0, 0, 6, 2, true, true, StoneType::Black };
-	m_jokerInfoMap[StoneAbility::jokerTime]			= { "T_jokerTime.png", "T_JokerTime_Tooltip.png", "jokerTime.wav",			JokerType::Natural, 5, 0, 0, 2, 5, 2, 10, 3, true };
+	m_jokerInfoMap[StoneAbility::jokerTime]			= { "T_jokerTime.png", "T_JokerTime_Tooltip.png", "jokerTime.mp3",			JokerType::Natural, 5, 0, 0, 2, 5, 2, 10, 3, true };
 	m_jokerInfoMap[StoneAbility::jokerWind]			= { "T_jokerWind.png", "T_JokerWind_Tooltip.png", "jokerWind.wav",			JokerType::Natural, 2, 5, 0, 2, 4, 1, 6, 2, true };
 
 
