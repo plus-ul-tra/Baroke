@@ -84,6 +84,7 @@ public:
 		m_bitmapRender->SetOrder(0);
 		m_bitmapRender->SetActive(true);
 		m_boardManager.Initialize(offX, offY, drawW, drawH, _cell, m_stoneOffset, padding); // 보드 매니저 초기화
+		m_stones.clear();
 	}
 	//바둑돌 그리기
 	void Render(Renderer& r) override

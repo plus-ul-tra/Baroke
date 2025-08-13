@@ -6,6 +6,11 @@ void EndingScene::Initialize()
 	// 사용할 것들
 	KeyCommandMapping();
 
+	SceneManager::GetInstance().ChangePostProcessing("CRTOn");
+	m_filterElsapsedTime = 0.0f;
+	m_isFilterQueue = true;
+	m_isExitrQueue = false;
+
 	m_channel->stop();
 	m_bgm = nullptr;
 	m_channel = nullptr;
@@ -51,10 +56,6 @@ void EndingScene::OnEnter()
 	m_objectList.emplace_back(std::move(backGround));
 	XMFLOAT4 color = { 0.3f, 0.3f, 0.3f, 1.0f };
 	Mediator::GetInstance().SetBackGroundColor(color, color);
-	SceneManager::GetInstance().ChangePostProcessing("CRTOn");
-	m_filterElsapsedTime = 0.0f;
-	m_isFilterQueue = true;
-	m_isExitrQueue = false;
 
 	unique_ptr<Button> end = std::make_unique<Button>(0.0f, 200.0f, 521.0f, 119.0f, "T_GameOver_Main.png");
 	m_notUniqueObjectList.emplace_back(end.get());
