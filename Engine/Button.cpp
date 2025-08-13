@@ -418,7 +418,9 @@ void ResetStageButton::SetWhiteStonePos(vector<POINT> whiteStonePos)
 
 void ResetStageButton::ButtonFunction()
 {
-	if (m_isPressed && m_isActive)
+
+	if (BoardManager::GetInstance().CountStones(StoneType::White) == 0) return;
+	if (m_isPressed && m_isActive  )
 	{
 		m_boardManager.ResetStone();
 		

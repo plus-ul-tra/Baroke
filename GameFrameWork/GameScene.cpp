@@ -885,8 +885,6 @@ void GameScene::KeyCommandMapping()
 
 	m_commandMap["F1"] = [this]()
 		{
-			std::cout << "F1 Command Received: Changing to Title Scene" << std::endl;
-			SceneManager::GetInstance().ChangeScene(std::string("Title"));
 		};
 
 	m_commandMap["F2"] = [this]()
