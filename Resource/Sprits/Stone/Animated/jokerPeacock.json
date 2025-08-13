@@ -1,0 +1,166 @@
+{ "frames": [
+   {
+    "filename": "jokerPeacock 0.png",
+    "frame": { "x": 0, "y": 0, "w": 346, "h": 346 },
+    "rotated": false,
+    "trimmed": false,
+    "spriteSourceSize": { "x": 0, "y": 0, "w": 346, "h": 346 },
+    "sourceSize": { "w": 346, "h": 346 },
+    "duration": 100
+   },
+   {
+    "filename": "jokerPeacock 1.png",
+    "frame": { "x": 346, "y": 0, "w": 346, "h": 346 },
+    "rotated": false,
+    "trimmed": false,
+    "spriteSourceSize": { "x": 0, "y": 0, "w": 346, "h": 346 },
+    "sourceSize": { "w": 346, "h": 346 },
+    "duration": 100
+   },
+   {
+    "filename": "jokerPeacock 2.png",
+    "frame": { "x": 692, "y": 0, "w": 346, "h": 346 },
+    "rotated": false,
+    "trimmed": false,
+    "spriteSourceSize": { "x": 0, "y": 0, "w": 346, "h": 346 },
+    "sourceSize": { "w": 346, "h": 346 },
+    "duration": 100
+   },
+   {
+    "filename": "jokerPeacock 3.png",
+    "frame": { "x": 1038, "y": 0, "w": 346, "h": 346 },
+    "rotated": false,
+    "trimmed": false,
+    "spriteSourceSize": { "x": 0, "y": 0, "w": 346, "h": 346 },
+    "sourceSize": { "w": 346, "h": 346 },
+    "duration": 100
+   },
+   {
+    "filename": "jokerPeacock 4.png",
+    "frame": { "x": 1384, "y": 0, "w": 346, "h": 346 },
+    "rotated": false,
+    "trimmed": false,
+    "spriteSourceSize": { "x": 0, "y": 0, "w": 346, "h": 346 },
+    "sourceSize": { "w": 346, "h": 346 },
+    "duration": 100
+   },
+   {
+    "filename": "jokerPeacock 5.png",
+    "frame": { "x": 1730, "y": 0, "w": 346, "h": 346 },
+    "rotated": false,
+    "trimmed": false,
+    "spriteSourceSize": { "x": 0, "y": 0, "w": 346, "h": 346 },
+    "sourceSize": { "w": 346, "h": 346 },
+    "duration": 100
+   },
+   {
+    "filename": "jokerPeacock 6.png",
+    "frame": { "x": 2076, "y": 0, "w": 346, "h": 346 },
+    "rotated": false,
+    "trimmed": false,
+    "spriteSourceSize": { "x": 0, "y": 0, "w": 346, "h": 346 },
+    "sourceSize": { "w": 346, "h": 346 },
+    "duration": 100
+   },
+   {
+    "filename": "jokerPeacock 7.png",
+    "frame": { "x": 2422, "y": 0, "w": 346, "h": 346 },
+    "rotated": false,
+    "trimmed": false,
+    "spriteSourceSize": { "x": 0, "y": 0, "w": 346, "h": 346 },
+    "sourceSize": { "w": 346, "h": 346 },
+    "duration": 100
+   },
+   {
+    "filename": "jokerPeacock 8.png",
+    "frame": { "x": 2768, "y": 0, "w": 346, "h": 346 },
+    "rotated": false,
+    "trimmed": false,
+    "spriteSourceSize": { "x": 0, "y": 0, "w": 346, "h": 346 },
+    "sourceSize": { "w": 346, "h": 346 },
+    "duration": 100
+   },
+   {
+    "filename": "jokerPeacock 9.png",
+    "frame": { "x": 3114, "y": 0, "w": 346, "h": 346 },
+    "rotated": false,
+    "trimmed": false,
+    "spriteSourceSize": { "x": 0, "y": 0, "w": 346, "h": 346 },
+    "sourceSize": { "w": 346, "h": 346 },
+    "duration": 100
+   },
+   {
+    "filename": "jokerPeacock 10.png",
+    "frame": { "x": 3460, "y": 0, "w": 346, "h": 346 },
+    "rotated": false,
+    "trimmed": false,
+    "spriteSourceSize": { "x": 0, "y": 0, "w": 346, "h": 346 },
+    "sourceSize": { "w": 346, "h": 346 },
+    "duration": 100
+   },
+   {
+    "filename": "jokerPeacock 11.png",
+    "frame": { "x": 3806, "y": 0, "w": 346, "h": 346 },
+    "rotated": false,
+    "trimmed": false,
+    "spriteSourceSize": { "x": 0, "y": 0, "w": 346, "h": 346 },
+    "sourceSize": { "w": 346, "h": 346 },
+    "duration": 100
+   },
+   {
+    "filename": "jokerPeacock 12.png",
+    "frame": { "x": 4152, "y": 0, "w": 346, "h": 346 },
+    "rotated": false,
+    "trimmed": false,
+    "spriteSourceSize": { "x": 0, "y": 0, "w": 346, "h": 346 },
+    "sourceSize": { "w": 346, "h": 346 },
+    "duration": 100
+   },
+   {
+    "filename": "jokerPeacock 13.png",
+    "frame": { "x": 4498, "y": 0, "w": 346, "h": 346 },
+    "rotated": false,
+    "trimmed": false,
+    "spriteSourceSize": { "x": 0, "y": 0, "w": 346, "h": 346 },
+    "sourceSize": { "w": 346, "h": 346 },
+    "duration": 100
+   },
+   {
+    "filename": "jokerPeacock 14.png",
+    "frame": { "x": 4844, "y": 0, "w": 346, "h": 346 },
+    "rotated": false,
+    "trimmed": false,
+    "spriteSourceSize": { "x": 0, "y": 0, "w": 346, "h": 346 },
+    "sourceSize": { "w": 346, "h": 346 },
+    "duration": 100
+   },
+   {
+    "filename": "jokerPeacock 15.png",
+    "frame": { "x": 5190, "y": 0, "w": 346, "h": 346 },
+    "rotated": false,
+    "trimmed": false,
+    "spriteSourceSize": { "x": 0, "y": 0, "w": 346, "h": 346 },
+    "sourceSize": { "w": 346, "h": 346 },
+    "duration": 100
+   },
+   {
+    "filename": "jokerPeacock 16.png",
+    "frame": { "x": 5536, "y": 0, "w": 346, "h": 346 },
+    "rotated": false,
+    "trimmed": false,
+    "spriteSourceSize": { "x": 0, "y": 0, "w": 346, "h": 346 },
+    "sourceSize": { "w": 346, "h": 346 },
+    "duration": 100
+   }
+ ],
+ "meta": {
+  "app": "https://www.aseprite.org/",
+  "version": "1.3.14.4-x64",
+  "format": "RGBA8888",
+  "size": { "w": 5882, "h": 346 },
+  "scale": "4",
+  "frameTags": [
+     {"name": "TagWave", "from": 0, "to": 16, "direction": "forward", "color": "#000000ff", "loop": true}
+  ]
+ }
+}

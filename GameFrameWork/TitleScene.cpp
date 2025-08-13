@@ -178,25 +178,23 @@ void TitleScene::KeyCommandMapping()
 
 	m_commandMap["F1"] = [this]()
 		{
-
-
-			SceneManager::GetInstance().ChangeScene(std::string("Ending"));
+			SceneManager::GetInstance().ChangePostProcessing("PassThrough");
 		};
 
 	m_commandMap["F2"] = [&]()
 		{
-/*			SceneManager::GetInstance().ChangePostProcessing("CRTFilter");*/
-			std::cout << "Index : " << m_tutorialIndex << std::endl;
+			SceneManager::GetInstance().ChangePostProcessing("CRTFilter");
+			//std::cout << "Index : " << m_tutorialIndex << std::endl;
 		};
 
 	m_commandMap["F3"] = []()
 		{
-			SceneManager::GetInstance().ChangePostProcessing("CRTOff");
+			//SceneManager::GetInstance().ChangePostProcessing("CRTOff");
 		};
 
 	m_commandMap["F4"] = []()
 		{
-			SceneManager::GetInstance().ChangePostProcessing("CRTOn");
+			//SceneManager::GetInstance().ChangePostProcessing("CRTOn");
 		};
 	m_commandMap["F5"] = []()
 		{
