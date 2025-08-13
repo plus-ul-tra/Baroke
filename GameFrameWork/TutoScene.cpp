@@ -1,4 +1,3 @@
-
 #include "cpch.h"
 #include "TutoScene.h"
 
@@ -19,7 +18,6 @@ void TutoScene::initGame()
 	SetHintpool();						// 힌트 풀 초기화
 	m_board.GetPlayer().TutoinitGame();	// 플레이어 초기화
 	ShopStage();
-
 }
 
 void TutoScene::SetUIButton()
@@ -71,8 +69,7 @@ void TutoScene::SetUIButton()
 
 
 	//-- unchanged----------------------
-
-	// ���ǰ
+	// 장식품
 	unique_ptr<Button> stageText = std::make_unique<Button>(-720.0f, 388.0f, 317, 58, "TUTORIALTITLE.png");
 	m_notUniqueObjectList.emplace_back(stageText.get());
 	stageText->GetComponent<BitmapRender3D>()->SetShaderType("Holo");
@@ -512,7 +509,6 @@ void TutoScene::OnLeave()
 
 
 	// 사운드 초기화
-
 	m_channel->stop();
 	m_bgm = nullptr;
 	m_channel = nullptr;
@@ -902,4 +898,3 @@ void TutoScene::OnInput(const MouseEvent& ev)
 // 	}
 // }
 // 
-

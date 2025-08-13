@@ -6,7 +6,7 @@ struct PlayerInfo
 	int m_blackStoneUpgrade = 0; // 흑돌 업그레이드 횟수
 	int m_tempBlackStone = 0;
 	int m_whiteLeft = 0;
-	int m_money = 100;
+	int m_money = 6;
 	int m_rerollCount = 0; // 상점 리롤 횟수
 	int m_waxMoney = 0;
 	int m_score = 0;
