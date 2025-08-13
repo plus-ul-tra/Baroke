@@ -54,7 +54,7 @@ void GameScene::SetUIButton()
 	m_textList.emplace_back(buyRerollPrice.get());
 	m_useless.emplace_back(move(buyRerollPrice));
 
-	m_shopExitButton = make_unique<ShopEndButton>(300.0f, -300.0f, 100, 100, "Sample.png");
+	m_shopExitButton = make_unique<ShopEndButton>(300.0f, -300.0f, 145, 237, "T_Store_Next_Stage.png");
 	m_shopExitButton->SetShowAndActive(false);
 	m_buttonList.emplace_back(m_shopExitButton.get());
 	m_notUniqueObjectList.emplace_back(m_shopExitButton.get());

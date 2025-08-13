@@ -956,6 +956,7 @@ bool BoardManager::PlaceStone(POINT selectedPosition, StoneType stoneType, Stone
 				);
 
 			m_jokerPositions.emplace_back(selectedPosition, stoneAbility);
+			m_playerInfo.incJokerUseCount(1);
 		}
 	}
 

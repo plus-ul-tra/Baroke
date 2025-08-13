@@ -44,6 +44,7 @@ void TitleScene::Initialize()
 
 	unique_ptr<NextButton> nextButton = std::make_unique<NextButton>(700.f, -0.f, 51.f, 51.f, "Tutorial_Next.png", m_tutorialIndex);
 	nextButton->GetComponent<BitmapRender3D>()->SetActive(false); // 시작은 숨김
+	nextButton->GetComponent<BitmapRender3D>()->SetShaderType("SetRed");
 	m_nextButton = nextButton.get();
 	m_buttonList.emplace_back(nextButton.get());
 	m_notUniqueObjectList.emplace_back(nextButton.get());
@@ -51,6 +52,7 @@ void TitleScene::Initialize()
 
 	unique_ptr<PrevButton> prevButton = std::make_unique<PrevButton>(-700.f, -0.f, 51.f, 51.f, "Tutorial_Prev.png", m_tutorialIndex);
 	prevButton->GetComponent<BitmapRender3D>()->SetActive(false); // 시작은 숨김
+	prevButton->GetComponent<BitmapRender3D>()->SetShaderType("SetRed");
 	m_prevButton = prevButton.get();
 	m_buttonList.emplace_back(prevButton.get());
 	m_notUniqueObjectList.emplace_back(prevButton.get());
