@@ -382,6 +382,8 @@ class ResetStageButton : public Button
 	vector<POINT> m_whiteStonePos; // 흰 돌 위치
 	int m_blackStoneCount = 0; // 현재 흑돌 개수
 	int m_money = 0; // 현재 돈
+	int m_waxMoney = 0; // 현재 왁스 돈
+	int m_score = 0; // 현재 점수
 
 	public:
 	ResetStageButton(float posX, float posY, float width, float height, const std::string& bitmapFile, int order = 0)

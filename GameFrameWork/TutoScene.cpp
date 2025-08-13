@@ -3,7 +3,7 @@
 
 
 #define BOARD_SIZE 15
-#define PADDING 107
+#define PADDING 106
 #define POSX 0
 #define POSY 0
 #define WIDTH 970
@@ -402,7 +402,7 @@ void TutoScene::Update(double deltaTime)
 	ModeCheck();
 
 
-	if (!m_isExitrQueue && m_filterElsapsedTime > 0.8f)
+	if (!m_isExitrQueue && m_filterElsapsedTime > 0.0f)
 	{
 		if (m_isFilterQueue) m_isFilterQueue = false;
 		CRTAccess();
@@ -413,13 +413,12 @@ void TutoScene::Update(double deltaTime)
 		if (!m_isExitrQueue)
 		{
 			m_isExitrQueue = true;
-			m_filterElsapsedTime = 0.0f;
+			m_filterElsapsedTime = -1.25f;
 			SceneManager::GetInstance().ChangePostProcessing("CRTOff");
 		}
-		if (m_isExitrQueue && m_filterElsapsedTime > 1.3f)
+		if (m_isExitrQueue && m_filterElsapsedTime > 0.0f)
 		{
 			m_isExitrQueue = false;
-			std::cout << "asd" << std::endl;
 			SceneManager::GetInstance().ChangeSceneToNext();
 		}
 	}
@@ -460,7 +459,7 @@ void TutoScene::OnEnter()
 	XMFLOAT4 color = { 0.0f, 1.0f, 1.0f, 1.0f };
 	Mediator::GetInstance().SetBackGroundColor(color, color);
 	SceneManager::GetInstance().ChangePostProcessing("CRTOn");
-	m_filterElsapsedTime = 0.0f;
+	m_filterElsapsedTime = -0.75f;
 	m_isFilterQueue = true;
 	m_isExitrQueue = false;
 
@@ -594,9 +593,7 @@ void TutoScene::OnInput(const MouseEvent& ev)
 		if (ev.type == MouseType::LDown)
 		{
 			if (m_board.GetPlayer().GetBlackCount() <= m_board.GetStoneTypeAmount(Black)) return;
-			//std::cout << ev.pos.x << " " << ev.pos.y << std::endl;
 			m_board.InputBasedGameLoop(ev.pos);
-			std::cout << "jokerEgg Count :" << m_board.CountJokers(jokerEgg) << "-----------------------" << std::endl;
 			std::cout << "Place Black Stone : " << m_board.GetStoneTypeAmount(Black) << " / " << m_board.GetPlayer().GetBlackCount() << std::endl;
 		}
 
@@ -643,8 +640,14 @@ void TutoScene::OnInput(const MouseEvent& ev)
 			if (!m_board.IsPlacementAllowed(grid.x, grid.y))
 				return;
 
+			bool isBlackhole = (m_board.GetStoneAbility() == jokerBlackhole);
+
 			if (m_board.InputBasedGameLoop(ev.pos))
 			{
+				if (isBlackhole)
+				{
+					m_filterElsapsedTime = -3.0f;
+				}
 				m_board.ClearHints();
 				m_board.ExitMode();
 				//SceneManager::GetInstance().ChangePostProcessing("CRTFilter");

@@ -289,7 +289,7 @@ void GameScene::SetUIButton()
 
 	// ------------------------------------joker button-------------------------------------------
 	unique_ptr<JokerButton> jokerButton1 = std::make_unique<JokerButton>(617.0f, 341.0f, 100, 100, "T_Blackstone.png", 50);
-	jokerButton1->SetButtonJoker(Black, jokerWaxseal);
+	jokerButton1->SetButtonJoker(Black, jokerBlackhole);
 	m_buttonList.emplace_back(jokerButton1.get());
 	m_notUniqueObjectList.emplace_back(jokerButton1.get());
 	m_jokerButtons.emplace_back(move(jokerButton1));
@@ -767,7 +767,7 @@ void GameScene::Update(double deltaTime)
 	ModeCheck();
 	CheckStageClear();
 
-	if (!m_isExitrQueue && m_filterElsapsedTime > 0.8f)
+	if (!m_isExitrQueue && m_filterElsapsedTime > 0.0f)
 	{
 		if (m_isFilterQueue) m_isFilterQueue = false;
 		CRTAccess();
@@ -778,10 +778,10 @@ void GameScene::Update(double deltaTime)
 		if (!m_isExitrQueue)
 		{
 			m_isExitrQueue = true;
-			m_filterElsapsedTime = 0.0f;
+			m_filterElsapsedTime = -1.25f;
 			SceneManager::GetInstance().ChangePostProcessing("CRTOff");
 		}
-		if (m_isExitrQueue && m_filterElsapsedTime > 1.3f)
+		if (m_isExitrQueue && m_filterElsapsedTime > 0.0f)
 		{
 			m_isExitrQueue = false;
 			SceneManager::GetInstance().ChangeSceneToNext();
@@ -803,7 +803,7 @@ void GameScene::OnEnter()
 	XMFLOAT4 color = { 0.0f, 1.0f, 1.0f, 1.0f };
 	Mediator::GetInstance().SetBackGroundColor(color, color);
 	SceneManager::GetInstance().ChangePostProcessing("CRTOn");
-	m_filterElsapsedTime = 0.0f;
+	m_filterElsapsedTime = -0.75f;
 	m_isFilterQueue = true;
 	m_isExitrQueue = false;
 
@@ -938,6 +938,7 @@ void GameScene::KeyCommandMapping()
 void GameScene::OnInput(const MouseEvent& ev)
 {
 	if (m_gameState == GameState::Ending) return; // 엔딩 모드
+	if (m_filterElsapsedTime < 0.0f) return; // 필터가 적용 중이라면 정지
 	for (auto& button : m_buttonList)
 	{
 		button->CheckInput(ev);
@@ -951,9 +952,7 @@ void GameScene::OnInput(const MouseEvent& ev)
 		if (ev.type == MouseType::LDown)
 		{
 			if (m_board.GetPlayer().GetBlackCount() <= m_board.GetStoneTypeAmount(Black)) return;
-			//std::cout << ev.pos.x << " " << ev.pos.y << std::endl;
 			m_board.InputBasedGameLoop(ev.pos);
-			std::cout <<"jokerEgg Count :" << m_board.CountJokers(jokerEgg)<<"-----------------------" << std::endl;
 			std::cout << "Place Black Stone : " << m_board.GetStoneTypeAmount(Black) << " / " << m_board.GetPlayer().GetBlackCount() << std::endl;
 		}
 
@@ -1003,7 +1002,8 @@ void GameScene::OnInput(const MouseEvent& ev)
 // 
 // 	}
 
-	else if (m_uiMode == UIMode::UseAbility)  
+
+	else if (m_uiMode == UIMode::UseAbility)
 	{
 		if (ev.type == MouseType::LDown) {
 			POINT grid = m_board.MouseToBoardPosition(ev.pos);
@@ -1011,10 +1011,16 @@ void GameScene::OnInput(const MouseEvent& ev)
 			if (!m_board.IsPlacementAllowed(grid.x, grid.y))
 				return;
 
+			bool isBlackhole = (m_board.GetStoneAbility() == jokerBlackhole);
+
 			if (m_board.InputBasedGameLoop(ev.pos))
 			{
-				m_board.ClearHints();  
-				m_board.ExitMode();   
+				if (isBlackhole)
+				{
+					m_filterElsapsedTime = -3.0f;
+				}
+				m_board.ClearHints();
+				m_board.ExitMode();
 				//SceneManager::GetInstance().ChangePostProcessing("CRTFilter");
 				SyncPlacementHintsToPool();
 			}

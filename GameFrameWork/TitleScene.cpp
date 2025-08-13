@@ -18,7 +18,7 @@ void TitleScene::Initialize()
 
 
 	SceneManager::GetInstance().ChangePostProcessing("CRTOn");
-	m_filterElsapsedTime = 0.0f;
+	m_filterElsapsedTime = -0.75f;
 	m_isFilterQueue = true;
 	m_isExitrQueue = false;
 
@@ -82,7 +82,7 @@ void TitleScene::Update(double deltaTime)
 		notUniqueObject->Update(deltaTime);
 	}
 
-	if (m_isFilterQueue && m_filterElsapsedTime > 0.8f)
+	if (m_isFilterQueue && m_filterElsapsedTime > 0.0f)
 	{
 		m_isFilterQueue = false;
 		SceneManager::GetInstance().ChangePostProcessing("CRTFilter");
@@ -93,10 +93,10 @@ void TitleScene::Update(double deltaTime)
 		if (!m_isExitrQueue)
 		{
 			m_isExitrQueue = true;
-			m_filterElsapsedTime = 0.0f;
+			m_filterElsapsedTime = -1.25f;
 			SceneManager::GetInstance().ChangePostProcessing("CRTOff");
 		}
-		if (m_isExitrQueue && m_filterElsapsedTime > 1.3f)
+		if (m_isExitrQueue && m_filterElsapsedTime > 0.0f)
 		{
 			m_isExitrQueue = false;
 			SceneManager::GetInstance().ChangeSceneToNext();
