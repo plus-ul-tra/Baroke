@@ -9,6 +9,7 @@ class EndingScene : public SceneBase {
 
 private:
 	vector<unique_ptr<Button>> m_endingButtonList;
+	vector <unique_ptr<Object>>   m_useless;
 public:
 	EndingScene() { std::cout << "Ending Scene" << std::endl; }
 	~EndingScene() = default;

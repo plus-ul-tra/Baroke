@@ -6,7 +6,7 @@
     "trimmed": false,
     "spriteSourceSize": { "x": 0, "y": 0, "w": 200, "h": 200 },
     "sourceSize": { "w": 200, "h": 200 },
-    "duration": 100
+    "duration": 200
    },
    {
     "filename": "jokerOstrichEgg 1.png",
@@ -15,7 +15,7 @@
     "trimmed": false,
     "spriteSourceSize": { "x": 0, "y": 0, "w": 200, "h": 200 },
     "sourceSize": { "w": 200, "h": 200 },
-    "duration": 100
+    "duration": 200
    },
    {
     "filename": "jokerOstrichEgg 2.png",
@@ -24,7 +24,7 @@
     "trimmed": false,
     "spriteSourceSize": { "x": 0, "y": 0, "w": 200, "h": 200 },
     "sourceSize": { "w": 200, "h": 200 },
-    "duration": 100
+    "duration": 200
    }
  ],
  "meta": {

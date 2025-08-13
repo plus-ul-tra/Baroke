@@ -406,7 +406,7 @@ private:
 
 public:
 	Text(float posX, float posY, float width, float height, int size) : m_posX(posX), m_posY(posY), m_width(width), m_height(height), m_sizeType(size) {
-		m_text = AddComponent<UIText>(m_posX, m_posY, m_width, m_height, m_sizeType);
+ 		m_text = AddComponent<UIText>(m_posX, m_posY, m_width, m_height, m_sizeType);
 	};
 	~Text() { delete m_text; }
 	void SetText(int value) {
