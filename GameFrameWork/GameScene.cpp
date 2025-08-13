@@ -201,7 +201,7 @@ void GameScene::SetUIButton()
 	exitText->GetComponent<BitmapRender3D>()->SetShaderType("UIHolo");
 	m_useless.emplace_back(move(exitText));
 
-	unique_ptr<Button> cyberAlpha = std::make_unique<Button>(0.0f, 0.0f, 900, 900, "CyberAlpha.png");
+	unique_ptr<Button> cyberAlpha = std::make_unique<Button>(0.0f, 0.0f, 900, 810, "CyberAlpha.png");
 	m_notUniqueObjectList.emplace_back(cyberAlpha.get());
 	cyberAlpha->GetComponent<BitmapRender3D>()->SetShaderType("Holo");
 	cyberAlpha->GetComponent<BitmapRender3D>()->SetActive(false);

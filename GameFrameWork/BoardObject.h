@@ -228,11 +228,10 @@ inline void BoardObject::ThemeFixedObjects(int theme, vector<unique_ptr<Object>>
 
 	case 5: // Cyberpunk
 		objectsvector.emplace_back(make_unique<NewObject>(0.0f, 600.0f, 1920.0f, 195.0f, 0.0f, "cyber_1.png", 100.0f, XMVectorSet(0.0f, 460.0f, 0.0f, 1.0f)));
-		objectsvector.emplace_back(make_unique<NewObject>(0.0f, -600.0f, 1918.0f, 429.0f, 0.0f, "cyber_2.png", 100.0f, XMVectorSet(0.0f, -335.0f, 0.0f, 1.0f)));
+		objectsvector.emplace_back(make_unique<NewObject>(0.0f, -600.0f, 1914.0f, 440.0f, 0.0f, "cyber_2.png", 100.0f, XMVectorSet(0.0f, -335.0f, 0.0f, 1.0f)));
 		break;
 
 	default:
-		
 		break;
 	}
 }
