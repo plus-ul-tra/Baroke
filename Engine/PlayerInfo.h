@@ -2,7 +2,7 @@
 
 struct PlayerInfo
 {
-	int m_BlackStone = 20;
+	int m_BlackStone = 25;
 	int m_blackStoneUpgrade = 0; // Èæµ¹ ¾÷±×·¹ÀÌµå È½¼ö
 	int m_tempBlackStone = 0;
 	int m_whiteLeft = 0;

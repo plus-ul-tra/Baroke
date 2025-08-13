@@ -257,8 +257,8 @@ public:
 		: Button(posX, posY, width, height, bitmapFile, order)
 	{
 		if (!tutoFlag) {
-			m_shopIcon = make_unique<NewObject>(m_transform->GetPosition().m128_f32[0] + 3.0f, m_transform->GetPosition().m128_f32[1] - 10.0f, 100.0f, 200.0f, 0.0f, "T_Store_Joker.png");
-			m_priceIcon = make_unique<NewObject>(m_transform->GetPosition().m128_f32[0] - 10.0f, m_transform->GetPosition().m128_f32[1] - 66.0f, 30.0f, 30.0f, 0.0f, "T_Store_Joker_Stone.png");
+			m_shopIcon = make_unique<NewObject>(m_transform->GetPosition().m128_f32[0] + 3.0f, m_transform->GetPosition().m128_f32[1] - 10.0f, 145.0f, 241.0f, 0.0f, "T_Store_Joker.png");
+			m_priceIcon = make_unique<NewObject>(m_transform->GetPosition().m128_f32[0] - 15.0f, m_transform->GetPosition().m128_f32[1] - 66.0f, 45.0f, 45.0f, 0.0f, "T_Store_Joker_Stone.png");
 		}
 	}
 
@@ -278,8 +278,8 @@ class ShopBuyStoneButton : public Button
 	ShopBuyStoneButton(float posX, float posY, float width, float height, const std::string& bitmapFile, int order = 0)
 		: Button(posX, posY, width, height, bitmapFile, order)
 	{
-		m_shopIcon = make_unique<NewObject>(m_transform->GetPosition().m128_f32[0] + 3.0f, m_transform->GetPosition().m128_f32[1] - 10.0f, 100.0f, 200.0f, 0.0f, "T_Store_Joker.png");
-		m_priceIcon = make_unique<NewObject>(m_transform->GetPosition().m128_f32[0] - 10.0f, m_transform->GetPosition().m128_f32[1] - 66.0f, 30.0f, 30.0f, 0.0f, "T_jokerWaxseal.png");
+		m_shopIcon = make_unique<NewObject>(m_transform->GetPosition().m128_f32[0] + 3.0f, m_transform->GetPosition().m128_f32[1] - 10.0f, 145.0f, 241.0f, 0.0f, "T_Store_Joker.png");
+		m_priceIcon = make_unique<NewObject>(m_transform->GetPosition().m128_f32[0] - 15.0f, m_transform->GetPosition().m128_f32[1] - 66.0f, 45.0f, 45.0f, 0.0f, "T_jokerWaxseal.png");
 	}
 
 	void SetShowAndActive(bool active);
@@ -293,10 +293,10 @@ public:
 	ShopRerollButton(float posX, float posY, float width, float height, const std::string& bitmapFile, int order = 0)
 		: Button(posX, posY, width, height, bitmapFile, order)
 	{
-		m_shopIcon = make_unique<NewObject>(m_transform->GetPosition().m128_f32[0] + 3.0f, m_transform->GetPosition().m128_f32[1] - 10.0f, 100.0f, 200.0f, 0.0f, "T_Store_Reset.png");
-		m_width = 100.0f;
-		m_height = 200.0f;
-		m_priceIcon = make_unique<NewObject>(m_transform->GetPosition().m128_f32[0] - 10.0f, m_transform->GetPosition().m128_f32[1] - 66.0f, 30.0f, 30.0f, 0.0f, "T_Store_Joker_Stone.png");
+		m_shopIcon = make_unique<NewObject>(m_transform->GetPosition().m128_f32[0] + 3.0f, m_transform->GetPosition().m128_f32[1] - 10.0f, 145.0f, 237.0f, 0.0f, "T_Store_Reset.png");
+		m_width = 145.0f;
+		m_height = 237.0f;
+		m_priceIcon = make_unique<NewObject>(m_transform->GetPosition().m128_f32[0] - 15.0f, m_transform->GetPosition().m128_f32[1] - 80.0f, 45.0f, 45.0f, 0.0f, "T_Store_Joker_Stone.png");
 	}
 
 	void ButtonFunction() override;
@@ -380,13 +380,15 @@ public:
 class ResetStageButton : public Button
 {
 	vector<POINT> m_whiteStonePos; // 흰 돌 위치
+	int m_blackStoneCount = 0; // 현재 흑돌 개수
+	int m_money = 0; // 현재 돈
 
 	public:
 	ResetStageButton(float posX, float posY, float width, float height, const std::string& bitmapFile, int order = 0)
 		: Button(posX, posY, width, height, bitmapFile, order) {
 	}
 
-	void SetWhiteStonePos(vector<POINT> whiteStonePos) { m_whiteStonePos = whiteStonePos; }
+	void SetWhiteStonePos(vector<POINT> whiteStonePos);
 	void ButtonFunction() override;
 };
 

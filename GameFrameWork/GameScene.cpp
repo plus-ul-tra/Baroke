@@ -30,12 +30,12 @@ void GameScene::initGame()
 
 void GameScene::SetUIButton()
 {
-	m_shopBuyStoneButton = make_unique<ShopBuyStoneButton>(-300.0f, -300.0f, 75, 75, "T_Blackstone.png");
+	m_shopBuyStoneButton = make_unique<ShopBuyStoneButton>(-300.0f, -300.0f, 100, 100, "T_Blackstone.png");
 	m_shopBuyStoneButton->SetShowAndActive(false);
 	m_buttonList.emplace_back(m_shopBuyStoneButton.get());
 	m_notUniqueObjectList.emplace_back(m_shopBuyStoneButton.get());
 
-	unique_ptr<Text> buyStonePrice = std::make_unique<Text>(-335.0f, -350.0f, 100.0f, 50.0f, 0.5);
+	unique_ptr<Text> buyStonePrice = std::make_unique<Text>(-325.0f, -350.0f, 100.0f, 50.0f, 0.75);
 	buyStonePrice->GetComponent<UIText>()->SetText(000000);
 	buyStonePrice->GetComponent<UIText>()->SetActive(false);
 	m_buyStonePriceText = buyStonePrice.get();
@@ -47,7 +47,7 @@ void GameScene::SetUIButton()
 	m_buttonList.emplace_back(m_shopShopRerollButton.get());
 	m_notUniqueObjectList.emplace_back(m_shopShopRerollButton.get());
 
-	unique_ptr<Text> buyRerollPrice = std::make_unique<Text>(-35.0f, -350.0f, 100.0f, 50.0f, 0.5);
+	unique_ptr<Text> buyRerollPrice = std::make_unique<Text>(-50.0f, -365.0f, 150.0f, 75.0f, 0.75);
 	buyRerollPrice->GetComponent<UIText>()->SetText(000000);
 	buyRerollPrice->GetComponent<UIText>()->SetActive(false);
 	m_buyRerollPriceText = buyRerollPrice.get();
@@ -61,12 +61,12 @@ void GameScene::SetUIButton()
 
 	for (int i = 0; i < 3; i++)
 	{
-		m_shopJokerButtons[i] = make_unique<ShopJokerButton>(-300.0f + (i * 300.0f), 300.0f, 75, 75, "Sample.png");
+		m_shopJokerButtons[i] = make_unique<ShopJokerButton>(-300.0f + (i * 300.0f), 300.0f, 100, 100, "Sample.png");
 		m_shopJokerButtons[i]->SetShowAndActive(false);
 		m_buttonList.emplace_back(m_shopJokerButtons[i].get());
 		m_notUniqueObjectList.emplace_back(m_shopJokerButtons[i].get());
 
-		unique_ptr<Text> shopJokerText = std::make_unique<Text>(-335.0f + (i * 300.0f), 250.0f, 100.0f, 50.0f, 0.5);
+		unique_ptr<Text> shopJokerText = std::make_unique<Text>(-350.0f + (i * 300.0f), 250.0f, 150.0f, 75.0f, 0.75);
 		shopJokerText->GetComponent<UIText>()->SetText(000000);
 		shopJokerText->GetComponent<UIText>()->SetActive(false);
 		m_shopJokerTexts[i] = shopJokerText.get();
@@ -80,7 +80,7 @@ void GameScene::SetUIButton()
 		m_buttonList.emplace_back(m_shopJokerButtons[3 + i].get());
 		m_notUniqueObjectList.emplace_back(m_shopJokerButtons[3 + i].get());
 
-		unique_ptr<Text> shopJokerText = std::make_unique<Text>(-335.0f + (i * 300.0f), -50.0f, 100.0f, 50.0f, 0.5);
+		unique_ptr<Text> shopJokerText = std::make_unique<Text>(-350.0f + (i * 300.0f), -50.0f, 150.0f, 75.0f, 0.75);
 		shopJokerText->GetComponent<UIText>()->SetText(000000);
 		shopJokerText->GetComponent<UIText>()->SetActive(false);
 		m_shopJokerTexts[3 + i] = shopJokerText.get();
@@ -296,7 +296,7 @@ void GameScene::SetUIButton()
 
 
 	unique_ptr<JokerButton> jokerButton2 = std::make_unique<JokerButton>(617.0f, 171.0f, 100, 100, "T_Blackstone.png", 50);
-	jokerButton2->SetButtonJoker(White, jokerFusion);
+	jokerButton2->SetButtonJoker(Black, None);
 	m_buttonList.emplace_back(jokerButton2.get());
 	m_notUniqueObjectList.emplace_back(jokerButton2.get());
 	m_jokerButtons.emplace_back(move(jokerButton2));
@@ -351,10 +351,11 @@ void GameScene::StartStage()
 {
 	m_stageNo++;
 
-	int spawn = 3 + ((m_stageNo * 3) - 1);
+	int spawn = 3 + (m_stageNo * 2);
 
 	m_resetStageButton->SetWhiteStonePos(m_board.PlaceRandomStones(spawn));
 	m_whiteLeft = m_board.GetStoneTypeAmount(White);
+	m_board.m_playerInfo.m_rerollCount = 0; // 리롤 횟수 초기화
 
 	if (m_stageText)
 		if (auto ui = m_stageText->GetComponent<UIText>())
@@ -395,7 +396,7 @@ void GameScene::CheckStageClear()
 
 		if (m_gameState == GameState::Stage) m_gameState = GameState::ShopEnter;
     
-		//if (m_gameStateDelayElapsed < m_gameStateDelay) return;    // 잠시 꺼둠 최종빌드때 다시 켜야댐
+		if (m_gameStateDelayElapsed < m_gameStateDelay) return;    // 잠시 꺼둠 최종빌드때 다시 켜야댐
 
 		if (m_gameState == GameState::ShopEnter)
 		{
@@ -709,7 +710,7 @@ void GameScene::Update(double deltaTime)
 
 	if (m_buyStonePriceText)
 		if (auto price = m_buyStonePriceText->GetComponent<UIText>())
-			price->SetText(m_board.m_playerInfo.m_blackStoneUpgrade * 2);
+			price->SetText(m_board.m_playerInfo.m_blackStoneUpgrade * 2 + 1);
 
 	if (m_buyRerollPriceText)
 		if (auto price = m_buyRerollPriceText->GetComponent<UIText>())
@@ -936,6 +937,7 @@ void GameScene::KeyCommandMapping()
 
 void GameScene::OnInput(const MouseEvent& ev)
 {
+	if (m_gameState == GameState::Ending) return; // 엔딩 모드
 	for (auto& button : m_buttonList)
 	{
 		button->CheckInput(ev);
@@ -943,7 +945,6 @@ void GameScene::OnInput(const MouseEvent& ev)
 	if (m_gameState == GameState::ShopEnter) return; // 상점 진입 모드
 	if (m_gameState == GameState::Shop) return; // 상점 모드
 	if (m_gameState == GameState::ShopExit) return; // 상점 종료 모드
-	if (m_gameState == GameState::Ending) return; // 엔딩 모드
 
 	if (m_uiMode == UIMode::Normal)
 	{
@@ -1065,6 +1066,7 @@ void GameScene::ChangeThema(int thema)
 		m_channel->stop();
 		m_channel = nullptr;
 		m_bgm = SoundManager::GetInstance().GetSound("wild1.mp3");
+		m_bgm->setMode(FMOD_LOOP_NORMAL);
 		m_soundManager.GetSystem()->getChannel(0, &m_channel);
 		m_soundManager.GetSystem()->playSound(m_bgm, nullptr, false, &m_channel);
 
@@ -1106,6 +1108,7 @@ void GameScene::ChangeThema(int thema)
 		m_channel->stop();
 		m_channel = nullptr;
 		m_bgm = SoundManager::GetInstance().GetSound("space1.mp3");
+		m_bgm->setMode(FMOD_LOOP_NORMAL);
 		m_soundManager.GetSystem()->getChannel(0, &m_channel);
 		m_soundManager.GetSystem()->playSound(m_bgm, nullptr, false, &m_channel);
 
@@ -1148,6 +1151,7 @@ void GameScene::ChangeThema(int thema)
 		m_channel->stop();
 		m_channel = nullptr;
 		m_bgm = SoundManager::GetInstance().GetSound("dancheong1.mp3");
+		m_bgm->setMode(FMOD_LOOP_NORMAL);
 		m_soundManager.GetSystem()->getChannel(0, &m_channel);
 		m_soundManager.GetSystem()->playSound(m_bgm, nullptr, false, &m_channel);
 
@@ -1189,6 +1193,7 @@ void GameScene::ChangeThema(int thema)
 		m_channel->stop();
 		m_channel = nullptr;
 		m_bgm = SoundManager::GetInstance().GetSound("halloween1.mp3");
+		m_bgm->setMode(FMOD_LOOP_NORMAL);
 		m_soundManager.GetSystem()->getChannel(0, &m_channel);
 		m_soundManager.GetSystem()->playSound(m_bgm, nullptr, false, &m_channel);
 
@@ -1229,6 +1234,7 @@ void GameScene::ChangeThema(int thema)
 		m_channel->stop();
 		m_channel = nullptr;
 		m_bgm = SoundManager::GetInstance().GetSound("cyberpunk1.mp3");
+		m_bgm->setMode(FMOD_LOOP_NORMAL);
 		m_soundManager.GetSystem()->getChannel(0, &m_channel);
 		m_soundManager.GetSystem()->playSound(m_bgm, nullptr, false, &m_channel);
 
@@ -1238,10 +1244,10 @@ void GameScene::ChangeThema(int thema)
 
 		Mediator::GetInstance().SetUIColor(XMFLOAT4(0.0f, 1.0f, 1.0f, 1.0f));
 
-		m_desc->GetComponent<BitmapRender3D>()->SetShaderType("UIHolo");
-		m_rightUI->GetComponent<BitmapRender3D>()->SetShaderType("UIHolo");
-		m_leftUI->GetComponent<BitmapRender3D>()->SetShaderType("UIHolo");
-		m_leftUpUI->GetComponent<BitmapRender3D>()->SetShaderType("UIHolo");
+		m_desc->GetComponent<BitmapRender3D>()->ChangeTexture("T_Standard_Right_Slot_Description.png");
+		m_rightUI->GetComponent<BitmapRender3D>()->ChangeTexture("T_Standard_Right_Base_Glow.png");
+		m_leftUI->GetComponent<BitmapRender3D>()->ChangeTexture("T_Standard_Left_Down_Base_Glow.png");
+		m_leftUpUI->GetComponent<BitmapRender3D>()->ChangeTexture("T_Standard_Left_Base_Glow.png");
 		m_cyber->GetComponent<BitmapRender3D>()->SetActive(false);
 
 		m_lastIndex = -1;
@@ -1251,8 +1257,23 @@ void GameScene::ChangeThema(int thema)
 		m_channel->stop();
 		m_channel = nullptr;
 		m_bgm = SoundManager::GetInstance().GetSound("MainBGM.mp3");
+		m_bgm->setMode(FMOD_LOOP_NORMAL);
 		m_soundManager.GetSystem()->getChannel(0, &m_channel);
 		m_soundManager.GetSystem()->playSound(m_bgm, nullptr, false, &m_channel);
+
+		for (auto& bt : m_itemSlot)
+		{
+			auto rend = bt->GetComponent<BitmapRender3D>();
+			//rend->SetShaderType("UIColor");
+			rend->ChangeTexture("T_Standard_Right_Slot_Item.png");
+		}
+
+		for (auto& bt : m_passiveSlot)
+		{
+			auto rend = bt->GetComponent<BitmapRender3D>();
+			//rend->SetShaderType("UIColor");
+			rend->ChangeTexture("T_Standard_Right_Slot_Passive.png");
+		}
 
 		break;
 	}

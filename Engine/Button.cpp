@@ -365,6 +365,13 @@ void ExitButton::ButtonFunction()
 	}
 }
 
+void ResetStageButton::SetWhiteStonePos(vector<POINT> whiteStonePos)
+{
+	m_whiteStonePos = whiteStonePos;
+	m_blackStoneCount = m_boardManager.m_playerInfo.m_BlackStone; // 현재 흑돌 개수
+	m_money = m_boardManager.m_playerInfo.m_money; // 현재 돈
+}
+
 void ResetStageButton::ButtonFunction()
 {
 	if (m_isPressed && m_isActive)
@@ -372,6 +379,8 @@ void ResetStageButton::ButtonFunction()
 		m_boardManager.ResetStone();
 		
 		for (POINT& pos : m_whiteStonePos) m_boardManager.PlaceStone(pos, StoneType::White, StoneAbility::None);
+		m_boardManager.m_playerInfo.m_BlackStone = m_blackStoneCount; // 흑돌 개수 초기화
+		m_boardManager.m_playerInfo.m_money = m_money; // 돈 초기화
 
 		m_isPressed = false;
 	}

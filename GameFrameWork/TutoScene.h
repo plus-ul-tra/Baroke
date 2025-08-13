@@ -8,30 +8,30 @@
 class TutoScene : public SceneBase {
 
 private:
-	Player* m_player = nullptr;  // ÀÌ°Å ÇÃ·¹ÀÌ¾î ÇÃ·¹ÀÌ¾î°¡ ¾Æ´Ï¶ó ÆÇ´ÙÀÓ
+	Player* m_player = nullptr;  // ì´ê±° í”Œë ˆì´ì–´ í”Œë ˆì´ì–´ê°€ ì•„ë‹ˆë¼ íŒë‹¤ì„
 	BoardObject* m_boardObj = nullptr;
-	BoardManager& m_board = BoardManager::GetInstance(); // ½Ì±ÛÅæ º¸µå ¸Å´ÏÀú
+	BoardManager& m_board = BoardManager::GetInstance(); // ì‹±ê¸€í†¤ ë³´ë“œ ë§¤ë‹ˆì €
 
 	DirectX::XMVECTOR m_moveDir = DirectX::XMVectorZero();
 
 	UIMode        m_uiMode = UIMode::Normal;
 
 
-	int m_stageNo = 0;		// ½ºÅ×ÀÌÁö ´Ü°è
-	int m_whiteLeft = 0;	// ³²Àº Èòµ¹ °³¼ö
+	int m_stageNo = 0;		// ìŠ¤í…Œì´ì§€ ë‹¨ê³„
+	int m_whiteLeft = 0;	// ë‚¨ì€ í°ëŒ ê°œìˆ˜
 
-	void initGame(); // °ÔÀÓ ÃÊ±âÈ­
+	void initGame(); // ê²Œì„ ì´ˆê¸°í™”
 
-	void  SetUIButton(); // UI Á¶Ä¿ ¹öÆ° ¼³Á¤
+	void  SetUIButton(); // UI ì¡°ì»¤ ë²„íŠ¼ ì„¤ì •
 
 	void  CheckSlot(); 
 	void  ModeCheck();
 	void CRTAccess();
 
-	void InitShop(); // »óÁ¡ ÃÊ±âÈ­
-	vector<unique_ptr<JokerButton>> m_jokerButtons; // Á¶Ä¿ ¹öÆ°µé // ³ªÁß¿¡ ´Ù¸¥ ¹æ½ÄÀ¸·Î?
+	void InitShop(); // ìƒì  ì´ˆê¸°í™”
+	vector<unique_ptr<JokerButton>> m_jokerButtons; // ì¡°ì»¤ ë²„íŠ¼ë“¤ // ë‚˜ì¤‘ì— ë‹¤ë¥¸ ë°©ì‹ìœ¼ë¡œ?
 
-	//vector <unique_ptr<Button>>   m_normalUI;  // scene ÀüÈ¯½Ã texture ¹Ù²Ü ¾êµéÀÓ
+	//vector <unique_ptr<Button>>   m_normalUI;  // scene ì „í™˜ì‹œ texture ë°”ê¿€ ì–˜ë“¤ì„
 
 	vector <unique_ptr<Button>>	  m_jokerSlot;
 	vector <unique_ptr<Button>>	  m_itemSlot;
@@ -48,24 +48,24 @@ private:
 
 
 
-	vector<pair<StoneAbility, JokerStoneInfo>> m_shopStones; // µ¹ Á¶Ä¿
+	vector<pair<StoneAbility, JokerStoneInfo>> m_shopStones; // ëŒ ì¡°ì»¤
 
 	unique_ptr<ShopJokerButton> m_shopJokerButtons[24] = {};
 
 	enum class GameState { Stage, ShopEnter, Shop, ShopExit, Ending };
 	GameState m_gameState = GameState::Stage;
-	float m_gameStateDelayElapsed = 0.0f; // °ÔÀÓ »óÅÂ ÀüÈ¯ µô·¹ÀÌ °æ°ú ½Ã°£
-	float m_gameStateDelay = 3.0f; // °ÔÀÓ »óÅÂ ÀüÈ¯ µô·¹ÀÌ
+	float m_gameStateDelayElapsed = 0.0f; // ê²Œì„ ìƒíƒœ ì „í™˜ ë”œë ˆì´ ê²½ê³¼ ì‹œê°„
+	float m_gameStateDelay = 3.0f; // ê²Œì„ ìƒíƒœ ì „í™˜ ë”œë ˆì´
 
 	int   m_lastIndex = -1;
 	void ShopStage();
 
 	std::vector<std::unique_ptr<HintMark>> m_hintPool;
-	void SyncPlacementHintsToPool();  // ÇÏÀÌ¶óÀÌÆ® µ¿±âÈ­
+	void SyncPlacementHintsToPool();  // í•˜ì´ë¼ì´íŠ¸ ë™ê¸°í™”
 	void SetHintpool();
 
-	Sound* m_shopBgm = nullptr; // »óÁ¡ ¹è°æÀ½¾Ç
-	Channel* m_shopChannel = nullptr; // »óÁ¡ Ã¤³Î
+	Sound* m_shopBgm = nullptr; // ìƒì  ë°°ê²½ìŒì•…
+	Channel* m_shopChannel = nullptr; // ìƒì  ì±„ë„
 
 public:
 	//GameScene() = default;
