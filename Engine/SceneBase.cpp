@@ -26,6 +26,19 @@ void SceneBase::Render(Renderer& renderer) {
 		}
 		obj->Render(renderer);
 	}
+
+	if (m_boardObjRender)
+	{
+		if (auto bitmapRenderComp = m_boardObjRender->GetComponent<BitmapRender3D>())
+		{
+			if (bitmapRenderComp->IsActive())
+			{
+				bitmapRenderComp->Render(renderer);
+			}
+		}
+		m_boardObjRender->Render(renderer);
+	}
+
 	for (const auto& ui : m_UIList) {
 
 		if (auto bitmapRenderComp = ui->GetComponent<BitmapRender3D>())
