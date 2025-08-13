@@ -389,15 +389,13 @@ void GameScene::CheckStageClear()
 	}
 	else  // 스테이지 클리어
 	{
-
-		SceneManager::GetInstance().ChangePostProcessing("CRTFilter");
-
 		if (m_gameState == GameState::Stage) m_gameState = GameState::ShopEnter;
     
 		if (m_gameStateDelayElapsed < m_gameStateDelay) return;    // 잠시 꺼둠 최종빌드때 다시 켜야댐
 
 		if (m_gameState == GameState::ShopEnter)
 		{
+			SceneManager::GetInstance().ChangePostProcessing("CRTFilter");
 			m_resetStageButton->SetIsActive(false);
 			m_gameState = GameState::Shop;
 			ShopStage();
