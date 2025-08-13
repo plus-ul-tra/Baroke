@@ -130,12 +130,12 @@ void EndingScene::KeyCommandMapping()
 {
 	m_commandMap["F1"] = [this]()
 		{
-
+			SceneManager::GetInstance().ChangePostProcessing("PassThrough");
 		};
 
 	m_commandMap["F2"] = []()
 		{
-			SceneManager::GetInstance().ChangePostProcessing("CRTFilter");
+			SceneManager::GetInstance().ChangePostProcessing("CRTNoise");
 		};
 
 	m_commandMap["F3"] = []()
@@ -149,7 +149,7 @@ void EndingScene::KeyCommandMapping()
 		};
 	m_commandMap["F5"] = []()
 		{
-			SceneManager::GetInstance().ChangePostProcessing("PassThrough");
+			
 		};
 }
 

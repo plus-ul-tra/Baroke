@@ -543,19 +543,23 @@ void TutoScene::KeyCommandMapping()
 
 	m_commandMap["F1"] = [this]()
 		{
-			SceneManager::GetInstance().ChangeScene(std::string("Title"));
+			SceneManager::GetInstance().ChangePostProcessing("PassThrough");
 		};
 
 	m_commandMap["F2"] = [this]()
 		{
-			m_board.ResetStone();
+			SceneManager::GetInstance().ChangePostProcessing("CRTFilter");
 		};
 
 	m_commandMap["F3"] = [this]()
 		{
-			m_board.PlaceRandomStones(5);
+			m_board.ResetStone();
 		};
 
+	m_commandMap["F4"] = [this]()
+		{
+			m_board.PlaceRandomStones(5);
+		};
 	m_commandMap["Go"] = [this]()
 		{
 

@@ -49,12 +49,12 @@ struct BoardType
 
 inline unordered_map<int, BoardType> boardTypes =
 {
-	{0, {"Normal.png",						3.0f, XMFLOAT4(0.0f, 0.5f, 0.5f,  1.0f)}},
-	{1, {"Forest.png",						3.0f, XMFLOAT4(0.2f, 0.9f, 0.2f,  1.0f), }},
-	{2, {"Space.png",						3.0f, XMFLOAT4(0.4f, 0.02f, 0.6f, 1.0f), }},
+	{0, {"Normal.png",						3.0f, XMFLOAT4(0.4157f, 0.3137f, 0.1412f,  1.0f)}},
+	{1, {"Forest.png",						3.0f, XMFLOAT4(0.1412f, 0.4157f, 0.2275f,  1.0f), }},
+	{2, {"Space.png",						3.0f, XMFLOAT4(0.4086f, 0.1412f, 0.4457f, 1.0f), }},
 	{3, {"T_Dancheong_Main_Glow.png",		3.0f, XMFLOAT4(0.9f, 0.8f, 0.6f,  1.0f), }},
-	{4, {"T_Halloween_Main_Glow.png",		3.0f, XMFLOAT4(1.0f, 0.5f, 0.0f,  1.0f), }},
-	{5, {"Cyberpunk.png",					3.0f, XMFLOAT4(0.3f, 0.3f, 0.9f,  1.0f), }}
+	{4, {"T_Halloween_Main_Glow.png",		3.0f, XMFLOAT4(0.4784f, 0.2706f, 0.0745,  1.0f), }},
+	{5, {"Cyberpunk.png",					3.0f, XMFLOAT4(0.235f, 0.141f, 0.4157f,  1.0f), }}
 };
 
 class BoardObject : public Object

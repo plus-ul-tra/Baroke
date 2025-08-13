@@ -1106,6 +1106,7 @@ void BoardManager::InitializeJokerInfoMap()
 	m_jokerAnimationMap[StoneAbility::jokerDansu] = "jokerDansu.json";
 	m_jokerAnimationMap[StoneAbility::jokerEgg] = "jokerEgg.json";
 	m_jokerAnimationMap[StoneAbility::jokerOstrichEgg] = "jokerOstrichEgg.json";
+	//m_jokerAnimationMap[StoneAbility::jokerPeacock] = "jokerPeacock.json";
 
 	m_jokerAnimationMap[StoneAbility::jokerTeleport] = "jokerTeleport.json";
 	m_jokerAnimationMap[StoneAbility::jokerExplode] = "jokerExplode.json";

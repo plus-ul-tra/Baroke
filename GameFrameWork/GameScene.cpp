@@ -883,18 +883,20 @@ void GameScene::KeyCommandMapping()
 
 	m_commandMap["F1"] = [this]()
 		{
-			std::cout << "F1 Command Received: Changing to Title Scene" << std::endl;
-			SceneManager::GetInstance().ChangeScene(std::string("Title"));
+			
+			SceneManager::GetInstance().ChangePostProcessing("PassThrough");
+			m_filterElsapsedTime = -5.0f;
 		};
 
 	m_commandMap["F2"] = [this]()
 		{
 			SceneManager::GetInstance().ChangePostProcessing("CRTFilter");
+			m_filterElsapsedTime = 0.0f;
 		};
 
 	m_commandMap["F3"] = [this]()
 		{
-			SceneManager::GetInstance().ChangePostProcessing("Default");
+			
 		};
 
 	m_commandMap["F4"] = [this]()
@@ -905,7 +907,7 @@ void GameScene::KeyCommandMapping()
 
 	m_commandMap["F5"] = [this]()
 		{
-			SceneManager::GetInstance().ChangePostProcessing("CRTRed");
+			
 		};
 
 	m_commandMap["Go"] = [this]()
@@ -956,17 +958,6 @@ void GameScene::OnInput(const MouseEvent& ev)
 			if (m_board.GetPlayer().GetBlackCount() <= m_board.GetStoneTypeAmount(Black)) return;
 			m_board.InputBasedGameLoop(ev.pos);
 			std::cout << "Place Black Stone : " << m_board.GetStoneTypeAmount(Black) << " / " << m_board.GetPlayer().GetBlackCount() << std::endl;
-		}
-
-
-		else if (ev.type == MouseType::RDown)
-		{
-			std::cout << ev.pos.x << " " << ev.pos.y << std::endl;
-			m_board.SetStoneType(White);
-			m_board.SetStoneAbility(None);
-			m_board.InputBasedGameLoop(ev.pos);
-			std::cout << "Place Black Stone : " << m_board.GetStoneTypeAmount(Black) << " / " << m_board.GetPlayer().GetBlackCount() << std::endl;
-			//			std::cout << "Joker Stone Count : " << m_board.GetStoneTypeAmount(Joker) << std::endl;
 		}
 	}
 
@@ -1062,9 +1053,17 @@ void GameScene::ChangeThema(int thema)
 		}
 
 		m_desc->GetComponent<BitmapRender3D>()->ChangeTexture("T_Jungle_Right_Slot_Description.png");
-		m_rightUI->GetComponent<BitmapRender3D>()->ChangeTexture("T_Jungle_Right_Base_Glow.png");
-		m_leftUI->GetComponent<BitmapRender3D>()->ChangeTexture("T_Jungle_Left_Down_Base_Glow.png");
+		//m_rightUI->GetComponent<BitmapRender3D>()->ChangeTexture("T_Jungle_Right_Base_Glow.png");
+		//m_leftUI->GetComponent<BitmapRender3D>()->ChangeTexture("T_Jungle_Left_Down_Base_Glow.png");
 		m_leftUpUI->GetComponent<BitmapRender3D>()->ChangeTexture("T_Jungle_Left_Base_Glow.png");
+
+
+		m_desc->GetComponent<BitmapRender3D>()->ChangeTexture("T_Jungle_Right_Slot_Description.png");
+		m_rightUI->GetComponent<BitmapRender3D>()->ChangeTexture("T_Jungle_Right_Base.png");
+		m_leftUI->GetComponent<BitmapRender3D>()->ChangeTexture("T_Jungle_Left_Down_Base.png");
+		//m_leftUpUI->GetComponent<BitmapRender3D>()->ChangeTexture("T_Jungle_Left_Base.png");
+
+
 		m_cyber->GetComponent<BitmapRender3D>()->SetActive(false);
 
 		m_lastIndex = -1;
@@ -1106,9 +1105,16 @@ void GameScene::ChangeThema(int thema)
 			rend->ChangeTexture("T_Space_Right_Slot_Passive.png");
 		}
 		m_desc->GetComponent<BitmapRender3D>()->ChangeTexture("T_Space_Right_Slot_Description.png");
-		m_rightUI->GetComponent<BitmapRender3D>()->ChangeTexture("T_Space_Right_Base_Glow.png");
-		m_leftUI->GetComponent<BitmapRender3D>()->ChangeTexture("T_Space_Left_Down_Base_Glow.png");
+		//m_rightUI->GetComponent<BitmapRender3D>()->ChangeTexture("T_Space_Right_Base_Glow.png");
+		//m_leftUI->GetComponent<BitmapRender3D>()->ChangeTexture("T_Space_Left_Down_Base_Glow.png");
 		m_leftUpUI->GetComponent<BitmapRender3D>()->ChangeTexture("T_Space_Left_Base_Glow.png");
+
+
+		m_desc->GetComponent<BitmapRender3D>()->ChangeTexture("T_Space_Right_Slot_Description.png");
+		m_rightUI->GetComponent<BitmapRender3D>()->ChangeTexture("T_Space_Right_Base.png");
+		m_leftUI->GetComponent<BitmapRender3D>()->ChangeTexture("T_Space_Left_Down_Base.png");
+		//m_leftUpUI->GetComponent<BitmapRender3D>()->ChangeTexture("T_Space_Left_Base.png");
+
 		m_cyber->GetComponent<BitmapRender3D>()->SetActive(false);
 
 		m_lastIndex = -1;
@@ -1151,9 +1157,15 @@ void GameScene::ChangeThema(int thema)
 		}
 
 		m_desc->GetComponent<BitmapRender3D>()->ChangeTexture("T_Dancheong_Right_Slot_Description.png");
-		m_rightUI->GetComponent<BitmapRender3D>()->ChangeTexture("T_Dancheong_Right_Base_Glow.png");
-		m_leftUI->GetComponent<BitmapRender3D>()->ChangeTexture("T_Dancheong_Left_Down_Base_Glow.png");
+		//m_rightUI->GetComponent<BitmapRender3D>()->ChangeTexture("T_Dancheong_Right_Base_Glow.png");
+		//m_leftUI->GetComponent<BitmapRender3D>()->ChangeTexture("T_Dancheong_Left_Down_Base_Glow.png");
 		m_leftUpUI->GetComponent<BitmapRender3D>()->ChangeTexture("T_Dancheong_Left_Base_Glow.png");
+
+
+		m_rightUI->GetComponent<BitmapRender3D>()->ChangeTexture("T_Dancheong_Right_Base.png");
+		m_leftUI->GetComponent<BitmapRender3D>()->ChangeTexture("T_Dancheong_Left_Down_Base.png");
+		//m_leftUpUI->GetComponent<BitmapRender3D>()->ChangeTexture("T_Dancheong_Left_Base.png");
+
 		m_cyber->GetComponent<BitmapRender3D>()->SetActive(false);
 
 		m_lastIndex = -1;
@@ -1195,9 +1207,14 @@ void GameScene::ChangeThema(int thema)
 			rend->ChangeTexture("T_Halloween_Right_Slot_Passive.png");
 		}
 		m_desc->GetComponent<BitmapRender3D>()->ChangeTexture("T_Halloween_Right_Slot_Description.png");
-		m_rightUI->GetComponent<BitmapRender3D>()->ChangeTexture("T_Halloween_Right_Base_Glow.png");
-		m_leftUI->GetComponent<BitmapRender3D>()->ChangeTexture("T_Halloween_Left_Down_Base_Glow.png");
+		//m_rightUI->GetComponent<BitmapRender3D>()->ChangeTexture("T_Halloween_Right_Base_Glow.png");
+		//m_leftUI->GetComponent<BitmapRender3D>()->ChangeTexture("T_Halloween_Left_Down_Base_Glow.png");
 		m_leftUpUI->GetComponent<BitmapRender3D>()->ChangeTexture("T_Halloween_Left_Base_Glow.png");
+
+
+		m_rightUI->GetComponent<BitmapRender3D>()->ChangeTexture("T_Halloween_Right_Base.png");
+		m_leftUI->GetComponent<BitmapRender3D>()->ChangeTexture("T_Halloween_Left_Down_Base.png");
+		//m_leftUpUI->GetComponent<BitmapRender3D>()->ChangeTexture("T_Halloween_Left_Base.png");
 		m_cyber->GetComponent<BitmapRender3D>()->SetActive(false);
 
 		m_lastIndex = -1;
@@ -1239,9 +1256,14 @@ void GameScene::ChangeThema(int thema)
 			rend->ChangeTexture("T_Cyberpunk_Right_Passive_Jocker.png");
 		}
 		m_desc->GetComponent<BitmapRender3D>()->ChangeTexture("Cyberpunk_Description.png");
-		m_rightUI->GetComponent<BitmapRender3D>()->ChangeTexture("Cyberpunk_Righ.png");
-		m_leftUI->GetComponent<BitmapRender3D>()->ChangeTexture("Cyberpunk_Left_Down.png");
+		//m_rightUI->GetComponent<BitmapRender3D>()->ChangeTexture("Cyberpunk_Righ.png");
+		//m_leftUI->GetComponent<BitmapRender3D>()->ChangeTexture("Cyberpunk_Left_Down.png");
 		m_leftUpUI->GetComponent<BitmapRender3D>()->ChangeTexture("Cyberpunk_Left.png");
+
+
+		m_rightUI->GetComponent<BitmapRender3D>()->ChangeTexture("T_Cyberpunk_Right_Base.png");
+		m_leftUI->GetComponent<BitmapRender3D>()->ChangeTexture("T_Cyberpunk_Left_Down_Base.png");
+		//m_leftUpUI->GetComponent<BitmapRender3D>()->ChangeTexture("T_Cyberpunk_Left_Base.png");
 		m_cyber->GetComponent<BitmapRender3D>()->SetActive(true);
 
 		m_lastIndex = -1;
@@ -1262,10 +1284,16 @@ void GameScene::ChangeThema(int thema)
 
 		Mediator::GetInstance().SetUIColor(XMFLOAT4(0.0f, 1.0f, 1.0f, 1.0f));
 
+// 		m_desc->GetComponent<BitmapRender3D>()->ChangeTexture("T_Standard_Right_Slot_Description.png");
+ 		//m_rightUI->GetComponent<BitmapRender3D>()->ChangeTexture("T_Standard_Right_Base_Glow.png");
+// 		m_leftUI->GetComponent<BitmapRender3D>()->ChangeTexture("T_Standard_Left_Down_Base_Glow.png");
+ 		m_leftUpUI->GetComponent<BitmapRender3D>()->ChangeTexture("T_Standard_Left_Base_Glow.png");
+// 		m_cyber->GetComponent<BitmapRender3D>()->SetActive(false);
+
 		m_desc->GetComponent<BitmapRender3D>()->ChangeTexture("T_Standard_Right_Slot_Description.png");
-		m_rightUI->GetComponent<BitmapRender3D>()->ChangeTexture("T_Standard_Right_Base_Glow.png");
-		m_leftUI->GetComponent<BitmapRender3D>()->ChangeTexture("T_Standard_Left_Down_Base_Glow.png");
-		m_leftUpUI->GetComponent<BitmapRender3D>()->ChangeTexture("T_Standard_Left_Base_Glow.png");
+		m_rightUI->GetComponent<BitmapRender3D>()->ChangeTexture("T_Standard_Right_Base.png");
+		m_leftUI->GetComponent<BitmapRender3D>()->ChangeTexture("T_Standard_Left_Down_Base.png");
+		//m_leftUpUI->GetComponent<BitmapRender3D>()->ChangeTexture("T_Standard_Left_Base.png");
 		m_cyber->GetComponent<BitmapRender3D>()->SetActive(false);
 
 		m_lastIndex = -1;

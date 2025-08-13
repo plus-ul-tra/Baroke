@@ -13,8 +13,8 @@ private:
    ~Mediator() = default;  
 
    POINT m_position; // POINT는 windows.h에 정의되어 있음
-   XMFLOAT4 m_prevColor =	{ 0.0f,1.0f,1.0f,1.0f};
-   XMFLOAT4 m_targetColor = { 0.0f,1.0f,1.0f,1.0f }; //default gray
+   XMFLOAT4 m_prevColor =	{ 0.5f,0.5f,0.5f,1.0f};
+   XMFLOAT4 m_targetColor = { 0.5f,0.5f,0.5f,1.0f }; //default gray
    XMFLOAT4 m_UIColor = {0.0f,0.0f,0.0f,0.0f};
    int      m_selectedIndex = -1;
 public:  
