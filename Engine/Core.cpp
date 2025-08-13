@@ -21,11 +21,11 @@ bool MIYABI::Core::_CreateWindow()
 
 void MIYABI::Core::BootManagers()
 {
+	SoundManager::GetInstance().Initialize(); // 사운드 매니저 초기화
 	SceneManager::GetInstance().Initialize(static_cast<HWND>(GetWindowHandle()));
 	InputManager::GetInstance().Initialize(static_cast<HWND>(GetWindowHandle()));
 	Mediator::GetInstance().Initialize();
 	RenderTimer::GetInstance();
-	SoundManager::GetInstance().Initialize(); // 사운드 매니저 초기화
 }
 
 

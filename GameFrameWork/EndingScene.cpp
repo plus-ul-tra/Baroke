@@ -10,14 +10,6 @@ void EndingScene::Initialize()
 	m_filterElsapsedTime = 0.0f;
 	m_isFilterQueue = true;
 	m_isExitrQueue = false;
-
-	m_channel->stop();
-	m_bgm = nullptr;
-	m_channel = nullptr;
-	m_bgm = SoundManager::GetInstance().GetSound("lose.wav"); //사운드 교체
-	m_bgm->setMode(FMOD_LOOP_OFF);
-	m_soundManager.GetSystem()->getChannel(1, &m_channel);
-	m_soundManager.GetSystem()->playSound(m_bgm, nullptr, false, &m_channel);
 }
 
 void EndingScene::Update(double deltaTime)
@@ -82,6 +74,15 @@ void EndingScene::OnEnter()
 	unique_ptr<Button> returnButton = std::make_unique<SceneChangeButton>(0.0f, -350.0f, 212.0f, 42.0f, "T_GameOver_Main_Screen.png", "Title",buttonType::EndingToTitle);
 	m_notUniqueObjectList.emplace_back(returnButton.get());
 	m_endingButtonList.emplace_back(std::move(returnButton));
+
+	m_channel->stop();
+	m_bgm = nullptr;
+	m_channel = nullptr;
+	m_bgm = SoundManager::GetInstance().GetSound("lose.wav"); //사운드 교체
+	m_bgm->setMode(FMOD_LOOP_OFF);
+
+	m_soundManager.ReleaseChannelGroup();
+	m_soundManager.GetSystem()->playSound(m_bgm, m_soundManager.GetChannelGroup(), false, &m_channel);
 }
 
 void EndingScene::OnLeave()

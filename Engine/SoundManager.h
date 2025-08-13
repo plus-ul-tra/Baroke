@@ -12,6 +12,7 @@ class SoundManager : public Singleton<SoundManager>
 	~SoundManager() = default;
 
 	unordered_map<string, Sound*> m_sounds;
+	ChannelGroup* m_channelGroup = nullptr;
 	System* m_system = nullptr;
 
 public:
@@ -20,10 +21,12 @@ public:
 	void LoadAll();
 	void LoadSound(const filesystem::path& filePath);
 
-	System* GetSystem() const { return m_system; }
 	Sound* GetSound(const string& key) const;
+	ChannelGroup* GetChannelGroup() const { return m_channelGroup; }
+	System* GetSystem() const { return m_system; }
 
 	void PlaySoundOnce(const string& key);
+	void ReleaseChannelGroup();
 
 	void Release();
 };

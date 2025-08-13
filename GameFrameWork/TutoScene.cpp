@@ -482,7 +482,9 @@ void TutoScene::OnEnter()
 	m_channel = nullptr;
 	m_bgm = SoundManager::GetInstance().GetSound("MainBGM.mp3");
 	m_bgm->setMode(FMOD_LOOP_NORMAL);
-	m_soundManager.GetSystem()->playSound(m_bgm, nullptr, false, &m_channel);
+
+	m_soundManager.ReleaseChannelGroup();
+	m_soundManager.GetSystem()->playSound(m_bgm, m_soundManager.GetChannelGroup(), false, &m_channel);
 
 	initGame();
 }

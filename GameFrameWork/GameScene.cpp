@@ -409,7 +409,7 @@ void GameScene::CheckStageClear()
 
 			m_bgm = m_soundManager.GetSound("ShopBGM.mp3");
 			m_bgm->setMode(FMOD_LOOP_NORMAL);
-			if (m_bgm) SoundManager::GetInstance().GetSystem()->playSound(m_bgm, nullptr, false, &m_channel);
+			if (m_bgm) SoundManager::GetInstance().GetSystem()->playSound(m_bgm, m_soundManager.GetChannelGroup(), false, &m_channel);
 		}
 		if (m_gameState == GameState::Shop && m_shopBuyStoneButton && m_shopShopRerollButton && m_shopExitButton)
 		{
@@ -821,7 +821,7 @@ void GameScene::OnEnter()
 	m_channel = nullptr;
 	m_bgm = SoundManager::GetInstance().GetSound("MainBGM.mp3");
 	m_bgm->setMode(FMOD_LOOP_NORMAL);
-	m_soundManager.GetSystem()->playSound(m_bgm, nullptr, false, &m_channel);
+	m_soundManager.GetSystem()->playSound(m_bgm, m_soundManager.GetChannelGroup(), false, &m_channel);
 
 	initGame();
 }
@@ -1062,7 +1062,9 @@ void GameScene::ChangeThema(int thema)
 		m_channel = nullptr;
 		m_bgm = SoundManager::GetInstance().GetSound("wild1.mp3");
 		m_bgm->setMode(FMOD_LOOP_NORMAL);
-		m_soundManager.GetSystem()->playSound(m_bgm, nullptr, false, &m_channel);
+
+		m_soundManager.ReleaseChannelGroup();
+		m_soundManager.GetSystem()->playSound(m_bgm, m_soundManager.GetChannelGroup(), false, &m_channel);
 
 		break;
 
@@ -1103,7 +1105,9 @@ void GameScene::ChangeThema(int thema)
 		m_channel = nullptr;
 		m_bgm = SoundManager::GetInstance().GetSound("space1.mp3");
 		m_bgm->setMode(FMOD_LOOP_NORMAL);
-		m_soundManager.GetSystem()->playSound(m_bgm, nullptr, false, &m_channel);
+
+		m_soundManager.ReleaseChannelGroup();
+		m_soundManager.GetSystem()->playSound(m_bgm, m_soundManager.GetChannelGroup(), false, &m_channel);
 
 		break;
 
@@ -1145,7 +1149,9 @@ void GameScene::ChangeThema(int thema)
 		m_channel = nullptr;
 		m_bgm = SoundManager::GetInstance().GetSound("dancheong1.mp3");
 		m_bgm->setMode(FMOD_LOOP_NORMAL);
-		m_soundManager.GetSystem()->playSound(m_bgm, nullptr, false, &m_channel);
+
+		m_soundManager.ReleaseChannelGroup();
+		m_soundManager.GetSystem()->playSound(m_bgm, m_soundManager.GetChannelGroup(), false, &m_channel);
 
 		break;
 
@@ -1186,7 +1192,9 @@ void GameScene::ChangeThema(int thema)
 		m_channel = nullptr;
 		m_bgm = SoundManager::GetInstance().GetSound("halloween1.mp3");
 		m_bgm->setMode(FMOD_LOOP_NORMAL);
-		m_soundManager.GetSystem()->playSound(m_bgm, nullptr, false, &m_channel);
+
+		m_soundManager.ReleaseChannelGroup();
+		m_soundManager.GetSystem()->playSound(m_bgm, m_soundManager.GetChannelGroup(), false, &m_channel);
 
 		break;
 
@@ -1226,7 +1234,9 @@ void GameScene::ChangeThema(int thema)
 		m_channel = nullptr;
 		m_bgm = SoundManager::GetInstance().GetSound("cyberpunk1.mp3");
 		m_bgm->setMode(FMOD_LOOP_NORMAL);
-		m_soundManager.GetSystem()->playSound(m_bgm, nullptr, false, &m_channel);
+
+		m_soundManager.ReleaseChannelGroup();
+		m_soundManager.GetSystem()->playSound(m_bgm, m_soundManager.GetChannelGroup(), false, &m_channel);
 
 		break;
 
@@ -1248,7 +1258,10 @@ void GameScene::ChangeThema(int thema)
 		m_channel = nullptr;
 		m_bgm = SoundManager::GetInstance().GetSound("MainBGM.mp3");
 		m_bgm->setMode(FMOD_LOOP_NORMAL);
-		m_soundManager.GetSystem()->playSound(m_bgm, nullptr, false, &m_channel);
+
+		m_soundManager.ReleaseChannelGroup();
+		m_soundManager.GetSystem()->playSound(m_bgm, m_soundManager.GetChannelGroup(), false, &m_channel);
+
 		for (auto& bt : m_jokerSlot)
 		{
 			auto rend = bt->GetComponent<BitmapRender3D>();
