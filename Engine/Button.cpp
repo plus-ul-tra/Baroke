@@ -147,6 +147,8 @@ void ShopBuyStoneButton::ButtonFunction()
 			m_isPressed = false;
 		}
 	}
+
+
 }
 
 void ShopBuyStoneButton::SetShowAndActive(bool active)
@@ -169,6 +171,15 @@ void ShopRerollButton::ButtonFunction()
 			m_isPressed = false;
 			m_isRerollButtonPressed = true;
 		}
+	}
+
+	if (m_isHovered && m_isActive)
+	{
+		m_bitmapRender->ChangeTexture("T_Store_Reset_Select.png");
+	}
+	else if (!m_isHovered && m_isActive)
+	{
+		m_bitmapRender->ChangeTexture("T_Store_Reset.png");
 	}
 }
 
@@ -273,6 +284,15 @@ void ShopEndButton::ButtonFunction()
 		std::cout << "Shop End Button Pressed" << std::endl;
 
 		m_isPressed = false;
+	}
+
+	if (m_isHovered && m_isActive)
+	{
+		m_bitmapRender->ChangeTexture("T_Store_Next_Stage_Select.png");
+	}
+	else if (!m_isHovered && m_isActive)
+	{
+		m_bitmapRender->ChangeTexture("T_Store_Next_Stage.png");
 	}
 }
 

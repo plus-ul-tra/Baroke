@@ -10,6 +10,7 @@ struct PlayerInfo
 	int m_rerollCount = 0; // 상점 리롤 횟수
 	int m_waxMoney = 0;
 	int m_score = 0;
+	int jokerUseCount = 0;
 
 	PlayerInfo() = default;
 
@@ -19,16 +20,18 @@ struct PlayerInfo
 	}
 	void incBlackCount(int count) { m_tempBlackStone += count; }
 	void decBlackCount(int count) { m_tempBlackStone -= count; }
+	void incJokerUseCount(int count) { jokerUseCount += count; }
 	void ResetRound() { m_tempBlackStone = 0; }
 	void initGame() {
 		m_BlackStone = 20;
 		m_blackStoneUpgrade = 0;
 		m_tempBlackStone = 0;
 		//m_whiteLeft = 0;
-		m_money = 6;
+		m_money = 20;
 		m_rerollCount = 0;
 		m_waxMoney = 0;
 		m_score = 0;
+		jokerUseCount = 0;
 	}
 
 

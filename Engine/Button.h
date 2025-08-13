@@ -328,6 +328,7 @@ public:
 	StoneAbility GetJokerAbility() const { return m_jokerAbility; }
 };
 
+
 class ShopBuyStoneButton : public Button
 {
 	void ButtonFunction() override;
@@ -336,12 +337,15 @@ class ShopBuyStoneButton : public Button
 	ShopBuyStoneButton(float posX, float posY, float width, float height, const std::string& bitmapFile, int order = 0)
 		: Button(posX, posY, width, height, bitmapFile, order)
 	{
-		m_shopIcon = make_unique<NewObject>(m_transform->GetPosition().m128_f32[0] + 3.0f, m_transform->GetPosition().m128_f32[1] - 10.0f, 145.0f, 241.0f, 0.0f, "T_Store_Joker.png");
+		m_shopIcon = make_unique<NewObject>(m_transform->GetPosition().m128_f32[0] + 3.0f, m_transform->GetPosition().m128_f32[1] - 10.0f, 145.0f, 241.0f, 0.0f,"T_Store_Joker.png");
 		m_priceIcon = make_unique<NewObject>(m_transform->GetPosition().m128_f32[0] - 15.0f, m_transform->GetPosition().m128_f32[1] - 66.0f, 45.0f, 45.0f, 0.0f, "T_jokerWaxseal.png");
 	}
 
 	void SetShowAndActive(bool active);
 };
+
+
+
 
 class ShopRerollButton : public Button
 {

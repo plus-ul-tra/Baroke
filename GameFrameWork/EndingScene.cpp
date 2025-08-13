@@ -60,7 +60,7 @@ void EndingScene::OnEnter()
 
 	//--Text Here
 	unique_ptr<Text> useJokerText = std::make_unique<Text>(-100.0f, -10.0f, 200.0f, 100.0f, 1);
-	useJokerText->GetComponent<UIText>()->SetText(BoardManager::GetInstance().m_playerInfo.m_score);
+	useJokerText->GetComponent<UIText>()->SetText(BoardManager::GetInstance().m_playerInfo.jokerUseCount);
 	m_textList.emplace_back(useJokerText.get());
 	m_useless.emplace_back(move(useJokerText));
 
@@ -71,7 +71,7 @@ void EndingScene::OnEnter()
 	
 	//--Text Here
 	unique_ptr<Text> whiteGetText = std::make_unique<Text>(-100.0f, -110.0f, 200.0f, 100.0f, 1);
-	whiteGetText->GetComponent<UIText>()->SetText(BoardManager::GetInstance().m_playerInfo.m_score);
+	whiteGetText->GetComponent<UIText>()->SetText(BoardManager::GetInstance().m_playerInfo.m_score / 100);
 	m_textList.emplace_back(whiteGetText.get());
 	m_useless.emplace_back(move(whiteGetText));
 	
