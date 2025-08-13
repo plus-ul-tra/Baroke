@@ -53,23 +53,38 @@ void EndingScene::OnEnter()
 	m_notUniqueObjectList.emplace_back(end.get());
 	m_endingButtonList.emplace_back(std::move(end));
 
+	// "사용한 조커돌"
 	unique_ptr<Button> jokerCount = std::make_unique<Button>(0.0f, 0.0f, 188.0f, 35.0f, "T_GameOver_Used_Joker_Stone.png");
 	m_notUniqueObjectList.emplace_back(jokerCount.get());
 	m_endingButtonList.emplace_back(std::move(jokerCount));
 
 	//--Text Here
+	unique_ptr<Text> useJokerText = std::make_unique<Text>(-100.0f, -10.0f, 200.0f, 100.0f, 1);
+	useJokerText->GetComponent<UIText>()->SetText(BoardManager::GetInstance().m_playerInfo.m_score);
+	m_textList.emplace_back(useJokerText.get());
+	m_useless.emplace_back(move(useJokerText));
 
+	// "따낸 돌"
 	unique_ptr<Button> whiteGet = std::make_unique<Button>(0.0f, -100.0f, 96.0f, 35.0f, "T_GameOver_Captured_Stone.png");
 	m_notUniqueObjectList.emplace_back(whiteGet.get());
 	m_endingButtonList.emplace_back(std::move(whiteGet));
-
+	
 	//--Text Here
-
+	unique_ptr<Text> whiteGetText = std::make_unique<Text>(-100.0f, -110.0f, 200.0f, 100.0f, 1);
+	whiteGetText->GetComponent<UIText>()->SetText(BoardManager::GetInstance().m_playerInfo.m_score);
+	m_textList.emplace_back(whiteGetText.get());
+	m_useless.emplace_back(move(whiteGetText));
+	
+	// "최종 점수"
 	unique_ptr<Button> score = std::make_unique<Button>(0.0f, -200.0f, 119.0f, 35.0f, "T_GameOver_Final_Score.png");
 	m_notUniqueObjectList.emplace_back(score.get());
 	m_endingButtonList.emplace_back(std::move(score));
 
 	//--Text Here
+	unique_ptr<Text> scoreText = std::make_unique<Text>(-100.0f, -210.0f, 200.0f, 100.0f, 1);
+	scoreText->GetComponent<UIText>()->SetText(BoardManager::GetInstance().m_playerInfo.m_score);
+	m_textList.emplace_back(scoreText.get());
+	m_useless.emplace_back(move(scoreText));
 
 	unique_ptr<SceneChangeButton> returnButton = std::make_unique<SceneChangeButton>(0.0f, -350.0f, 212.0f, 42.0f, "T_GameOver_Main_Screen.png", "Title",buttonType::EndingToTitle);
 	m_notUniqueObjectList.emplace_back(returnButton.get());
@@ -90,6 +105,7 @@ void EndingScene::OnLeave()
 	Reset();
 
 	m_notUniqueObjectList.clear();
+	m_useless.clear();
 
 	m_channel->stop();
 	m_bgm = nullptr;
