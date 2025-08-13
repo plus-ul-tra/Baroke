@@ -907,6 +907,7 @@ void GameScene::KeyCommandMapping()
 	m_commandMap["F4"] = [this]()
 		{
 
+			if (m_board.CountStones(White) == 0) return;
 			m_board.ResetStone();
 		};
 
