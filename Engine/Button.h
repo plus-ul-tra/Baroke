@@ -343,6 +343,8 @@ class ShopBuyStoneButton : public Button
 		m_width = 145.0f;
 		m_height = 241.0f;
 		m_priceIcon = make_unique<NewObject>(m_transform->GetPosition().m128_f32[0] - 15.0f, m_transform->GetPosition().m128_f32[1] - 66.0f, 45.0f, 45.0f, 0.0f, "T_jokerWaxseal.png");
+
+		m_textObject = make_unique<NewObject>(m_transform->GetPosition().m128_f32[0] + 100.0f, m_transform->GetPosition().m128_f32[1] - 50.0f, 267.0f, 81.0f, 0.0f, "T_Balck_number_increase.png");
 	}
 
 	void SetShowAndActive(bool active);
