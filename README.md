@@ -3,14 +3,15 @@
 
 개발기간 : 2025.7.28 ~ 2025.08.13
 
-사용엔진 : 자체제작엔진(C++ DirectX11, HLSL)
+사용엔진 : 자체제작엔진(C++ DirectX11 3D, HLSL)
 
 인재원 전임교수상 수상 
 
 ## About
 
 바둑의 사석 규칙을 이용한 Balratro 라이크 게임
-스테이지 별로 스폰되는 흰돌을, 한정된 검은돌과 여러 능력을 갖고 있는 조커 바둑돌을 이용하여
+
+스테이지 별로 스폰되는 흰돌을 한정된 검은돌과 여러 능력을 갖고 있는 조커 바둑돌을 이용하여 
 모두 제거하는 게임
 
 조작법 : 마우스, esc키
@@ -75,6 +76,17 @@
 <p align="left">
 <img width="90%" src="https://github.com/user-attachments/assets/bbc0ab0d-5c65-44fc-a9e7-3fa0d11dbb4d">  
 </p>
+
+코스트 지불과 선택 모드 
+
+<p align="left">
+<img width="90%" src="https://github.com/user-attachments/assets/d0d31815-af0c-4de7-a958-ebbb7b5ff289">  
+</p>
+
+<p align="left">
+<img width="90%" src="https://github.com/user-attachments/assets/98d91089-951e-4274-9979-9efda03c6435">  
+</p>
+
 
 게임종료
 <p align="left">
