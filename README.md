@@ -95,4 +95,5 @@
 
 ## Build File
 https://drive.google.com/file/d/12H2wr0VoBnq1zjIiakjblsavPwR-1eFW/view?usp=drive_link
+
 압축해제 후 barok -> barok 의 exe 파일 실행
