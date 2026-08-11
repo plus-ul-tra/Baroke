@@ -94,8 +94,9 @@
 </p>
 
 ## Build File
+- 1.0.0 시연회 빌드 
 https://drive.google.com/file/d/12H2wr0VoBnq1zjIiakjblsavPwR-1eFW/view?usp=drive_link
 
-- 1.5.0 BIC UI 수정 버전
+- 1.5.0 BIC UI 개선 버전
 https://drive.google.com/file/d/1v1diZwIYYnWrBq4iu1DaaZwLeiGzzfIo/view?usp=drive_link
 압축해제 후 baroke -> baroke 의 exe 파일 실행
