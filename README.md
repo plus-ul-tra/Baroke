@@ -96,4 +96,6 @@
 ## Build File
 https://drive.google.com/file/d/12H2wr0VoBnq1zjIiakjblsavPwR-1eFW/view?usp=drive_link
 
-압축해제 후 barok -> barok 의 exe 파일 실행
+- 1.5.0 BIC UI 수정 버전
+https://drive.google.com/file/d/1v1diZwIYYnWrBq4iu1DaaZwLeiGzzfIo/view?usp=drive_link
+압축해제 후 baroke -> baroke 의 exe 파일 실행
